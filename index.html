@@ -2609,6 +2609,17 @@ Dhanbad, Jharkhand 828202</a>
             lightboxImg.src = images[currentImageIndex].src;
             lightboxCaption.textContent = images[currentImageIndex].caption;
         }
+        });
+        
+        // Light Gallery for Images
+        document.addEventListener('DOMContentLoaded', () => {
+            lightGallery(document.getElementById('lightgallery'), {
+                selector: '.gallery-item',
+                download: false,
+                counter: false,
+                enableDrag: false,
+                enableSwipe: false
+            });
         
         // Close lightbox when clicking outside image
         lightbox.addEventListener('click', (e) => {
