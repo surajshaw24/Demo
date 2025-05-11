@@ -1260,7 +1260,8 @@
             cursor: pointer;
             transition: var(--transition);
             text-transform: uppercase;
-            letter-spacing: 1px;}
+            letter-spacing: 1px;
+            }
         
         .submit-btn:hover {
             background-color: var(--primary-dark);
@@ -2659,14 +2660,12 @@ Dhanbad, Jharkhand 828202</a>
                     closeModal(modal);
                 }
             });
-        });
         
         modalCloseBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 const modal = btn.closest('.modal');
                 closeModal(modal);
             });
-        });
         
         // Special offer button
         if (specialOfferBtn) {
@@ -2675,7 +2674,7 @@ Dhanbad, Jharkhand 828202</a>
                 offerModal.classList.add('active');
                 document.body.style.overflow = 'hidden';
             });
-        }
+        });
         
         // Newsletter form
         const newsletterForms = document.querySelectorAll('.footer-newsletter');
@@ -2685,8 +2684,7 @@ Dhanbad, Jharkhand 828202</a>
                 const emailInput = form.querySelector('input[type="email"]');
                 if (emailInput.value) {
                     alert('Thank you for subscribing to our newsletter!');
-                    emailInput.value = '';
-                }
+                    emailInput.value = ''; }
             });
     </script>
 </body>
