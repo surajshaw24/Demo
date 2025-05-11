@@ -2623,14 +2623,6 @@ Dhanbad, Jharkhand 828202</a>
                 counter: false,
                 enableDrag: false,
                 enableSwipe: false
-            });
-        
-        // Close lightbox when clicking outside image
-        lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox) {
-                lightbox.classList.remove('active');
-                document.body.style.overflow = 'auto';
-            }
         });
         
         // Keyboard navigation for lightbox
