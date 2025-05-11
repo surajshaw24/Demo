@@ -2442,6 +2442,7 @@ Dhanbad, Jharkhand 828202</a>
         // Preloader
         window.addEventListener('load', function() {
             const preloader = document.querySelector('.preloader');
+            <img src="..." alt="..." loading="lazy">
             preloader.classList.add('fade-out');
             setTimeout(() => {
                 preloader.style.display = 'none';
@@ -2552,7 +2553,23 @@ Dhanbad, Jharkhand 828202</a>
         
         window.addEventListener('scroll', checkScroll);
         window.addEventListener('load', checkScroll);
-        
+        // Enhance form validation
+const contactForm = document.getElementById('contactForm');
+contactForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Validate inputs
+    const name = this.querySelector('#name').value.trim();
+    const email = this.querySelector('#email').value.trim();
+    
+    if (!name || !email) {
+        alert('Please fill in all required fields');
+        return;
+    }
+    
+    // Submit form
+    // ...
+});
         // Form Submission
        const name = this.querySelector('#name').value;
             const email = this.querySelector('#email').value;
@@ -2693,8 +2710,28 @@ Dhanbad, Jharkhand 828202</a>
                     emailInput.value = '';
                 }
             });
+            
+            <!-- Add Google Analytics or similar -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'GA_MEASUREMENT_ID');
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BeautySalon",
+  "name": "Sunidhi Makeover & Academy",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "123 Beauty Street",
+    "addressLocality": "Kumardhubi",
+    "addressRegion": "Jharkhand"
+  },
+  "telephone": "+916205683994"
+}
 
-        });
     </script>
 </body>
 </html>
