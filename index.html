@@ -2431,7 +2431,7 @@ Dhanbad, Jharkhand 828202</a>
         </div>
     </footer>
 
-     <!-- Back to Top Button -->
+    <!-- Back to Top Button -->
     <div class="back-to-top">
         <i class="fas fa-arrow-up"></i>
     </div>
@@ -2451,9 +2451,18 @@ Dhanbad, Jharkhand 828202</a>
         // Mobile Menu Toggle
         const menuBtn = document.querySelector('.mobile-menu-btn');
         const mobileMenu = document.querySelector('.mobile-menu');
+        const menuToggles = document.querySelectorAll('.menu-toggle');
         
         menuBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('active');
+        });
+        
+        menuToggles.forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                const submenu = this.nextElementSibling;
+                this.classList.toggle('active');
+                submenu.classList.toggle('active');
+            });
         });
         
         // Hero Slider
@@ -2474,8 +2483,7 @@ Dhanbad, Jharkhand 828202</a>
         // Testimonial Slider
         const testimonialSlider = new Swiper('.testimonial-slider', {
             loop: true,
-            spaceBetween: 20,
-            slidesPerView: 1,
+            spaceBetween: 30,
             centeredSlides: true,
             autoplay: {
                 delay: 5000,
@@ -2498,12 +2506,13 @@ Dhanbad, Jharkhand 828202</a>
         window.addEventListener('scroll', function() {
             const header = document.querySelector('header');
             const backToTop = document.querySelector('.back-to-top');
+            
             if (window.scrollY > 100) {
                 header.classList.add('scrolled');
                 backToTop.classList.add('active');
             } else {
                 header.classList.remove('scrolled');
-                 backToTop.classList.remove('active');
+                backToTop.classList.remove('active');
             }
         });
         
@@ -2528,14 +2537,14 @@ Dhanbad, Jharkhand 828202</a>
             });
         });
         
-         // Back to Top Button
+        // Back to Top Button
         document.querySelector('.back-to-top').addEventListener('click', function() {
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
             });
         });
-
+        
         // Scroll Animation
         const animateElements = document.querySelectorAll('.animate');
         
@@ -2552,14 +2561,16 @@ Dhanbad, Jharkhand 828202</a>
         
         window.addEventListener('scroll', checkScroll);
         window.addEventListener('load', checkScroll);
-   
-    }
-    
-    // Submit form
-    // ...
-});
+        
         // Form Submission
-       const name = this.querySelector('#name').value;
+        const contactForm = document.getElementById('contactForm');
+        const successModal = document.getElementById('successModal');
+        
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const name = this.querySelector('#name').value;
             const email = this.querySelector('#email').value;
             const service = this.querySelector('#service').value;
             
@@ -2569,6 +2580,8 @@ Dhanbad, Jharkhand 828202</a>
             
             // Reset form
             this.reset();
+        });
+        
         // Gallery Lightbox
         const galleryItems = document.querySelectorAll('.gallery-item');
         const lightbox = document.querySelector('.gallery-lightbox');
@@ -2591,7 +2604,8 @@ Dhanbad, Jharkhand 828202</a>
                 lightbox.classList.add('active');
                 document.body.style.overflow = 'hidden';
             });
-       
+        });
+        
         lightboxClose.addEventListener('click', () => {
             lightbox.classList.remove('active');
             document.body.style.overflow = 'auto';
@@ -2613,16 +2627,13 @@ Dhanbad, Jharkhand 828202</a>
             lightboxImg.src = images[currentImageIndex].src;
             lightboxCaption.textContent = images[currentImageIndex].caption;
         }
-        });
         
-        // Light Gallery for Images
-        document.addEventListener('DOMContentLoaded', () => {
-            lightGallery(document.getElementById('lightgallery'), {
-                selector: '.gallery-item',
-                download: false,
-                counter: false,
-                enableDrag: false,
-                enableSwipe: false
+        // Close lightbox when clicking outside image
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
         });
         
         // Keyboard navigation for lightbox
@@ -2660,12 +2671,14 @@ Dhanbad, Jharkhand 828202</a>
                     closeModal(modal);
                 }
             });
+        });
         
         modalCloseBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 const modal = btn.closest('.modal');
                 closeModal(modal);
             });
+        });
         
         // Special offer button
         if (specialOfferBtn) {
@@ -2674,7 +2687,7 @@ Dhanbad, Jharkhand 828202</a>
                 offerModal.classList.add('active');
                 document.body.style.overflow = 'hidden';
             });
-        });
+        }
         
         // Newsletter form
         const newsletterForms = document.querySelectorAll('.footer-newsletter');
@@ -2684,8 +2697,10 @@ Dhanbad, Jharkhand 828202</a>
                 const emailInput = form.querySelector('input[type="email"]');
                 if (emailInput.value) {
                     alert('Thank you for subscribing to our newsletter!');
-                    emailInput.value = ''; }
+                    emailInput.value = '';
+                }
             });
+        });
     </script>
 </body>
 </html>
