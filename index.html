@@ -1639,27 +1639,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-   <div class="sunidhi-ultimate-loader">
-    <div class="diamond-ring"></div>
-    <div class="lipstick-swipe"></div>
-    
-    <div class="mascara-brushes">
-      <div class="mascara-brush"></div>
-      <div class="mascara-brush"></div>
-    </div>
-
-    <div class="diamond-sparkle"></div>
-    <div class="diamond-sparkle"></div>
-
-    <p class="loader-text">Sunidhi is creating magic...</p>
-    
-    <div class="theme-toggle">
-      <div class="theme-btn gold" onclick="changeTheme('gold')"></div>
-      <div class="theme-btn rose" onclick="changeTheme('rose')"></div>
-      <div class="theme-btn pink" onclick="changeTheme('pink')"></div>
-      <div class="theme-btn platinum" onclick="changeTheme('platinum')"></div>
-    </div>
-  </div>
 
     <!-- Header & Navigation -->
     <header>
@@ -2421,40 +2400,6 @@ Dhanbad, Jharkhand 828202</a>
     <div class="back-to-top">
         <i class="fas fa-arrow-up"></i>
     </div>
-
-    <!-- Scripts -->
-    <script>
-    function changeTheme(theme) {
-      const root = document.documentElement;
-      
-      switch (theme) {
-        case 'gold':
-          root.style.setProperty('--gold-light', '#FFD700');
-          root.style.setProperty('--gold-deep', '#D4AF37');
-          root.style.setProperty('--diamond-pink', '#FFD700');
-          root.style.setProperty('--rose-gold', '#D4AF37');
-          break;
-        case 'rose':
-          root.style.setProperty('--gold-light', '#E0BFB8');
-          root.style.setProperty('--gold-deep', '#B76E79');
-          root.style.setProperty('--diamond-pink', '#E0BFB8');
-          root.style.setProperty('--rose-gold', '#B76E79');
-          break;
-        case 'pink':
-          root.style.setProperty('--gold-light', '#FF69B4');
-          root.style.setProperty('--gold-deep', '#FF1493');
-          root.style.setProperty('--diamond-pink', '#FF69B4');
-          root.style.setProperty('--rose-gold', '#FF1493');
-          break;
-        case 'platinum':
-          root.style.setProperty('--gold-light', '#E5E4E2');
-          root.style.setProperty('--gold-deep', '#C0C0C0');
-          root.style.setProperty('--diamond-pink', '#E5E4E2');
-          root.style.setProperty('--rose-gold', '#C0C0C0');
-          break;
-      }
-    }
-     </script>    
         
         // Mobile Menu Toggle
         const menuBtn = document.querySelector('.mobile-menu-btn');
