@@ -39,39 +39,216 @@
             line-height: 1.6;
         }
 
-        /* Preloader */
-        .preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--dark);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
-        }
-        
-        .preloader.fade-out {
-            opacity: 0;
-        }
-        
-        .loader {
-            width: 50px;
-            height: 50px;
-            border: 5px solid var(--gold);
-            border-radius: 50%;
-            border-top-color: transparent;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            100% {
-                transform: rotate(360deg);
-            }
-        }
+        {
+      --gold-light: #FFD700;
+      --gold-deep: #D4AF37;
+      --rose-gold: #E0BFB8;
+      --diamond-pink: #FF69B4;
+      --platinum: #E5E4E2;
+      --bg-dark: #0D0D0D;
+      --font-luxury: 'Playfair Display', serif;
+      --font-modern: 'Montserrat', sans-serif;
+    }
+
+    body {
+      background: var(--bg-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+      color: var(--gold-light);
+      font-family: var(--font-luxury);
+    }
+
+    .sunidhi-ultimate-loader {
+      position: relative;
+      width: 250px;
+      height: 250px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Diamond Ring Effect */
+    .diamond-ring {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      position: relative;
+      background: conic-gradient(
+        from 0deg,
+        transparent 0deg,
+        var(--diamond-pink) 120deg,
+        var(--rose-gold) 240deg,
+        var(--gold-light) 360deg
+      );
+      mask: radial-gradient(farthest-side, transparent calc(100% - 3px), black 0);
+      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), black 0);
+      animation: spin 2.5s linear infinite;
+      box-shadow: 0 0 40px rgba(255, 215, 0, 0.2);
+    }
+
+    /* Lipstick Swipe */
+    .lipstick-swipe {
+      position: absolute;
+      width: 45px;
+      height: 12px;
+      background: var(--diamond-pink);
+      border-radius: 12px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(0deg);
+      transform-origin: left center;
+      animation: lipstick-swipe 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      z-index: 10;
+    }
+
+    .lipstick-swipe::before {
+      content: "";
+      position: absolute;
+      width: 25px;
+      height: 45px;
+      background: linear-gradient(to bottom, var(--diamond-pink), #FF1493);
+      border-radius: 12px 12px 0 0;
+      top: -40px;
+      left: -8px;
+      transform: rotate(-15deg);
+      box-shadow: 0 0 20px rgba(255, 20, 147, 0.7);
+    }
+
+    /* Mascara Brushes (3D Floating) */
+    .mascara-brushes {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .mascara-brush {
+      position: absolute;
+      width: 30px;
+      height: 6px;
+      background: var(--platinum);
+      border-radius: 6px;
+      animation: mascara-float 4s ease-in-out infinite;
+      box-shadow: 0 0 15px rgba(229, 228, 226, 0.5);
+    }
+
+    .mascara-brush::before {
+      content: "";
+      position: absolute;
+      width: 15px;
+      height: 25px;
+      background: linear-gradient(to right, #EEE, #CCC);
+      border-radius: 3px;
+      top: -20px;
+      left: 5px;
+      transform: rotate(10deg);
+    }
+
+    .mascara-brush:nth-child(1) {
+      top: 15%;
+      left: 20%;
+      animation-delay: 0s;
+    }
+
+    .mascara-brush:nth-child(2) {
+      top: 75%;
+      left: 65%;
+      animation-delay: 1s;
+    }
+
+    /* Diamond Sparkles */
+    .diamond-sparkle {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: white;
+      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+      animation: sparkle 2s infinite;
+      opacity: 0;
+    }
+
+    .diamond-sparkle:nth-child(1) {
+      top: 30%;
+      left: 30%;
+      animation-delay: 0.5s;
+    }
+
+    .diamond-sparkle:nth-child(2) {
+      top: 70%;
+      left: 70%;
+      animation-delay: 1.5s;
+    }
+
+    /* Theme Toggle (Floating Buttons) */
+    .theme-toggle {
+      position: absolute;
+      bottom: -80px;
+      display: flex;
+      gap: 15px;
+    }
+
+    .theme-btn {
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      cursor: pointer;
+      transition: all 0.4s;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .theme-btn:hover {
+      transform: scale(1.3) rotate(15deg);
+      box-shadow: 0 0 20px currentColor;
+    }
+
+    .theme-btn.gold { background: var(--gold-light); }
+    .theme-btn.rose { background: var(--rose-gold); }
+    .theme-btn.pink { background: var(--diamond-pink); }
+    .theme-btn.platinum { background: var(--platinum); }
+
+    /* Loader Text (Animated Glow) */
+    .loader-text {
+      margin-top: 40px;
+      font-size: 1.4rem;
+      letter-spacing: 2px;
+      text-shadow: 0 0 15px var(--gold-light);
+      font-weight: 500;
+      text-align: center;
+      animation: text-glow 3s ease-in-out infinite;
+    }
+
+    /* Ultra-Smooth Keyframe Animations */
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes lipstick-swipe {
+      0%, 100% { transform: translate(-50%, -50%) rotate(-20deg); }
+      50% { transform: translate(-50%, -50%) rotate(20deg); }
+    }
+
+    @keyframes mascara-float {
+      0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+      50% { transform: translateY(-20px) rotate(5deg); opacity: 1; }
+    }
+
+    @keyframes sparkle {
+      0%, 100% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    @keyframes text-glow {
+      0%, 100% { opacity: 0.9; text-shadow: 0 0 10px var(--gold-light); }
+      50% { opacity: 1; text-shadow: 0 0 20px var(--gold-light); }
+    }
+    }
         
         /* Header & Navigation */
         header {
@@ -1676,10 +1853,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Preloader -->
-    <div class="preloader">
-        <div class="loader"></div>
+   <div class="sunidhi-ultimate-loader">
+    <div class="diamond-ring"></div>
+    <div class="lipstick-swipe"></div>
+    
+    <div class="mascara-brushes">
+      <div class="mascara-brush"></div>
+      <div class="mascara-brush"></div>
     </div>
+
+    <div class="diamond-sparkle"></div>
+    <div class="diamond-sparkle"></div>
+
+    <p class="loader-text">Sunidhi is creating magic...</p>
+    
+    <div class="theme-toggle">
+      <div class="theme-btn gold" onclick="changeTheme('gold')"></div>
+      <div class="theme-btn rose" onclick="changeTheme('rose')"></div>
+      <div class="theme-btn pink" onclick="changeTheme('pink')"></div>
+      <div class="theme-btn platinum" onclick="changeTheme('platinum')"></div>
+    </div>
+  </div>
 
     <!-- Header & Navigation -->
     <header>
@@ -2443,16 +2637,38 @@ Dhanbad, Jharkhand 828202</a>
     </div>
 
     <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <script>
-        // Preloader
-        window.addEventListener('load', function() {
-            const preloader = document.querySelector('.preloader');
-            preloader.classList.add('fade-out');
-            setTimeout(() => {
-                preloader.style.display = 'none';
-            }, 500);
-        });
+    function changeTheme(theme) {
+      const root = document.documentElement;
+      
+      switch (theme) {
+        case 'gold':
+          root.style.setProperty('--gold-light', '#FFD700');
+          root.style.setProperty('--gold-deep', '#D4AF37');
+          root.style.setProperty('--diamond-pink', '#FFD700');
+          root.style.setProperty('--rose-gold', '#D4AF37');
+          break;
+        case 'rose':
+          root.style.setProperty('--gold-light', '#E0BFB8');
+          root.style.setProperty('--gold-deep', '#B76E79');
+          root.style.setProperty('--diamond-pink', '#E0BFB8');
+          root.style.setProperty('--rose-gold', '#B76E79');
+          break;
+        case 'pink':
+          root.style.setProperty('--gold-light', '#FF69B4');
+          root.style.setProperty('--gold-deep', '#FF1493');
+          root.style.setProperty('--diamond-pink', '#FF69B4');
+          root.style.setProperty('--rose-gold', '#FF1493');
+          break;
+        case 'platinum':
+          root.style.setProperty('--gold-light', '#E5E4E2');
+          root.style.setProperty('--gold-deep', '#C0C0C0');
+          root.style.setProperty('--diamond-pink', '#E5E4E2');
+          root.style.setProperty('--rose-gold', '#C0C0C0');
+          break;
+      }
+    }
+        
         
         // Mobile Menu Toggle
         const menuBtn = document.querySelector('.mobile-menu-btn');
