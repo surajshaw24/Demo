@@ -2689,19 +2689,7 @@ Dhanbad, Jharkhand 828202</a>
             });
         }
         
-        // Newsletter form
-        const newsletterForms = document.querySelectorAll('.footer-newsletter');
-        newsletterForms.forEach(form => {
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const emailInput = form.querySelector('input[type="email"]');
-                if (emailInput.value) {
-                    alert('Thank you for subscribing to our newsletter!');
-                    emailInput.value = '';
-                }
-            });
-        });
-        
+         </script>   
         <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -2716,6 +2704,8 @@ Dhanbad, Jharkhand 828202</a>
   "telephone": "+916205683994"
 }
 </script>
+        
+</script>
         <!-- Add Google Analytics or similar -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
 <script>
@@ -2723,6 +2713,20 @@ Dhanbad, Jharkhand 828202</a>
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
+    
+        // Newsletter form
+        const newsletterForms = document.querySelectorAll('.footer-newsletter');
+        newsletterForms.forEach(form => {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const emailInput = form.querySelector('input[type="email"]');
+                if (emailInput.value) {
+                    alert('Thank you for subscribing to our newsletter!');
+                    emailInput.value = '';
+                }
+            });
+        });
     </script>
 </body>
 </html>
