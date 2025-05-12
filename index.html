@@ -12,7 +12,30 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
   <style>
-    :root {
+    :root  {
+       --primary: #e83e8c;
+            --primary-dark: #c2185b;
+            --secondary: #ffb6c1;
+            --dark: #2c2c54;
+            --light: #f8f9fa;
+            --gold: #d4af37;
+            --transition: all 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+{
       --gold-light: #FFD700;
       --gold-deep: #D4AF37;
       --rose-gold: #E0BFB8;
