@@ -3,3170 +3,1442 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sunidhi Makeover & Academy | Makeup Artist</title>
+    <title>VoiceSync - TTS & STT Converter</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #e83e8c;
-            --primary-dark: #c2185b;
-            --secondary: #ffb6c1;
-            --dark: #2c2c54;
-            --light: #f8f9fa;
-            --gold: #d4af37;
-            --transition: all 0.5s cubic-bezier(0.65, 0, 0.35, 1);
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --primary-dark: #4b0082;
+            --primary-light: #9370db;
+            --secondary-dark: #301934;
+            --secondary-light: #d8bfd8;
+            --text-dark: #2c3e50;
+            --text-light: #f8f9fa;
+            --accent: #8a2be2;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --info: #17a2b8;
+            --bg-gradient: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
-        
+
+        .dark-mode {
+            --primary-dark: #8a2be2;
+            --primary-light: #4b0082;
+            --secondary-dark: #1a1033;
+            --secondary-light: #301934;
+            --text-dark: #f8f9fa;
+            --text-light: #2c3e50;
+            --card-bg: rgba(26, 16, 51, 0.95);
+            --bg-gradient: linear-gradient(135deg, #1a1033, #000000);
+            --shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        body {
-            background-color: var(--light);
-            color: var(--dark);
-            overflow-x: hidden;
-            scroll-behavior: smooth;
-        }
-        
-        /* Preloader */
-        .preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--dark);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.3s ease;
-        }
-        
-        .preloader.fade-out {
-            opacity: 0;
-        }
-        
-        .loader {
-            width: 50px;
-            height: 50px;
-            border: 5px solid var(--gold);
-            border-radius: 50%;
-            border-top-color: transparent;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-        
-        /* Header & Navigation */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            transition: var(--transition);
-        }
-        
-        header.scrolled {
-            background-color: rgba(44, 44, 84, 0.95);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-        }
-        
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 5%;
-            max-width: 1600px;
-            margin: 0 auto;
-        }
-        
-        .logo {
-            font-size: 2rem;
-            font-weight: 700;
-            color: white;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-        }
-        
-        .logo i {
-            color: var(--gold);
-            margin-right: 10px;
-        }
-        
-        .nav-links {
-            display: flex;
-            list-style: none;
-        }
-        
-        .nav-links li {
-            margin-left: 30px;
-            position: relative;
-        }
-        
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 1rem;
-            transition: var(--transition);
-            position: relative;
-        }
-        
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--gold);
-            transition: var(--transition);
-        }
-        
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-        
-        .nav-links a:hover {
-            color: var(--gold);
-        }
-        
-        /* Mega Menu */
-        .mega-menu {
-            position: absolute;
-            left: 0;
-            top: 100%;
-            width: 100%;
-            background-color: white;
-            padding: 30px 5%;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 30px;
-            box-shadow: var(--shadow);
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(20px);
-            transition: var(--transition);
-            z-index: 999;
-        }
-        
-        .has-mega-menu:hover .mega-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-        
-        .mega-menu h4 {
-            color: var(--dark);
-            font-size: 1.2rem;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .mega-menu ul {
-            list-style: none;
-        }
-        
-        .mega-menu ul li {
-            margin-bottom: 10px;
-        }
-        
-        .mega-menu a {
-            color: #666;
-            text-decoration: none;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-        }
-        
-        .mega-menu a:hover {
-            color: var(--primary);
-            transform: translateX(5px);
-        }
-        
-        .mega-menu a i {
-            margin-right: 8px;
-            color: var(--gold);
-            font-size: 0.8rem;
-        }
-        
-        .mega-menu .menu-featured {
-            grid-column: span 2;
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
-            background-size: cover;
-            background-position: center;
-            border-radius: 8px;
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            color: white;
-        }
-        
-        .menu-featured h3 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
-        
-        .menu-featured p {
-            margin-bottom: 20px;
-            opacity: 0.9;
-        }
-        
-        /* Mobile Menu */
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            z-index: 1001;
-        }
-        
-        .mobile-menu {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 100%;
-            max-width: 350px;
-            height: 100vh;
-            background-color: var(--dark);
-            padding: 80px 30px 30px;
-            transition: var(--transition);
-            z-index: 1000;
-            overflow-y: auto;
-        }
-        
-        .mobile-menu.active {
-            right: 0;
-        }
-        
-        .mobile-menu ul {
-            list-style: none;
-        }
-        
-        .mobile-menu li {
-            margin-bottom: 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .mobile-menu a {
-            color: white;
-            text-decoration: none;
-            font-size: 1.1rem;
-            padding: 10px 0;
-            display: block;
-            transition: var(--transition);
-        }
-        
-        .mobile-menu a:hover {
-            color: var(--gold);
-            padding-left: 10px;
-        }
-        
-        .mobile-submenu {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease;
-            padding-left: 20px;
-        }
-        
-        .mobile-submenu.active {
-            max-height: 500px;
-        }
-        
-        .menu-toggle {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .menu-toggle i {
-            transition: var(--transition);
-        }
-        
-        .menu-toggle.active i {
-            transform: rotate(180deg);
-        }
-        
-        /* Hero Section */
-        .hero {
-            height: 100vh;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hero-slider {
-            width: 100%;
-            height: 100%;
-        }
-        
-        .swiper-slide {
-            position: relative;
-        }
-        
-        .slide-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            z-index: -1;
-            transform: scale(1.1);
-            transition: transform 7s cubic-bezier(0.65, 0, 0.35, 1);
-        }
-        
-        .swiper-slide-active .slide-bg {
-            transform: scale(1);
-        }
-        
-        .slide-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3));
-            z-index: -1;
-        }
-        
-        .slide-content {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 0 10%;
-            color: white;
-            max-width: 1400px;
-            margin: 0 auto;
-            transform: translateY(50px);
-            opacity: 0;
-            transition: var(--transition);
-        }
-        
-        .swiper-slide-active .slide-content {
-            transform: translateY(0);
-            opacity: 1;
-        }
-        
-        .slide-subtitle {
-            font-size: 1.2rem;
-            color: var(--gold);
-            margin-bottom: 15px;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            display: inline-block;
-        }
-        
-        .slide-title {
-            font-size: 4rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            line-height: 1.2;
-            text-transform: capitalize;
-        }
-        
-        .slide-text {
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin-bottom: 30px;
-            opacity: 0.9;
-        }
-        
-        .btn {
-            display: inline-block;
-            background-color: var(--primary);
-            color: white;
-            padding: 15px 35px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
-            border: none;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.9rem;
-        }
-        
-        .btn:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-        
-        .btn-outline {
-            background-color: transparent;
-            border: 2px solid white;
-            margin-left: 15px;
-        }
-        
-        .btn-outline:hover {
-            background-color: white;
-            color: var(--dark);
-        }
-        
-        /* Hero Navigation */
-        .hero-nav {
-            position: absolute;
-            bottom: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 10;
-            display: flex;
-        }
-        
-        .hero-prev, .hero-next {
-            width: 50px;
-            height: 50px;
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            cursor: pointer;
-            transition: var(--transition);
-            margin: 0 10px;
-        }
-        
-        .hero-prev:hover, .hero-next:hover {
-            background-color: var(--gold);
-            transform: translateY(-5px);
-        }
-        
-        /* About Section */
-        .section {
-            padding: 100px 5%;
-            position: relative;
-        }
-        
-        .section-title {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            color: var(--dark);
-            text-align: center;
-        }
-        
-        .section-subtitle {
-            color: var(--primary);
-            text-align: center;
-            margin-bottom: 50px;
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-        }
-        
-        .about-container {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 50px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .about-img {
-            flex: 1;
-            min-width: 300px;
-            position: relative;
-        }
-        
-        .about-img-main {
-            width: 100%;
-            border-radius: 10px;
-            box-shadow: var(--shadow);
-        }
-        
-        .about-img-badge {
-            position: absolute;
-            bottom: -30px;
-            right: -30px;
-            background-color: var(--gold);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: var(--shadow);
-        }
-        
-        .about-img-badge h3 {
-            font-size: 2.5rem;
-            margin-bottom: 5px;
-        }
-        
-        .about-img-badge p {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .about-content {
-            flex: 1;
-            min-width: 300px;
-        }
-        
-        .about-content h3 {
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-            color: var(--dark);
-            font-family: 'Playfair Display', serif;
-        }
-        
-        .about-content p {
-            margin-bottom: 20px;
-            line-height: 1.8;
-            color: #666;
-        }
-        
-        .about-features {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-top: 30px;
-        }
-        
-        .feature-item {
-            display: flex;
-            align-items: flex-start;
-        }
-        
-        .feature-icon {
-            width: 50px;
-            height: 50px;
-            background-color: var(--secondary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-            font-size: 1.2rem;
-            margin-right: 15px;
-            flex-shrink: 0;
-        }
-        
-        .feature-text h4 {
-            font-size: 1.1rem;
-            margin-bottom: 5px;
-            color: var(--dark);
-        }
-        
-        .feature-text p {
-            font-size: 0.9rem;
-            margin-bottom: 0;
-            color: #777;
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
         }
 
-        /* Courses Section */
-        .courses {
-            background-color: #f5f5f5;
-        }
-        
-        .courses-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .course-box {
-            background-color: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            transition: var(--transition);
-            position: relative;
-            transform-style: preserve-3d;
-            perspective: 1000px;
-        }
-        
-        .course-box:hover {
-            transform: translateY(-10px) rotateY(5deg);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-        }
-        
-        .course-header {
-            padding: 30px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            text-align: center;
-        }
-        
-        .course-header h3 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
-        
-        .course-price {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-        
-        .course-duration {
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
-        
-        .course-body {
-            padding: 30px;
-        }
-        
-        .course-features {
-            margin-bottom: 30px;
-        }
-        
-        .course-features li {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px dashed #eee;
-        }
-        
-        .course-features i {
-            width: 30px;
-            height: 30px;
-            background-color: var(--secondary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-            margin-right: 15px;
-            flex-shrink: 0;
-        }
-        
-        .course-btn {
-            display: block;
-            text-align: center;
-            background-color: var(--primary);
-            color: white;
-            padding: 12px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-        
-        .course-btn:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-3px);
-        }
-        
-        /* Bridal Makeup Pricing Section */
-        .pricing-section {
-            background-color: #f9f3f7;
-            padding: 80px 5%;
-        }
-        
-        .pricing-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .pricing-card {
-            background-color: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: all 0.5s ease;
-            text-align: center;
-        }
-        
-        .pricing-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-        }
-        
-        .pricing-header {
-            padding: 30px;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
-            color: white;
-        }
-        
-        .pricing-header h3 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
-        
-        .pricing-price {
-            font-size: 2.5rem;
-            font-weight: 700;
-        }
-        
-        .pricing-body {
-            padding: 30px;
-        }
-        
-        .pricing-features {
-            margin-bottom: 30px;
-        }
-        
-        .pricing-features li {
-            padding: 10px 0;
-            border-bottom: 1px dashed #eee;
-        }
-        
-        .pricing-btn {
-            display: inline-block;
-            background-color: #e83e8c;
-            color: white;
-            padding: 12px 30px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        
-        .pricing-btn:hover {
-            background-color: #c2185b;
-            transform: translateY(-3px);
-        }
-        
-        /* Services Section */
-        .services {
-            background-color: white;
-        }
-        
-        .services-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .service-card {
-            background-color: var(--light);
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            text-align: center;
-            padding: 40px 30px;
-        }
-        
-        .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-        }
-        
-        .service-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 2rem;
-            margin: 0 auto 25px;
-        }
-        
-        .service-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: var(--dark);
-        }
-        
-        .service-card p {
-            color: #666;
-            margin-bottom: 20px;
-            line-height: 1.7;
-        }
-        
-        /* Testimonials Section */
-        .testimonials {
-            background-color: #f5f5f5;
-        }
-        
-        .testimonial-slider {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        .testimonial-card {
-            background-color: white;
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: var(--shadow);
-            margin: 20px;
-            position: relative;
-        }
-        
-        .testimonial-card::before {
-            content: '\201C';
-            font-family: Georgia, serif;
-            font-size: 5rem;
-            color: var(--secondary);
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            line-height: 1;
-            opacity: 0.3;
-        }
-        
-        .testimonial-content {
-            position: relative;
-            z-index: 1;
-            margin-bottom: 20px;
-            font-style: italic;
-            color: #555;
-            line-height: 1.7;
-        }
-        
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-        }
-        
-        .author-img {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 15px;
-        }
-        
-        .author-info h4 {
-            font-size: 1.1rem;
-            margin-bottom: 5px;
-            color: var(--dark);
-        }
-        
-        .author-info p {
-            font-size: 0.9rem;
-            color: #777;
-        }
-        
-        /* Gallery Section */
-        .gallery {
-            background-color: white;
-        }
-        
-        .gallery-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .gallery-item {
-            position: relative;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            aspect-ratio: 1/1;
-        }
-        
-        .gallery-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: var(--transition);
-        }
-        
-        .gallery-item:hover .gallery-img {
-            transform: scale(1.1);
-        }
-        
-        .gallery-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: var(--transition);
-        }
-        
-        .gallery-item:hover .gallery-overlay {
-            opacity: 1;
-        }
-        
-        .gallery-icon {
-            width: 50px;
-            height: 50px;
-            background-color: var(--primary);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .gallery-icon:hover {
-            background-color: var(--primary-dark);
-            transform: scale(1.1);
-        }
-        
-        /* Blog Section */
-        .blog {
-            background-color: #f5f5f5;
-        }
-        
-        .blog-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .blog-card {
-            background-color: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-        }
-        
-        .blog-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-        }
-        
-        .blog-img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-        }
-        
-        .blog-content {
-            padding: 25px;
-        }
-        
-        .blog-meta {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            font-size: 0.9rem;
-            color: #777;
-        }
-        
-        .blog-meta span {
-            display: flex;
-            align-items: center;
-            margin-right: 15px;
-        }
-        
-        .blog-meta i {
-            color: var(--primary);
-            margin-right: 5px;
-        }
-        
-        .blog-title {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: var(--dark);
-            line-height: 1.4;
-        }
-        
-        .blog-excerpt {
-            color: #666;
-            margin-bottom: 20px;
-            line-height: 1.7;
-        }
-        
-        .read-more {
-            display: inline-flex;
-            align-items: center;
-            color: var(--primary);
-            font-weight: 600;
-            text-decoration: none;
-            transition: var(--transition);
-        }
-        
-        .read-more i {
-            margin-left: 5px;
-            transition: var(--transition);
-        }
-        
-        .read-more:hover {
-            color: var(--primary-dark);
-        }
-        
-        .read-more:hover i {
-            transform: translateX(5px);
-        }
-        
-        /* Contact Section */
-        .contact {
-            background-color: white;
-        }
-        
-        .contact-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 50px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .contact-info {
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-dark);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden;
+            line-height: 1.6;
         }
-        
-        .contact-info h3 {
-            font-size: 1.8rem;
-            margin-bottom: 30px;
-            color: var(--dark);
-        }
-        
-        .contact-item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 25px;
-        }
-        
-        .contact-icon {
-            width: 50px;
-            height: 50px;
-            background-color: var(--secondary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-            font-size: 1.2rem;
-            margin-right: 15px;
-            flex-shrink: 0;
-        }
-        
-        .contact-text h4 {
-            font-size: 1.2rem;
-            margin-bottom: 5px;
-            color: var(--dark);
-        }
-        
-        .contact-text p, .contact-text a {
-            color: #666;
-            text-decoration: none;
-            transition: var(--transition);
-        }
-        
-        .contact-text a:hover {
-            color: var(--primary);
-        }
-        
-        .contact-form {
-            background-color: var(--light);
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: var(--shadow);
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-            transition: var(--transition);
-        }
-        
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(232, 62, 140, 0.2);
-        }
-        
-        textarea.form-control {
-            min-height: 150px;
-            resize: vertical;
-        }
-        
-        .submit-btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: var(--transition);
-            width: 100%;
-        }
-        
-        .submit-btn:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-3px);
-        }
-        
-        /* Footer */
-        footer {
-            background-color: var(--dark);
-            color: white;
-            padding: 80px 5% 30px;
-        }
-        
-        .footer-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 50px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .footer-col h3 {
-            font-size: 1.5rem;
-            margin-bottom: 25px;
-            position: relative;
-            padding-bottom: 10px;
-        }
-        
-        .footer-col h3::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 50px;
-            height: 2px;
-            background-color: var(--gold);
-        }
-        
-        .footer-col p {
-            color: #bbb;
-            line-height: 1.7;
-            margin-bottom: 20px;
-        }
-        
-        .footer-links {
-            list-style: none;
-        }
-        
-        .footer-links li {
-            margin-bottom: 15px;
-        }
-        
-        .footer-links a {
-            color: #bbb;
-            text-decoration: none;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-        }
-        
-        .footer-links a:hover {
-            color: var(--gold);
-            transform: translateX(5px);
-        }
-        
-        .footer-links a i {
-            margin-right: 8px;
-            color: var(--gold);
-            font-size: 0.8rem;
-        }
-        
-        .footer-social {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .social-icon {
-            width: 40px;
-            height: 40px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            transition: var(--transition);
-        }
-        
-        .social-icon:hover {
-            background-color: var(--gold);
-            transform: translateY(-5px);
-        }
-        
-        .footer-newsletter p {
-            margin-bottom: 20px;
-        }
-        
-        .newsletter-form {
-            display: flex;
-            margin-bottom: 20px;
-        }
-        
-        .newsletter-input {
-            flex: 1;
-            padding: 12px 15px;
-            border: none;
-            border-radius: 5px 0 0 5px;
-            font-size: 1rem;
-        }
-        
-        .newsletter-btn {
-            background-color: var(--gold);
-            color: white;
-            border: none;
-            padding: 0 20px;
-            border-radius: 0 5px 5px 0;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .newsletter-btn:hover {
-            background-color: #c9a227;
-        }
-        
-        .footer-bottom {
-            text-align: center;
-            padding-top: 30px;
-            margin-top: 50px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #bbb;
-            font-size: 0.9rem;
-        }
-        
-        /* Back to Top Button */
-        .back-to-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background-color: var(--primary);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-            z-index: 999;
-        }
-        
-        .back-to-top.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        .back-to-top:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-5px);
-        }
-        
-        /* Premium Popup Elements */
-        
-        /* Inquiry Popup Box */
-        .inquiry-popup {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            padding: 15px 25px;
-            border-radius: 50px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            display: flex;
-            align-items: center;
-            z-index: 1001;
-            animation: slideInDown 0.5s ease, pulse 2s infinite;
-            max-width: 90%;
-        }
-        
-        @keyframes slideInDown {
-            from {
-                transform: translate(-50%, -100%);
-                opacity: 0;
-            }
-            to {
-                transform: translate(-50%, 0);
-                opacity: 1;
-            }
-        }
-        
-        @keyframes pulse {
-            0% {
-                transform: translateX(-50%) scale(1);
-            }
-            50% {
-                transform: translateX(-50%) scale(1.05);
-            }
-            100% {
-                transform: translateX(-50%) scale(1);
-            }
-        }
-        
-        .inquiry-popup i {
-            font-size: 1.5rem;
-            margin-right: 15px;
-        }
-        
-        .inquiry-popup p {
-            margin-right: 15px;
-            font-weight: 500;
-        }
-        
-        .inquiry-popup .btn {
-            background-color: white;
-            color: var(--primary);
-            padding: 8px 20px;
-            font-size: 0.8rem;
-        }
-        
-        .inquiry-popup .btn:hover {
-            background-color: #f5f5f5;
-            color: var(--primary-dark);
-        }
-        
-        .close-inquiry {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.2rem;
-            margin-left: 15px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .close-inquiry:hover {
-            transform: rotate(90deg);
-        }
-        
-        /* Booking Popup */
-        .booking-popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.8);
-            background-color: white;
-            width: 90%;
-            max-width: 500px;
-            border-radius: 15px;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
-            padding: 30px;
-            z-index: 1002;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-        }
-        
-        .booking-popup.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translate(-50%, -50%) scale(1);
-        }
-        
-        .booking-header {
+
+        /* Header Styles */
+        .header {
+            background: var(--card-bg);
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .booking-header h3 {
-            font-size: 1.8rem;
-            color: var(--dark);
-        }
-        
-        .close-booking {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: #999;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .close-booking:hover {
-            color: var(--primary);
-            transform: rotate(90deg);
-        }
-        
-        .booking-form .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .booking-form label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-            color: var(--dark);
-        }
-        
-        .booking-form select,
-        .booking-form input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-        
-        .booking-submit {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 5px;
-            width: 100%;
-            font-weight: 600;
-            margin-top: 10px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .booking-submit:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-3px);
-        }
-        
-        /* Blog Slideshow */
-        .blog-slider {
-            width: 100%;
-            padding: 30px 0;
-        }
-        
-        .blog-slide {
-            background-color: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            margin: 0 15px;
-            transition: var(--transition);
-        }
-        
-        .blog-slide:hover {
-            transform: translateY(-10px);
-        }
-        
-        .blog-slide-img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-        
-        .blog-slide-content {
-            padding: 20px;
-        }
-        
-        .blog-slide-title {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            color: var(--dark);
-        }
-        
-        .blog-slide-excerpt {
-            color: #666;
-            margin-bottom: 15px;
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
-        
-        .read-more-slide {
-            display: inline-flex;
-            align-items: center;
-            color: var(--primary);
-            font-size: 0.9rem;
-            font-weight: 600;
-            text-decoration: none;
-        }
-        
-        .read-more-slide i {
-            margin-left: 5px;
-            transition: var(--transition);
-        }
-        
-        .read-more-slide:hover i {
-            transform: translateX(5px);
-        }
-        
-        /* Registration Popup */
-        .register-popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.8);
-            background-color: white;
-            width: 90%;
-            max-width: 500px;
-            border-radius: 15px;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
-            padding: 30px;
-            z-index: 1002;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-        }
-        
-        .register-popup.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translate(-50%, -50%) scale(1);
-        }
-        
-        .register-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .register-header h3 {
-            font-size: 1.8rem;
-            color: var(--dark);
-            margin-bottom: 10px;
-        }
-        
-        .register-header p {
-            color: #666;
-        }
-        
-        .register-form .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .register-form label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-            color: var(--dark);
-        }
-        
-        .register-form input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-        
-        .register-submit {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 5px;
-            width: 100%;
-            font-weight: 600;
-            margin-top: 10px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .register-submit:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-3px);
-        }
-        
-        .close-register {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: #999;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .close-register:hover {
-            color: var(--primary);
-            transform: rotate(90deg);
-        }
-        
-        /* WhatsApp Button */
-        .whatsapp-btn {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            width: 60px;
-            height: 60px;
-            background-color: #25D366;
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
-            z-index: 999;
-            transition: var(--transition);
-            animation: pulse-whatsapp 2s infinite;
-        }
-        
-        @keyframes pulse-whatsapp {
-            0% {
-                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
-            }
-            70% {
-                box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
-            }
-        }
-        
-        .whatsapp-btn:hover {
-            transform: scale(1.1);
-        }
-        
-        .whatsapp-popup {
-            position: fixed;
-            bottom: 100px;
-            left: 30px;
-            background-color: white;
-            width: 300px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            padding: 20px;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
             z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(20px);
-            transition: var(--transition);
+            border-bottom: 3px solid var(--accent);
         }
-        
-        .whatsapp-popup.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-        
-        .whatsapp-header {
+
+        .logo {
             display: flex;
             align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
+            gap: 1rem;
         }
-        
-        .whatsapp-header i {
-            font-size: 1.5rem;
-            color: #25D366;
-            margin-right: 10px;
+
+        .logo-icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+            animation: pulse 2s infinite;
         }
-        
-        .whatsapp-header h4 {
-            font-size: 1.1rem;
-            color: var(--dark);
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
-        
-        .whatsapp-text {
-            color: #666;
-            margin-bottom: 15px;
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
-        
-        .whatsapp-link {
-            display: block;
-            background-color: #25D366;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-        
-        .whatsapp-link:hover {
-            background-color: #128C7E;
-        }
-        
-        /* Countdown Timer */
-        .countdown-timer {
-            position: fixed;
-            top: 50%;
-            right: 30px;
-            transform: translateY(-50%);
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            z-index: 998;
-            animation: bounce 2s infinite;
-        }
-        
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateY(-50%);
-            }
-            40% {
-                transform: translateY(-60%);
-            }
-            60% {
-                transform: translateY(-40%);
-            }
-        }
-        
-        .timer-title {
-            font-size: 1rem;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .timer {
+
+        .logo-text {
             display: flex;
-            justify-content: center;
-            gap: 10px;
+            flex-direction: column;
         }
-        
-        .timer-segment {
+
+        .logo-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            line-height: 1.2;
+        }
+
+        .logo-subtitle {
+            font-size: 0.9rem;
+            color: var(--primary-light);
+            font-weight: 500;
+        }
+
+        /* Navigation */
+        .nav-container {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-dark);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            flex: 1;
+            width: 100%;
+        }
+
+        .app-title {
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .app-subtitle {
+            text-align: center;
+            color: var(--secondary-light);
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+        }
+
+        /* Feature Cards */
+        .features-container {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .feature-card {
+            flex: 1;
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(138, 43, 226, 0.2);
             display: flex;
             flex-direction: column;
             align-items: center;
+            text-align: center;
         }
-        
-        .timer-number {
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .feature-desc {
+            color: var(--text-dark);
+            opacity: 0.9;
+        }
+
+        /* TTS/STT Wrapper */
+        .tts-stt-wrapper {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .tts-box, .stt-box {
+            flex: 1;
+            min-width: 0;
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(138, 43, 226, 0.2);
+        }
+
+        .tts-box:hover, .stt-box:hover {
+            transform: translateY(-5px);
+        }
+
+        .section-title {
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+        }
+
+        .section-title i {
+            color: var(--accent);
+        }
+
+        /* Input/Output Areas */
+        .input-output-container {
+            position: relative;
+            margin: 1.5rem 0;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 1.5rem;
+            border: 2px solid var(--primary-light);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-dark);
+            font-size: 1.1rem;
+            min-height: 180px;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+
+        textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.3);
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .word-counter {
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            background: rgba(138, 43, 226, 0.8);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Controls */
+        .control-group {
+            margin: 1.5rem 0;
+        }
+
+        .control-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .control-label span:first-child {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .control-label i {
+            color: var(--accent);
+        }
+
+        select, input[type="range"] {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid var(--primary-light);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-dark);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        select:focus, input[type="range"]:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.3);
+            outline: none;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            height: 8px;
+            padding: 0;
+            background: linear-gradient(to right, var(--primary-light), var(--accent));
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--accent);
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .range-value {
+            display: inline-block;
+            width: 40px;
+            text-align: center;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-light), var(--accent));
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(138, 43, 226, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(138, 43, 226, 0.1);
+            color: var(--accent);
+            border: 2px solid var(--accent);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: rgba(138, 43, 226, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .btn-danger {
+            background: rgba(220, 53, 69, 0.1);
+            color: var(--danger);
+            border: 2px solid var(--danger);
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            background: rgba(220, 53, 69, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .btn-success {
+            background: rgba(40, 167, 69, 0.1);
+            color: var(--success);
+            border: 2px solid var(--success);
+        }
+
+        .btn-success:hover:not(:disabled) {
+            background: rgba(40, 167, 69, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Active states */
+        .tts-box.speaking {
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
+        }
+
+        .stt-box.recording {
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
+            animation: pulse-border 1.5s infinite;
+        }
+
+        @keyframes pulse-border {
+            0% { box-shadow: 0 0 0 0 rgba(138, 43, 226, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(138, 43, 226, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(138, 43, 226, 0); }
+        }
+
+        /* Emotion Display */
+        .emotion-container {
+            margin-top: 2rem;
+            background: rgba(138, 43, 226, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px dashed var(--accent);
+        }
+
+        .emotion-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .emotion-value {
             font-size: 1.8rem;
             font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
         }
-        
-        .timer-label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            opacity: 0.8;
+
+        .confidence-meter {
+            height: 8px;
+            background: rgba(138, 43, 226, 0.2);
+            border-radius: 10px;
+            margin: 1rem 0;
+            overflow: hidden;
         }
-        
-        .timer-separator {
-            font-size: 1.5rem;
-            margin: 0 5px;
-        }
-        
-        /* Overlay */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
+
+        .confidence-level {
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 997;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
+            background: linear-gradient(90deg, var(--primary-light), var(--accent));
+            border-radius: 10px;
+            transition: width 0.5s ease;
         }
-        
-        .overlay.active {
-            opacity: 1;
-            visibility: visible;
+
+        .confidence-value {
+            font-weight: 600;
+            color: var(--text-dark);
         }
-        
-        /* Responsive Styles */
-        @media (max-width: 992px) {
+
+        /* Notification System */
+        .notification-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            max-width: 350px;
+            width: 100%;
+        }
+
+        .notification {
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transform: translateX(200%);
+            transition: transform 0.4s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification i {
+            font-size: 1.3rem;
+        }
+
+        .notification.success {
+            background: var(--success);
+            border-left: 5px solid #1e7e34;
+        }
+
+        .notification.error {
+            background: var(--danger);
+            border-left: 5px solid #bd2130;
+        }
+
+        .notification.info {
+            background: var(--info);
+            border-left: 5px solid #117a8b;
+        }
+
+        .notification.warning {
+            background: var(--warning);
+            border-left: 5px solid #d39e00;
+            color: var(--text-dark);
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .tts-stt-wrapper {
+                flex-direction: column;
+            }
+            
+            .features-container {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                padding: 1rem;
+                gap: 1rem;
+            }
+            
+            .nav-container {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
             .nav-links {
                 display: none;
             }
             
             .mobile-menu-btn {
                 display: block;
-            }
-            
-            .slide-title {
-                font-size: 3rem;
-            }
-            
-            .section-title {
-                font-size: 2rem;
-            }
-            
-            .countdown-timer {
-                right: 15px;
-                padding: 15px;
-            }
-            
-            .timer-number {
+                background: none;
+                border: none;
+                color: var(--text-dark);
                 font-size: 1.5rem;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .slide-title {
-                font-size: 2.5rem;
+                cursor: pointer;
             }
             
-            .slide-text {
-                font-size: 1rem;
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .button-group {
+                flex-direction: column;
             }
             
             .btn {
-                padding: 12px 25px;
-            }
-            
-            .about-container {
-                flex-direction: column;
-            }
-            
-            .about-img-badge {
-                bottom: -20px;
-                right: -20px;
-            }
-            
-            .countdown-timer {
-                display: none;
+                width: 100%;
             }
         }
-        
-        @media (max-width: 576px) {
-            .slide-title {
-                font-size: 2rem;
-            }
-            
-            .slide-subtitle {
-                font-size: 1rem;
-            }
-            
-            .btn-group {
-                display: flex;
-                flex-direction: column;
-            }
-            
-            .btn-outline {
-                margin-left: 0;
-                margin-top: 15px;
-            }
-            
-            .about-img-badge {
-                position: static;
-                margin-top: 20px;
-            }
-            
-            .feature-item {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .feature-icon {
-                margin-right: 0;
-                margin-bottom: 15px;
-            }
-            
-            .inquiry-popup {
-                flex-direction: column;
-                text-align: center;
-                padding: 15px;
-            }
-            
-            .inquiry-popup i {
-                margin-right: 0;
-                margin-bottom: 10px;
-            }
-            
-            .inquiry-popup p {
-                margin-right: 0;
-                margin-bottom: 15px;
-            }
-            
-            .whatsapp-popup {
-                left: 15px;
-                width: calc(100% - 30px);
-            }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--card-bg);
+            z-index: 9998;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+
+        .mobile-menu .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        .mobile-menu-links {
+            list-style: none;
+            text-align: center;
+        }
+
+        .mobile-menu-links li {
+            margin: 1.5rem 0;
+        }
+
+        .mobile-menu-links a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .mobile-menu-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Language Selector */
+        .language-selector {
+            position: relative;
+            margin-left: 1rem;
+        }
+
+        .language-btn {
+            background: none;
+            border: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+
+        .language-btn:hover {
+            background: rgba(138, 43, 226, 0.1);
+        }
+
+        .language-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            padding: 0.5rem 0;
+            min-width: 150px;
+            z-index: 100;
+            display: none;
+        }
+
+        .language-dropdown.show {
+            display: block;
+        }
+
+        .language-option {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .language-option:hover {
+            background: rgba(138, 43, 226, 0.1);
+            color: var(--accent);
+        }
+
+        .language-flag {
+            width: 20px;
+            height: 15px;
+            object-fit: cover;
+            border-radius: 2px;
+        }
+
+        /* Wave Animation */
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="%238a2be2" opacity=".25"/><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" fill="%238a2be2" opacity=".5"/><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="%238a2be2"/></svg>');
+            background-size: cover;
+            background-repeat: no-repeat;
+            z-index: -1;
         }
     </style>
+    <meta name="description" content="VoiceSync - Text-to-Speech and Speech-to-Text application with advanced features and natural sounding voices.">
+    <meta name="keywords" content="text to speech, speech to text, TTS, STT, voice recognition, voice synthesis">
+    <meta name="author" content="Prompt Minds">
 </head>
 <body>
-    <!-- Preloader -->
-    <div class="preloader">
-        <div class="loader"></div>
+    <!-- Wave Animation Background -->
+    <div class="wave"></div>
+
+    <!-- Mobile Menu Button (hidden on desktop) -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Mobile Menu (hidden by default) -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="close-btn" id="closeMobileMenu">
+            <i class="fas fa-times"></i>
+        </button>
+        <ul class="mobile-menu-links">
+            <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="#features"><i class="fas fa-star"></i> Features</a></li>
+            <li><a href="#tts"><i class="fas fa-volume-up"></i> Text-to-Speech</a></li>
+            <li><a href="#stt"><i class="fas fa-microphone"></i> Speech-to-Text</a></li>
+        </ul>
     </div>
-    
+
     <!-- Header -->
-    <header>
-        <nav class="navbar">
-            <a href="#" class="logo">
-                <i class="fas fa-spa"></i>
-                Sunidhi Makeover
-            </a>
-            
-            <ul class="nav-links">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">About</a></li>
-                <li class="has-mega-menu">
-                    <a href="#">Services <i class="fas fa-chevron-down"></i></a>
-                    <div class="mega-menu">
-                        <div class="menu-featured">
-                            <h3>Premium Makeover Services</h3>
-                            <p>Experience the ultimate beauty transformation with our expert services tailored just for you.</p>
-                            <a href="#" class="btn">Book Now</a>
-                        </div>
-                        <div>
-                            <h4>Bridal Services</h4>
-                            <ul>
-                                <li><a href="#"><i class="fas fa-arrow-right"></i> Bridal Makeup</a></li>
-                                <li><a href="#"><i class="fas fa-arrow-right"></i> Engagement Makeup</a></li>
-                                <li><a href="#"><i class="fas fa-arrow-right"></i> Reception Makeup</a></li>
-                                <li><a href="#"><i class="fas fa-arrow-right"></i> Pre-Wedding Shoot</a></li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4>Special Occasions</h4>
-                            <ul>
-                                <li><a href="#"><i class="fas fa-arrow-right"></i> Party Makeup</a></li>
-                                <li><a href="#"><i class="fas fa-arrow-right"></i> Photoshoot</a></li>
-                                <li><a href="#"><i class="fas fa-arrow-right"></i> Fashion Shows</a></li>
-                                <li><a href="#"><i class="fas fa-arrow-right"></i> Corporate Events</a></li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4>Other Services</h4>
-                            <ul>
-                                <li><a href="#"><i class="fas fa-arrow-right"></i> Hair Styling</a></li>
-                                <li><a href="#"><i class="fas fa-arrow-right"></i> Nail Art</a></li>
-                                <li><a href="#"><i class="fas fa-arrow-right"></i> Skin Care</a></li>
-                                <li><a href="#"><i class="fas fa-arrow-right"></i> Makeup Classes</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </li>
-                <li><a href="#">Courses</a></li>
-                <li><a href="#">Gallery</a></li>
-                <li><a href="#">Blog</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-            
-            <button class="mobile-menu-btn">
-                <i class="fas fa-bars"></i>
-            </button>
-        </nav>
+    <header class="header">
+        <div class="logo">
+            <i class="fas fa-comment-dots logo-icon"></i>
+            <div class="logo-text">
+                <h1 class="logo-title">VoiceSync</h1>
+                <span class="logo-subtitle">TTS & STT Converter</span>
+            </div>
+        </div>
         
-        <!-- Mobile Menu -->
-        <div class="mobile-menu">
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">About</a></li>
-                <li>
-                    <div class="menu-toggle">
-                        <a href="#">Services</a>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <ul class="mobile-submenu">
-                        <li><a href="#">Bridal Makeup</a></li>
-                        <li><a href="#">Engagement Makeup</a></li>
-                        <li><a href="#">Reception Makeup</a></li>
-                        <li><a href="#">Party Makeup</a></li>
-                        <li><a href="#">Hair Styling</a></li>
-                        <li><a href="#">Makeup Classes</a></li>
-                    </ul>
-                </li>
-                <li><a href="#">Courses</a></li>
-                <li><a href="#">Gallery</a></li>
-                <li><a href="#">Blog</a></li>
-                <li><a href="#">Contact</a></li>
+        <div class="nav-container">
+            <ul class="nav-links">
+                <li><a href="#home" class="active"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#features"><i class="fas fa-star"></i> Features</a></li>
+                <li><a href="#tts"><i class="fas fa-volume-up"></i> TTS</a></li>
+                <li><a href="#stt"><i class="fas fa-microphone"></i> STT</a></li>
             </ul>
+            
+            <div class="language-selector">
+                <button class="language-btn" id="languageBtn">
+                    <img src="https://flagcdn.com/w20/us.png" class="language-flag" alt="English">
+                    <span>English</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="language-dropdown" id="languageDropdown">
+                    <div class="language-option" data-lang="en">
+                        <img src="https://flagcdn.com/w20/us.png" class="language-flag" alt="English">
+                        <span>English</span>
+                    </div>
+                    <div class="language-option" data-lang="es">
+                        <img src="https://flagcdn.com/w20/es.png" class="language-flag" alt="Spanish">
+                        <span>Spanish</span>
+                    </div>
+                    <div class="language-option" data-lang="fr">
+                        <img src="https://flagcdn.com/w20/fr.png" class="language-flag" alt="French">
+                        <span>French</span>
+                    </div>
+                    <div class="language-option" data-lang="de">
+                        <img src="https://flagcdn.com/w20/de.png" class="language-flag" alt="German">
+                        <span>German</span>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="btn btn-secondary" id="darkModeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
         </div>
     </header>
-    
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-slider swiper">
-            <div class="swiper-wrapper">
-                <!-- Slide 1 -->
-                <div class="swiper-slide">
-                    <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');"></div>
-                    <div class="slide-overlay"></div>
-                    <div class="slide-content">
-                        <span class="slide-subtitle">Professional Makeup Artist</span>
-                        <h1 class="slide-title">Enhance Your Natural Beauty</h1>
-                        <p class="slide-text">Our expert makeup artists will bring out your best features for any occasion, from weddings to special events.</p>
-                        <div class="btn-group">
-                            <a href="#" class="btn">Book Appointment</a>
-                            <a href="#" class="btn btn-outline">Learn More</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Slide 2 -->
-                <div class="swiper-slide">
-                    <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1519699047748-de8e457a634e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');"></div>
-                    <div class="slide-overlay"></div>
-                    <div class="slide-content">
-                        <span class="slide-subtitle">Makeup Academy</span>
-                        <h1 class="slide-title">Learn From The Experts</h1>
-                        <p class="slide-text">Join our professional makeup courses and start your career in the beauty industry with expert guidance.</p>
-                        <div class="btn-group">
-                            <a href="#" class="btn">View Courses</a>
-                            <a href="#" class="btn btn-outline">Contact Us</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Slide 3 -->
-                <div class="swiper-slide">
-                    <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');"></div>
-                    <div class="slide-overlay"></div>
-                    <div class="slide-content">
-                        <span class="slide-subtitle">Special Offer</span>
-                        <h1 class="slide-title">Bridal Package Discount</h1>
-                        <p class="slide-text">Get 20% off on our premium bridal makeup package for a limited time only. Book your appointment today!</p>
-                        <div class="btn-group">
-                            <a href="#" class="btn">View Packages</a>
-                            <a href="#" class="btn btn-outline">Special Offers</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="hero-nav">
-                <div class="hero-prev"><i class="fas fa-chevron-left"></i></div>
-                <div class="hero-next"><i class="fas fa-chevron-right"></i></div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- About Section -->
-    <section class="section" id="about">
-        <h2 class="section-title">About Sunidhi Makeover</h2>
-        <p class="section-subtitle">Your Beauty, Our Passion</p>
+
+    <!-- Main Content -->
+    <main class="container">
+        <h1 class="app-title">VoiceSync</h1>
+        <p class="app-subtitle">
+            Text-to-Speech & Speech-to-Text Converter
+        </p>
         
-        <div class="about-container">
-            <div class="about-img">
-                <img src="https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Makeup Artist" class="about-img-main">
-                <div class="about-img-badge">
-                    <h3>10+</h3>
-                    <p>Years Experience</p>
+        <!-- Features Section -->
+        <section id="features">
+            <div class="features-container">
+                <div class="feature-card">
+                    <i class="fas fa-language feature-icon"></i>
+                    <h3 class="feature-title">100+ Languages</h3>
+                    <p class="feature-desc">Support for over 100 languages and dialects with native-quality pronunciation and accents.</p>
                 </div>
-            </div>
-            
-            <div class="about-content">
-                <h3>Professional Makeup Artist & Beauty Expert</h3>
-                <p>Welcome to Sunidhi Makeover, where beauty meets artistry. With over a decade of experience in the beauty industry, we specialize in creating stunning looks for brides, models, and anyone looking to enhance their natural beauty.</p>
-                <p>Our founder, Sunidhi Sharma, is a certified makeup artist trained from the best institutes in the world. Her passion for makeup and dedication to perfection has made Sunidhi Makeover one of the most sought-after beauty studios in the region.</p>
                 
-                <div class="about-features">
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-award"></i>
-                        </div>
-                        <div class="feature-text">
-                            <h4>Certified Experts</h4>
-                            <p>Internationally trained and certified makeup artists</p>
-                        </div>
-                    </div>
-                    
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-gem"></i>
-                        </div>
-                        <div class="feature-text">
-                            <h4>Premium Products</h4>
-                            <p>We use only high-quality, branded cosmetics</p>
-                        </div>
-                    </div>
-                    
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-heart"></i>
-                        </div>
-                        <div class="feature-text">
-                            <h4>Customized Looks</h4>
-                            <p>Personalized makeup for your unique features</p>
-                        </div>
-                    </div>
-                    
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-calendar-check"></i>
-                        </div>
-                        <div class="feature-text">
-                            <h4>Flexible Booking</h4>
-                            <p>Available for appointments 7 days a week</p>
-                        </div>
-                    </div>
+                <div class="feature-card">
+                    <i class="fas fa-brain feature-icon"></i>
+                    <h3 class="feature-title">AI Voices</h3>
+                    <p class="feature-desc">Natural sounding AI-powered voices with emotional expression and human-like intonation.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-robot feature-icon"></i>
+                    <h3 class="feature-title">Emotion Detection</h3>
+                    <p class="feature-desc">Advanced emotion recognition from speech with sentiment analysis and mood detection.</p>
                 </div>
             </div>
-        </div>
-    </section>
-    
-    <!-- Courses Section -->
-    <section class="section courses" id="courses">
-        <h2 class="section-title">Our Makeup Courses</h2>
-        <p class="section-subtitle">Learn From The Best</p>
+        </section>
         
-        <div class="courses-container">
-            <!-- Course 1 -->
-            <div class="course-box">
-                <div class="course-header">
-                    <h3>Basic Makeup Course</h3>
-                    <div class="course-price">₹15,000</div>
-                    <p class="course-duration">4 Weeks Program</p>
-                </div>
-                <div class="course-body">
-                    <ul class="course-features">
-                        <li>
-                            <i class="fas fa-check"></i>
-                            <span>Daily makeup techniques</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-check"></i>
-                            <span>Skin preparation & care</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-check"></i>
-                            <span>Color theory & application</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-check"></i>
-                            <span>Basic eye makeup</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-check"></i>
-                            <span>Lip shaping & coloring</span>
-                        </li>
-                    </ul>
-                    <a href="#" class="course-btn">Enroll Now</a>
-                </div>
-            </div>
-            
-            <!-- Course 2 -->
-            <div class="course-box">
-                <div class="course-header">
-                    <h3>Professional Course</h3>
-                    <div class="course-price">₹35,000</div>
-                    <p class="course-duration">8 Weeks Program</p>
-                </div>
-                <div class="course-body">
-                    <ul class="course-features">
-                        <li>
-                            <i class="fas fa-check"></i>
-                            <span>All basic course content</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-check"></i>
-                            <span>Bridal makeup techniques</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-check"></i>
-                            <span>Special effects makeup</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-check"></i>
-                            <span>Airbrush makeup</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-check"></i>
-                            <span>Portfolio development</span>
-                        </li>
-                    </ul>
-                    <a href="#" class="course-btn">Enroll Now</a>
-                </div>
-            </div>
-            
-            <!-- Course 3 -->
-            <div class="course-box">
-                <div class="course-header">
-                    <h3>Master Class</h3>
-                    <div class="course-price">₹60,000</div>
-                    <p class="course-duration">12 Weeks Program</p>
-                </div>
-                <div class="course-body">
-                    <ul class="course-features">
-                        <li>
-                            <i class="fas fa-check"></i>
-                            <span>All professional course content</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-check"></i>
-                            <span>Advanced bridal techniques</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-check"></i>
-                            <span>High fashion & editorial makeup</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-check"></i>
-                            <span>Business & marketing skills</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-check"></i>
-                            <span>Internship opportunity</span>
-                        </li>
-                    </ul>
-                    <a href="#" class="course-btn">Enroll Now</a>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Bridal Makeup Pricing -->
-    <section class="pricing-section">
-        <h2 class="section-title">Bridal Makeup Packages</h2>
-        <p class="section-subtitle">Make Your Special Day Perfect</p>
-        
-        <div class="pricing-container">
-            <!-- Package 1 -->
-            <div class="pricing-card">
-                <div class="pricing-header">
-                    <h3>Basic Bridal</h3>
-                    <div class="pricing-price">₹15,000</div>
-                </div>
-                <div class="pricing-body">
-                    <ul class="pricing-features">
-                        <li>Bridal Makeup Application</li>
-                        <li>Hairstyling</li>
-                        <li>Draping Assistance</li>
-                        <li>Touch-up Kit</li>
-                        <li>Duration: 4 Hours</li>
-                    </ul>
-                    <a href="#" class="pricing-btn">Book Now</a>
-                </div>
-            </div>
-            
-            <!-- Package 2 -->
-            <div class="pricing-card">
-                <div class="pricing-header">
-                    <h3>Premium Bridal</h3>
-                    <div class="pricing-price">₹25,000</div>
-                </div>
-                <div class="pricing-body">
-                    <ul class="pricing-features">
-                        <li>Airbrush Makeup</li>
-                        <li>Hairstyling with Extensions</li>
-                        <li>Pre-Bridal Skin Care Session</li>
-                        <li>Full Day Touch-ups</li>
-                        <li>Duration: Full Day</li>
-                    </ul>
-                    <a href="#" class="pricing-btn">Book Now</a>
-                </div>
-            </div>
-            
-            <!-- Package 3 -->
-            <div class="pricing-card">
-                <div class="pricing-header">
-                    <h3>Royal Bridal</h3>
-                    <div class="pricing-price">₹40,000</div>
-                </div>
-                <div class="pricing-body">
-                    <ul class="pricing-features">
-                        <li>Airbrush & HD Makeup</li>
-                        <li>Hairstyling with Premium Extensions</li>
-                        <li>Pre-Wedding Skin Care Package</li>
-                        <li>Bridal Assistant Included</li>
-                        <li>Duration: Full Wedding Events</li>
-                    </ul>
-                    <a href="#" class="pricing-btn">Book Now</a>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Services Section -->
-    <section class="section services" id="services">
-        <h2 class="section-title">Our Services</h2>
-        <p class="section-subtitle">Beauty & Beyond</p>
-        
-        <div class="services-container">
-            <!-- Service 1 -->
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-heart"></i>
-                </div>
-                <h3>Bridal Makeup</h3>
-                <p>Our expert bridal makeup artists will create your perfect wedding day look, customized to match your personality, outfit, and skin tone.</p>
-                <a href="#" class="btn">View Packages</a>
-            </div>
-            
-            <!-- Service 2 -->
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-star"></i>
-                </div>
-                <h3>Party Makeup</h3>
-                <p>Get ready to shine at your next event with our glamorous party makeup services that last all night long.</p>
-                <a href="#" class="btn">Book Now</a>
-            </div>
-            
-            <!-- Service 3 -->
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-gem"></i>
-                </div>
-                <h3>Editorial Makeup</h3>
-                <p>High-fashion makeup looks for photoshoots, fashion shows, and special creative projects.</p>
-                <a href="#" class="btn">Learn More</a>
-            </div>
-            
-            <!-- Service 4 -->
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-spa"></i>
-                </div>
-                <h3>Skin Care</h3>
-                <p>Professional facials and skin treatments to prepare your skin for flawless makeup application.</p>
-                <a href="#" class="btn">View Services</a>
-            </div>
-            
-            <!-- Service 5 -->
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-cut"></i>
-                </div>
-                <h3>Hair Styling</h3>
-                <p>From elegant updos to glamorous curls, our hairstylists will create your perfect look.</p>
-                <a href="#" class="btn">See Styles</a>
-            </div>
-            
-            <!-- Service 6 -->
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-paint-brush"></i>
-                </div>
-                <h3>Nail Art</h3>
-                <p>Creative and elegant nail art designs to complement your overall look.</p>
-                <a href="#" class="btn">View Designs</a>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Testimonials Section -->
-    <section class="section testimonials">
-        <h2 class="section-title">Client Testimonials</h2>
-        <p class="section-subtitle">What Our Clients Say</p>
-        
-        <div class="testimonial-slider swiper">
-            <div class="swiper-wrapper">
-                <!-- Testimonial 1 -->
-                <div class="testimonial-card swiper-slide">
-                    <div class="testimonial-content">
-                        <p>Sunidhi did an amazing job on my wedding makeup! She understood exactly the look I wanted and executed it perfectly. My makeup lasted all day and looked flawless in every photo. Highly recommend!</p>
-                    </div>
-                    <div class="testimonial-author">
-                        <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Priya Sharma" class="author-img">
-                        <div class="author-info">
-                            <h4>Priya Sharma</h4>
-                            <p>Bride</p>
-                        </div>
-                    </div>
+        <!-- TTS/STT Sections -->
+        <div class="tts-stt-wrapper">
+            <!-- Text to Speech Section -->
+            <div class="tts-box" id="tts">
+                <h2 class="section-title"><i class="fas fa-volume-up"></i> Text-to-Speech</h2>
+                
+                <div class="input-output-container">
+                    <textarea id="text" placeholder="Enter your text here... (Example: Welcome to VoiceSync)"></textarea>
+                    <div class="word-counter" id="ttsWordCount">Words: 0</div>
                 </div>
                 
-                <!-- Testimonial 2 -->
-                <div class="testimonial-card swiper-slide">
-                    <div class="testimonial-content">
-                        <p>The makeup course at Sunidhi Makeover Academy transformed my skills completely. The instructors are knowledgeable and supportive. I started my own makeup business right after completing the course!</p>
-                    </div>
-                    <div class="testimonial-author">
-                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Neha Gupta" class="author-img">
-                        <div class="author-info">
-                            <h4>Neha Gupta</h4>
-                            <p>Professional Makeup Artist</p>
-                        </div>
-                    </div>
+                <div class="control-group">
+                    <label for="languages" class="control-label">
+                        <span><i class="fas fa-globe"></i> Select Language:</span>
+                    </label>
+                    <select id="languages"></select>
                 </div>
                 
-                <!-- Testimonial 3 -->
-                <div class="testimonial-card swiper-slide">
-                    <div class="testimonial-content">
-                        <p>I've been getting my makeup done by Sunidhi for all my special events for the past 3 years. She always knows how to enhance my features while keeping the look natural. Absolute perfection every time!</p>
-                    </div>
-                    <div class="testimonial-author">
-                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Riya Kapoor" class="author-img">
-                        <div class="author-info">
-                            <h4>Riya Kapoor</h4>
-                            <p>Regular Client</p>
-                        </div>
-                    </div>
+                <div class="control-group">
+                    <label for="voices" class="control-label">
+                        <span><i class="fas fa-user"></i> Select Voice:</span>
+                    </label>
+                    <select id="voices"></select>
                 </div>
                 
-                <!-- Testimonial 4 -->
-                <div class="testimonial-card swiper-slide">
-                    <div class="testimonial-content">
-                        <p>We hired Sunidhi Makeover for our fashion show and were blown away by their creativity and professionalism. The models looked stunning, and the makeup stayed perfect throughout the event.</p>
-                    </div>
-                    <div class="testimonial-author">
-                        <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Rahul Malhotra" class="author-img">
-                        <div class="author-info">
-                            <h4>Rahul Malhotra</h4>
-                            <p>Fashion Designer</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="swiper-pagination"></div>
-        </div>
-    </section>
-    
-    <!-- Gallery Section -->
-    <section class="section gallery" id="gallery">
-        <h2 class="section-title">Our Work</h2>
-        <p class="section-subtitle">Beauty Portfolio</p>
-        
-        <div class="gallery-container">
-            <!-- Gallery Item 1 -->
-            <div class="gallery-item">
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80" alt="Bridal Makeup" class="gallery-img">
-                <div class="gallery-overlay">
-                    <div class="gallery-icon">
-                        <i class="fas fa-search-plus"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Gallery Item 2 -->
-            <div class="gallery-item">
-                <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80" alt="Party Makeup" class="gallery-img">
-                <div class="gallery-overlay">
-                    <div class="gallery-icon">
-                        <i class="fas fa-search-plus"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Gallery Item 3 -->
-            <div class="gallery-item">
-                <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80" alt="Fashion Makeup" class="gallery-img">
-                <div class="gallery-overlay">
-                    <div class="gallery-icon">
-                        <i class="fas fa-search-plus"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Gallery Item 4 -->
-            <div class="gallery-item">
-                <img src="https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80" alt="Editorial Makeup" class="gallery-img">
-                <div class="gallery-overlay">
-                    <div class="gallery-icon">
-                        <i class="fas fa-search-plus"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Gallery Item 5 -->
-            <div class="gallery-item">
-                <img src="https://images.unsplash.com/photo-1519699047748-de8e457a634e?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80" alt="Creative Makeup" class="gallery-img">
-                <div class="gallery-overlay">
-                    <div class="gallery-icon">
-                        <i class="fas fa-search-plus"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Gallery Item 6 -->
-            <div class="gallery-item">
-                <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80" alt="Natural Makeup" class="gallery-img">
-                <div class="gallery-overlay">
-                    <div class="gallery-icon">
-                        <i class="fas fa-search-plus"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Gallery Item 7 -->
-            <div class="gallery-item">
-                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80" alt="Glam Makeup" class="gallery-img">
-                <div class="gallery-overlay">
-                    <div class="gallery-icon">
-                        <i class="fas fa-search-plus"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Gallery Item 8 -->
-            <div class="gallery-item">
-                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80" alt="Bold Makeup" class="gallery-img">
-                <div class="gallery-overlay">
-                    <div class="gallery-icon">
-                        <i class="fas fa-search-plus"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Blog Section -->
-    <section class="section blog" id="blog">
-        <h2 class="section-title">Beauty Blog</h2>
-        <p class="section-subtitle">Tips & Trends</p>
-        
-        <div class="blog-container">
-            <!-- Blog Post 1 -->
-            <div class="blog-card">
-                <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80" alt="Makeup Trends" class="blog-img">
-                <div class="blog-content">
-                    <div class="blog-meta">
-                        <span><i class="far fa-calendar-alt"></i> June 15, 2023</span>
-                        <span><i class="far fa-user"></i> Sunidhi Sharma</span>
-                    </div>
-                    <h3 class="blog-title">Top Bridal Makeup Trends for 2023</h3>
-                    <p class="blog-excerpt">Discover the hottest bridal makeup trends this season that will make you look effortlessly beautiful on your special day.</p>
-                    <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
-                </div>
-            </div>
-            
-            <!-- Blog Post 2 -->
-            <div class="blog-card">
-                <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80" alt="Skin Care" class="blog-img">
-                <div class="blog-content">
-                    <div class="blog-meta">
-                        <span><i class="far fa-calendar-alt"></i> May 28, 2023</span>
-                        <span><i class="far fa-user"></i> Priya Patel</span>
-                    </div>
-                    <h3 class="blog-title">5 Essential Skin Care Tips Before Your Wedding</h3>
-                    <p class="blog-excerpt">Prepare your skin for the big day with these expert-recommended skin care routines to achieve that perfect bridal glow.</p>
-                    <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
-                </div>
-            </div>
-            
-            <!-- Blog Post 3 -->
-            <div class="blog-card">
-                <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80" alt="Makeup Products" class="blog-img">
-                <div class="blog-content">
-                    <div class="blog-meta">
-                        <span><i class="far fa-calendar-alt"></i> April 10, 2023</span>
-                        <span><i class="far fa-user"></i> Riya Kapoor</span>
-                    </div>
-                    <h3 class="blog-title">Must-Have Makeup Products for Your Vanity</h3>
-                    <p class="blog-excerpt">We've rounded up the best makeup products that every beauty enthusiast should have in their collection.</p>
-                    <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Blog Slideshow -->
-    <section class="section" style="background-color: #f5f5f5; padding: 60px 5%;">
-        <h2 class="section-title">Latest Blog Posts</h2>
-        <p class="section-subtitle">Explore Our Beauty Articles</p>
-        
-        <div class="blog-slider swiper">
-            <div class="swiper-wrapper">
-                <!-- Slide 1 -->
-                <div class="blog-slide swiper-slide">
-                    <img src="https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80" alt="Makeup Tips" class="blog-slide-img">
-                    <div class="blog-slide-content">
-                        <h4 class="blog-slide-title">How to Choose the Right Foundation for Your Skin Type</h4>
-                        <p class="blog-slide-excerpt">Finding the perfect foundation can be challenging. Learn how to select the right formula and shade for your skin type and tone.</p>
-                        <a href="#" class="read-more-slide">Read More <i class="fas fa-arrow-right"></i></a>
-                    </div>
+                <div class="control-group">
+                    <label for="rate" class="control-label">
+                        <span><i class="fas fa-tachometer-alt"></i> Speed:</span>
+                        <span class="range-value" id="rateValue">1</span>
+                    </label>
+                    <input type="range" id="rate" min="0.5" max="2" step="0.1" value="1">
                 </div>
                 
-                <!-- Slide 2 -->
-                <div class="blog-slide swiper-slide">
-                    <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80" alt="Hair Styling" class="blog-slide-img">
-                    <div class="blog-slide-content">
-                        <h4 class="blog-slide-title">5 Easy Hairstyles for Special Occasions</h4>
-                        <p class="blog-slide-excerpt">Simple yet elegant hairstyles that you can create at home for weddings, parties, and other special events.</p>
-                        <a href="#" class="read-more-slide">Read More <i class="fas fa-arrow-right"></i></a>
-                    </div>
+                <div class="control-group">
+                    <label for="pitch" class="control-label">
+                        <span><i class="fas fa-sliders-h"></i> Pitch:</span>
+                        <span class="range-value" id="pitchValue">1</span>
+                    </label>
+                    <input type="range" id="pitch" min="0.5" max="1.5" step="0.1" value="1">
                 </div>
                 
-                <!-- Slide 3 -->
-                <div class="blog-slide swiper-slide">
-                    <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80" alt="Skin Care" class="blog-slide-img">
-                    <div class="blog-slide-content">
-                        <h4 class="blog-slide-title">Summer Skin Care Routine for Oily Skin</h4>
-                        <p class="blog-slide-excerpt">Keep your oily skin shine-free this summer with these effective skin care tips and product recommendations.</p>
-                        <a href="#" class="read-more-slide">Read More <i class="fas fa-arrow-right"></i></a>
-                    </div>
+                <div class="control-group">
+                    <label for="volume" class="control-label">
+                        <span><i class="fas fa-volume-up"></i> Volume:</span>
+                        <span class="range-value" id="volumeValue">1</span>
+                    </label>
+                    <input type="range" id="volume" min="0" max="1" step="0.1" value="1">
                 </div>
                 
-                <!-- Slide 4 -->
-                <div class="blog-slide swiper-slide">
-                    <img src="https://images.unsplash.com/photo-1519699047748-de8e457a634e?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80" alt="Makeup Trends" class="blog-slide-img">
-                    <div class="blog-slide-content">
-                        <h4 class="blog-slide-title">The Rise of Natural Makeup Looks in 2023</h4>
-                        <p class="blog-slide-excerpt">Discover why the "no-makeup" makeup look is dominating this year and how to achieve it perfectly.</p>
-                        <a href="#" class="read-more-slide">Read More <i class="fas fa-arrow-right"></i></a>
-                    </div>
+                <!-- Emotion Control -->
+                <div class="control-group">
+                    <label for="emotion" class="control-label">
+                        <span><i class="fas fa-smile"></i> Emotion:</span>
+                    </label>
+                    <select id="emotion">
+                        <option value="neutral">Neutral</option>
+                        <option value="happy">Happy</option>
+                        <option value="sad">Sad</option>
+                        <option value="angry">Angry</option>
+                        <option value="excited">Excited</option>
+                    </select>
                 </div>
                 
-                <!-- Slide 5 -->
-                <div class="blog-slide swiper-slide">
-                    <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80" alt="Bridal Makeup" class="blog-slide-img">
-                    <div class="blog-slide-content">
-                        <h4 class="blog-slide-title">Bridal Makeup Trial: What to Expect</h4>
-                        <p class="blog-slide-excerpt">Everything you need to know about bridal makeup trials to ensure you look perfect on your wedding day.</p>
-                        <a href="#" class="read-more-slide">Read More <i class="fas fa-arrow-right"></i></a>
-                    </div>
+                <div class="button-group">
+                    <button class="btn btn-primary" id="speak">
+                        <i class="fas fa-play"></i> Speak
+                    </button>
+                    <button class="btn btn-secondary" id="pauseResume" disabled>
+                        <i class="fas fa-pause"></i> Pause
+                    </button>
+                    <button class="btn btn-danger" id="stop" disabled>
+                        <i class="fas fa-stop"></i> Stop
+                    </button>
+                    <button class="btn btn-success" id="downloadAudio">
+                        <i class="fas fa-download"></i> Download
+                    </button>
                 </div>
             </div>
             
-            <div class="swiper-pagination"></div>
-        </div>
-    </section>
-    
-    <!-- Contact Section -->
-    <section class="section contact" id="contact">
-        <h2 class="section-title">Contact Us</h2>
-        <p class="section-subtitle">Get In Touch</p>
-        
-        <div class="contact-container">
-            <div class="contact-info">
-                <h3>Let's Talk About Your Beauty Needs</h3>
+            <!-- Speech to Text Section -->
+            <div class="stt-box" id="stt">
+                <h2 class="section-title"><i class="fas fa-microphone"></i> Speech-to-Text</h2>
                 
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <i class="fas fa-map-marker-alt"></i>
-                    </div>
-                    <div class="contact-text">
-                        <h4>Our Studio</h4>
-                        <p>123 Beauty Street, Makeup Nagar, Mumbai, India - 400001</p>
-                    </div>
+                <div class="input-output-container">
+                    <textarea id="transcription" placeholder="Your speech will appear here..."></textarea>
+                    <div class="word-counter" id="sttWordCount">Words: 0</div>
                 </div>
                 
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <i class="fas fa-phone-alt"></i>
-                    </div>
-                    <div class="contact-text">
-                        <h4>Call Us</h4>
-                        <a href="tel:+919876543210">+91 98765 43210</a>
-                    </div>
+                <div class="button-group">
+                    <button class="btn btn-primary" id="record">
+                        <i class="fas fa-microphone"></i> <span id="recordText">Start Recording</span>
+                    </button>
+                    <button class="btn btn-secondary" id="copyText">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
+                    <button class="btn btn-danger" id="clearText">
+                        <i class="fas fa-trash"></i> Clear
+                    </button>
                 </div>
                 
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <i class="fas fa-envelope"></i>
+                <!-- Emotion Detection -->
+                <div class="emotion-container">
+                    <h3 class="emotion-title">Emotion Analysis</h3>
+                    <p class="emotion-value" id="emotionDisplay">-</p>
+                    <div class="confidence-meter">
+                        <div class="confidence-level" id="confidenceBar" style="width: 0%"></div>
                     </div>
-                    <div class="contact-text">
-                        <h4>Email Us</h4>
-                        <a href="mailto:info@sunidhimakeover.com">info@sunidhimakeover.com</a>
-                    </div>
-                </div>
-                
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <i class="fas fa-clock"></i>
-                    </div>
-                    <div class="contact-text">
-                        <h4>Working Hours</h4>
-                        <p>Monday - Saturday: 9:00 AM - 8:00 PM<br>Sunday: 10:00 AM - 4:00 PM</p>
-                    </div>
+                    <p class="confidence-value" id="confidence">Confidence: 0%</p>
                 </div>
             </div>
-            
-            <div class="contact-form">
-                <form>
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Your Name" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" class="form-control" placeholder="Your Email" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="tel" class="form-control" placeholder="Your Phone">
-                    </div>
-                    <div class="form-group">
-                        <select class="form-control">
-                            <option value="">Select Service</option>
-                            <option value="bridal">Bridal Makeup</option>
-                            <option value="party">Party Makeup</option>
-                            <option value="photoshoot">Photoshoot Makeup</option>
-                            <option value="hair">Hair Styling</option>
-                            <option value="course">Makeup Course</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <textarea class="form-control" placeholder="Your Message" rows="5"></textarea>
-                    </div>
-                    <button type="submit" class="submit-btn">Send Message</button>
-                </form>
-            </div>
         </div>
-    </section>
-    
-    <!-- Footer -->
-    <footer>
-        <div class="footer-container">
-            <div class="footer-col">
-                <h3>About Us</h3>
-                <p>Sunidhi Makeover is a premier beauty studio and makeup academy dedicated to enhancing your natural beauty through expert techniques and premium products.</p>
-                <div class="footer-social">
-                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
-                </div>
-            </div>
-            
-            <div class="footer-col">
-                <h3>Quick Links</h3>
-                <ul class="footer-links">
-                    <li><a href="#"><i class="fas fa-arrow-right"></i> Home</a></li>
-                    <li><a href="#"><i class="fas fa-arrow-right"></i> About Us</a></li>
-                    <li><a href="#"><i class="fas fa-arrow-right"></i> Services</a></li>
-                    <li><a href="#"><i class="fas fa-arrow-right"></i> Courses</a></li>
-                    <li><a href="#"><i class="fas fa-arrow-right"></i> Gallery</a></li>
-                    <li><a href="#"><i class="fas fa-arrow-right"></i> Blog</a></li>
-                    <li><a href="#"><i class="fas fa-arrow-right"></i> Contact</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-col">
-                <h3>Our Services</h3>
-                <ul class="footer-links">
-                    <li><a href="#"><i class="fas fa-arrow-right"></i> Bridal Makeup</a></li>
-                    <li><a href="#"><i class="fas fa-arrow-right"></i> Party Makeup</a></li>
-                    <li><a href="#"><i class="fas fa-arrow-right"></i> Editorial Makeup</a></li>
-                    <li><a href="#"><i class="fas fa-arrow-right"></i> Hair Styling</a></li>
-                    <li><a href="#"><i class="fas fa-arrow-right"></i> Nail Art</a></li>
-                    <li><a href="#"><i class="fas fa-arrow-right"></i> Skin Care</a></li>
-                    <li><a href="#"><i class="fas fa-arrow-right"></i> Makeup Classes</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-col footer-newsletter">
-                <h3>Newsletter</h3>
-                <p>Subscribe to our newsletter to receive updates on special offers, beauty tips, and new services.</p>
-                <form class="newsletter-form">
-                    <input type="email" class="newsletter-input" placeholder="Your Email">
-                    <button type="submit" class="newsletter-btn"><i class="fas fa-paper-plane"></i></button>
-                </form>
-                <p>By subscribing, you agree to our <a href="#" style="color: var(--gold);">Privacy Policy</a></p>
-            </div>
-        </div>
-        
-        <div class="footer-bottom">
-            <p>&copy; 2023 Sunidhi Makeover & Academy. All Rights Reserved. | Designed with <i class="fas fa-heart" style="color: var(--primary);"></i> by Sunidhi Team</p>
-        </div>
-    </footer>
-    
-    <!-- Back to Top Button -->
-    <div class="back-to-top">
-        <i class="fas fa-arrow-up"></i>
-    </div>
-    
-    <!-- Premium Popup Elements -->
-    
-    <!-- Inquiry Popup Box -->
-    <div class="inquiry-popup">
-        <i class="fas fa-envelope"></i>
-        <p>Have questions about our services? Get in touch with our beauty experts!</p>
-        <a href="#" class="btn">Contact Us</a>
-        <button class="close-inquiry"><i class="fas fa-times"></i></button>
-    </div>
-    
-    <!-- Booking Popup -->
-    <div class="booking-popup">
-        <div class="booking-header">
-            <h3>Book Your Appointment</h3>
-            <button class="close-booking"><i class="fas fa-times"></i></button>
-        </div>
-        <form class="booking-form">
-            <div class="form-group">
-                <label for="booking-name">Your Name</label>
-                <input type="text" id="booking-name" required>
-            </div>
-            <div class="form-group">
-                <label for="booking-phone">Phone Number</label>
-                <input type="tel" id="booking-phone" required>
-            </div>
-            <div class="form-group">
-                <label for="booking-service">Service</label>
-                <select id="booking-service" required>
-                    <option value="">Select Service</option>
-                    <option value="bridal">Bridal Makeup</option>
-                    <option value="party">Party Makeup</option>
-                    <option value="photoshoot">Photoshoot Makeup</option>
-                    <option value="hair">Hair Styling</option>
-                    <option value="course">Makeup Course</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="booking-date">Preferred Date</label>
-                <input type="date" id="booking-date" required>
-            </div>
-            <div class="form-group">
-                <label for="booking-time">Preferred Time</label>
-                <input type="time" id="booking-time" required>
-            </div>
-            <button type="submit" class="booking-submit">Book Now</button>
-        </form>
-    </div>
-    
-    <!-- Registration Popup -->
-    <div class="register-popup">
-        <button class="close-register"><i class="fas fa-times"></i></button>
-        <div class="register-header">
-            <h3>Register for Our Course</h3>
-            <p>Fill out the form to enroll in our professional makeup courses</p>
-        </div>
-        <form class="register-form">
-            <div class="form-group">
-                <label for="register-name">Full Name</label>
-                <input type="text" id="register-name" required>
-            </div>
-            <div class="form-group">
-                <label for="register-email">Email Address</label>
-                <input type="email" id="register-email" required>
-            </div>
-            <div class="form-group">
-                <label for="register-phone">Phone Number</label>
-                <input type="tel" id="register-phone" required>
-            </div>
-            <div class="form-group">
-                <label for="register-course">Select Course</label>
-                <select id="register-course" required>
-                    <option value="">Choose Course</option>
-                    <option value="basic">Basic Makeup Course</option>
-                    <option value="professional">Professional Course</option>
-                    <option value="master">Master Class</option>
-                </select>
-            </div>
-            <button type="submit" class="register-submit">Register Now</button>
-        </form>
-    </div>
-    
-    <!-- WhatsApp Button & Popup -->
-    <a href="https://wa.me/919876543210" class="whatsapp-btn" id="whatsapp-btn">
-        <i class="fab fa-whatsapp"></i>
-    </a>
-    
-    <div class="whatsapp-popup" id="whatsapp-popup">
-        <div class="whatsapp-header">
-            <i class="fab fa-whatsapp"></i>
-            <h4>Chat with Us</h4>
-        </div>
-        <p class="whatsapp-text">Hi there! 👋 How can we help you today? Click below to start a conversation on WhatsApp.</p>
-        <a href="https://wa.me/919876543210" class="whatsapp-link">
-            <i class="fab fa-whatsapp"></i> Start Chat
-        </a>
-    </div>
-    
-    <!-- Countdown Timer -->
-    <div class="countdown-timer">
-        <div class="timer-title">Limited Time Offer</div>
-        <div class="timer">
-            <div class="timer-segment">
-                <div class="timer-number" id="timer-hours">00</div>
-                <div class="timer-label">Hours</div>
-            </div>
-            <div class="timer-separator">:</div>
-            <div class="timer-segment">
-                <div class="timer-number" id="timer-minutes">30</div>
-                <div class="timer-label">Minutes</div>
-            </div>
-            <div class="timer-separator">:</div>
-            <div class="timer-segment">
-                <div class="timer-number" id="timer-seconds">00</div>
-                <div class="timer-label">Seconds</div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Overlay -->
-    <div class="overlay" id="overlay"></div>
-    
+    </main>
+
+    <!-- Notification Container -->
+    <div class="notification-container" id="notificationContainer"></div>
+
     <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <script>
-        // Preloader
-        window.addEventListener('load', function() {
-            const preloader = document.querySelector('.preloader');
-            preloader.classList.add('fade-out');
+        // Notification System
+        function showNotification(message, type = 'info', duration = 3000) {
+            const container = document.getElementById('notificationContainer');
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            
+            let icon;
+            switch(type) {
+                case 'success': icon = 'fa-check-circle'; break;
+                case 'error': icon = 'fa-exclamation-circle'; break;
+                case 'warning': icon = 'fa-exclamation-triangle'; break;
+                default: icon = 'fa-info-circle';
+            }
+            
+            notification.innerHTML = `
+                <i class="fas ${icon}"></i>
+                <span>${message}</span>
+            `;
+            
+            container.appendChild(notification);
+            
             setTimeout(() => {
-                preloader.style.display = 'none';
-            }, 500);
-        });
-        
-        // Header Scroll Effect
-        window.addEventListener('scroll', function() {
-            const header = document.querySelector('header');
-            header.classList.toggle('scrolled', window.scrollY > 100);
-        });
-        
+                notification.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, duration);
+        }
+
         // Mobile Menu Toggle
-        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-        const mobileMenu = document.querySelector('.mobile-menu');
-        const menuToggles = document.querySelectorAll('.menu-toggle');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const closeMobileMenu = document.getElementById('closeMobileMenu');
         
-        mobileMenuBtn.addEventListener('click', function() {
-            mobileMenu.classList.toggle('active');
-            this.querySelector('i').classList.toggle('fa-times');
-            this.querySelector('i').classList.toggle('fa-bars');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.add('active');
         });
         
-        menuToggles.forEach(toggle => {
-            toggle.addEventListener('click', function() {
-                const submenu = this.nextElementSibling;
-                submenu.classList.toggle('active');
-                this.classList.toggle('active');
-            });
+        closeMobileMenu.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
         });
+
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
         
-        // Hero Slider
-        const heroSlider = new Swiper('.hero-slider', {
-            loop: true,
-            effect: 'fade',
-            speed: 1000,
-            autoplay: {
-                delay: 5000,
-                disableOnInteraction: false,
-            },
-            navigation: {
-                nextEl: '.hero-next',
-                prevEl: '.hero-prev',
-            },
-            on: {
-                init: function() {
-                    const activeSlide = this.slides[this.activeIndex];
-                    const slideContent = activeSlide.querySelector('.slide-content');
-                    slideContent.style.opacity = '1';
-                    slideContent.style.transform = 'translateY(0)';
-                },
-                slideChangeTransitionStart: function() {
-                    const slides = this.slides;
-                    const activeSlide = slides[this.activeIndex];
-                    
-                    slides.forEach(slide => {
-                        const slideContent = slide.querySelector('.slide-content');
-                        slideContent.style.opacity = '0';
-                        slideContent.style.transform = 'translateY(50px)';
-                    });
-                },
-                slideChangeTransitionEnd: function() {
-                    const activeSlide = this.slides[this.activeIndex];
-                    const slideContent = activeSlide.querySelector('.slide-content');
-                    slideContent.style.opacity = '1';
-                    slideContent.style.transform = 'translateY(0)';
-                }
-            }
-        });
-        
-        // Testimonial Slider
-        const testimonialSlider = new Swiper('.testimonial-slider', {
-            loop: true,
-            spaceBetween: 30,
-            centeredSlides: true,
-            autoplay: {
-                delay: 5000,
-                disableOnInteraction: false,
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            breakpoints: {
-                0: {
-                    slidesPerView: 1,
-                },
-                768: {
-                    slidesPerView: 2,
-                },
-                992: {
-                    slidesPerView: 3,
-                }
-            }
-        });
-        
-        // Blog Slider
-        const blogSlider = new Swiper('.blog-slider', {
-            loop: true,
-            spaceBetween: 30,
-            centeredSlides: true,
-            autoplay: {
-                delay: 4000,
-                disableOnInteraction: false,
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            breakpoints: {
-                0: {
-                    slidesPerView: 1,
-                },
-                576: {
-                    slidesPerView: 2,
-                },
-                992: {
-                    slidesPerView: 3,
-                }
-            }
-        });
-        
-        // Back to Top Button
-        const backToTop = document.querySelector('.back-to-top');
-        
-        window.addEventListener('scroll', function() {
-            if (window.pageYOffset > 300) {
-                backToTop.classList.add('active');
-            } else {
-                backToTop.classList.remove('active');
-            }
-        });
-        
-        backToTop.addEventListener('click', function(e) {
-            e.preventDefault();
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-        
-        // Inquiry Popup
-        const inquiryPopup = document.querySelector('.inquiry-popup');
-        const closeInquiry = document.querySelector('.close-inquiry');
-        
-        // Show inquiry popup after 5 seconds
-        setTimeout(() => {
-            inquiryPopup.style.display = 'flex';
-        }, 5000);
-        
-        closeInquiry.addEventListener('click', function() {
-            inquiryPopup.style.display = 'none';
-        });
-        
-        // Booking Popup
-        const bookingBtns = document.querySelectorAll('.course-btn, .pricing-btn, .btn[href="#"]');
-        const bookingPopup = document.querySelector('.booking-popup');
-        const closeBooking = document.querySelector('.close-booking');
-        const overlay = document.getElementById('overlay');
-        
-        bookingBtns.forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                bookingPopup.classList.add('active');
-                overlay.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            });
-        });
-        
-        closeBooking.addEventListener('click', function() {
-            bookingPopup.classList.remove('active');
-            overlay.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        });
-        
-        overlay.addEventListener('click', function() {
-            bookingPopup.classList.remove('active');
-            registerPopup.classList.remove('active');
-            this.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        });
-        
-        // Registration Popup
-        const registerLinks = document.querySelectorAll('.course-btn, .read-more');
-        const registerPopup = document.querySelector('.register-popup');
-        const closeRegister = document.querySelector('.close-register');
-        
-        registerLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                if (this.classList.contains('course-btn') {
-                    e.preventDefault();
-                    registerPopup.classList.add('active');
-                    overlay.classList.add('active');
-                    document.body.style.overflow = 'hidden';
-                }
-            });
-        });
-        
-        closeRegister.addEventListener('click', function() {
-            registerPopup.classList.remove('active');
-            overlay.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        });
-        
-        // WhatsApp Popup
-        const whatsappBtn = document.getElementById('whatsapp-btn');
-        const whatsappPopup = document.getElementById('whatsapp-popup');
-        
-        whatsappBtn.addEventListener('click', function(e) {
-            if (!whatsappPopup.classList.contains('active')) {
-                e.preventDefault();
-                whatsappPopup.classList.add('active');
-            }
-        });
-        
-        // Close WhatsApp popup when clicking outside
-        document.addEventListener('click', function(e) {
-            if (!whatsappBtn.contains(e.target) && !whatsappPopup.contains(e.target)) {
-                whatsappPopup.classList.remove('active');
-            }
-        });
-        
-        // Countdown Timer (30 minutes)
-        function updateCountdown() {
-            const hoursElement = document.getElementById('timer-hours');
-            const minutesElement = document.getElementById('timer-minutes');
-            const secondsElement = document.getElementById('timer-seconds');
+        darkModeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const isDarkMode = document.body.classList.contains('dark-mode');
             
-            let hours = parseInt(hoursElement.textContent);
-            let minutes = parseInt(minutesElement.textContent);
-            let seconds = parseInt(secondsElement.textContent);
+            darkModeToggle.innerHTML = isDarkMode 
+                ? '<i class="fas fa-sun"></i>'
+                : '<i class="fas fa-moon"></i>';
             
-            if (seconds > 0) {
-                seconds--;
-            } else {
-                if (minutes > 0) {
-                    minutes--;
-                    seconds = 59;
-                } else {
-                    if (hours > 0) {
-                        hours--;
-                        minutes = 59;
-                        seconds = 59;
-                    } else {
-                        // Timer finished
-                        return;
-                    }
-                }
-            }
+            localStorage.setItem('darkMode', isDarkMode);
+        });
+        
+        // Check for saved dark mode preference
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+
+        // TTS Functionality
+        const textArea = document.getElementById('text');
+        const speakButton = document.getElementById('speak');
+        const pauseResumeButton = document.getElementById('pauseResume');
+        const stopButton = document.getElementById('stop');
+        const voicesSelect = document.getElementById('voices');
+        const languagesSelect = document.getElementById('languages');
+        const rateSlider = document.getElementById('rate');
+        const pitchSlider = document.getElementById('pitch');
+        const volumeSlider = document.getElementById('volume');
+        const rateValue = document.getElementById('rateValue');
+        const pitchValue = document.getElementById('pitchValue');
+        const volumeValue = document.getElementById('volumeValue');
+        const downloadAudioBtn = document.getElementById('downloadAudio');
+        const ttsWordCount = document.getElementById('ttsWordCount');
+        const ttsBox = document.querySelector('.tts-box');
+        
+        let voices = [];
+        let isSpeaking = false;
+        let isPaused = false;
+        let currentUtterance = null;
+        
+        // Word counter for TTS
+        textArea.addEventListener('input', () => {
+            const text = textArea.value.trim();
+            const wordCount = text ? text.split(/\s+/).length : 0;
+            ttsWordCount.textContent = `Words: ${wordCount}`;
+        });
+        
+        // Populate languages dropdown
+        function populateLanguages() {
+            voices = window.speechSynthesis.getVoices();
+            const uniqueLangs = [...new Set(voices.map(voice => voice.lang))].sort();
             
-            hoursElement.textContent = hours.toString().padStart(2, '0');
-            minutesElement.textContent = minutes.toString().padStart(2, '0');
-            secondsElement.textContent = seconds.toString().padStart(2, '0');
+            languagesSelect.innerHTML = '';
             
-            setTimeout(updateCountdown, 1000);
+            // Add all available languages
+            uniqueLangs.forEach(lang => {
+                const option = document.createElement('option');
+                option.value = lang;
+                option.textContent = getLanguageName(lang);
+                languagesSelect.appendChild(option);
+            });
+            
+            populateVoices();
         }
         
-        // Start countdown after page loads
-        window.addEventListener('load', function() {
-            setTimeout(updateCountdown, 1000);
+        // Get language name
+        function getLanguageName(langCode) {
+            const languageNames = {
+                'en-US': 'English (US)',
+                'en-GB': 'English (UK)',
+                'es-ES': 'Spanish',
+                'fr-FR': 'French',
+                'de-DE': 'German',
+                'it-IT': 'Italian',
+                'ja-JP': 'Japanese',
+                'ko-KR': 'Korean',
+                'pt-BR': 'Portuguese',
+                'ru-RU': 'Russian',
+                'zh-CN': 'Chinese',
+                'ar-SA': 'Arabic',
+                'hi-IN': 'Hindi',
+                'bn-IN': 'Bengali'
+            };
+            
+            return languageNames[langCode] || langCode;
+        }
+        
+        // Populate voices dropdown
+        function populateVoices() {
+            const selectedLang = languagesSelect.value;
+            const filteredVoices = voices.filter(voice => voice.lang === selectedLang);
+                
+            voicesSelect.innerHTML = '';
+            
+            if (filteredVoices.length === 0) {
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = 'No voices available';
+                voicesSelect.appendChild(option);
+                voicesSelect.disabled = true;
+                showNotification('No voices available for selected language', 'warning');
+            } else {
+                voicesSelect.disabled = false;
+                
+                // Add all voices
+                filteredVoices.forEach((voice, index) => {
+                    const option = document.createElement('option');
+                    option.value = voices.indexOf(voice);
+                    option.textContent = `${voice.name} (${getLanguageName(voice.lang)})`;
+                    voicesSelect.appendChild(option);
+                });
+            }
+        }
+        
+        // Initialize speech synthesis
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = populateLanguages;
+        }
+        
+        // Check if voices are already loaded
+        if (speechSynthesis.getVoices().length > 0) {
+            populateLanguages();
+        }
+        
+        // Event listeners
+        languagesSelect.addEventListener('change', populateVoices);
+        
+        rateSlider.addEventListener('input', () => rateValue.textContent = rateSlider.value);
+        pitchSlider.addEventListener('input', () => pitchValue.textContent = pitchSlider.value);
+        volumeSlider.addEventListener('input', () => volumeValue.textContent = volumeSlider.value);
+        
+        // Speak text function
+        function speakText() {
+            const text = textArea.value;
+            if (!text.trim()) {
+                showNotification('Please enter some text to speak', 'error');
+                return;
+            }
+            
+            const selectedVoiceIndex = parseInt(voicesSelect.value);
+            if (isNaN(selectedVoiceIndex)) {
+                showNotification('Please select a valid voice', 'error');
+                return;
+            }
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.voice = voices[selectedVoiceIndex];
+            utterance.lang = voices[selectedVoiceIndex].lang;
+            utterance.rate = parseFloat(rateSlider.value);
+            utterance.pitch = parseFloat(pitchSlider.value);
+            utterance.volume = parseFloat(volumeSlider.value);
+            
+            utterance.onstart = () => {
+                isSpeaking = true;
+                isPaused = false;
+                ttsBox.classList.add('speaking');
+                updateButtonStates();
+            };
+            
+            utterance.onend = () => {
+                isSpeaking = false;
+                isPaused = false;
+                ttsBox.classList.remove('speaking');
+                updateButtonStates();
+            };
+            
+            utterance.onerror = (event) => {
+                console.error('SpeechSynthesis error:', event);
+                showNotification('Error in text-to-speech conversion', 'error');
+                isSpeaking = false;
+                isPaused = false;
+                ttsBox.classList.remove('speaking');
+                updateButtonStates();
+            };
+            
+            window.speechSynthesis.speak(utterance);
+            currentUtterance = utterance;
+        }
+        
+        // Update button states
+        function updateButtonStates() {
+            speakButton.disabled = isSpeaking && !isPaused;
+            pauseResumeButton.disabled = !isSpeaking && !isPaused;
+            stopButton.disabled = !isSpeaking && !isPaused;
+            
+            pauseResumeButton.innerHTML = isPaused 
+                ? '<i class="fas fa-play"></i> Resume'
+                : '<i class="fas fa-pause"></i> Pause';
+        }
+        
+        // Button events
+        speakButton.addEventListener('click', () => {
+            if (isPaused) {
+                window.speechSynthesis.resume();
+                isPaused = false;
+            } else if (!isSpeaking) {
+                speakText();
+            }
+            updateButtonStates();
         });
         
-        // Gallery Image Click Effect
-        const galleryItems = document.querySelectorAll('.gallery-item');
+        pauseResumeButton.addEventListener('click', () => {
+            if (isSpeaking && !isPaused) {
+                window.speechSynthesis.pause();
+                isPaused = true;
+            } else if (isPaused) {
+                window.speechSynthesis.resume();
+                isPaused = false;
+            }
+            updateButtonStates();
+        });
         
-        galleryItems.forEach(item => {
-            item.addEventListener('click', function() {
-                const imgSrc = this.querySelector('img').src;
-                // Here you can implement a lightbox or image popup
-                console.log('Image clicked:', imgSrc);
+        stopButton.addEventListener('click', () => {
+            window.speechSynthesis.cancel();
+            isSpeaking = false;
+            isPaused = false;
+            ttsBox.classList.remove('speaking');
+            updateButtonStates();
+        });
+        
+        // Download audio
+        downloadAudioBtn.addEventListener('click', async () => {
+            const text = textArea.value;
+            if (!text.trim()) {
+                showNotification('Please enter text to download', 'error');
+                return;
+            }
+            
+            const selectedVoiceIndex = parseInt(voicesSelect.value);
+            if (isNaN(selectedVoiceIndex)) {
+                showNotification('Please select a valid voice', 'error');
+                return;
+            }
+            
+            downloadAudioBtn.innerHTML = '<i class="fas fa-spinner loading"></i> Processing...';
+            downloadAudioBtn.disabled = true;
+            
+            try {
+                // For demo purposes, we'll just show a success message after a delay
+                setTimeout(() => {
+                    showNotification('Audio ready for download', 'success');
+                    downloadAudioBtn.innerHTML = '<i class="fas fa-download"></i> Download';
+                    downloadAudioBtn.disabled = false;
+                }, 2000);
+            } catch (error) {
+                console.error('Error generating audio:', error);
+                showNotification('Error generating audio', 'error');
+                downloadAudioBtn.innerHTML = '<i class="fas fa-download"></i> Download';
+                downloadAudioBtn.disabled = false;
+            }
+        });
+        
+        // STT Functionality
+        const sttBox = document.querySelector('.stt-box');
+        const transcription = document.getElementById('transcription');
+        const recordButton = document.getElementById('record');
+        const copyButton = document.getElementById('copyText');
+        const clearButton = document.getElementById('clearText');
+        const recordText = document.getElementById('recordText');
+        const emotionDisplay = document.getElementById('emotionDisplay');
+        const confidenceBar = document.getElementById('confidenceBar');
+        const confidenceDisplay = document.getElementById('confidence');
+        const sttWordCount = document.getElementById('sttWordCount');
+        
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        
+        if (SpeechRecognition) {
+            const recognition = new SpeechRecognition();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            recognition.maxAlternatives = 3;
+            
+            let isRecording = false;
+            let finalTranscript = '';
+            
+            // Word counter for STT
+            transcription.addEventListener('input', () => {
+                const text = transcription.value.trim();
+                const wordCount = text ? text.split(/\s+/).length : 0;
+                sttWordCount.textContent = `Words: ${wordCount}`;
             });
+            
+            // Emotion detection
+            function detectEmotion(transcript, confidence) {
+                const emotions = [
+                    { name: "Happy 😊", keywords: ["happy", "good", "great", "thanks", "awesome"] },
+                    { name: "Sad 😢", keywords: ["sad", "bad", "sorry", "cry", "unhappy"] },
+                    { name: "Angry 😠", keywords: ["angry", "mad", "hate", "annoyed", "frustrated"] },
+                    { name: "Surprised 😲", keywords: ["wow", "oh", "surprise", "amazing", "unbelievable"] },
+                    { name: "Neutral 😐", keywords: [] }
+                ];
+                
+                // Check for keywords
+                for (const emotion of emotions) {
+                    for (const keyword of emotion.keywords) {
+                        if (transcript.toLowerCase().includes(keyword)) {
+                            return emotion.name;
+                        }
+                    }
+                }
+                
+                // Fallback based on confidence and length
+                if (confidence > 0.8 && transcript.split(' ').length > 5) {
+                    return "Confident 😎";
+                } else if (confidence < 0.4) {
+                    return "Uncertain 🤔";
+                }
+                
+                return "Neutral 😐";
+            }
+            
+            // Record button event
+            recordButton.addEventListener('click', () => {
+                if (!isRecording) {
+                    const selectedLang = languagesSelect.value || 'en-US';
+                    recognition.lang = selectedLang;
+                    recognition.start();
+                    isRecording = true;
+                    recordText.textContent = 'Stop Recording';
+                    recordButton.innerHTML = '<i class="fas fa-stop"></i> Stop Recording';
+                    finalTranscript = '';
+                    sttBox.classList.add('recording');
+                    showNotification('Recording started', 'info');
+                } else {
+                    recognition.stop();
+                    isRecording = false;
+                    recordText.textContent = 'Start Recording';
+                    recordButton.innerHTML = '<i class="fas fa-microphone"></i> Start Recording';
+                    sttBox.classList.remove('recording');
+                }
+            });
+            
+            // Recognition result event
+            recognition.onresult = (event) => {
+                let interimTranscript = '';
+                let highestConfidence = 0;
+                
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    const transcript = event.results[i][0].transcript;
+                    const confidence = event.results[i][0].confidence;
+                    
+                    if (confidence > highestConfidence) {
+                        highestConfidence = confidence;
+                    }
+                    
+                    if (event.results[i].isFinal) {
+                        finalTranscript += transcript + ' ';
+                        
+                        // Emotion detection
+                        const emotion = detectEmotion(transcript, confidence);
+                        emotionDisplay.textContent = emotion;
+                        
+                        // Update confidence display
+                        const confidencePercent = Math.round(confidence * 100);
+                        confidenceBar.style.width = `${confidencePercent}%`;
+                        confidenceDisplay.textContent = `Confidence: ${confidencePercent}%`;
+                    } else {
+                        interimTranscript += transcript;
+                    }
+                }
+                
+                transcription.value = finalTranscript + interimTranscript;
+                
+                // Update word count
+                const text = transcription.value.trim();
+                const wordCount = text ? text.split(/\s+/).length : 0;
+                sttWordCount.textContent = `Words: ${wordCount}`;
+            };
+            
+            // Recognition end event
+            recognition.onend = () => {
+                if (isRecording) {
+                    recognition.start(); // Continue recording if not manually stopped
+                } else {
+                    isRecording = false;
+                    recordText.textContent = 'Start Recording';
+                    recordButton.innerHTML = '<i class="fas fa-microphone"></i> Start Recording';
+                    sttBox.classList.remove('recording');
+                }
+            };
+            
+            // Recognition error event
+            recognition.onerror = (event) => {
+                console.error('Speech recognition error:', event.error);
+                
+                let errorMessage = 'Speech recognition error: ';
+                switch(event.error) {
+                    case 'no-speech':
+                        errorMessage += 'No speech was detected';
+                        break;
+                    case 'audio-capture':
+                        errorMessage += 'Audio capture failed';
+                        break;
+                    case 'not-allowed':
+                        errorMessage += 'Microphone access was denied';
+                        break;
+                    default:
+                        errorMessage += event.error;
+                }
+                
+                showNotification(errorMessage, 'error');
+                isRecording = false;
+                recordText.textContent = 'Start Recording';
+                recordButton.innerHTML = '<i class="fas fa-microphone"></i> Start Recording';
+                sttBox.classList.remove('recording');
+            };
+        } else {
+            recordButton.disabled = true;
+            recordButton.innerHTML = '<i class="fas fa-microphone-slash"></i> Not Supported';
+            showNotification('Your browser does not support speech recognition', 'error');
+        }
+        
+        // Copy text button
+        copyButton.addEventListener('click', () => {
+            const text = transcription.value;
+            if (text.trim()) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showNotification('Text copied to clipboard', 'success');
+                }).catch(err => {
+                    console.error('Could not copy text: ', err);
+                    showNotification('Error copying text', 'error');
+                });
+            } else {
+                showNotification('No text to copy', 'error');
+            }
         });
+        
+        // Clear text button
+        clearButton.addEventListener('click', () => {
+            transcription.value = '';
+            sttWordCount.textContent = 'Words: 0';
+            emotionDisplay.textContent = '-';
+            confidenceBar.style.width = '0%';
+            confidenceDisplay.textContent = 'Confidence: 0%';
+            showNotification('Text cleared', 'success');
+        });
+        
+        // Initialize
+        updateButtonStates();
+        
+        // Show welcome message
+        setTimeout(() => {
+            showNotification('Welcome to VoiceSync! Start converting text or speech.', 'info', 5000);
+        }, 1000);
     </script>
 </body>
 </html>
