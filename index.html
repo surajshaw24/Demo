@@ -3,1442 +3,1331 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VoiceSync - TTS & STT Converter</title>
+    <title>24TopNews - India's Leading News Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-dark: #4b0082;
-            --primary-light: #9370db;
-            --secondary-dark: #301934;
-            --secondary-light: #d8bfd8;
-            --text-dark: #2c3e50;
-            --text-light: #f8f9fa;
-            --accent: #8a2be2;
-            --success: #28a745;
-            --warning: #ffc107;
-            --danger: #dc3545;
-            --info: #17a2b8;
-            --bg-gradient: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
-            --card-bg: rgba(255, 255, 255, 0.95);
-            --shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            --primary-color: #e63946;
+            --secondary-color: #1d3557;
+            --accent-color: #f1faee;
+            --dark-color: #1a1a2e;
+            --light-color: #f8f9fa;
+            --text-color: #333;
+            --text-light: #777;
         }
-
-        .dark-mode {
-            --primary-dark: #8a2be2;
-            --primary-light: #4b0082;
-            --secondary-dark: #1a1033;
-            --secondary-light: #301934;
-            --text-dark: #f8f9fa;
-            --text-light: #2c3e50;
-            --card-bg: rgba(26, 16, 51, 0.95);
-            --bg-gradient: linear-gradient(135deg, #1a1033, #000000);
-            --shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
-        }
-
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', 'Arial', sans-serif;
-            transition: background-color 0.3s, color 0.3s;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
+        
         body {
-            background: var(--bg-gradient);
-            color: var(--text-dark);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
+            background-color: var(--light-color);
+            color: var(--text-color);
             line-height: 1.6;
         }
-
+        
         /* Header Styles */
-        .header {
-            background: var(--card-bg);
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: var(--shadow);
+        header {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 3px solid var(--accent);
         }
-
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
         .logo {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .logo-icon {
-            font-size: 2.5rem;
-            color: var(--accent);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        .logo-text {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .logo-title {
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: 700;
-            color: var(--text-dark);
-            line-height: 1.2;
-        }
-
-        .logo-subtitle {
-            font-size: 0.9rem;
-            color: var(--primary-light);
-            font-weight: 500;
-        }
-
-        /* Navigation */
-        .nav-container {
+            color: white;
+            text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 2rem;
         }
-
-        .nav-links {
+        
+        .logo i {
+            color: var(--primary-color);
+            margin-right: 10px;
+        }
+        
+        /* Navigation */
+        nav {
             display: flex;
-            gap: 1.5rem;
+            align-items: center;
+        }
+        
+        .main-nav {
+            display: flex;
             list-style: none;
         }
-
-        .nav-links a {
-            color: var(--text-dark);
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .nav-links a:hover, .nav-links a.active {
-            background: var(--accent);
-            color: white;
-            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
-        }
-
-        /* Main Content */
-        .container {
-            max-width: 1400px;
-            margin: 2rem auto;
-            padding: 0 2rem;
-            flex: 1;
-            width: 100%;
-        }
-
-        .app-title {
-            text-align: center;
-            margin-bottom: 1rem;
-            color: var(--text-light);
-            font-size: 2.5rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .app-subtitle {
-            text-align: center;
-            color: var(--secondary-light);
-            margin-bottom: 2rem;
-            font-size: 1.2rem;
-        }
-
-        /* Feature Cards */
-        .features-container {
-            display: flex;
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .feature-card {
-            flex: 1;
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: var(--shadow);
-            transition: transform 0.3s ease;
-            border: 1px solid rgba(138, 43, 226, 0.2);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .feature-icon {
-            font-size: 2.5rem;
-            color: var(--accent);
-            margin-bottom: 1rem;
-        }
-
-        .feature-title {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--text-dark);
-        }
-
-        .feature-desc {
-            color: var(--text-dark);
-            opacity: 0.9;
-        }
-
-        /* TTS/STT Wrapper */
-        .tts-stt-wrapper {
-            display: flex;
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .tts-box, .stt-box {
-            flex: 1;
-            min-width: 0;
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: var(--shadow);
-            transition: transform 0.3s ease;
-            border: 1px solid rgba(138, 43, 226, 0.2);
-        }
-
-        .tts-box:hover, .stt-box:hover {
-            transform: translateY(-5px);
-        }
-
-        .section-title {
-            color: var(--text-dark);
-            margin-bottom: 1.5rem;
-            text-align: center;
-            font-size: 1.8rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.8rem;
-        }
-
-        .section-title i {
-            color: var(--accent);
-        }
-
-        /* Input/Output Areas */
-        .input-output-container {
+        
+        .main-nav li {
+            margin-left: 20px;
             position: relative;
-            margin: 1.5rem 0;
         }
-
-        textarea {
-            width: 100%;
-            padding: 1.5rem;
-            border: 2px solid var(--primary-light);
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-dark);
-            font-size: 1.1rem;
-            min-height: 180px;
-            resize: vertical;
-            transition: all 0.3s ease;
+        
+        .main-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 5px 0;
         }
-
-        textarea:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.3);
-            outline: none;
-            background: rgba(255, 255, 255, 0.15);
+        
+        .main-nav a:hover {
+            color: var(--primary-color);
         }
-
-        .word-counter {
+        
+        .main-nav a::after {
+            content: '';
             position: absolute;
-            bottom: 10px;
-            right: 15px;
-            background: rgba(138, 43, 226, 0.8);
-            color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 500;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: width 0.3s;
         }
-
-        /* Controls */
-        .control-group {
-            margin: 1.5rem 0;
-        }
-
-        .control-label {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 0.8rem;
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        .control-label span:first-child {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .control-label i {
-            color: var(--accent);
-        }
-
-        select, input[type="range"] {
+        
+        .main-nav a:hover::after {
             width: 100%;
-            padding: 0.8rem 1rem;
-            border: 2px solid var(--primary-light);
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-dark);
-            font-size: 1rem;
-            transition: all 0.3s ease;
         }
-
-        select:focus, input[type="range"]:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.3);
-            outline: none;
-        }
-
-        input[type="range"] {
-            -webkit-appearance: none;
-            height: 8px;
-            padding: 0;
-            background: linear-gradient(to right, var(--primary-light), var(--accent));
-            border-radius: 10px;
-            cursor: pointer;
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 20px;
-            height: 20px;
-            background: var(--accent);
-            border-radius: 50%;
-            border: 2px solid white;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        .range-value {
-            display: inline-block;
-            width: 40px;
-            text-align: center;
-            font-weight: bold;
-            color: var(--accent);
-        }
-
-        /* Buttons */
-        .button-group {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin-top: 2rem;
-        }
-
-        .btn {
-            padding: 1rem 1.5rem;
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
             border: none;
-            border-radius: 10px;
+            color: white;
+            font-size: 1.5rem;
             cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            flex: 1;
-            min-width: 160px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.8rem;
-            font-size: 1rem;
         }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary-light), var(--accent));
-            color: white;
-        }
-
-        .btn-primary:hover:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 15px rgba(138, 43, 226, 0.4);
-        }
-
-        .btn-secondary {
-            background: rgba(138, 43, 226, 0.1);
-            color: var(--accent);
-            border: 2px solid var(--accent);
-        }
-
-        .btn-secondary:hover:not(:disabled) {
-            background: rgba(138, 43, 226, 0.2);
-            transform: translateY(-3px);
-        }
-
-        .btn-danger {
-            background: rgba(220, 53, 69, 0.1);
-            color: var(--danger);
-            border: 2px solid var(--danger);
-        }
-
-        .btn-danger:hover:not(:disabled) {
-            background: rgba(220, 53, 69, 0.2);
-            transform: translateY(-3px);
-        }
-
-        .btn-success {
-            background: rgba(40, 167, 69, 0.1);
-            color: var(--success);
-            border: 2px solid var(--success);
-        }
-
-        .btn-success:hover:not(:disabled) {
-            background: rgba(40, 167, 69, 0.2);
-            transform: translateY(-3px);
-        }
-
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none !important;
-        }
-
-        /* Active states */
-        .tts-box.speaking {
-            border: 2px solid var(--accent);
-            box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
-        }
-
-        .stt-box.recording {
-            border: 2px solid var(--accent);
-            box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
-            animation: pulse-border 1.5s infinite;
-        }
-
-        @keyframes pulse-border {
-            0% { box-shadow: 0 0 0 0 rgba(138, 43, 226, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(138, 43, 226, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(138, 43, 226, 0); }
-        }
-
-        /* Emotion Display */
-        .emotion-container {
-            margin-top: 2rem;
-            background: rgba(138, 43, 226, 0.1);
-            border-radius: 15px;
-            padding: 1.5rem;
-            text-align: center;
-            border: 1px dashed var(--accent);
-        }
-
-        .emotion-title {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-            color: var(--text-dark);
-        }
-
-        .emotion-value {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--accent);
-            margin-bottom: 0.5rem;
-        }
-
-        .confidence-meter {
-            height: 8px;
-            background: rgba(138, 43, 226, 0.2);
-            border-radius: 10px;
-            margin: 1rem 0;
+        
+        /* Hero Slideshow */
+        .hero-slideshow {
+            position: relative;
+            max-width: 1200px;
+            margin: 20px auto;
+            height: 500px;
             overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
-
-        .confidence-level {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary-light), var(--accent));
-            border-radius: 10px;
-            transition: width 0.5s ease;
-        }
-
-        .confidence-value {
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        /* Notification System */
-        .notification-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 9999;
-            max-width: 350px;
-            width: 100%;
-        }
-
-        .notification {
-            padding: 1rem 1.5rem;
-            border-radius: 10px;
-            color: white;
-            font-weight: 500;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            transform: translateX(200%);
-            transition: transform 0.4s ease;
-        }
-
-        .notification.show {
-            transform: translateX(0);
-        }
-
-        .notification i {
-            font-size: 1.3rem;
-        }
-
-        .notification.success {
-            background: var(--success);
-            border-left: 5px solid #1e7e34;
-        }
-
-        .notification.error {
-            background: var(--danger);
-            border-left: 5px solid #bd2130;
-        }
-
-        .notification.info {
-            background: var(--info);
-            border-left: 5px solid #117a8b;
-        }
-
-        .notification.warning {
-            background: var(--warning);
-            border-left: 5px solid #d39e00;
-            color: var(--text-dark);
-        }
-
-        /* Loading Animation */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            .tts-stt-wrapper {
-                flex-direction: column;
-            }
-            
-            .features-container {
-                flex-direction: column;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                padding: 1rem;
-                gap: 1rem;
-            }
-            
-            .nav-container {
-                width: 100%;
-                justify-content: space-between;
-            }
-            
-            .nav-links {
-                display: none;
-            }
-            
-            .mobile-menu-btn {
-                display: block;
-                background: none;
-                border: none;
-                color: var(--text-dark);
-                font-size: 1.5rem;
-                cursor: pointer;
-            }
-            
-            .container {
-                padding: 0 1rem;
-            }
-            
-            .button-group {
-                flex-direction: column;
-            }
-            
-            .btn {
-                width: 100%;
-            }
-        }
-
-        /* Mobile Menu */
-        .mobile-menu {
-            position: fixed;
+        
+        .slide {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--card-bg);
-            z-index: 9998;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transform: translateX(-100%);
-            transition: transform 0.3s ease;
+            align-items: flex-end;
         }
-
-        .mobile-menu.active {
-            transform: translateX(0);
+        
+        .slide.active {
+            opacity: 1;
         }
-
-        .mobile-menu .close-btn {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            font-size: 1.5rem;
-            background: none;
-            border: none;
-            color: var(--text-dark);
-            cursor: pointer;
+        
+        .slide-content {
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            color: white;
+            padding: 30px;
+            width: 100%;
         }
-
-        .mobile-menu-links {
-            list-style: none;
-            text-align: center;
+        
+        .slide-category {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 10px;
         }
-
-        .mobile-menu-links li {
-            margin: 1.5rem 0;
+        
+        .slide-title {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
         }
-
-        .mobile-menu-links a {
-            color: var(--text-dark);
+        
+        .slide-desc {
+            margin-bottom: 15px;
+            max-width: 70%;
+        }
+        
+        .read-more {
+            display: inline-block;
+            background-color: white;
+            color: var(--secondary-color);
+            padding: 8px 15px;
+            border-radius: 4px;
             text-decoration: none;
-            font-size: 1.5rem;
             font-weight: 600;
-            transition: color 0.3s;
-        }
-
-        .mobile-menu-links a:hover {
-            color: var(--accent);
-        }
-
-        /* Language Selector */
-        .language-selector {
-            position: relative;
-            margin-left: 1rem;
-        }
-
-        .language-btn {
-            background: none;
-            border: none;
-            color: var(--text-dark);
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
             transition: all 0.3s;
         }
-
-        .language-btn:hover {
-            background: rgba(138, 43, 226, 0.1);
+        
+        .read-more:hover {
+            background-color: var(--primary-color);
+            color: white;
         }
-
-        .language-dropdown {
+        
+        .slide-nav {
             position: absolute;
-            top: 100%;
-            right: 0;
-            background: var(--card-bg);
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            padding: 0.5rem 0;
-            min-width: 150px;
-            z-index: 100;
-            display: none;
-        }
-
-        .language-dropdown.show {
-            display: block;
-        }
-
-        .language-option {
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            transition: all 0.3s;
+            bottom: 20px;
+            right: 20px;
             display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
-
-        .language-option:hover {
-            background: rgba(138, 43, 226, 0.1);
-            color: var(--accent);
+        
+        .slide-dot {
+            width: 12px;
+            height: 12px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            margin-left: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
-
-        .language-flag {
-            width: 20px;
-            height: 15px;
-            object-fit: cover;
-            border-radius: 2px;
+        
+        .slide-dot.active {
+            background-color: white;
         }
-
-        /* Wave Animation */
-        .wave {
+        
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            margin: 30px 0 20px;
+            position: relative;
+            padding-bottom: 10px;
+            color: var(--secondary-color);
+        }
+        
+        .section-title::after {
+            content: '';
             position: absolute;
             bottom: 0;
             left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+        
+        /* News Grid */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .news-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .news-img {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .news-img img {
             width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .news-card:hover .news-img img {
+            transform: scale(1.05);
+        }
+        
+        .news-content {
+            padding: 20px;
+        }
+        
+        .news-category {
+            display: inline-block;
+            color: var(--primary-color);
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        
+        .news-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        
+        .news-excerpt {
+            color: var(--text-light);
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+        
+        /* Category Tabs */
+        .category-tabs {
+            display: flex;
+            overflow-x: auto;
+            margin-bottom: 20px;
+            scrollbar-width: none;
+        }
+        
+        .category-tabs::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .tab-btn {
+            background-color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-right: 5px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tab-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        /* Breaking News Ticker */
+        .breaking-news {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 0;
+            margin-bottom: 20px;
+        }
+        
+        .breaking-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .breaking-label {
+            background-color: var(--dark-color);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-right: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .ticker {
+            flex-grow: 1;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .ticker-content {
+            position: absolute;
+            white-space: nowrap;
+            animation: ticker 20s linear infinite;
+        }
+        
+        @keyframes ticker {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        /* Sidebar */
+        .content-wrapper {
+            display: flex;
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .main-content {
+            flex: 2;
+        }
+        
+        .sidebar {
+            flex: 1;
+        }
+        
+        .sidebar-widget {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .widget-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent-color);
+            color: var(--secondary-color);
+        }
+        
+        .trending-list {
+            list-style: none;
+        }
+        
+        .trending-item {
+            display: flex;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #eee;
+        }
+        
+        .trending-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .trending-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--text-light);
+            margin-right: 15px;
+            min-width: 30px;
+        }
+        
+        .trending-content {
+            flex-grow: 1;
+        }
+        
+        .trending-title {
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+            line-height: 1.4;
+        }
+        
+        .trending-meta {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+        
+        /* Newsletter */
+        .newsletter-form {
+            display: flex;
+            margin-top: 15px;
+        }
+        
+        .newsletter-input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            outline: none;
+        }
+        
+        .newsletter-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0 15px;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .newsletter-btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        /* Ad Spaces */
+        .ad-space {
+            background-color: #f5f5f5;
+            border: 1px dashed #ccc;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        
+        .ad-space.large {
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .ad-space.medium {
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .ad-space.small {
             height: 100px;
-            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="%238a2be2" opacity=".25"/><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" fill="%238a2be2" opacity=".5"/><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="%238a2be2"/></svg>');
-            background-size: cover;
-            background-repeat: no-repeat;
-            z-index: -1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 50px 0 20px;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-col h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        /* Animation Classes */
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .slide-up {
+            animation: slideUp 0.8s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+            
+            .hero-slideshow {
+                height: 400px;
+            }
+            
+            .slide-title {
+                font-size: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .main-nav {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 80%;
+                height: calc(100vh - 80px);
+                background-color: var(--secondary-color);
+                flex-direction: column;
+                align-items: center;
+                padding: 40px 20px;
+                transition: left 0.3s;
+                z-index: 999;
+            }
+            
+            .main-nav.active {
+                left: 0;
+            }
+            
+            .main-nav li {
+                margin: 15px 0;
+            }
+            
+            .hero-slideshow {
+                height: 350px;
+            }
+            
+            .slide-content {
+                padding: 20px;
+            }
+            
+            .slide-title {
+                font-size: 1.3rem;
+            }
+            
+            .slide-desc {
+                max-width: 100%;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .logo {
+                font-size: 1.5rem;
+            }
+            
+            .hero-slideshow {
+                height: 300px;
+            }
+            
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
         }
     </style>
-    <meta name="description" content="VoiceSync - Text-to-Speech and Speech-to-Text application with advanced features and natural sounding voices.">
-    <meta name="keywords" content="text to speech, speech to text, TTS, STT, voice recognition, voice synthesis">
-    <meta name="author" content="Prompt Minds">
 </head>
 <body>
-    <!-- Wave Animation Background -->
-    <div class="wave"></div>
-
-    <!-- Mobile Menu Button (hidden on desktop) -->
-    <button class="mobile-menu-btn" id="mobileMenuBtn">
-        <i class="fas fa-bars"></i>
-    </button>
-
-    <!-- Mobile Menu (hidden by default) -->
-    <div class="mobile-menu" id="mobileMenu">
-        <button class="close-btn" id="closeMobileMenu">
-            <i class="fas fa-times"></i>
-        </button>
-        <ul class="mobile-menu-links">
-            <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="#features"><i class="fas fa-star"></i> Features</a></li>
-            <li><a href="#tts"><i class="fas fa-volume-up"></i> Text-to-Speech</a></li>
-            <li><a href="#stt"><i class="fas fa-microphone"></i> Speech-to-Text</a></li>
-        </ul>
-    </div>
-
     <!-- Header -->
-    <header class="header">
-        <div class="logo">
-            <i class="fas fa-comment-dots logo-icon"></i>
-            <div class="logo-text">
-                <h1 class="logo-title">VoiceSync</h1>
-                <span class="logo-subtitle">TTS & STT Converter</span>
-            </div>
-        </div>
-        
-        <div class="nav-container">
-            <ul class="nav-links">
-                <li><a href="#home" class="active"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="#features"><i class="fas fa-star"></i> Features</a></li>
-                <li><a href="#tts"><i class="fas fa-volume-up"></i> TTS</a></li>
-                <li><a href="#stt"><i class="fas fa-microphone"></i> STT</a></li>
-            </ul>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-newspaper"></i>
+                <span>24TopNews</span>
+            </a>
             
-            <div class="language-selector">
-                <button class="language-btn" id="languageBtn">
-                    <img src="https://flagcdn.com/w20/us.png" class="language-flag" alt="English">
-                    <span>English</span>
-                    <i class="fas fa-chevron-down"></i>
+            <nav>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
                 </button>
-                <div class="language-dropdown" id="languageDropdown">
-                    <div class="language-option" data-lang="en">
-                        <img src="https://flagcdn.com/w20/us.png" class="language-flag" alt="English">
-                        <span>English</span>
-                    </div>
-                    <div class="language-option" data-lang="es">
-                        <img src="https://flagcdn.com/w20/es.png" class="language-flag" alt="Spanish">
-                        <span>Spanish</span>
-                    </div>
-                    <div class="language-option" data-lang="fr">
-                        <img src="https://flagcdn.com/w20/fr.png" class="language-flag" alt="French">
-                        <span>French</span>
-                    </div>
-                    <div class="language-option" data-lang="de">
-                        <img src="https://flagcdn.com/w20/de.png" class="language-flag" alt="German">
-                        <span>German</span>
-                    </div>
-                </div>
-            </div>
-            
-            <button class="btn btn-secondary" id="darkModeToggle">
-                <i class="fas fa-moon"></i>
-            </button>
+                
+                <ul class="main-nav" id="mainNav">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="national.html">National</a></li>
+                    <li><a href="international.html">International</a></li>
+                    <li><a href="business.html">Business</a></li>
+                    <li><a href="sports.html">Sports</a></li>
+                    <li><a href="entertainment.html">Entertainment</a></li>
+                    <li><a href="technology.html">Technology</a></li>
+                </ul>
+            </nav>
         </div>
     </header>
-
-    <!-- Main Content -->
-    <main class="container">
-        <h1 class="app-title">VoiceSync</h1>
-        <p class="app-subtitle">
-            Text-to-Speech & Speech-to-Text Converter
-        </p>
-        
-        <!-- Features Section -->
-        <section id="features">
-            <div class="features-container">
-                <div class="feature-card">
-                    <i class="fas fa-language feature-icon"></i>
-                    <h3 class="feature-title">100+ Languages</h3>
-                    <p class="feature-desc">Support for over 100 languages and dialects with native-quality pronunciation and accents.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <i class="fas fa-brain feature-icon"></i>
-                    <h3 class="feature-title">AI Voices</h3>
-                    <p class="feature-desc">Natural sounding AI-powered voices with emotional expression and human-like intonation.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <i class="fas fa-robot feature-icon"></i>
-                    <h3 class="feature-title">Emotion Detection</h3>
-                    <p class="feature-desc">Advanced emotion recognition from speech with sentiment analysis and mood detection.</p>
-                </div>
-            </div>
-        </section>
-        
-        <!-- TTS/STT Sections -->
-        <div class="tts-stt-wrapper">
-            <!-- Text to Speech Section -->
-            <div class="tts-box" id="tts">
-                <h2 class="section-title"><i class="fas fa-volume-up"></i> Text-to-Speech</h2>
-                
-                <div class="input-output-container">
-                    <textarea id="text" placeholder="Enter your text here... (Example: Welcome to VoiceSync)"></textarea>
-                    <div class="word-counter" id="ttsWordCount">Words: 0</div>
-                </div>
-                
-                <div class="control-group">
-                    <label for="languages" class="control-label">
-                        <span><i class="fas fa-globe"></i> Select Language:</span>
-                    </label>
-                    <select id="languages"></select>
-                </div>
-                
-                <div class="control-group">
-                    <label for="voices" class="control-label">
-                        <span><i class="fas fa-user"></i> Select Voice:</span>
-                    </label>
-                    <select id="voices"></select>
-                </div>
-                
-                <div class="control-group">
-                    <label for="rate" class="control-label">
-                        <span><i class="fas fa-tachometer-alt"></i> Speed:</span>
-                        <span class="range-value" id="rateValue">1</span>
-                    </label>
-                    <input type="range" id="rate" min="0.5" max="2" step="0.1" value="1">
-                </div>
-                
-                <div class="control-group">
-                    <label for="pitch" class="control-label">
-                        <span><i class="fas fa-sliders-h"></i> Pitch:</span>
-                        <span class="range-value" id="pitchValue">1</span>
-                    </label>
-                    <input type="range" id="pitch" min="0.5" max="1.5" step="0.1" value="1">
-                </div>
-                
-                <div class="control-group">
-                    <label for="volume" class="control-label">
-                        <span><i class="fas fa-volume-up"></i> Volume:</span>
-                        <span class="range-value" id="volumeValue">1</span>
-                    </label>
-                    <input type="range" id="volume" min="0" max="1" step="0.1" value="1">
-                </div>
-                
-                <!-- Emotion Control -->
-                <div class="control-group">
-                    <label for="emotion" class="control-label">
-                        <span><i class="fas fa-smile"></i> Emotion:</span>
-                    </label>
-                    <select id="emotion">
-                        <option value="neutral">Neutral</option>
-                        <option value="happy">Happy</option>
-                        <option value="sad">Sad</option>
-                        <option value="angry">Angry</option>
-                        <option value="excited">Excited</option>
-                    </select>
-                </div>
-                
-                <div class="button-group">
-                    <button class="btn btn-primary" id="speak">
-                        <i class="fas fa-play"></i> Speak
-                    </button>
-                    <button class="btn btn-secondary" id="pauseResume" disabled>
-                        <i class="fas fa-pause"></i> Pause
-                    </button>
-                    <button class="btn btn-danger" id="stop" disabled>
-                        <i class="fas fa-stop"></i> Stop
-                    </button>
-                    <button class="btn btn-success" id="downloadAudio">
-                        <i class="fas fa-download"></i> Download
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Speech to Text Section -->
-            <div class="stt-box" id="stt">
-                <h2 class="section-title"><i class="fas fa-microphone"></i> Speech-to-Text</h2>
-                
-                <div class="input-output-container">
-                    <textarea id="transcription" placeholder="Your speech will appear here..."></textarea>
-                    <div class="word-counter" id="sttWordCount">Words: 0</div>
-                </div>
-                
-                <div class="button-group">
-                    <button class="btn btn-primary" id="record">
-                        <i class="fas fa-microphone"></i> <span id="recordText">Start Recording</span>
-                    </button>
-                    <button class="btn btn-secondary" id="copyText">
-                        <i class="fas fa-copy"></i> Copy
-                    </button>
-                    <button class="btn btn-danger" id="clearText">
-                        <i class="fas fa-trash"></i> Clear
-                    </button>
-                </div>
-                
-                <!-- Emotion Detection -->
-                <div class="emotion-container">
-                    <h3 class="emotion-title">Emotion Analysis</h3>
-                    <p class="emotion-value" id="emotionDisplay">-</p>
-                    <div class="confidence-meter">
-                        <div class="confidence-level" id="confidenceBar" style="width: 0%"></div>
-                    </div>
-                    <p class="confidence-value" id="confidence">Confidence: 0%</p>
+    
+    <!-- Breaking News Ticker -->
+    <div class="breaking-news">
+        <div class="breaking-container">
+            <div class="breaking-label">BREAKING</div>
+            <div class="ticker">
+                <div class="ticker-content">
+                    India's GDP grows at 7.8% in Q1 2023 • Supreme Court to hear plea on Article 370 today • Cyclone Biparjoy intensifies into severe cyclonic storm • India wins Asia Cup 2023 • PM Modi to visit US next week
                 </div>
             </div>
         </div>
-    </main>
-
-    <!-- Notification Container -->
-    <div class="notification-container" id="notificationContainer"></div>
-
-    <!-- Scripts -->
+    </div>
+    
+    <!-- Hero Slideshow -->
+    <div class="hero-slideshow">
+        <div class="slide active" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://via.placeholder.com/1200x500')">
+            <div class="slide-content">
+                <span class="slide-category">Politics</span>
+                <h2 class="slide-title">PM Modi Announces New Economic Package for Farmers</h2>
+                <p class="slide-desc">The new package worth ₹1.5 lakh crore aims to boost agricultural infrastructure and support small farmers across the country.</p>
+                <a href="#" class="read-more">Read More</a>
+            </div>
+        </div>
+        
+        <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://via.placeholder.com/1200x500')">
+            <div class="slide-content">
+                <span class="slide-category">Sports</span>
+                <h2 class="slide-title">India Wins T20 Series Against Australia</h2>
+                <p class="slide-desc">Team India clinches the series 3-2 with a thrilling victory in the final match at Bengaluru.</p>
+                <a href="#" class="read-more">Read More</a>
+            </div>
+        </div>
+        
+        <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://via.placeholder.com/1200x500')">
+            <div class="slide-content">
+                <span class="slide-category">Technology</span>
+                <h2 class="slide-title">India's First AI Supercomputer Launched</h2>
+                <p class="slide-desc">The new supercomputer named "Param AI" can perform 100 quadrillion calculations per second.</p>
+                <a href="#" class="read-more">Read More</a>
+            </div>
+        </div>
+        
+        <div class="slide-nav">
+            <div class="slide-dot active" data-slide="0"></div>
+            <div class="slide-dot" data-slide="1"></div>
+            <div class="slide-dot" data-slide="2"></div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Category Tabs -->
+        <div class="category-tabs">
+            <button class="tab-btn active" data-category="all">All News</button>
+            <button class="tab-btn" data-category="national">National</button>
+            <button class="tab-btn" data-category="international">International</button>
+            <button class="tab-btn" data-category="business">Business</button>
+            <button class="tab-btn" data-category="sports">Sports</button>
+            <button class="tab-btn" data-category="entertainment">Entertainment</button>
+            <button class="tab-btn" data-category="technology">Technology</button>
+            <button class="tab-btn" data-category="health">Health</button>
+            <button class="tab-btn" data-category="science">Science</button>
+        </div>
+        
+        <div class="content-wrapper">
+            <!-- Main Content Area -->
+            <main class="main-content">
+                <h2 class="section-title">Latest News</h2>
+                
+                <div class="news-grid">
+                    <!-- News Card 1 -->
+                    <div class="news-card fade-in">
+                        <div class="news-img">
+                            <img src="https://via.placeholder.com/400x300" alt="News Image">
+                        </div>
+                        <div class="news-content">
+                            <span class="news-category">National</span>
+                            <h3 class="news-title">Cabinet Approves New Education Policy with Major Reforms</h3>
+                            <p class="news-excerpt">The new policy focuses on multidisciplinary education and introduces regional language medium till 5th grade.</p>
+                            <div class="news-meta">
+                                <span>2 hours ago</span>
+                                <span>1.2K views</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- News Card 2 -->
+                    <div class="news-card fade-in">
+                        <div class="news-img">
+                            <img src="https://via.placeholder.com/400x300" alt="News Image">
+                        </div>
+                        <div class="news-content">
+                            <span class="news-category">Business</span>
+                            <h3 class="news-title">Sensex Hits Record High Amid Global Market Rally</h3>
+                            <p class="news-excerpt">The BSE Sensex crossed 65,000 points for the first time as foreign investors continue to pour money into Indian markets.</p>
+                            <div class="news-meta">
+                                <span>4 hours ago</span>
+                                <span>890 views</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- News Card 3 -->
+                    <div class="news-card fade-in">
+                        <div class="news-img">
+                            <img src="https://via.placeholder.com/400x300" alt="News Image">
+                        </div>
+                        <div class="news-content">
+                            <span class="news-category">Sports</span>
+                            <h3 class="news-title">Neeraj Chopra Wins Gold at Diamond League</h3>
+                            <p class="news-excerpt">Olympic champion Neeraj Chopra threw 88.67m to win his first Diamond League title of the season.</p>
+                            <div class="news-meta">
+                                <span>6 hours ago</span>
+                                <span>2.5K views</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- News Card 4 -->
+                    <div class="news-card fade-in">
+                        <div class="news-img">
+                            <img src="https://via.placeholder.com/400x300" alt="News Image">
+                        </div>
+                        <div class="news-content">
+                            <span class="news-category">Technology</span>
+                            <h3 class="news-title">India's 5G Rollout to Begin in October</h3>
+                            <p class="news-excerpt">Major telecom operators announce plans to launch 5G services in select cities from October 1.</p>
+                            <div class="news-meta">
+                                <span>8 hours ago</span>
+                                <span>1.8K views</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- News Card 5 -->
+                    <div class="news-card fade-in">
+                        <div class="news-img">
+                            <img src="https://via.placeholder.com/400x300" alt="News Image">
+                        </div>
+                        <div class="news-content">
+                            <span class="news-category">Entertainment</span>
+                            <h3 class="news-title">Bollywood's Big Budget Film "Adipurush" Releases Today</h3>
+                            <p class="news-excerpt">The Prabhas-starrer mythological drama is one of the most expensive Indian films ever made.</p>
+                            <div class="news-meta">
+                                <span>10 hours ago</span>
+                                <span>3.2K views</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- News Card 6 -->
+                    <div class="news-card fade-in">
+                        <div class="news-img">
+                            <img src="https://via.placeholder.com/400x300" alt="News Image">
+                        </div>
+                        <div class="news-content">
+                            <span class="news-category">Health</span>
+                            <h3 class="news-title">New Study Reveals Benefits of Yoga for Heart Patients</h3>
+                            <p class="news-excerpt">Research shows regular yoga practice can reduce risk of heart attacks by up to 30%.</p>
+                            <div class="news-meta">
+                                <span>12 hours ago</span>
+                                <span>1.1K views</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h2 class="section-title">Top Stories</h2>
+                
+                <div class="news-grid">
+                    <!-- Top Story 1 -->
+                    <div class="news-card slide-up">
+                        <div class="news-img">
+                            <img src="https://via.placeholder.com/400x300" alt="News Image">
+                        </div>
+                        <div class="news-content">
+                            <span class="news-category">Politics</span>
+                            <h3 class="news-title">Rahul Gandhi Begins Bharat Jodo Yatra Phase 2</h3>
+                            <p class="news-excerpt">The Congress leader starts his second leg of the nationwide march from Kanyakumari to Kashmir.</p>
+                            <div class="news-meta">
+                                <span>1 day ago</span>
+                                <span>5.7K views</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Top Story 2 -->
+                    <div class="news-card slide-up">
+                        <div class="news-img">
+                            <img src="https://via.placeholder.com/400x300" alt="News Image">
+                        </div>
+                        <div class="news-content">
+                            <span class="news-category">International</span>
+                            <h3 class="news-title">India-US Sign Major Defense Deal Worth $3 Billion</h3>
+                            <p class="news-excerpt">The agreement includes procurement of advanced drones and jet engines for the Indian military.</p>
+                            <div class="news-meta">
+                                <span>1 day ago</span>
+                                <span>4.3K views</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Top Story 3 -->
+                    <div class="news-card slide-up">
+                        <div class="news-img">
+                            <img src="https://via.placeholder.com/400x300" alt="News Image">
+                        </div>
+                        <div class="news-content">
+                            <span class="news-category">Science</span>
+                            <h3 class="news-title">ISRO Announces Gaganyaan Mission Launch Date</h3>
+                            <p class="news-excerpt">India's first manned space mission scheduled for December 2024, says ISRO chairman.</p>
+                            <div class="news-meta">
+                                <span>2 days ago</span>
+                                <span>6.1K views</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <!-- Trending Now Widget -->
+                <div class="sidebar-widget">
+                    <h3 class="widget-title">Trending Now</h3>
+                    <ul class="trending-list">
+                        <li class="trending-item">
+                            <div class="trending-number">1</div>
+                            <div class="trending-content">
+                                <h4 class="trending-title">Delhi Metro Phase 4 Inauguration Today</h4>
+                                <div class="trending-meta">2 hours ago • 8.4K views</div>
+                            </div>
+                        </li>
+                        <li class="trending-item">
+                            <div class="trending-number">2</div>
+                            <div class="trending-content">
+                                <h4 class="trending-title">India's Chess Prodigy Wins World Junior Championship</h4>
+                                <div class="trending-meta">4 hours ago • 7.2K views</div>
+                            </div>
+                        </li>
+                        <li class="trending-item">
+                            <div class="trending-number">3</div>
+                            <div class="trending-content">
+                                <h4 class="trending-title">Monsoon Arrives in Mumbai Ahead of Schedule</h4>
+                                <div class="trending-meta">6 hours ago • 6.8K views</div>
+                            </div>
+                        </li>
+                        <li class="trending-item">
+                            <div class="trending-number">4</div>
+                            <div class="trending-content">
+                                <h4 class="trending-title">New Tax Rules for Crypto Investors from July 1</h4>
+                                <div class="trending-meta">8 hours ago • 5.9K views</div>
+                            </div>
+                        </li>
+                        <li class="trending-item">
+                            <div class="trending-number">5</div>
+                            <div class="trending-content">
+                                <h4 class="trending-title">Air India Announces 500 New International Flights</h4>
+                                <div class="trending-meta">10 hours ago • 5.3K views</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Newsletter Widget -->
+                <div class="sidebar-widget">
+                    <h3 class="widget-title">Subscribe to Newsletter</h3>
+                    <p>Get daily updates on top news stories delivered to your inbox.</p>
+                    <form class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Your email address" required>
+                        <button type="submit" class="newsletter-btn">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Ad Space - Medium -->
+                <div class="ad-space medium">
+                    <p>Advertisement Space - 300x250</p>
+                </div>
+                
+                <!-- Latest Videos Widget -->
+                <div class="sidebar-widget">
+                    <h3 class="widget-title">Latest Videos</h3>
+                    <div class="video-thumbnail" style="margin-bottom: 15px;">
+                        <img src="https://via.placeholder.com/300x170" alt="Video Thumbnail" style="width: 100%; border-radius: 4px;">
+                        <h4 class="trending-title" style="margin-top: 8px;">PM Modi's Speech at G20 Summit</h4>
+                        <div class="trending-meta">3 hours ago • 45K views</div>
+                    </div>
+                    <div class="video-thumbnail">
+                        <img src="https://via.placeholder.com/300x170" alt="Video Thumbnail" style="width: 100%; border-radius: 4px;">
+                        <h4 class="trending-title" style="margin-top: 8px;">Mumbai Rains: Heavy Waterlogging in Low-Lying Areas</h4>
+                        <div class="trending-meta">5 hours ago • 32K views</div>
+                    </div>
+                </div>
+                
+                <!-- Ad Space - Small -->
+                <div class="ad-space small">
+                    <p>Advertisement Space - 300x100</p>
+                </div>
+            </aside>
+        </div>
+    </div>
+    
+    <!-- Category Sections -->
+    <div class="container">
+        <!-- National News -->
+        <h2 class="section-title">National News</h2>
+        <div class="news-grid">
+            <div class="news-card">
+                <div class="news-img">
+                    <img src="https://via.placeholder.com/400x300" alt="News Image">
+                </div>
+                <div class="news-content">
+                    <span class="news-category">National</span>
+                    <h3 class="news-title">Supreme Court Verdict on Same-Sex Marriage Today</h3>
+                    <p class="news-excerpt">The constitution bench will deliver its judgment on petitions seeking legal recognition for same-sex marriages.</p>
+                    <div class="news-meta">
+                        <span>3 hours ago</span>
+                        <span>4.2K views</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-img">
+                    <img src="https://via.placeholder.com/400x300" alt="News Image">
+                </div>
+                <div class="news-content">
+                    <span class="news-category">National</span>
+                    <h3 class="news-title">New Highway Projects Approved for Northeast States</h3>
+                    <p class="news-excerpt">The government sanctions ₹15,000 crore for road infrastructure development in the region.</p>
+                    <div class="news-meta">
+                        <span>5 hours ago</span>
+                        <span>3.1K views</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-img">
+                    <img src="https://via.placeholder.com/400x300" alt="News Image">
+                </div>
+                <div class="news-content">
+                    <span class="news-category">National</span>
+                    <h3 class="news-title">Delhi Air Quality Deteriorates to 'Poor' Category</h3>
+                    <p class="news-excerpt">Authorities implement Stage 1 of GRAP as AQI crosses 250 in several monitoring stations.</p>
+                    <div class="news-meta">
+                        <span>7 hours ago</span>
+                        <span>2.8K views</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Business News -->
+        <h2 class="section-title">Business & Economy</h2>
+        <div class="news-grid">
+            <div class="news-card">
+                <div class="news-img">
+                    <img src="https://via.placeholder.com/400x300" alt="News Image">
+                </div>
+                <div class="news-content">
+                    <span class="news-category">Business</span>
+                    <h3 class="news-title">RBI Keeps Repo Rate Unchanged at 6.5%</h3>
+                    <p class="news-excerpt">Central bank maintains status quo for third consecutive policy meeting amid inflation concerns.</p>
+                    <div class="news-meta">
+                        <span>2 hours ago</span>
+                        <span>3.5K views</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-img">
+                    <img src="https://via.placeholder.com/400x300" alt="News Image">
+                </div>
+                <div class="news-content">
+                    <span class="news-category">Business</span>
+                    <h3 class="news-title">Reliance Announces Major Green Energy Investment</h3>
+                    <p class="news-excerpt">Mukesh Ambani commits ₹75,000 crore for renewable energy projects over next 3 years.</p>
+                    <div class="news-meta">
+                        <span>4 hours ago</span>
+                        <span>3.8K views</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-img">
+                    <img src="https://via.placeholder.com/400x300" alt="News Image">
+                </div>
+                <div class="news-content">
+                    <span class="news-category">Business</span>
+                    <h3 class="news-title">India's Exports Grow 8.5% in September</h3>
+                    <p class="news-excerpt">Engineering goods and pharmaceuticals lead the export growth despite global slowdown.</p>
+                    <div class="news-meta">
+                        <span>6 hours ago</span>
+                        <span>2.9K views</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Ad Space - Large -->
+        <div class="ad-space large" style="margin: 40px 0;">
+            <p>Advertisement Space - 728x90</p>
+        </div>
+        
+        <!-- Sports News -->
+        <h2 class="section-title">Sports</h2>
+        <div class="news-grid">
+            <div class="news-card">
+                <div class="news-img">
+                    <img src="https://via.placeholder.com/400x300" alt="News Image">
+                </div>
+                <div class="news-content">
+                    <span class="news-category">Sports</span>
+                    <h3 class="news-title">India vs Pakistan World Cup Match Sold Out in Hours</h3>
+                    <p class="news-excerpt">Tickets for the October 14 clash in Ahmedabad were snapped up within 5 hours of going on sale.</p>
+                    <div class="news-meta">
+                        <span>3 hours ago</span>
+                        <span>5.2K views</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-img">
+                    <img src="https://via.placeholder.com/400x300" alt="News Image">
+                </div>
+                <div class="news-content">
+                    <span class="news-category">Sports</span>
+                    <h3 class="news-title">PV Sindhu Reaches Quarterfinals at Japan Open</h3>
+                    <p class="news-excerpt">The Indian shuttler defeats world no. 3 in straight sets to advance to last eight.</p>
+                    <div class="news-meta">
+                        <span>5 hours ago</span>
+                        <span>4.1K views</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-img">
+                    <img src="https://via.placeholder.com/400x300" alt="News Image">
+                </div>
+                <div class="news-content">
+                    <span class="news-category">Sports</span>
+                    <h3 class="news-title">AIFF Announces New Grassroots Development Program</h3>
+                    <p class="news-excerpt">The initiative aims to identify and nurture young football talent across 50 centers in India.</p>
+                    <div class="news-meta">
+                        <span>7 hours ago</span>
+                        <span>3.3K views</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>24TopNews</h3>
+                    <p>India's leading digital news platform delivering latest and breaking news from India and around the world.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Categories</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">National</a></li>
+                        <li><a href="#">International</a></li>
+                        <li><a href="#">Business</a></li>
+                        <li><a href="#">Sports</a></li>
+                        <li><a href="#">Entertainment</a></li>
+                        <li><a href="#">Technology</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Advertise With Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Use</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Contact Us</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt"></i> 123 News Street, Mumbai, India</li>
+                        <li><i class="fas fa-phone"></i> +91 9876543210</li>
+                        <li><i class="fas fa-envelope"></i> contact@24topnews.com</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 24TopNews. All Rights Reserved. | Designed with <i class="fas fa-heart" style="color: var(--primary-color);"></i> in India</p>
+            </div>
+        </div>
+    </footer>
+    
     <script>
-        // Notification System
-        function showNotification(message, type = 'info', duration = 3000) {
-            const container = document.getElementById('notificationContainer');
-            const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
-            
-            let icon;
-            switch(type) {
-                case 'success': icon = 'fa-check-circle'; break;
-                case 'error': icon = 'fa-exclamation-circle'; break;
-                case 'warning': icon = 'fa-exclamation-triangle'; break;
-                default: icon = 'fa-info-circle';
-            }
-            
-            notification.innerHTML = `
-                <i class="fas ${icon}"></i>
-                <span>${message}</span>
-            `;
-            
-            container.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.classList.add('show');
-            }, 100);
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-                setTimeout(() => {
-                    notification.remove();
-                }, 300);
-            }, duration);
-        }
-
         // Mobile Menu Toggle
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
-        const closeMobileMenu = document.getElementById('closeMobileMenu');
+        const mainNav = document.getElementById('mainNav');
         
         mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.add('active');
+            mainNav.classList.toggle('active');
         });
         
-        closeMobileMenu.addEventListener('click', () => {
-            mobileMenu.classList.remove('active');
-        });
-
-        // Dark Mode Toggle
-        const darkModeToggle = document.getElementById('darkModeToggle');
+        // Slideshow Functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.slide-dot');
         
-        darkModeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            const isDarkMode = document.body.classList.contains('dark-mode');
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
             
-            darkModeToggle.innerHTML = isDarkMode 
-                ? '<i class="fas fa-sun"></i>'
-                : '<i class="fas fa-moon"></i>';
-            
-            localStorage.setItem('darkMode', isDarkMode);
-        });
-        
-        // Check for saved dark mode preference
-        if (localStorage.getItem('darkMode') === 'true') {
-            document.body.classList.add('dark-mode');
-            darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            currentSlide = (n + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
         }
-
-        // TTS Functionality
-        const textArea = document.getElementById('text');
-        const speakButton = document.getElementById('speak');
-        const pauseResumeButton = document.getElementById('pauseResume');
-        const stopButton = document.getElementById('stop');
-        const voicesSelect = document.getElementById('voices');
-        const languagesSelect = document.getElementById('languages');
-        const rateSlider = document.getElementById('rate');
-        const pitchSlider = document.getElementById('pitch');
-        const volumeSlider = document.getElementById('volume');
-        const rateValue = document.getElementById('rateValue');
-        const pitchValue = document.getElementById('pitchValue');
-        const volumeValue = document.getElementById('volumeValue');
-        const downloadAudioBtn = document.getElementById('downloadAudio');
-        const ttsWordCount = document.getElementById('ttsWordCount');
-        const ttsBox = document.querySelector('.tts-box');
         
-        let voices = [];
-        let isSpeaking = false;
-        let isPaused = false;
-        let currentUtterance = null;
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
         
-        // Word counter for TTS
-        textArea.addEventListener('input', () => {
-            const text = textArea.value.trim();
-            const wordCount = text ? text.split(/\s+/).length : 0;
-            ttsWordCount.textContent = `Words: ${wordCount}`;
+        // Auto slide change every 5 seconds
+        let slideInterval = setInterval(nextSlide, 5000);
+        
+        // Pause on hover
+        const slideshow = document.querySelector('.hero-slideshow');
+        slideshow.addEventListener('mouseenter', () => {
+            clearInterval(slideInterval);
         });
         
-        // Populate languages dropdown
-        function populateLanguages() {
-            voices = window.speechSynthesis.getVoices();
-            const uniqueLangs = [...new Set(voices.map(voice => voice.lang))].sort();
-            
-            languagesSelect.innerHTML = '';
-            
-            // Add all available languages
-            uniqueLangs.forEach(lang => {
-                const option = document.createElement('option');
-                option.value = lang;
-                option.textContent = getLanguageName(lang);
-                languagesSelect.appendChild(option);
+        slideshow.addEventListener('mouseleave', () => {
+            slideInterval = setInterval(nextSlide, 5000);
+        });
+        
+        // Dot navigation
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                showSlide(index);
+                clearInterval(slideInterval);
+                slideInterval = setInterval(nextSlide, 5000);
             });
-            
-            populateVoices();
-        }
-        
-        // Get language name
-        function getLanguageName(langCode) {
-            const languageNames = {
-                'en-US': 'English (US)',
-                'en-GB': 'English (UK)',
-                'es-ES': 'Spanish',
-                'fr-FR': 'French',
-                'de-DE': 'German',
-                'it-IT': 'Italian',
-                'ja-JP': 'Japanese',
-                'ko-KR': 'Korean',
-                'pt-BR': 'Portuguese',
-                'ru-RU': 'Russian',
-                'zh-CN': 'Chinese',
-                'ar-SA': 'Arabic',
-                'hi-IN': 'Hindi',
-                'bn-IN': 'Bengali'
-            };
-            
-            return languageNames[langCode] || langCode;
-        }
-        
-        // Populate voices dropdown
-        function populateVoices() {
-            const selectedLang = languagesSelect.value;
-            const filteredVoices = voices.filter(voice => voice.lang === selectedLang);
-                
-            voicesSelect.innerHTML = '';
-            
-            if (filteredVoices.length === 0) {
-                const option = document.createElement('option');
-                option.value = '';
-                option.textContent = 'No voices available';
-                voicesSelect.appendChild(option);
-                voicesSelect.disabled = true;
-                showNotification('No voices available for selected language', 'warning');
-            } else {
-                voicesSelect.disabled = false;
-                
-                // Add all voices
-                filteredVoices.forEach((voice, index) => {
-                    const option = document.createElement('option');
-                    option.value = voices.indexOf(voice);
-                    option.textContent = `${voice.name} (${getLanguageName(voice.lang)})`;
-                    voicesSelect.appendChild(option);
-                });
-            }
-        }
-        
-        // Initialize speech synthesis
-        if (speechSynthesis.onvoiceschanged !== undefined) {
-            speechSynthesis.onvoiceschanged = populateLanguages;
-        }
-        
-        // Check if voices are already loaded
-        if (speechSynthesis.getVoices().length > 0) {
-            populateLanguages();
-        }
-        
-        // Event listeners
-        languagesSelect.addEventListener('change', populateVoices);
-        
-        rateSlider.addEventListener('input', () => rateValue.textContent = rateSlider.value);
-        pitchSlider.addEventListener('input', () => pitchValue.textContent = pitchSlider.value);
-        volumeSlider.addEventListener('input', () => volumeValue.textContent = volumeSlider.value);
-        
-        // Speak text function
-        function speakText() {
-            const text = textArea.value;
-            if (!text.trim()) {
-                showNotification('Please enter some text to speak', 'error');
-                return;
-            }
-            
-            const selectedVoiceIndex = parseInt(voicesSelect.value);
-            if (isNaN(selectedVoiceIndex)) {
-                showNotification('Please select a valid voice', 'error');
-                return;
-            }
-            
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.voice = voices[selectedVoiceIndex];
-            utterance.lang = voices[selectedVoiceIndex].lang;
-            utterance.rate = parseFloat(rateSlider.value);
-            utterance.pitch = parseFloat(pitchSlider.value);
-            utterance.volume = parseFloat(volumeSlider.value);
-            
-            utterance.onstart = () => {
-                isSpeaking = true;
-                isPaused = false;
-                ttsBox.classList.add('speaking');
-                updateButtonStates();
-            };
-            
-            utterance.onend = () => {
-                isSpeaking = false;
-                isPaused = false;
-                ttsBox.classList.remove('speaking');
-                updateButtonStates();
-            };
-            
-            utterance.onerror = (event) => {
-                console.error('SpeechSynthesis error:', event);
-                showNotification('Error in text-to-speech conversion', 'error');
-                isSpeaking = false;
-                isPaused = false;
-                ttsBox.classList.remove('speaking');
-                updateButtonStates();
-            };
-            
-            window.speechSynthesis.speak(utterance);
-            currentUtterance = utterance;
-        }
-        
-        // Update button states
-        function updateButtonStates() {
-            speakButton.disabled = isSpeaking && !isPaused;
-            pauseResumeButton.disabled = !isSpeaking && !isPaused;
-            stopButton.disabled = !isSpeaking && !isPaused;
-            
-            pauseResumeButton.innerHTML = isPaused 
-                ? '<i class="fas fa-play"></i> Resume'
-                : '<i class="fas fa-pause"></i> Pause';
-        }
-        
-        // Button events
-        speakButton.addEventListener('click', () => {
-            if (isPaused) {
-                window.speechSynthesis.resume();
-                isPaused = false;
-            } else if (!isSpeaking) {
-                speakText();
-            }
-            updateButtonStates();
         });
         
-        pauseResumeButton.addEventListener('click', () => {
-            if (isSpeaking && !isPaused) {
-                window.speechSynthesis.pause();
-                isPaused = true;
-            } else if (isPaused) {
-                window.speechSynthesis.resume();
-                isPaused = false;
-            }
-            updateButtonStates();
-        });
+        // Category Tab Functionality
+        const tabBtns = document.querySelectorAll('.tab-btn');
         
-        stopButton.addEventListener('click', () => {
-            window.speechSynthesis.cancel();
-            isSpeaking = false;
-            isPaused = false;
-            ttsBox.classList.remove('speaking');
-            updateButtonStates();
-        });
-        
-        // Download audio
-        downloadAudioBtn.addEventListener('click', async () => {
-            const text = textArea.value;
-            if (!text.trim()) {
-                showNotification('Please enter text to download', 'error');
-                return;
-            }
-            
-            const selectedVoiceIndex = parseInt(voicesSelect.value);
-            if (isNaN(selectedVoiceIndex)) {
-                showNotification('Please select a valid voice', 'error');
-                return;
-            }
-            
-            downloadAudioBtn.innerHTML = '<i class="fas fa-spinner loading"></i> Processing...';
-            downloadAudioBtn.disabled = true;
-            
-            try {
-                // For demo purposes, we'll just show a success message after a delay
-                setTimeout(() => {
-                    showNotification('Audio ready for download', 'success');
-                    downloadAudioBtn.innerHTML = '<i class="fas fa-download"></i> Download';
-                    downloadAudioBtn.disabled = false;
-                }, 2000);
-            } catch (error) {
-                console.error('Error generating audio:', error);
-                showNotification('Error generating audio', 'error');
-                downloadAudioBtn.innerHTML = '<i class="fas fa-download"></i> Download';
-                downloadAudioBtn.disabled = false;
-            }
-        });
-        
-        // STT Functionality
-        const sttBox = document.querySelector('.stt-box');
-        const transcription = document.getElementById('transcription');
-        const recordButton = document.getElementById('record');
-        const copyButton = document.getElementById('copyText');
-        const clearButton = document.getElementById('clearText');
-        const recordText = document.getElementById('recordText');
-        const emotionDisplay = document.getElementById('emotionDisplay');
-        const confidenceBar = document.getElementById('confidenceBar');
-        const confidenceDisplay = document.getElementById('confidence');
-        const sttWordCount = document.getElementById('sttWordCount');
-        
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        
-        if (SpeechRecognition) {
-            const recognition = new SpeechRecognition();
-            recognition.continuous = true;
-            recognition.interimResults = true;
-            recognition.maxAlternatives = 3;
-            
-            let isRecording = false;
-            let finalTranscript = '';
-            
-            // Word counter for STT
-            transcription.addEventListener('input', () => {
-                const text = transcription.value.trim();
-                const wordCount = text ? text.split(/\s+/).length : 0;
-                sttWordCount.textContent = `Words: ${wordCount}`;
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tabBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                // Here you would typically filter news by category
+                // This would require additional JavaScript or server-side code
             });
+        });
+        
+        // Animation on scroll
+        window.addEventListener('scroll', () => {
+            const elements = document.querySelectorAll('.slide-up, .fade-in');
             
-            // Emotion detection
-            function detectEmotion(transcript, confidence) {
-                const emotions = [
-                    { name: "Happy 😊", keywords: ["happy", "good", "great", "thanks", "awesome"] },
-                    { name: "Sad 😢", keywords: ["sad", "bad", "sorry", "cry", "unhappy"] },
-                    { name: "Angry 😠", keywords: ["angry", "mad", "hate", "annoyed", "frustrated"] },
-                    { name: "Surprised 😲", keywords: ["wow", "oh", "surprise", "amazing", "unbelievable"] },
-                    { name: "Neutral 😐", keywords: [] }
-                ];
+            elements.forEach(el => {
+                const elPosition = el.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.3;
                 
-                // Check for keywords
-                for (const emotion of emotions) {
-                    for (const keyword of emotion.keywords) {
-                        if (transcript.toLowerCase().includes(keyword)) {
-                            return emotion.name;
-                        }
-                    }
-                }
-                
-                // Fallback based on confidence and length
-                if (confidence > 0.8 && transcript.split(' ').length > 5) {
-                    return "Confident 😎";
-                } else if (confidence < 0.4) {
-                    return "Uncertain 🤔";
-                }
-                
-                return "Neutral 😐";
-            }
-            
-            // Record button event
-            recordButton.addEventListener('click', () => {
-                if (!isRecording) {
-                    const selectedLang = languagesSelect.value || 'en-US';
-                    recognition.lang = selectedLang;
-                    recognition.start();
-                    isRecording = true;
-                    recordText.textContent = 'Stop Recording';
-                    recordButton.innerHTML = '<i class="fas fa-stop"></i> Stop Recording';
-                    finalTranscript = '';
-                    sttBox.classList.add('recording');
-                    showNotification('Recording started', 'info');
-                } else {
-                    recognition.stop();
-                    isRecording = false;
-                    recordText.textContent = 'Start Recording';
-                    recordButton.innerHTML = '<i class="fas fa-microphone"></i> Start Recording';
-                    sttBox.classList.remove('recording');
+                if(elPosition < screenPosition) {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
                 }
             });
-            
-            // Recognition result event
-            recognition.onresult = (event) => {
-                let interimTranscript = '';
-                let highestConfidence = 0;
-                
-                for (let i = event.resultIndex; i < event.results.length; i++) {
-                    const transcript = event.results[i][0].transcript;
-                    const confidence = event.results[i][0].confidence;
-                    
-                    if (confidence > highestConfidence) {
-                        highestConfidence = confidence;
-                    }
-                    
-                    if (event.results[i].isFinal) {
-                        finalTranscript += transcript + ' ';
-                        
-                        // Emotion detection
-                        const emotion = detectEmotion(transcript, confidence);
-                        emotionDisplay.textContent = emotion;
-                        
-                        // Update confidence display
-                        const confidencePercent = Math.round(confidence * 100);
-                        confidenceBar.style.width = `${confidencePercent}%`;
-                        confidenceDisplay.textContent = `Confidence: ${confidencePercent}%`;
-                    } else {
-                        interimTranscript += transcript;
-                    }
-                }
-                
-                transcription.value = finalTranscript + interimTranscript;
-                
-                // Update word count
-                const text = transcription.value.trim();
-                const wordCount = text ? text.split(/\s+/).length : 0;
-                sttWordCount.textContent = `Words: ${wordCount}`;
-            };
-            
-            // Recognition end event
-            recognition.onend = () => {
-                if (isRecording) {
-                    recognition.start(); // Continue recording if not manually stopped
-                } else {
-                    isRecording = false;
-                    recordText.textContent = 'Start Recording';
-                    recordButton.innerHTML = '<i class="fas fa-microphone"></i> Start Recording';
-                    sttBox.classList.remove('recording');
-                }
-            };
-            
-            // Recognition error event
-            recognition.onerror = (event) => {
-                console.error('Speech recognition error:', event.error);
-                
-                let errorMessage = 'Speech recognition error: ';
-                switch(event.error) {
-                    case 'no-speech':
-                        errorMessage += 'No speech was detected';
-                        break;
-                    case 'audio-capture':
-                        errorMessage += 'Audio capture failed';
-                        break;
-                    case 'not-allowed':
-                        errorMessage += 'Microphone access was denied';
-                        break;
-                    default:
-                        errorMessage += event.error;
-                }
-                
-                showNotification(errorMessage, 'error');
-                isRecording = false;
-                recordText.textContent = 'Start Recording';
-                recordButton.innerHTML = '<i class="fas fa-microphone"></i> Start Recording';
-                sttBox.classList.remove('recording');
-            };
-        } else {
-            recordButton.disabled = true;
-            recordButton.innerHTML = '<i class="fas fa-microphone-slash"></i> Not Supported';
-            showNotification('Your browser does not support speech recognition', 'error');
-        }
-        
-        // Copy text button
-        copyButton.addEventListener('click', () => {
-            const text = transcription.value;
-            if (text.trim()) {
-                navigator.clipboard.writeText(text).then(() => {
-                    showNotification('Text copied to clipboard', 'success');
-                }).catch(err => {
-                    console.error('Could not copy text: ', err);
-                    showNotification('Error copying text', 'error');
-                });
-            } else {
-                showNotification('No text to copy', 'error');
-            }
         });
         
-        // Clear text button
-        clearButton.addEventListener('click', () => {
-            transcription.value = '';
-            sttWordCount.textContent = 'Words: 0';
-            emotionDisplay.textContent = '-';
-            confidenceBar.style.width = '0%';
-            confidenceDisplay.textContent = 'Confidence: 0%';
-            showNotification('Text cleared', 'success');
+        // Trigger animations on page load for elements in viewport
+        window.addEventListener('load', () => {
+            const elements = document.querySelectorAll('.slide-up, .fade-in');
+            
+            elements.forEach(el => {
+                const elPosition = el.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.3;
+                
+                if(elPosition < screenPosition) {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }
+            });
         });
-        
-        // Initialize
-        updateButtonStates();
-        
-        // Show welcome message
-        setTimeout(() => {
-            showNotification('Welcome to VoiceSync! Start converting text or speech.', 'info', 5000);
-        }, 1000);
     </script>
 </body>
 </html>
