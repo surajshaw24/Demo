@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>NewsHub - Latest Breaking News</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -14,13 +14,14 @@
             --dark-color: #212529;
             --text-color: #333;
             --text-light: #6c757d;
-            --font-main: 'Segoe UI', Roboto, sans-serif;
+            --font-main: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
         
         body {
@@ -28,6 +29,7 @@
             color: var(--text-color);
             line-height: 1.6;
             background-color: #f5f5f5;
+            overflow-x: hidden;
         }
         
         a {
@@ -40,6 +42,7 @@
         }
         
         .container {
+            width: 100%;
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 15px;
@@ -59,6 +62,9 @@
             border-radius: 4px;
             font-weight: 600;
             transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
         }
         
         .btn:hover {
@@ -66,18 +72,32 @@
             transform: translateY(-2px);
         }
         
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--secondary-color);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 10px;
+        }
+        
         /* Top Header */
         .top-header {
             background: var(--dark-color);
             color: white;
             padding: 8px 0;
-            font-size: 14px;
+            font-size: 12px;
+            position: relative;
+            z-index: 1000;
         }
         
         .trending-ticker {
             flex: 1;
             overflow: hidden;
             white-space: nowrap;
+            margin-right: 10px;
         }
         
         .trending-ticker span {
@@ -92,46 +112,51 @@
         }
         
         .search-bar {
-            margin: 0 20px;
+            margin: 0 10px;
             position: relative;
+            flex: 0 0 120px;
         }
         
         .search-bar input {
-            padding: 5px 10px;
+            padding: 5px 10px 5px 30px;
             border-radius: 20px;
             border: none;
-            width: 200px;
+            width: 100%;
+            font-size: 12px;
         }
         
         .search-bar i {
             position: absolute;
-            right: 10px;
+            left: 10px;
             top: 6px;
             color: var(--text-light);
+            font-size: 12px;
         }
         
         .weather-widget {
             display: flex;
             align-items: center;
+            font-size: 12px;
         }
         
         .weather-widget i {
             margin-right: 5px;
             color: #f39c12;
+            font-size: 14px;
         }
         
         /* Main Header */
         .main-header {
             background: white;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            padding: 15px 0;
+            padding: 10px 0;
             position: sticky;
             top: 0;
             z-index: 100;
         }
         
         .logo {
-            font-size: 28px;
+            font-size: 22px;
             font-weight: 700;
             color: var(--primary-color);
         }
@@ -143,11 +168,11 @@
         .live-badge {
             background: var(--primary-color);
             color: white;
-            padding: 5px 10px;
+            padding: 4px 8px;
             border-radius: 4px;
-            font-size: 12px;
+            font-size: 10px;
             font-weight: bold;
-            margin-left: 15px;
+            margin-left: 10px;
             animation: pulse 1.5s infinite;
         }
         
@@ -155,6 +180,10 @@
             0% { opacity: 1; }
             50% { opacity: 0.6; }
             100% { opacity: 1; }
+        }
+        
+        .main-nav {
+            transition: all 0.3s ease;
         }
         
         .main-nav ul {
@@ -166,9 +195,11 @@
         }
         
         .main-nav ul li a {
-            padding: 10px 15px;
+            padding: 8px 12px;
             font-weight: 600;
             transition: color 0.3s ease;
+            font-size: 14px;
+            display: block;
         }
         
         .main-nav ul li a:hover {
@@ -200,19 +231,22 @@
         .breaking-news {
             background: var(--primary-color);
             color: white;
-            padding: 10px 0;
+            padding: 8px 0;
+            font-size: 13px;
         }
         
         .breaking-news .container {
             display: flex;
+            align-items: center;
         }
         
         .breaking-label {
             background: var(--dark-color);
-            padding: 5px 10px;
+            padding: 4px 8px;
             font-weight: bold;
-            margin-right: 15px;
+            margin-right: 10px;
             white-space: nowrap;
+            font-size: 12px;
         }
         
         .breaking-ticker {
@@ -228,12 +262,12 @@
         
         /* Hero Section */
         .hero {
-            padding: 30px 0;
+            padding: 20px 0;
         }
         
         .hero-article {
             position: relative;
-            height: 400px;
+            height: 300px;
             border-radius: 8px;
             overflow: hidden;
         }
@@ -251,45 +285,50 @@
             right: 0;
             background: linear-gradient(transparent, rgba(0,0,0,0.8));
             color: white;
-            padding: 30px;
+            padding: 20px;
         }
         
         .hero-category {
             display: inline-block;
             background: var(--primary-color);
             color: white;
-            padding: 5px 10px;
+            padding: 4px 8px;
             border-radius: 4px;
-            font-size: 12px;
-            margin-bottom: 10px;
+            font-size: 11px;
+            margin-bottom: 8px;
         }
         
         .hero-title {
-            font-size: 28px;
-            margin-bottom: 10px;
+            font-size: 20px;
+            margin-bottom: 8px;
+            line-height: 1.3;
         }
         
         .hero-summary {
-            margin-bottom: 15px;
-            font-size: 16px;
+            margin-bottom: 12px;
+            font-size: 14px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
         
         /* Trending Section */
         .trending-section {
-            padding: 30px 0;
+            padding: 20px 0;
         }
         
         .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         
         .section-title {
-            font-size: 22px;
+            font-size: 18px;
             position: relative;
-            padding-bottom: 10px;
+            padding-bottom: 8px;
         }
         
         .section-title:after {
@@ -297,15 +336,15 @@
             position: absolute;
             bottom: 0;
             left: 0;
-            width: 50px;
+            width: 40px;
             height: 3px;
             background: var(--primary-color);
         }
         
         .trending-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            grid-template-columns: 1fr;
+            gap: 15px;
         }
         
         .trending-item {
@@ -314,42 +353,50 @@
             overflow: hidden;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             transition: transform 0.3s ease;
+            display: flex;
         }
         
         .trending-item:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
         }
         
         .trending-number {
-            font-size: 40px;
+            font-size: 30px;
             font-weight: bold;
             color: #eee;
             margin-right: 10px;
+            min-width: 40px;
+            text-align: center;
+            align-self: center;
         }
         
         .trending-content {
-            padding: 15px;
+            padding: 12px;
         }
         
         .trending-title {
-            font-size: 18px;
-            margin-bottom: 10px;
+            font-size: 16px;
+            margin-bottom: 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
         
         .trending-meta {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-light);
         }
         
         /* Category News */
         .category-section {
-            padding: 30px 0;
+            padding: 20px 0;
         }
         
         .category-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
         }
         
         .category-item {
@@ -361,40 +408,44 @@
         
         .category-image {
             width: 100%;
-            height: 150px;
+            height: 120px;
             object-fit: cover;
         }
         
         .category-content {
-            padding: 15px;
+            padding: 12px;
         }
         
         .category-name {
             color: var(--primary-color);
-            font-size: 14px;
+            font-size: 12px;
             font-weight: bold;
             margin-bottom: 5px;
         }
         
         .category-title {
-            font-size: 16px;
-            margin-bottom: 10px;
+            font-size: 14px;
+            margin-bottom: 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
         
         .category-meta {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-light);
         }
         
         /* Blog Section */
         .blog-section {
-            padding: 30px 0;
+            padding: 20px 0;
         }
         
         .blog-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
         }
         
         .blog-item {
@@ -406,17 +457,17 @@
         
         .blog-image {
             width: 100%;
-            height: 120px;
+            height: 100px;
             object-fit: cover;
         }
         
         .blog-content {
-            padding: 15px;
+            padding: 12px;
         }
         
         .blog-title {
-            font-size: 14px;
-            margin-bottom: 10px;
+            font-size: 13px;
+            margin-bottom: 8px;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
@@ -424,29 +475,29 @@
         }
         
         .blog-meta {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-light);
         }
         
         /* Ad Sections */
         .ad-section {
-            padding: 30px 0;
+            padding: 20px 0;
             text-align: center;
         }
         
         .ad-banner {
             background: #eee;
-            padding: 20px;
+            padding: 15px;
             border-radius: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         
         .ad-slider {
             background: #eee;
-            padding: 20px;
+            padding: 15px;
             border-radius: 8px;
-            margin-bottom: 20px;
-            height: 300px;
+            margin-bottom: 15px;
+            height: 200px;
             position: relative;
             overflow: hidden;
         }
@@ -469,21 +520,21 @@
         .main-footer {
             background: var(--dark-color);
             color: white;
-            padding: 50px 0 20px;
+            padding: 30px 0 15px;
         }
         
         .footer-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 30px;
-            margin-bottom: 30px;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
         }
         
         .footer-title {
-            font-size: 18px;
-            margin-bottom: 20px;
+            font-size: 16px;
+            margin-bottom: 15px;
             position: relative;
-            padding-bottom: 10px;
+            padding-bottom: 8px;
         }
         
         .footer-title:after {
@@ -497,12 +548,13 @@
         }
         
         .footer-links li {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         
         .footer-links a {
             color: #aaa;
             transition: color 0.3s ease;
+            font-size: 13px;
         }
         
         .footer-links a:hover {
@@ -511,29 +563,32 @@
         
         .newsletter input {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
+            padding: 8px;
+            margin-bottom: 8px;
             border-radius: 4px;
             border: none;
+            font-size: 13px;
         }
         
         .social-links {
             display: flex;
             justify-content: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
         }
         
         .social-links a {
             display: inline-block;
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             background: #333;
             color: white;
             border-radius: 50%;
             text-align: center;
-            line-height: 40px;
-            margin: 0 5px;
+            line-height: 36px;
+            margin: 5px;
             transition: background 0.3s ease;
+            font-size: 14px;
         }
         
         .social-links a:hover {
@@ -542,20 +597,104 @@
         
         .copyright {
             text-align: center;
-            padding-top: 20px;
+            padding-top: 15px;
             border-top: 1px solid #444;
             color: #aaa;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 80%;
+            max-width: 300px;
+            height: 100vh;
+            background: white;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            overflow-y: auto;
+            padding: 20px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .mobile-menu.active {
+            left: 0;
+        }
+        
+        .mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .mobile-menu-logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .close-menu {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--secondary-color);
+        }
+        
+        .mobile-nav ul li {
+            margin-bottom: 10px;
+        }
+        
+        .mobile-nav ul li a {
+            display: block;
+            padding: 10px;
+            font-weight: 600;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .mobile-nav ul li a i {
+            float: right;
+        }
+        
+        .mobile-dropdown {
+            display: none;
+            padding-left: 15px;
+        }
+        
+        .mobile-dropdown li a {
+            font-weight: normal;
             font-size: 14px;
         }
         
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+        }
+        
+        .overlay.active {
+            display: block;
+        }
+        
         /* Responsive Styles */
-        @media (max-width: 992px) {
-            .trending-grid, .category-grid {
+        @media (min-width: 576px) {
+            .trending-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
             
             .blog-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(3, 1fr);
             }
             
             .footer-grid {
@@ -563,59 +702,162 @@
             }
         }
         
-        @media (max-width: 768px) {
-            .top-header .flex {
-                flex-direction: column;
-                align-items: flex-start;
+        @media (min-width: 768px) {
+            .top-header {
+                font-size: 14px;
             }
             
             .search-bar {
-                margin: 10px 0;
-                width: 100%;
+                flex: 0 0 150px;
             }
             
             .search-bar input {
-                width: 100%;
+                font-size: 14px;
+            }
+            
+            .logo {
+                font-size: 24px;
+            }
+            
+            .live-badge {
+                font-size: 12px;
+                padding: 5px 10px;
+            }
+            
+            .main-nav ul li a {
+                font-size: 15px;
+            }
+            
+            .breaking-news {
+                font-size: 14px;
+            }
+            
+            .hero-title {
+                font-size: 24px;
+            }
+            
+            .hero-summary {
+                font-size: 15px;
+            }
+            
+            .section-title {
+                font-size: 20px;
+            }
+            
+            .trending-title {
+                font-size: 17px;
+            }
+            
+            .category-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .footer-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (min-width: 992px) {
+            .menu-toggle {
+                display: none;
+            }
+            
+            .mobile-menu {
+                display: none;
+            }
+            
+            .overlay {
+                display: none !important;
+            }
+            
+            .trending-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .category-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .blog-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .footer-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        
+        @media (max-width: 991px) {
+            .menu-toggle {
+                display: block;
             }
             
             .main-nav {
                 display: none;
             }
-            
-            .hero-title {
-                font-size: 22px;
-            }
-        }
-        
-        @media (max-width: 576px) {
-            .trending-grid, .category-grid, .blog-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .footer-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .hero-article {
-                height: 300px;
-            }
         }
     </style>
 </head>
 <body>
+    <!-- Mobile Menu Overlay -->
+    <div class="overlay"></div>
+    
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <div class="mobile-menu-header">
+            <div class="mobile-menu-logo">News<span>Hub</span></div>
+            <button class="close-menu"><i class="fas fa-times"></i></button>
+        </div>
+        <nav class="mobile-nav">
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li>
+                    <a href="#">Politics <i class="fas fa-chevron-down"></i></a>
+                    <ul class="mobile-dropdown">
+                        <li><a href="#">National</a></li>
+                        <li><a href="#">International</a></li>
+                        <li><a href="#">Elections</a></li>
+                        <li><a href="#">Policy</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">Business <i class="fas fa-chevron-down"></i></a>
+                    <ul class="mobile-dropdown">
+                        <li><a href="#">Markets</a></li>
+                        <li><a href="#">Economy</a></li>
+                        <li><a href="#">Startups</a></li>
+                        <li><a href="#">Personal Finance</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">Technology <i class="fas fa-chevron-down"></i></a>
+                    <ul class="mobile-dropdown">
+                        <li><a href="#">Gadgets</a></li>
+                        <li><a href="#">AI</a></li>
+                        <li><a href="#">Cybersecurity</a></li>
+                        <li><a href="#">Apps</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Sports</a></li>
+                <li><a href="#">Entertainment</a></li>
+                <li><a href="#">More <i class="fas fa-chevron-down"></i></a></li>
+            </ul>
+        </nav>
+    </div>
+    
     <!-- Top Header -->
     <header class="top-header">
         <div class="container flex">
             <div class="trending-ticker">
-                <span>• Stock markets hit record high • Election polls show surprising results • New tech gadget breaks sales records • Sports team makes historic comeback • Scientists discover breakthrough in medicine</span>
+                <span>• Stock markets hit record high • Election polls show surprising results • New tech gadget breaks sales records</span>
             </div>
             <div class="search-bar">
-                <input type="text" placeholder="Search news...">
+                <input type="text" placeholder="Search...">
                 <i class="fas fa-search"></i>
             </div>
             <div class="weather-widget">
                 <i class="fas fa-sun"></i>
-                <span>32°C, Sunny</span>
+                <span>32°C</span>
             </div>
         </div>
     </header>
@@ -623,9 +865,12 @@
     <!-- Main Header -->
     <header class="main-header">
         <div class="container flex">
+            <button class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
             <div class="logo">News<span>Hub</span></div>
             <div class="live-badge">
-                <i class="fas fa-circle"></i> LIVE 24/7
+                <i class="fas fa-circle"></i> LIVE
             </div>
             <nav class="main-nav">
                 <ul>
@@ -648,18 +893,8 @@
                             <li><a href="#">Personal Finance</a></li>
                         </ul>
                     </li>
-                    <li>
-                        <a href="#">Technology <i class="fas fa-caret-down"></i></a>
-                        <ul class="dropdown">
-                            <li><a href="#">Gadgets</a></li>
-                            <li><a href="#">AI</a></li>
-                            <li><a href="#">Cybersecurity</a></li>
-                            <li><a href="#">Apps</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="#">Technology</a></li>
                     <li><a href="#">Sports</a></li>
-                    <li><a href="#">Entertainment</a></li>
-                    <li><a href="#">More <i class="fas fa-caret-down"></i></a></li>
                 </ul>
             </nav>
         </div>
@@ -670,7 +905,7 @@
         <div class="container">
             <div class="breaking-label">BREAKING</div>
             <div class="breaking-ticker">
-                <span>• Major earthquake hits coastal region - rescue operations underway • Government announces new economic stimulus package • Celebrity couple announces divorce after 10 years of marriage • Breaking sports news: Team wins championship in overtime</span>
+                <span>• Major earthquake hits coastal region - rescue operations underway • Government announces new economic stimulus package</span>
             </div>
         </div>
     </section>
@@ -683,7 +918,7 @@
                 <div class="hero-content">
                     <span class="hero-category">WORLD NEWS</span>
                     <h1 class="hero-title">Global Leaders Gather for Climate Summit Amid Rising Concerns</h1>
-                    <p class="hero-summary">World leaders are meeting in emergency session to address the growing climate crisis as new reports show accelerating ice melt and rising sea levels.</p>
+                    <p class="hero-summary">World leaders are meeting in emergency session to address the growing climate crisis as new reports show accelerating ice melt.</p>
                     <a href="#" class="btn">Read More</a>
                 </div>
             </div>
@@ -698,21 +933,21 @@
                 <a href="#" class="btn">View All</a>
             </div>
             <div class="trending-grid">
-                <div class="trending-item flex">
+                <div class="trending-item">
                     <div class="trending-number">1</div>
                     <div class="trending-content">
                         <h3 class="trending-title">Stock Markets Reach All-Time High Amid Economic Recovery</h3>
                         <div class="trending-meta">2 hours ago • 1,245 views</div>
                     </div>
                 </div>
-                <div class="trending-item flex">
+                <div class="trending-item">
                     <div class="trending-number">2</div>
                     <div class="trending-content">
                         <h3 class="trending-title">New Study Reveals Benefits of Mediterranean Diet</h3>
                         <div class="trending-meta">4 hours ago • 892 views</div>
                     </div>
                 </div>
-                <div class="trending-item flex">
+                <div class="trending-item">
                     <div class="trending-number">3</div>
                     <div class="trending-content">
                         <h3 class="trending-title">Tech Giant Unveils Revolutionary Smartphone With Foldable Screen</h3>
@@ -727,7 +962,7 @@
     <section class="category-section">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">Latest News by Category</h2>
+                <h2 class="section-title">Latest News</h2>
                 <a href="#" class="btn">View All</a>
             </div>
             <div class="category-grid">
@@ -736,7 +971,7 @@
                     <div class="category-content">
                         <div class="category-name">POLITICS</div>
                         <h3 class="category-title">Senate Passes Controversial Bill After All-Night Session</h3>
-                        <div class="category-meta">By John Smith • 1 hour ago</div>
+                        <div class="category-meta">1 hour ago</div>
                     </div>
                 </div>
                 <div class="category-item">
@@ -744,7 +979,7 @@
                     <div class="category-content">
                         <div class="category-name">BUSINESS</div>
                         <h3 class="category-title">Major Merger Creates New Market Leader in Tech Sector</h3>
-                        <div class="category-meta">By Sarah Johnson • 3 hours ago</div>
+                        <div class="category-meta">3 hours ago</div>
                     </div>
                 </div>
                 <div class="category-item">
@@ -752,7 +987,7 @@
                     <div class="category-content">
                         <div class="category-name">TECHNOLOGY</div>
                         <h3 class="category-title">Breakthrough in Quantum Computing Announced</h3>
-                        <div class="category-meta">By Mike Chen • 5 hours ago</div>
+                        <div class="category-meta">5 hours ago</div>
                     </div>
                 </div>
                 <div class="category-item">
@@ -760,7 +995,7 @@
                     <div class="category-content">
                         <div class="category-name">SPORTS</div>
                         <h3 class="category-title">Underdog Team Advances to Finals in Stunning Upset</h3>
-                        <div class="category-meta">By Alex Rodriguez • 2 hours ago</div>
+                        <div class="category-meta">2 hours ago</div>
                     </div>
                 </div>
             </div>
@@ -779,28 +1014,21 @@
                     <img src="https://via.placeholder.com/300x120" alt="Blog" class="blog-image">
                     <div class="blog-content">
                         <h3 class="blog-title">How Remote Work Is Changing Urban Real Estate Markets</h3>
-                        <div class="blog-meta">By David Wilson • 2 days ago • 5 min read</div>
+                        <div class="blog-meta">By David Wilson • 2 days ago</div>
                     </div>
                 </div>
                 <div class="blog-item">
                     <img src="https://via.placeholder.com/300x120" alt="Blog" class="blog-image">
                     <div class="blog-content">
                         <h3 class="blog-title">The Future of Electric Vehicles: What to Expect in 2024</h3>
-                        <div class="blog-meta">By Emily Park • 1 day ago • 7 min read</div>
+                        <div class="blog-meta">By Emily Park • 1 day ago</div>
                     </div>
                 </div>
                 <div class="blog-item">
                     <img src="https://via.placeholder.com/300x120" alt="Blog" class="blog-image">
                     <div class="blog-content">
                         <h3 class="blog-title">Mental Health in the Digital Age: Finding Balance</h3>
-                        <div class="blog-meta">By Dr. Lisa Wong • 3 days ago • 8 min read</div>
-                    </div>
-                </div>
-                <div class="blog-item">
-                    <img src="https://via.placeholder.com/300x120" alt="Blog" class="blog-image">
-                    <div class="blog-content">
-                        <h3 class="blog-title">Sustainable Travel: How to Explore the World Responsibly</h3>
-                        <div class="blog-meta">By James Carter • 4 days ago • 6 min read</div>
+                        <div class="blog-meta">By Dr. Lisa Wong • 3 days ago</div>
                     </div>
                 </div>
             </div>
@@ -810,11 +1038,6 @@
     <!-- Ad Sections -->
     <section class="ad-section">
         <div class="container">
-            <div class="ad-banner">
-                <h3>Advertisement</h3>
-                <img src="https://via.placeholder.com/728x90" alt="Advertisement">
-            </div>
-            
             <div class="ad-slider">
                 <h3>Sponsored Content</h3>
                 <div class="ad-slide active">
@@ -827,11 +1050,6 @@
                     <img src="https://via.placeholder.com/600x300" alt="Ad 3">
                 </div>
             </div>
-            
-            <div class="ad-banner">
-                <h3>Advertisement</h3>
-                <img src="https://via.placeholder.com/300x250" alt="Advertisement">
-            </div>
         </div>
     </section>
     
@@ -841,11 +1059,10 @@
             <div class="footer-grid">
                 <div class="footer-col">
                     <h3 class="footer-title">About Us</h3>
-                    <p>NewsHub is your trusted source for the latest breaking news, in-depth analysis, and engaging content across all categories.</p>
+                    <p>NewsHub is your trusted source for the latest breaking news and in-depth analysis.</p>
                     <ul class="footer-links">
                         <li><a href="#">Contact Us</a></li>
                         <li><a href="#">Careers</a></li>
-                        <li><a href="#">Advertise With Us</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -855,10 +1072,6 @@
                         <li><a href="#">Business</a></li>
                         <li><a href="#">Technology</a></li>
                         <li><a href="#">Sports</a></li>
-                        <li><a href="#">Entertainment</a></li>
-                        <li><a href="#">Health</a></li>
-                        <li><a href="#">Science</a></li>
-                        <li><a href="#">World</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -867,16 +1080,7 @@
                         <li><a href="#">Terms of Service</a></li>
                         <li><a href="#">Privacy Policy</a></li>
                         <li><a href="#">Cookie Policy</a></li>
-                        <li><a href="#">GDPR Compliance</a></li>
                     </ul>
-                </div>
-                <div class="footer-col">
-                    <h3 class="footer-title">Newsletter</h3>
-                    <p>Subscribe to our newsletter for daily news updates.</p>
-                    <form class="newsletter">
-                        <input type="email" placeholder="Your Email Address">
-                        <button type="submit" class="btn">Subscribe</button>
-                    </form>
                 </div>
             </div>
             
@@ -885,8 +1089,6 @@
                 <a href="#"><i class="fab fa-twitter"></i></a>
                 <a href="#"><i class="fab fa-instagram"></i></a>
                 <a href="#"><i class="fab fa-youtube"></i></a>
-                <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                <a href="#"><i class="fab fa-whatsapp"></i></a>
             </div>
             
             <div class="copyright">
@@ -897,6 +1099,51 @@
     </footer>
     
     <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const closeMenu = document.querySelector('.close-menu');
+        const overlay = document.querySelector('.overlay');
+        
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        
+        closeMenu.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+        
+        overlay.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+        
+        // Mobile Dropdown Toggle
+        const mobileDropdownToggles = document.querySelectorAll('.mobile-nav ul li a i');
+        
+        mobileDropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                const parentLi = toggle.closest('li');
+                const dropdown = parentLi.querySelector('.mobile-dropdown');
+                
+                if (dropdown.style.display === 'block') {
+                    dropdown.style.display = 'none';
+                    toggle.classList.remove('fa-chevron-up');
+                    toggle.classList.add('fa-chevron-down');
+                } else {
+                    dropdown.style.display = 'block';
+                    toggle.classList.remove('fa-chevron-down');
+                    toggle.classList.add('fa-chevron-up');
+                }
+            });
+        });
+        
         // Ad Slider Automation
         let currentSlide = 0;
         const slides = document.querySelectorAll('.ad-slide');
@@ -914,10 +1161,28 @@
         // Change slide every 5 seconds
         setInterval(nextSlide, 5000);
         
-        // Mobile Menu Toggle (would need additional HTML/CSS)
-        document.addEventListener('DOMContentLoaded', function() {
-            // This would be expanded for mobile menu functionality
-        });
+        // Touch events for mobile swipe
+        let touchStartX = 0;
+        let touchEndX = 0;
+        const adSlider = document.querySelector('.ad-slider');
+        
+        adSlider.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, false);
+        
+        adSlider.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, false);
+        
+        function handleSwipe() {
+            if (touchEndX < touchStartX) {
+                nextSlide();
+            }
+            if (touchEndX > touchStartX) {
+                showSlide(currentSlide - 1);
+            }
+        }
     </script>
 </body>
 </html>
