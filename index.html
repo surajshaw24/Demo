@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>24TopNews - India's Leading News Portal</title>
+    <title>24TopNews - India's Premium News Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -14,27 +14,108 @@
             --light-color: #f8f9fa;
             --text-color: #333;
             --text-light: #777;
+            --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
         
         body {
-            background-color: var(--light-color);
+            background-color: #f5f7fa;
             color: var(--text-color);
             line-height: 1.6;
         }
         
-        /* Header Styles */
-        header {
+        /* Top Header Bar */
+        .top-header {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .top-header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .trending-ticker {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+            overflow: hidden;
+        }
+        
+        .trending-label {
+            background-color: var(--primary-color);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 15px;
+            white-space: nowrap;
+        }
+        
+        .trending-content {
+            white-space: nowrap;
+            animation: ticker 25s linear infinite;
+        }
+        
+        @keyframes ticker {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        .top-header-utils {
+            display: flex;
+            align-items: center;
+        }
+        
+        .top-header-search {
+            position: relative;
+            margin-left: 20px;
+        }
+        
+        .top-header-search input {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: none;
+            padding: 6px 15px 6px 35px;
+            border-radius: 20px;
+            color: white;
+            width: 200px;
+            transition: var(--transition);
+        }
+        
+        .top-header-search input:focus {
+            outline: none;
+            width: 250px;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .top-header-search i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+        
+        /* Main Header */
+        .main-header {
             background-color: var(--secondary-color);
             color: white;
-            padding: 1rem 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+            box-shadow: var(--box-shadow);
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -44,13 +125,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
             padding: 0 20px;
         }
         
         .logo {
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 700;
             color: white;
             text-decoration: none;
@@ -61,21 +142,17 @@
         .logo i {
             color: var(--primary-color);
             margin-right: 10px;
+            font-size: 2rem;
         }
         
-        /* Navigation */
-        nav {
-            display: flex;
-            align-items: center;
-        }
-        
+        /* Animated Navigation */
         .main-nav {
             display: flex;
             list-style: none;
         }
         
         .main-nav li {
-            margin-left: 20px;
+            margin-left: 25px;
             position: relative;
         }
         
@@ -83,26 +160,24 @@
             color: white;
             text-decoration: none;
             font-weight: 500;
-            transition: color 0.3s;
+            transition: var(--transition);
             padding: 5px 0;
+            position: relative;
+            display: block;
         }
         
-        .main-nav a:hover {
-            color: var(--primary-color);
-        }
-        
-        .main-nav a::after {
+        .main-nav a::before {
             content: '';
             position: absolute;
             bottom: 0;
             left: 0;
             width: 0;
-            height: 2px;
+            height: 3px;
             background-color: var(--primary-color);
-            transition: width 0.3s;
+            transition: var(--transition);
         }
         
-        .main-nav a:hover::after {
+        .main-nav a:hover::before {
             width: 100%;
         }
         
@@ -118,12 +193,12 @@
         /* Hero Slideshow */
         .hero-slideshow {
             position: relative;
-            max-width: 1200px;
-            margin: 20px auto;
-            height: 500px;
+            max-width: 1300px;
+            margin: 25px auto;
+            height: 550px;
             overflow: hidden;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
         }
         
         .slide {
@@ -147,82 +222,93 @@
         .slide-content {
             background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
             color: white;
-            padding: 30px;
+            padding: 40px;
             width: 100%;
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+        
+        .slide.active .slide-content {
+            transform: translateY(0);
         }
         
         .slide-category {
             background-color: var(--primary-color);
             color: white;
-            padding: 5px 10px;
+            padding: 6px 12px;
             border-radius: 4px;
             font-size: 0.8rem;
             font-weight: bold;
             text-transform: uppercase;
             display: inline-block;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
         
         .slide-title {
-            font-size: 2rem;
-            margin-bottom: 10px;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            line-height: 1.3;
         }
         
         .slide-desc {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             max-width: 70%;
+            font-size: 1.1rem;
         }
         
         .read-more {
             display: inline-block;
             background-color: white;
             color: var(--secondary-color);
-            padding: 8px 15px;
+            padding: 10px 20px;
             border-radius: 4px;
             text-decoration: none;
             font-weight: 600;
-            transition: all 0.3s;
+            transition: var(--transition);
+            border: 2px solid white;
         }
         
         .read-more:hover {
-            background-color: var(--primary-color);
+            background-color: transparent;
             color: white;
         }
         
         .slide-nav {
             position: absolute;
-            bottom: 20px;
-            right: 20px;
+            bottom: 30px;
+            right: 30px;
             display: flex;
+            z-index: 10;
         }
         
         .slide-dot {
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             background-color: rgba(255, 255, 255, 0.5);
             border-radius: 50%;
-            margin-left: 8px;
+            margin-left: 10px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: var(--transition);
         }
         
         .slide-dot.active {
             background-color: white;
+            transform: scale(1.2);
         }
         
         /* Main Content */
         .container {
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
             padding: 0 20px;
         }
         
         .section-title {
-            font-size: 1.8rem;
-            margin: 30px 0 20px;
+            font-size: 2rem;
+            margin: 40px 0 25px;
             position: relative;
-            padding-bottom: 10px;
+            padding-bottom: 15px;
             color: var(--secondary-color);
         }
         
@@ -231,35 +317,66 @@
             position: absolute;
             bottom: 0;
             left: 0;
-            width: 60px;
-            height: 3px;
+            width: 70px;
+            height: 4px;
             background-color: var(--primary-color);
+            border-radius: 2px;
         }
         
-        /* News Grid */
+        /* News Grid with Different Box Sizes */
         .news-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
+            gap: 30px;
+            margin-bottom: 50px;
         }
         
         .news-card {
             background-color: white;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--box-shadow);
             transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #eee;
+        }
+        
+        /* Small News Box */
+        .news-card.small {
+            grid-row: span 1;
+        }
+        
+        /* Medium News Box */
+        .news-card.medium {
+            grid-row: span 1;
+        }
+        
+        /* Large News Box */
+        .news-card.large {
+            grid-column: span 2;
+            display: flex;
+        }
+        
+        .news-card.large .news-img {
+            flex: 1;
+            height: auto;
+        }
+        
+        .news-card.large .news-content {
+            flex: 1;
         }
         
         .news-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         }
         
         .news-img {
             height: 200px;
             overflow: hidden;
+        }
+        
+        .news-card.large .news-img {
+            height: auto;
         }
         
         .news-img img {
@@ -274,34 +391,50 @@
         }
         
         .news-content {
-            padding: 20px;
+            padding: 25px;
+        }
+        
+        .news-card.large .news-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         
         .news-category {
             display: inline-block;
             color: var(--primary-color);
             font-size: 0.8rem;
-            font-weight: 600;
-            margin-bottom: 10px;
+            font-weight: 700;
+            margin-bottom: 12px;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .news-title {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
             line-height: 1.4;
+        }
+        
+        .news-card.large .news-title {
+            font-size: 1.8rem;
         }
         
         .news-excerpt {
             color: var(--text-light);
-            margin-bottom: 15px;
-            font-size: 0.9rem;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .news-card.small .news-excerpt {
+            display: none;
         }
         
         .news-meta {
             display: flex;
             justify-content: space-between;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: var(--text-light);
         }
         
@@ -309,8 +442,9 @@
         .category-tabs {
             display: flex;
             overflow-x: auto;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             scrollbar-width: none;
+            padding-bottom: 5px;
         }
         
         .category-tabs::-webkit-scrollbar {
@@ -320,72 +454,32 @@
         .tab-btn {
             background-color: white;
             border: none;
-            padding: 10px 20px;
-            margin-right: 5px;
+            padding: 12px 25px;
+            margin-right: 10px;
             border-radius: 30px;
             cursor: pointer;
             font-weight: 600;
             white-space: nowrap;
-            transition: all 0.3s;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #eee;
         }
         
         .tab-btn.active {
             background-color: var(--primary-color);
             color: white;
-        }
-        
-        /* Breaking News Ticker */
-        .breaking-news {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 10px 0;
-            margin-bottom: 20px;
-        }
-        
-        .breaking-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .breaking-label {
-            background-color: var(--dark-color);
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-weight: bold;
-            margin-right: 15px;
-            font-size: 0.9rem;
-        }
-        
-        .ticker {
-            flex-grow: 1;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .ticker-content {
-            position: absolute;
-            white-space: nowrap;
-            animation: ticker 20s linear infinite;
-        }
-        
-        @keyframes ticker {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
+            border-color: var(--primary-color);
         }
         
         /* Sidebar */
         .content-wrapper {
             display: flex;
-            gap: 30px;
-            margin: 40px 0;
+            gap: 40px;
+            margin: 50px 0;
         }
         
         .main-content {
-            flex: 2;
+            flex: 2.5;
         }
         
         .sidebar {
@@ -394,18 +488,30 @@
         
         .sidebar-widget {
             background-color: white;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 35px;
+            box-shadow: var(--box-shadow);
+            border: 1px solid #eee;
         }
         
         .widget-title {
-            font-size: 1.2rem;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
             border-bottom: 2px solid var(--accent-color);
             color: var(--secondary-color);
+            position: relative;
+        }
+        
+        .widget-title::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--primary-color);
         }
         
         .trending-list {
@@ -414,8 +520,8 @@
         
         .trending-item {
             display: flex;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
+            margin-bottom: 18px;
+            padding-bottom: 18px;
             border-bottom: 1px dashed #eee;
         }
         
@@ -426,11 +532,24 @@
         }
         
         .trending-number {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: bold;
-            color: var(--text-light);
+            color: #eee;
             margin-right: 15px;
-            min-width: 30px;
+            min-width: 35px;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        .trending-item:nth-child(1) .trending-number {
+            color: #e63946;
+        }
+        
+        .trending-item:nth-child(2) .trending-number {
+            color: #457b9d;
+        }
+        
+        .trending-item:nth-child(3) .trending-number {
+            color: #1d3557;
         }
         
         .trending-content {
@@ -438,38 +557,50 @@
         }
         
         .trending-title {
-            font-size: 0.95rem;
-            margin-bottom: 5px;
+            font-size: 1rem;
+            margin-bottom: 8px;
             line-height: 1.4;
         }
         
         .trending-meta {
             font-size: 0.8rem;
             color: var(--text-light);
+            display: flex;
+            align-items: center;
+        }
+        
+        .trending-meta i {
+            margin-right: 5px;
+            font-size: 0.7rem;
         }
         
         /* Newsletter */
         .newsletter-form {
             display: flex;
-            margin-top: 15px;
+            margin-top: 20px;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
         }
         
         .newsletter-input {
             flex-grow: 1;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px 0 0 4px;
+            padding: 12px 15px;
+            border: none;
             outline: none;
+            font-size: 0.9rem;
         }
         
         .newsletter-btn {
             background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 0 15px;
-            border-radius: 0 4px 4px 0;
+            padding: 0 20px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .newsletter-btn:hover {
@@ -478,60 +609,75 @@
         
         /* Ad Spaces */
         .ad-space {
-            background-color: #f5f5f5;
-            border: 1px dashed #ccc;
+            background-color: #f9f9f9;
+            border: 2px dashed #ddd;
             padding: 30px;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             border-radius: 8px;
+            color: #888;
+            font-size: 0.9rem;
         }
         
         .ad-space.large {
-            height: 250px;
+            height: 280px;
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-direction: column;
         }
         
         .ad-space.medium {
-            height: 150px;
+            height: 180px;
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-direction: column;
         }
         
         .ad-space.small {
-            height: 100px;
+            height: 120px;
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-direction: column;
         }
         
-        /* Footer */
+        .ad-space i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #ccc;
+        }
+        
+        /* Premium Footer */
         footer {
             background-color: var(--dark-color);
             color: white;
-            padding: 50px 0 20px;
+            padding: 70px 0 30px;
+            position: relative;
+            overflow: hidden;
         }
         
         .footer-container {
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
             padding: 0 20px;
+            position: relative;
+            z-index: 1;
         }
         
         .footer-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
         }
         
         .footer-col h3 {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
+            font-size: 1.4rem;
+            margin-bottom: 25px;
             position: relative;
-            padding-bottom: 10px;
+            padding-bottom: 12px;
         }
         
         .footer-col h3::after {
@@ -539,9 +685,16 @@
             position: absolute;
             bottom: 0;
             left: 0;
-            width: 40px;
-            height: 2px;
+            width: 50px;
+            height: 3px;
             background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+        
+        .footer-about p {
+            color: #ccc;
+            margin-bottom: 20px;
+            line-height: 1.7;
         }
         
         .footer-links {
@@ -549,86 +702,132 @@
         }
         
         .footer-links li {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 15px;
+        }
+        
+        .footer-links li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-size: 0.9rem;
         }
         
         .footer-links a {
             color: #ccc;
             text-decoration: none;
-            transition: color 0.3s;
+            transition: var(--transition);
+            display: block;
         }
         
         .footer-links a:hover {
             color: var(--primary-color);
+            transform: translateX(5px);
+        }
+        
+        .footer-contact li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            color: #ccc;
+        }
+        
+        .footer-contact i {
+            color: var(--primary-color);
+            margin-right: 10px;
+            font-size: 1.1rem;
+            margin-top: 3px;
         }
         
         .social-links {
             display: flex;
             gap: 15px;
-            margin-top: 20px;
+            margin-top: 25px;
         }
         
         .social-links a {
             color: white;
             background-color: rgba(255, 255, 255, 0.1);
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s;
+            transition: var(--transition);
+            font-size: 1.1rem;
         }
         
         .social-links a:hover {
             background-color: var(--primary-color);
-            transform: translateY(-3px);
+            transform: translateY(-5px);
         }
         
         .footer-bottom {
             text-align: center;
-            padding-top: 20px;
+            padding-top: 30px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             font-size: 0.9rem;
             color: #aaa;
+            position: relative;
+        }
+        
+        .footer-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.03;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="%23e63946" width="50" height="50" x="0" y="0"></rect><rect fill="%23e63946" width="50" height="50" x="50" y="50"></rect></svg>');
+            background-size: 20px 20px;
         }
         
         /* Animation Classes */
         .fade-in {
-            animation: fadeIn 1s ease-in;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            opacity: 0;
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
         
         .slide-up {
-            animation: slideUp 0.8s ease-out;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
         
-        @keyframes slideUp {
-            from { 
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to { 
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .animate {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         /* Responsive Styles */
+        @media (max-width: 1200px) {
+            .news-card.large {
+                grid-column: span 1;
+                display: block;
+            }
+            
+            .news-card.large .news-img {
+                height: 250px;
+            }
+        }
+        
         @media (max-width: 992px) {
             .content-wrapper {
                 flex-direction: column;
             }
             
             .hero-slideshow {
-                height: 400px;
+                height: 450px;
             }
             
             .slide-title {
+                font-size: 2rem;
+            }
+            
+            .news-card.large .news-title {
                 font-size: 1.5rem;
             }
         }
@@ -640,16 +839,17 @@
             
             .main-nav {
                 position: fixed;
-                top: 80px;
+                top: 90px;
                 left: -100%;
-                width: 80%;
-                height: calc(100vh - 80px);
+                width: 85%;
+                height: calc(100vh - 90px);
                 background-color: var(--secondary-color);
                 flex-direction: column;
-                align-items: center;
-                padding: 40px 20px;
-                transition: left 0.3s;
+                align-items: flex-start;
+                padding: 40px;
+                transition: var(--transition);
                 z-index: 999;
+                box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
             }
             
             .main-nav.active {
@@ -658,10 +858,53 @@
             
             .main-nav li {
                 margin: 15px 0;
+                width: 100%;
+            }
+            
+            .main-nav a {
+                padding: 10px 0;
+                font-size: 1.1rem;
+            }
+            
+            .hero-slideshow {
+                height: 400px;
+            }
+            
+            .slide-content {
+                padding: 30px;
+            }
+            
+            .slide-title {
+                font-size: 1.8rem;
+            }
+            
+            .slide-desc {
+                max-width: 100%;
+                font-size: 1rem;
+            }
+            
+            .top-header-search input {
+                width: 150px;
+            }
+            
+            .top-header-search input:focus {
+                width: 180px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .logo {
+                font-size: 1.8rem;
+            }
+            
+            .logo i {
+                font-size: 1.6rem;
             }
             
             .hero-slideshow {
                 height: 350px;
+                margin: 15px auto;
+                border-radius: 0;
             }
             
             .slide-content {
@@ -669,37 +912,77 @@
             }
             
             .slide-title {
-                font-size: 1.3rem;
+                font-size: 1.5rem;
+                margin-bottom: 10px;
             }
             
             .slide-desc {
-                max-width: 100%;
                 font-size: 0.9rem;
-            }
-        }
-        
-        @media (max-width: 576px) {
-            .logo {
-                font-size: 1.5rem;
+                margin-bottom: 15px;
             }
             
-            .hero-slideshow {
-                height: 300px;
-            }
-            
-            .news-grid {
-                grid-template-columns: 1fr;
+            .read-more {
+                padding: 8px 15px;
+                font-size: 0.9rem;
             }
             
             .section-title {
-                font-size: 1.5rem;
+                font-size: 1.6rem;
+                margin: 30px 0 20px;
+            }
+            
+            .top-header {
+                padding: 6px 0;
+                font-size: 0.8rem;
+            }
+            
+            .trending-label {
+                display: none;
+            }
+            
+            .top-header-search {
+                margin-left: 10px;
+            }
+            
+            .top-header-search input {
+                width: 120px;
+                padding: 4px 10px 4px 30px;
+                font-size: 0.8rem;
+            }
+            
+            .top-header-search i {
+                font-size: 0.8rem;
+                left: 10px;
+            }
+            
+            .top-header-search input:focus {
+                width: 140px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
+    <!-- Top Header with Trending News -->
+    <div class="top-header">
+        <div class="top-header-container">
+            <div class="trending-ticker">
+                <div class="trending-label">TRENDING</div>
+                <div class="trending-content">
+                    • India's GDP grows at 7.8% in Q1 2023 • Supreme Court to hear plea on Article 370 today • Cyclone Biparjoy intensifies into severe cyclonic storm • India wins Asia Cup 2023 • PM Modi to visit US next week • Sensex crosses 65,000 for first time
+                </div>
+            </div>
+            
+            <div class="top-header-utils">
+                <div class="top-header-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search news...">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Header with Animated Navigation -->
+    <header class="main-header">
         <div class="header-container">
             <a href="index.html" class="logo">
                 <i class="fas fa-newspaper"></i>
@@ -719,49 +1002,38 @@
                     <li><a href="sports.html">Sports</a></li>
                     <li><a href="entertainment.html">Entertainment</a></li>
                     <li><a href="technology.html">Technology</a></li>
+                    <li><a href="health.html">Health</a></li>
                 </ul>
             </nav>
         </div>
     </header>
     
-    <!-- Breaking News Ticker -->
-    <div class="breaking-news">
-        <div class="breaking-container">
-            <div class="breaking-label">BREAKING</div>
-            <div class="ticker">
-                <div class="ticker-content">
-                    India's GDP grows at 7.8% in Q1 2023 • Supreme Court to hear plea on Article 370 today • Cyclone Biparjoy intensifies into severe cyclonic storm • India wins Asia Cup 2023 • PM Modi to visit US next week
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Hero Slideshow -->
+    <!-- Hero Slideshow (Auto changes every 5 seconds) -->
     <div class="hero-slideshow">
-        <div class="slide active" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://via.placeholder.com/1200x500')">
+        <div class="slide active" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://via.placeholder.com/1300x550')">
             <div class="slide-content">
                 <span class="slide-category">Politics</span>
-                <h2 class="slide-title">PM Modi Announces New Economic Package for Farmers</h2>
-                <p class="slide-desc">The new package worth ₹1.5 lakh crore aims to boost agricultural infrastructure and support small farmers across the country.</p>
-                <a href="#" class="read-more">Read More</a>
+                <h2 class="slide-title">PM Modi Announces New Economic Package Worth ₹2 Lakh Crore for Farmers</h2>
+                <p class="slide-desc">The comprehensive package includes subsidies, infrastructure development and direct benefit transfers to support agricultural communities across India.</p>
+                <a href="#" class="read-more">Read Full Story</a>
             </div>
         </div>
         
-        <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://via.placeholder.com/1200x500')">
+        <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://via.placeholder.com/1300x550')">
             <div class="slide-content">
                 <span class="slide-category">Sports</span>
-                <h2 class="slide-title">India Wins T20 Series Against Australia</h2>
-                <p class="slide-desc">Team India clinches the series 3-2 with a thrilling victory in the final match at Bengaluru.</p>
-                <a href="#" class="read-more">Read More</a>
+                <h2 class="slide-title">India Wins Thrilling Final Against Australia to Clinch T20 World Cup</h2>
+                <p class="slide-desc">A spectacular last-over performance by young pace sensation Arjun Kumar secures India's third T20 World Cup title.</p>
+                <a href="#" class="read-more">Read Full Story</a>
             </div>
         </div>
         
-        <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://via.placeholder.com/1200x500')">
+        <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://via.placeholder.com/1300x550')">
             <div class="slide-content">
                 <span class="slide-category">Technology</span>
-                <h2 class="slide-title">India's First AI Supercomputer Launched</h2>
-                <p class="slide-desc">The new supercomputer named "Param AI" can perform 100 quadrillion calculations per second.</p>
-                <a href="#" class="read-more">Read More</a>
+                <h2 class="slide-title">India's First Indigenous 5G Network Launched by Reliance Jio</h2>
+                <p class="slide-desc">The completely Made-in-India 5G solution promises speeds up to 1Gbps and will roll out to 100 cities by year-end.</p>
+                <a href="#" class="read-more">Read Full Story</a>
             </div>
         </div>
         
@@ -790,101 +1062,98 @@
         <div class="content-wrapper">
             <!-- Main Content Area -->
             <main class="main-content">
-                <h2 class="section-title">Latest News</h2>
+                <h2 class="section-title">Today's Headlines</h2>
                 
                 <div class="news-grid">
-                    <!-- News Card 1 -->
-                    <div class="news-card fade-in">
+                    <!-- Large News Box -->
+                    <div class="news-card large fade-in">
                         <div class="news-img">
-                            <img src="https://via.placeholder.com/400x300" alt="News Image">
+                            <img src="https://via.placeholder.com/600x400" alt="News Image">
                         </div>
                         <div class="news-content">
                             <span class="news-category">National</span>
-                            <h3 class="news-title">Cabinet Approves New Education Policy with Major Reforms</h3>
-                            <p class="news-excerpt">The new policy focuses on multidisciplinary education and introduces regional language medium till 5th grade.</p>
+                            <h3 class="news-title">Cabinet Approves New Education Policy with Major Reforms Across All Levels</h3>
+                            <p class="news-excerpt">The comprehensive policy introduces regional language medium till 5th grade, vocational training from 6th grade, and multiple entry-exit points in higher education. The reforms aim to make Indian education more flexible and skill-oriented.</p>
                             <div class="news-meta">
-                                <span>2 hours ago</span>
-                                <span>1.2K views</span>
+                                <span><i class="far fa-clock"></i> 2 hours ago</span>
+                                <span><i class="far fa-eye"></i> 12.5K views</span>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- News Card 2 -->
-                    <div class="news-card fade-in">
+                    <!-- Medium News Box -->
+                    <div class="news-card medium fade-in">
                         <div class="news-img">
                             <img src="https://via.placeholder.com/400x300" alt="News Image">
                         </div>
                         <div class="news-content">
                             <span class="news-category">Business</span>
-                            <h3 class="news-title">Sensex Hits Record High Amid Global Market Rally</h3>
-                            <p class="news-excerpt">The BSE Sensex crossed 65,000 points for the first time as foreign investors continue to pour money into Indian markets.</p>
+                            <h3 class="news-title">Sensex Hits Record High of 65,000 Amid Global Market Rally</h3>
+                            <p class="news-excerpt">The BSE Sensex crossed the 65,000 mark for the first time as foreign investors continue to pour money into Indian markets, betting on strong economic recovery.</p>
                             <div class="news-meta">
-                                <span>4 hours ago</span>
-                                <span>890 views</span>
+                                <span><i class="far fa-clock"></i> 4 hours ago</span>
+                                <span><i class="far fa-eye"></i> 8.9K views</span>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- News Card 3 -->
-                    <div class="news-card fade-in">
+                    <!-- Small News Box -->
+                    <div class="news-card small fade-in">
                         <div class="news-img">
                             <img src="https://via.placeholder.com/400x300" alt="News Image">
                         </div>
                         <div class="news-content">
                             <span class="news-category">Sports</span>
-                            <h3 class="news-title">Neeraj Chopra Wins Gold at Diamond League</h3>
-                            <p class="news-excerpt">Olympic champion Neeraj Chopra threw 88.67m to win his first Diamond League title of the season.</p>
+                            <h3 class="news-title">Neeraj Chopra Wins Gold at Diamond League Meet</h3>
                             <div class="news-meta">
-                                <span>6 hours ago</span>
-                                <span>2.5K views</span>
+                                <span><i class="far fa-clock"></i> 6 hours ago</span>
+                                <span><i class="far fa-eye"></i> 15.2K views</span>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- News Card 4 -->
-                    <div class="news-card fade-in">
+                    <!-- Small News Box -->
+                    <div class="news-card small fade-in">
                         <div class="news-img">
                             <img src="https://via.placeholder.com/400x300" alt="News Image">
                         </div>
                         <div class="news-content">
                             <span class="news-category">Technology</span>
                             <h3 class="news-title">India's 5G Rollout to Begin in October</h3>
-                            <p class="news-excerpt">Major telecom operators announce plans to launch 5G services in select cities from October 1.</p>
                             <div class="news-meta">
-                                <span>8 hours ago</span>
-                                <span>1.8K views</span>
+                                <span><i class="far fa-clock"></i> 8 hours ago</span>
+                                <span><i class="far fa-eye"></i> 9.8K views</span>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- News Card 5 -->
-                    <div class="news-card fade-in">
+                    <!-- Medium News Box -->
+                    <div class="news-card medium slide-up">
                         <div class="news-img">
                             <img src="https://via.placeholder.com/400x300" alt="News Image">
                         </div>
                         <div class="news-content">
                             <span class="news-category">Entertainment</span>
-                            <h3 class="news-title">Bollywood's Big Budget Film "Adipurush" Releases Today</h3>
-                            <p class="news-excerpt">The Prabhas-starrer mythological drama is one of the most expensive Indian films ever made.</p>
+                            <h3 class="news-title">Bollywood's Big Budget Film "Adipurush" Breaks Opening Day Records</h3>
+                            <p class="news-excerpt">The Prabhas-starrer mythological drama collected ₹140 crore worldwide on its first day, becoming the highest opener for an Indian film in 2023.</p>
                             <div class="news-meta">
-                                <span>10 hours ago</span>
-                                <span>3.2K views</span>
+                                <span><i class="far fa-clock"></i> 10 hours ago</span>
+                                <span><i class="far fa-eye"></i> 22.3K views</span>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- News Card 6 -->
-                    <div class="news-card fade-in">
+                    <!-- Small News Box -->
+                    <div class="news-card small slide-up">
                         <div class="news-img">
                             <img src="https://via.placeholder.com/400x300" alt="News Image">
                         </div>
                         <div class="news-content">
                             <span class="news-category">Health</span>
                             <h3 class="news-title">New Study Reveals Benefits of Yoga for Heart Patients</h3>
-                            <p class="news-excerpt">Research shows regular yoga practice can reduce risk of heart attacks by up to 30%.</p>
                             <div class="news-meta">
-                                <span>12 hours ago</span>
-                                <span>1.1K views</span>
+                                <span><i class="far fa-clock"></i> 12 hours ago</span>
+                                <span><i class="far fa-eye"></i> 7.1K views</span>
                             </div>
                         </div>
                     </div>
@@ -893,50 +1162,105 @@
                 <h2 class="section-title">Top Stories</h2>
                 
                 <div class="news-grid">
-                    <!-- Top Story 1 -->
-                    <div class="news-card slide-up">
+                    <!-- Large News Box -->
+                    <div class="news-card large slide-up">
                         <div class="news-img">
-                            <img src="https://via.placeholder.com/400x300" alt="News Image">
+                            <img src="https://via.placeholder.com/600x400" alt="News Image">
                         </div>
                         <div class="news-content">
                             <span class="news-category">Politics</span>
-                            <h3 class="news-title">Rahul Gandhi Begins Bharat Jodo Yatra Phase 2</h3>
-                            <p class="news-excerpt">The Congress leader starts his second leg of the nationwide march from Kanyakumari to Kashmir.</p>
+                            <h3 class="news-title">Rahul Gandhi Begins Bharat Jodo Yatra Phase 2 from Kanyakumari</h3>
+                            <p class="news-excerpt">The Congress leader's 3,500 km march aims to connect with people across 12 states over 150 days. The first phase was credited with reviving the party's grassroots connect.</p>
                             <div class="news-meta">
-                                <span>1 day ago</span>
-                                <span>5.7K views</span>
+                                <span><i class="far fa-clock"></i> 1 day ago</span>
+                                <span><i class="far fa-eye"></i> 35.7K views</span>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Top Story 2 -->
-                    <div class="news-card slide-up">
+                    <!-- Medium News Box -->
+                    <div class="news-card medium slide-up">
                         <div class="news-img">
                             <img src="https://via.placeholder.com/400x300" alt="News Image">
                         </div>
                         <div class="news-content">
                             <span class="news-category">International</span>
                             <h3 class="news-title">India-US Sign Major Defense Deal Worth $3 Billion</h3>
-                            <p class="news-excerpt">The agreement includes procurement of advanced drones and jet engines for the Indian military.</p>
+                            <p class="news-excerpt">The agreement includes procurement of 30 MQ-9B drones and joint production of jet engine technology, marking a new high in strategic partnership.</p>
                             <div class="news-meta">
-                                <span>1 day ago</span>
-                                <span>4.3K views</span>
+                                <span><i class="far fa-clock"></i> 1 day ago</span>
+                                <span><i class="far fa-eye"></i> 28.3K views</span>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Top Story 3 -->
-                    <div class="news-card slide-up">
+                    <!-- Small News Box -->
+                    <div class="news-card small slide-up">
                         <div class="news-img">
                             <img src="https://via.placeholder.com/400x300" alt="News Image">
                         </div>
                         <div class="news-content">
                             <span class="news-category">Science</span>
                             <h3 class="news-title">ISRO Announces Gaganyaan Mission Launch Date</h3>
-                            <p class="news-excerpt">India's first manned space mission scheduled for December 2024, says ISRO chairman.</p>
                             <div class="news-meta">
-                                <span>2 days ago</span>
-                                <span>6.1K views</span>
+                                <span><i class="far fa-clock"></i> 2 days ago</span>
+                                <span><i class="far fa-eye"></i> 41.1K views</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Ad Space - Large -->
+                <div class="ad-space large">
+                    <i class="fas fa-ad"></i>
+                    <p>Advertisement Space - 728x280</p>
+                </div>
+                
+                <h2 class="section-title">National News</h2>
+                
+                <div class="news-grid">
+                    <!-- Medium News Box -->
+                    <div class="news-card medium fade-in">
+                        <div class="news-img">
+                            <img src="https://via.placeholder.com/400x300" alt="News Image">
+                        </div>
+                        <div class="news-content">
+                            <span class="news-category">National</span>
+                            <h3 class="news-title">Supreme Court Verdict on Same-Sex Marriage Expected Today</h3>
+                            <p class="news-excerpt">The constitution bench will deliver its judgment on petitions seeking legal recognition for same-sex marriages after months of hearings.</p>
+                            <div class="news-meta">
+                                <span><i class="far fa-clock"></i> 3 hours ago</span>
+                                <span><i class="far fa-eye"></i> 24.2K views</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Small News Box -->
+                    <div class="news-card small fade-in">
+                        <div class="news-img">
+                            <img src="https://via.placeholder.com/400x300" alt="News Image">
+                        </div>
+                        <div class="news-content">
+                            <span class="news-category">National</span>
+                            <h3 class="news-title">New Highway Projects Approved for Northeast States</h3>
+                            <div class="news-meta">
+                                <span><i class="far fa-clock"></i> 5 hours ago</span>
+                                <span><i class="far fa-eye"></i> 13.1K views</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Small News Box -->
+                    <div class="news-card small fade-in">
+                        <div class="news-img">
+                            <img src="https://via.placeholder.com/400x300" alt="News Image">
+                        </div>
+                        <div class="news-content">
+                            <span class="news-category">National</span>
+                            <h3 class="news-title">Delhi Air Quality Deteriorates to 'Poor' Category</h3>
+                            <div class="news-meta">
+                                <span><i class="far fa-clock"></i> 7 hours ago</span>
+                                <span><i class="far fa-eye"></i> 8.8K views</span>
                             </div>
                         </div>
                     </div>
@@ -952,36 +1276,46 @@
                         <li class="trending-item">
                             <div class="trending-number">1</div>
                             <div class="trending-content">
-                                <h4 class="trending-title">Delhi Metro Phase 4 Inauguration Today</h4>
-                                <div class="trending-meta">2 hours ago • 8.4K views</div>
+                                <h4 class="trending-title">Delhi Metro Phase 4 Inauguration Today by PM Modi</h4>
+                                <div class="trending-meta">
+                                    <i class="far fa-clock"></i> 2 hours ago • <i class="far fa-eye"></i> 48.4K views
+                                </div>
                             </div>
                         </li>
                         <li class="trending-item">
                             <div class="trending-number">2</div>
                             <div class="trending-content">
                                 <h4 class="trending-title">India's Chess Prodigy Wins World Junior Championship</h4>
-                                <div class="trending-meta">4 hours ago • 7.2K views</div>
+                                <div class="trending-meta">
+                                    <i class="far fa-clock"></i> 4 hours ago • <i class="far fa-eye"></i> 37.2K views
+                                </div>
                             </div>
                         </li>
                         <li class="trending-item">
                             <div class="trending-number">3</div>
                             <div class="trending-content">
-                                <h4 class="trending-title">Monsoon Arrives in Mumbai Ahead of Schedule</h4>
-                                <div class="trending-meta">6 hours ago • 6.8K views</div>
+                                <h4 class="trending-title">Monsoon Arrives in Mumbai 10 Days Ahead of Schedule</h4>
+                                <div class="trending-meta">
+                                    <i class="far fa-clock"></i> 6 hours ago • <i class="far fa-eye"></i> 28.8K views
+                                </div>
                             </div>
                         </li>
                         <li class="trending-item">
                             <div class="trending-number">4</div>
                             <div class="trending-content">
                                 <h4 class="trending-title">New Tax Rules for Crypto Investors from July 1</h4>
-                                <div class="trending-meta">8 hours ago • 5.9K views</div>
+                                <div class="trending-meta">
+                                    <i class="far fa-clock"></i> 8 hours ago • <i class="far fa-eye"></i> 25.9K views
+                                </div>
                             </div>
                         </li>
                         <li class="trending-item">
                             <div class="trending-number">5</div>
                             <div class="trending-content">
                                 <h4 class="trending-title">Air India Announces 500 New International Flights</h4>
-                                <div class="trending-meta">10 hours ago • 5.3K views</div>
+                                <div class="trending-meta">
+                                    <i class="far fa-clock"></i> 10 hours ago • <i class="far fa-eye"></i> 23.3K views
+                                </div>
                             </div>
                         </li>
                     </ul>
@@ -1001,194 +1335,56 @@
                 
                 <!-- Ad Space - Medium -->
                 <div class="ad-space medium">
-                    <p>Advertisement Space - 300x250</p>
+                    <i class="fas fa-ad"></i>
+                    <p>Advertisement Space - 300x180</p>
                 </div>
                 
                 <!-- Latest Videos Widget -->
                 <div class="sidebar-widget">
                     <h3 class="widget-title">Latest Videos</h3>
-                    <div class="video-thumbnail" style="margin-bottom: 15px;">
-                        <img src="https://via.placeholder.com/300x170" alt="Video Thumbnail" style="width: 100%; border-radius: 4px;">
-                        <h4 class="trending-title" style="margin-top: 8px;">PM Modi's Speech at G20 Summit</h4>
-                        <div class="trending-meta">3 hours ago • 45K views</div>
+                    <div class="video-thumbnail" style="margin-bottom: 20px;">
+                        <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 6px; margin-bottom: 10px;">
+                            <img src="https://via.placeholder.com/300x170" alt="Video Thumbnail" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 3rem;">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </div>
+                        <h4 class="trending-title">PM Modi's Keynote at G20 Summit in Bali</h4>
+                        <div class="trending-meta">
+                            <i class="far fa-clock"></i> 3 hours ago • <i class="far fa-eye"></i> 145K views
+                        </div>
                     </div>
                     <div class="video-thumbnail">
-                        <img src="https://via.placeholder.com/300x170" alt="Video Thumbnail" style="width: 100%; border-radius: 4px;">
-                        <h4 class="trending-title" style="margin-top: 8px;">Mumbai Rains: Heavy Waterlogging in Low-Lying Areas</h4>
-                        <div class="trending-meta">5 hours ago • 32K views</div>
+                        <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 6px; margin-bottom: 10px;">
+                            <img src="https://via.placeholder.com/300x170" alt="Video Thumbnail" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 3rem;">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </div>
+                        <h4 class="trending-title">Mumbai Rains: Heavy Waterlogging Disrupts Traffic</h4>
+                        <div class="trending-meta">
+                            <i class="far fa-clock"></i> 5 hours ago • <i class="far fa-eye"></i> 132K views
+                        </div>
                     </div>
                 </div>
                 
                 <!-- Ad Space - Small -->
                 <div class="ad-space small">
-                    <p>Advertisement Space - 300x100</p>
+                    <i class="fas fa-ad"></i>
+                    <p>Advertisement Space - 300x120</p>
                 </div>
             </aside>
         </div>
     </div>
     
-    <!-- Category Sections -->
-    <div class="container">
-        <!-- National News -->
-        <h2 class="section-title">National News</h2>
-        <div class="news-grid">
-            <div class="news-card">
-                <div class="news-img">
-                    <img src="https://via.placeholder.com/400x300" alt="News Image">
-                </div>
-                <div class="news-content">
-                    <span class="news-category">National</span>
-                    <h3 class="news-title">Supreme Court Verdict on Same-Sex Marriage Today</h3>
-                    <p class="news-excerpt">The constitution bench will deliver its judgment on petitions seeking legal recognition for same-sex marriages.</p>
-                    <div class="news-meta">
-                        <span>3 hours ago</span>
-                        <span>4.2K views</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="news-card">
-                <div class="news-img">
-                    <img src="https://via.placeholder.com/400x300" alt="News Image">
-                </div>
-                <div class="news-content">
-                    <span class="news-category">National</span>
-                    <h3 class="news-title">New Highway Projects Approved for Northeast States</h3>
-                    <p class="news-excerpt">The government sanctions ₹15,000 crore for road infrastructure development in the region.</p>
-                    <div class="news-meta">
-                        <span>5 hours ago</span>
-                        <span>3.1K views</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="news-card">
-                <div class="news-img">
-                    <img src="https://via.placeholder.com/400x300" alt="News Image">
-                </div>
-                <div class="news-content">
-                    <span class="news-category">National</span>
-                    <h3 class="news-title">Delhi Air Quality Deteriorates to 'Poor' Category</h3>
-                    <p class="news-excerpt">Authorities implement Stage 1 of GRAP as AQI crosses 250 in several monitoring stations.</p>
-                    <div class="news-meta">
-                        <span>7 hours ago</span>
-                        <span>2.8K views</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Business News -->
-        <h2 class="section-title">Business & Economy</h2>
-        <div class="news-grid">
-            <div class="news-card">
-                <div class="news-img">
-                    <img src="https://via.placeholder.com/400x300" alt="News Image">
-                </div>
-                <div class="news-content">
-                    <span class="news-category">Business</span>
-                    <h3 class="news-title">RBI Keeps Repo Rate Unchanged at 6.5%</h3>
-                    <p class="news-excerpt">Central bank maintains status quo for third consecutive policy meeting amid inflation concerns.</p>
-                    <div class="news-meta">
-                        <span>2 hours ago</span>
-                        <span>3.5K views</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="news-card">
-                <div class="news-img">
-                    <img src="https://via.placeholder.com/400x300" alt="News Image">
-                </div>
-                <div class="news-content">
-                    <span class="news-category">Business</span>
-                    <h3 class="news-title">Reliance Announces Major Green Energy Investment</h3>
-                    <p class="news-excerpt">Mukesh Ambani commits ₹75,000 crore for renewable energy projects over next 3 years.</p>
-                    <div class="news-meta">
-                        <span>4 hours ago</span>
-                        <span>3.8K views</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="news-card">
-                <div class="news-img">
-                    <img src="https://via.placeholder.com/400x300" alt="News Image">
-                </div>
-                <div class="news-content">
-                    <span class="news-category">Business</span>
-                    <h3 class="news-title">India's Exports Grow 8.5% in September</h3>
-                    <p class="news-excerpt">Engineering goods and pharmaceuticals lead the export growth despite global slowdown.</p>
-                    <div class="news-meta">
-                        <span>6 hours ago</span>
-                        <span>2.9K views</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Ad Space - Large -->
-        <div class="ad-space large" style="margin: 40px 0;">
-            <p>Advertisement Space - 728x90</p>
-        </div>
-        
-        <!-- Sports News -->
-        <h2 class="section-title">Sports</h2>
-        <div class="news-grid">
-            <div class="news-card">
-                <div class="news-img">
-                    <img src="https://via.placeholder.com/400x300" alt="News Image">
-                </div>
-                <div class="news-content">
-                    <span class="news-category">Sports</span>
-                    <h3 class="news-title">India vs Pakistan World Cup Match Sold Out in Hours</h3>
-                    <p class="news-excerpt">Tickets for the October 14 clash in Ahmedabad were snapped up within 5 hours of going on sale.</p>
-                    <div class="news-meta">
-                        <span>3 hours ago</span>
-                        <span>5.2K views</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="news-card">
-                <div class="news-img">
-                    <img src="https://via.placeholder.com/400x300" alt="News Image">
-                </div>
-                <div class="news-content">
-                    <span class="news-category">Sports</span>
-                    <h3 class="news-title">PV Sindhu Reaches Quarterfinals at Japan Open</h3>
-                    <p class="news-excerpt">The Indian shuttler defeats world no. 3 in straight sets to advance to last eight.</p>
-                    <div class="news-meta">
-                        <span>5 hours ago</span>
-                        <span>4.1K views</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="news-card">
-                <div class="news-img">
-                    <img src="https://via.placeholder.com/400x300" alt="News Image">
-                </div>
-                <div class="news-content">
-                    <span class="news-category">Sports</span>
-                    <h3 class="news-title">AIFF Announces New Grassroots Development Program</h3>
-                    <p class="news-excerpt">The initiative aims to identify and nurture young football talent across 50 centers in India.</p>
-                    <div class="news-meta">
-                        <span>7 hours ago</span>
-                        <span>3.3K views</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Footer -->
+    <!-- Premium Footer -->
     <footer>
+        <div class="footer-pattern"></div>
         <div class="footer-container">
             <div class="footer-grid">
-                <div class="footer-col">
-                    <h3>24TopNews</h3>
-                    <p>India's leading digital news platform delivering latest and breaking news from India and around the world.</p>
+                <div class="footer-col footer-about">
+                    <h3>About 24TopNews</h3>
+                    <p>India's most trusted digital news platform delivering accurate, unbiased and comprehensive news coverage from India and around the world. Our mission is to empower citizens with information that matters.</p>
                     <div class="social-links">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
@@ -1199,14 +1395,16 @@
                 </div>
                 
                 <div class="footer-col">
-                    <h3>Categories</h3>
+                    <h3>News Categories</h3>
                     <ul class="footer-links">
                         <li><a href="#">National</a></li>
                         <li><a href="#">International</a></li>
                         <li><a href="#">Business</a></li>
+                        <li><a href="#">Politics</a></li>
                         <li><a href="#">Sports</a></li>
                         <li><a href="#">Entertainment</a></li>
                         <li><a href="#">Technology</a></li>
+                        <li><a href="#">Science</a></li>
                     </ul>
                 </div>
                 
@@ -1214,26 +1412,38 @@
                     <h3>Company</h3>
                     <ul class="footer-links">
                         <li><a href="#">About Us</a></li>
-                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Leadership</a></li>
                         <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press Releases</a></li>
                         <li><a href="#">Advertise With Us</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Use</a></li>
+                        <li><a href="#">Contact Our Team</a></li>
+                        <li><a href="#">Ethics Policy</a></li>
+                        <li><a href="#">Awards</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-col">
-                    <h3>Contact Us</h3>
-                    <ul class="footer-links">
-                        <li><i class="fas fa-map-marker-alt"></i> 123 News Street, Mumbai, India</li>
-                        <li><i class="fas fa-phone"></i> +91 9876543210</li>
-                        <li><i class="fas fa-envelope"></i> contact@24topnews.com</li>
+                    <h3>Contact Info</h3>
+                    <ul class="footer-contact">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>24TopNews Media Ltd.<br>Times Square, Andheri East<br>Mumbai - 400069, India</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone-alt"></i>
+                            <span>+91 9876543210<br>+91 11 23456789</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <span>contact@24topnews.com<br>support@24topnews.com</span>
+                        </li>
                     </ul>
                 </div>
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2023 24TopNews. All Rights Reserved. | Designed with <i class="fas fa-heart" style="color: var(--primary-color);"></i> in India</p>
+                <p>&copy; 2023 24TopNews Media Ltd. All Rights Reserved. | <a href="#" style="color: #aaa;">Privacy Policy</a> | <a href="#" style="color: #aaa;">Terms of Use</a> | <a href="#" style="color: #aaa;">Cookie Policy</a></p>
+                <p style="margin-top: 10px;">Designed with <i class="fas fa-heart" style="color: var(--primary-color);"></i> in India</p>
             </div>
         </div>
     </footer>
@@ -1247,7 +1457,7 @@
             mainNav.classList.toggle('active');
         });
         
-        // Slideshow Functionality
+        // Slideshow Functionality (changes every 5 seconds)
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
         const dots = document.querySelectorAll('.slide-dot');
@@ -1300,34 +1510,26 @@
         });
         
         // Animation on scroll
-        window.addEventListener('scroll', () => {
-            const elements = document.querySelectorAll('.slide-up, .fade-in');
+        function checkAnimation() {
+            const elements = document.querySelectorAll('.fade-in, .slide-up');
+            const windowHeight = window.innerHeight;
             
             elements.forEach(el => {
-                const elPosition = el.getBoundingClientRect().top;
-                const screenPosition = window.innerHeight / 1.3;
+                const elementPosition = el.getBoundingClientRect().top;
+                const animationPoint = windowHeight * 0.85;
                 
-                if(elPosition < screenPosition) {
-                    el.style.opacity = '1';
-                    el.style.transform = 'translateY(0)';
+                if(elementPosition < animationPoint) {
+                    el.classList.add('animate');
                 }
             });
-        });
+        }
         
-        // Trigger animations on page load for elements in viewport
-        window.addEventListener('load', () => {
-            const elements = document.querySelectorAll('.slide-up, .fade-in');
-            
-            elements.forEach(el => {
-                const elPosition = el.getBoundingClientRect().top;
-                const screenPosition = window.innerHeight / 1.3;
-                
-                if(elPosition < screenPosition) {
-                    el.style.opacity = '1';
-                    el.style.transform = 'translateY(0)';
-                }
-            });
-        });
+        // Run on load and scroll
+        window.addEventListener('load', checkAnimation);
+        window.addEventListener('scroll', checkAnimation);
+        
+        // Initialize animations for elements already in viewport
+        checkAnimation();
     </script>
 </body>
 </html>
