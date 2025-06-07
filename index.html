@@ -1,656 +1,291 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Form Filling Application</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>PTC Invoice</title>
     <style>
-        :root {
-            --primary-color: #4361ee;
-            --secondary-color: #3f37c9;
-            --accent-color: #4895ef;
-            --light-color: #f8f9fa;
-            --dark-color: #212529;
-            --success-color: #4cc9f0;
-            --warning-color: #f72585;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
         body {
-            background-color: #f5f7fb;
-            color: var(--dark-color);
-            line-height: 1.6;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
         }
-        
-        .container {
-            max-width: 1200px;
+        .invoice-container {
+            width: 100%;
+            max-width: 800px;
             margin: 0 auto;
-            padding: 2rem;
+            border: 1px solid #000;
+            padding: 20px;
+            box-sizing: border-box;
         }
-        
-        .form-app {
-            display: flex;
-            min-height: 90vh;
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-        
-        .sidebar {
-            width: 300px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            background: linear-gradient(135deg, #4361ee, #3f37c9);
-            color: white;
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-        }
-        
-        .logo i {
-            margin-right: 10px;
-            color: var(--accent-color);
-        }
-        
-        .nav-menu {
-            flex-grow: 1;
-        }
-        
-        .nav-item {
-            padding: 0.8rem 1rem;
-            margin-bottom: 0.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-        }
-        
-        .nav-item:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-        
-        .nav-item.active {
-            background-color: rgba(255, 255, 255, 0.2);
-            font-weight: 600;
-        }
-        
-        .nav-item i {
-            margin-right: 10px;
-            width: 20px;
+        .header {
             text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #000;
+            padding-bottom: 10px;
         }
-        
-        .user-profile {
-            display: flex;
-            align-items: center;
-            padding-top: 1rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        .company-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
         }
-        
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--accent-color);
+        .company-address {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        .gst-no {
+            font-size: 14px;
+        }
+        .invoice-details {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 10px;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .consignor-details, .consignee-details {
+            width: 48%;
+        }
+        .section-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            border-bottom: 1px dashed #000;
+        }
+        .detail-row {
+            display: flex;
+            margin-bottom: 5px;
+        }
+        .detail-label {
+            width: 120px;
             font-weight: bold;
         }
-        
-        .user-info {
-            font-size: 0.9rem;
-        }
-        
-        .user-name {
-            font-weight: 600;
-        }
-        
-        .user-role {
-            font-size: 0.8rem;
-            opacity: 0.8;
-        }
-        
-        .main-content {
+        .detail-value {
             flex-grow: 1;
-            padding: 2rem;
-            position: relative;
         }
-        
-        .form-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-        
-        .form-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--dark-color);
-        }
-        
-        .form-actions {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .btn {
-            padding: 0.6rem 1.2rem;
-            border-radius: 8px;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background-color: var(--secondary-color);
-        }
-        
-        .btn-outline {
-            background-color: transparent;
-            border: 1px solid #ddd;
-            color: var(--dark-color);
-        }
-        
-        .btn-outline:hover {
-            background-color: #f5f5f5;
-        }
-        
-        .btn-print {
-            background-color: #6c757d;
-            color: white;
-        }
-        
-        .btn-print:hover {
-            background-color: #5a6268;
-        }
-        
-        .btn i {
-            margin-right: 8px;
-        }
-        
-        .form-container {
-            background-color: white;
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-        
-        .form-section {
-            margin-bottom: 2rem;
-        }
-        
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .section-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--dark-color);
-        }
-        
-        .section-toggle {
-            color: var(--accent-color);
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-        
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-group.full-width {
-            grid-column: span 2;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: #555;
-        }
-        
-        .form-control {
+        .items-table {
             width: 100%;
-            padding: 0.8rem 1rem;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
+            border-collapse: collapse;
+            margin-bottom: 20px;
         }
-        
-        .form-control:focus {
-            outline: none;
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(72, 149, 239, 0.2);
+        .items-table th, .items-table td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: center;
         }
-        
-        .form-footer {
+        .items-table th {
+            background-color: #f2f2f2;
+        }
+        .footer {
             display: flex;
-            justify-content: flex-end;
-            gap: 15px;
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid #eee;
+            justify-content: space-between;
+            margin-top: 20px;
         }
-        
-        .status-badge {
-            display: inline-block;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
+        .footer-section {
+            width: 48%;
         }
-        
-        .status-draft {
-            background-color: #fff3cd;
-            color: #856404;
+        .signature-area {
+            height: 80px;
+            border-top: 1px dashed #000;
+            margin-top: 10px;
         }
-        
-        .status-completed {
-            background-color: #d4edda;
-            color: #155724;
+        .stamp-area {
+            height: 80px;
+            border: 1px solid #000;
+            margin-top: 10px;
+            text-align: center;
+            line-height: 80px;
         }
-        
-        /* Print-specific styles */
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-            .print-content, .print-content * {
-                visibility: visible;
-            }
-            .print-content {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                padding: 20px;
-            }
-            .no-print {
-                display: none !important;
-            }
-            .form-container {
-                box-shadow: none;
-                border: none;
-            }
-            .form-control {
-                border: none;
-                padding: 0;
-                background: transparent;
-            }
-            table {
-                width: 100%;
-                border-collapse: collapse;
-            }
-            th, td {
-                border: 1px solid #ddd;
-                padding: 8px;
-            }
+        .note {
+            font-style: italic;
+            margin-top: 10px;
         }
-        
-        @media (max-width: 992px) {
-            .form-app {
-                flex-direction: column;
-            }
-            
-            .sidebar {
-                width: 100%;
-            }
-            
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .form-group.full-width {
-                grid-column: span 1;
-            }
+        .copy-label {
+            text-align: right;
+            font-weight: bold;
+            margin-bottom: 5px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="form-app">
-            <!-- Sidebar Navigation -->
-            <div class="sidebar no-print">
-                <div class="logo">
-                    <i class="fas fa-file-alt"></i>
-                    <span>FormPro</span>
+    <div class="invoice-container">
+        <div class="copy-label">TRANSPORTER COPY</div>
+        
+        <div class="header">
+            <div class="company-name">PATLIPUTRA TRANSPORT CORPORATION</div>
+            <div class="company-address">H.O-PATLIPUTRA TRANSPORT CORPORATION, Patna, Bihar, 800002</div>
+            <div class="company-address">B.O- Ranchi</div>
+            <div class="gst-no">GST NO-20ADMPA8920C1Z6</div>
+        </div>
+        
+        <div class="invoice-details">
+            <div class="consignor-details">
+                <div class="section-title">CONSIGNOR DETAILS</div>
+                <div class="detail-row">
+                    <div class="detail-label">Name:</div>
+                    <div class="detail-value">ASIAN PAINTS LTD</div>
                 </div>
-                
-                <div class="nav-menu">
-                    <div class="nav-item active">
-                        <i class="fas fa-home"></i>
-                        <span>Dashboard</span>
-                    </div>
-                    <div class="nav-item">
-                        <i class="fas fa-file-signature"></i>
-                        <span>Forms</span>
-                    </div>
-                    <div class="nav-item">
-                        <i class="fas fa-database"></i>
-                        <span>Templates</span>
-                    </div>
-                    <div class="nav-item">
-                        <i class="fas fa-users"></i>
-                        <span>Contacts</span>
-                    </div>
-                    <div class="nav-item">
-                        <i class="fas fa-chart-bar"></i>
-                        <span>Analytics</span>
-                    </div>
-                    <div class="nav-item">
-                        <i class="fas fa-cog"></i>
-                        <span>Settings</span>
-                    </div>
+                <div class="detail-row">
+                    <div class="detail-label">Address:</div>
+                    <div class="detail-value">Dhanbad</div>
                 </div>
-                
-                <div class="user-profile">
-                    <div class="user-avatar">JD</div>
-                    <div class="user-info">
-                        <div class="user-name">John Doe</div>
-                        <div class="user-role">Administrator</div>
-                    </div>
+                <div class="detail-row">
+                    <div class="detail-label">Contact No:</div>
+                    <div class="detail-value">7808958144</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">C/N No:</div>
+                    <div class="detail-value">P/AS/25-26/02685</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">C/N Date:</div>
+                    <div class="detail-value">20-05-2025</div>
                 </div>
             </div>
             
-            <!-- Main Content Area -->
-            <div class="main-content">
-                <div class="form-header no-print">
-                    <h1 class="form-title">Transport Invoice Form</h1>
-                    <div class="form-actions">
-                        <span class="status-badge status-draft">DRAFT</span>
-                        <button class="btn btn-outline">
-                            <i class="fas fa-save"></i> Save
-                        </button>
-                        <button class="btn btn-print" onclick="window.print()">
-                            <i class="fas fa-print"></i> Print
-                        </button>
-                        <button class="btn btn-primary">
-                            <i class="fas fa-paper-plane"></i> Submit
-                        </button>
-                    </div>
+            <div class="consignee-details">
+                <div class="section-title">CONSIGNEE DETAILS</div>
+                <div class="detail-row">
+                    <div class="detail-label">Name:</div>
+                    <div class="detail-value">RAJESH HARDWARE PLY CENTER</div>
                 </div>
-                
-                <div class="form-container print-content">
-                    <div class="form-section">
-                        <div class="section-header">
-                            <h2 class="section-title">Consignor Details</h2>
-                            <span class="section-toggle no-print">Edit Section</span>
-                        </div>
-                        
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="consignor-name" class="form-label">Consignor Name</label>
-                                <input type="text" id="consignor-name" class="form-control" placeholder="Enter consignor name" value="ASIAN PAINTS LTD">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="consignor-contact" class="form-label">Contact Number</label>
-                                <input type="tel" id="consignor-contact" class="form-control" placeholder="Enter contact number" value="7808958144">
-                            </div>
-                            
-                            <div class="form-group full-width">
-                                <label for="consignor-address" class="form-label">Address (From)</label>
-                                <input type="text" id="consignor-address" class="form-control" placeholder="Enter address" value="Dhanbad">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="cn-number" class="form-label">C/N Number</label>
-                                <input type="text" id="cn-number" class="form-control" placeholder="Enter C/N number" value="P/AS/25-26/02685">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="cn-date" class="form-label">C/N Date</label>
-                                <input type="date" id="cn-date" class="form-control" value="2025-05-20">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-section">
-                        <div class="section-header">
-                            <h2 class="section-title">Consignee Details</h2>
-                            <span class="section-toggle no-print">Edit Section</span>
-                        </div>
-                        
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="consignee-name" class="form-label">Consignee Name</label>
-                                <input type="text" id="consignee-name" class="form-control" placeholder="Enter consignee name" value="RAJESH HARDWARE PLY CENTER">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="consignee-contact" class="form-label">Contact Number</label>
-                                <input type="tel" id="consignee-contact" class="form-control" placeholder="Enter contact number">
-                            </div>
-                            
-                            <div class="form-group full-width">
-                                <label for="consignee-address" class="form-label">Address (To)</label>
-                                <input type="text" id="consignee-address" class="form-control" placeholder="Enter address" value="Jamtara">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="invoice-date" class="form-label">Invoice Date</label>
-                                <input type="date" id="invoice-date" class="form-control" value="2025-06-04">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="waybill-number" class="form-label">Way Bill Number</label>
-                                <input type="text" id="waybill-number" class="form-control" placeholder="Enter way bill number" value="04-06-2025">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-section">
-                        <div class="section-header">
-                            <h2 class="section-title">Transport Details</h2>
-                            <span class="section-toggle no-print">Edit Section</span>
-                        </div>
-                        
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="from-location" class="form-label">From</label>
-                                <input type="text" id="from-location" class="form-control" value="Dhanbad">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="to-location" class="form-label">To</label>
-                                <input type="text" id="to-location" class="form-control" value="Jamtara">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="truck-number" class="form-label">Truck Number</label>
-                                <input type="text" id="truck-number" class="form-control" value="JH01DU-8224">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="transporter" class="form-label">Transporter</label>
-                                <input type="text" id="transporter" class="form-control" value="Shri Ram Logistics">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="insurance" class="form-label">Insurance</label>
-                                <input type="text" id="insurance" class="form-control" value="Asian Paints Products">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="gst-number" class="form-label">GST Number</label>
-                                <input type="text" id="gst-number" class="form-control" value="20ADMPA8920C1Z6">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-section">
-                        <div class="section-header">
-                            <h2 class="section-title">Items Details</h2>
-                            <span class="section-toggle no-print">Add Item</span>
-                        </div>
-                        
-                        <div class="form-grid">
-                            <div class="form-group full-width">
-                                <table style="width: 100%; border-collapse: collapse;">
-                                    <thead>
-                                        <tr style="background-color: #f8f9fa; text-align: left;">
-                                            <th style="padding: 12px 15px; border-bottom: 1px solid #ddd;">SL No.</th>
-                                            <th style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Invoice No</th>
-                                            <th style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Packages</th>
-                                            <th style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Weight (KG)</th>
-                                            <th style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Value (Rs.)</th>
-                                            <th style="padding: 12px 15px; border-bottom: 1px solid #ddd;" class="no-print"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">
-                                                <input type="text" class="form-control" value="1" style="width: 50px;">
-                                            </td>
-                                            <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">
-                                                <input type="text" class="form-control" value="1309941891">
-                                            </td>
-                                            <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">
-                                                <input type="text" class="form-control" value="01">
-                                            </td>
-                                            <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">
-                                                <input type="text" class="form-control" value="62.02">
-                                            </td>
-                                            <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">
-                                                <input type="text" class="form-control" value="2193.3">
-                                            </td>
-                                            <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;" class="no-print">
-                                                <button style="background: none; border: none; color: var(--warning-color); cursor: pointer;">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">
-                                                <input type="text" class="form-control" value="2" style="width: 50px;">
-                                            </td>
-                                            <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">
-                                                <input type="text" class="form-control" value="1282761451">
-                                            </td>
-                                            <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">
-                                                <input type="text" class="form-control" value="13">
-                                            </td>
-                                            <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">
-                                                <input type="text" class="form-control" value="202.9">
-                                            </td>
-                                            <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">
-                                                <input type="text" class="form-control" value="17966">
-                                            </td>
-                                            <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;" class="no-print">
-                                                <button style="background: none; border: none; color: var(--warning-color); cursor: pointer;">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="4" style="padding: 12px 15px; text-align: right; font-weight: bold;">TOTAL</td>
-                                            <td style="padding: 12px 15px; font-weight: bold;">20159.3</td>
-                                            <td class="no-print"></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            
-                            <div class="form-group full-width">
-                                <label for="notes" class="form-label">Additional Notes</label>
-                                <textarea id="notes" class="form-control" rows="3" placeholder="Enter any additional notes">TO BE BILLED AT RANCHI</textarea>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-footer no-print">
-                        <button class="btn btn-outline">
-                            <i class="fas fa-times"></i> Cancel
-                        </button>
-                        <button class="btn btn-primary">
-                            <i class="fas fa-check"></i> Complete Form
-                        </button>
-                    </div>
+                <div class="detail-row">
+                    <div class="detail-label">Address:</div>
+                    <div class="detail-value">Jamtara</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Contact No:</div>
+                    <div class="detail-value"></div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Inv. Date:</div>
+                    <div class="detail-value">04-06-2025</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Way Bill No.:</div>
+                    <div class="detail-value">04-06-2025</div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <script>
-        // Function to handle print button click
-        function printForm() {
-            // Create a print-specific version of the form
-            const printContent = document.querySelector('.print-content').innerHTML;
-            const originalContent = document.body.innerHTML;
-            
-            document.body.innerHTML = `
-                <div style="padding: 20px;">
-                    <h1 style="text-align: center; margin-bottom: 20px;">PATLIPUTRA TRANSPORT CORPORATION</h1>
-                    ${printContent}
-                </div>
-                <button style="position: fixed; bottom: 20px; right: 20px; padding: 10px 20px; background: #4361ee; color: white; border: none; border-radius: 5px; cursor: pointer;" 
-                        onclick="window.close()">Close Print</button>
-            `;
-            
-            // Remove input borders and make them look like plain text
-            const inputs = document.querySelectorAll('input, textarea');
-            inputs.forEach(input => {
-                input.style.border = 'none';
-                input.style.backgroundColor = 'transparent';
-                input.style.padding = '0';
-                input.style.boxShadow = 'none';
-            });
-            
-            window.print();
-            
-            // Restore original content after printing
-            setTimeout(() => {
-                document.body.innerHTML = originalContent;
-            }, 500);
-        }
         
-        // Attach event listener to print button
-        document.addEventListener('DOMContentLoaded', function() {
-            const printBtn = document.querySelector('.btn-print');
-            printBtn.addEventListener('click', printForm);
-        });
-    </script>
+        <div class="transport-details">
+            <div class="detail-row">
+                <div class="detail-label">From:</div>
+                <div class="detail-value">Dhanbad</div>
+                <div class="detail-label">To:</div>
+                <div class="detail-value">Jamtara</div>
+                <div class="detail-label">Truck No:</div>
+                <div class="detail-value">JH01DU-8224</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Transporter:</div>
+                <div class="detail-value">Shri Ram Logistics</div>
+                <div class="detail-label">Insurance:</div>
+                <div class="detail-value">Asian Paints Products</div>
+            </div>
+        </div>
+        
+        <table class="items-table">
+            <thead>
+                <tr>
+                    <th>SL NO.</th>
+                    <th>INVOICE NO</th>
+                    <th>PACKAGES</th>
+                    <th>WEIGHT (KG)</th>
+                    <th>VALUE(Rs.)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>1309941891</td>
+                    <td>01</td>
+                    <td>62.02</td>
+                    <td>2193.3</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>1282761451</td>
+                    <td>13</td>
+                    <td>202.9</td>
+                    <td>17966</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td></td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="3"></td>
+                    <td><strong>TOTAL</strong></td>
+                    <td><strong>20159.3</strong></td>
+                </tr>
+                <tr>
+                    <td colspan="5" style="text-align: left; padding-left: 20px;">TO BE BILLED AT RANCHI</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="footer">
+            <div class="footer-section">
+                <div>PATLIPUTRA TRANSPORT CORPORATION</div>
+                <div class="note">DOOR DELIVERY</div>
+                <div class="signature-area">Authorized Signature</div>
+            </div>
+            <div class="footer-section">
+                <div>CONSIGNEE RECEIPT DATE & STAMP</div>
+                <div class="stamp-area">Stamp Here</div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
