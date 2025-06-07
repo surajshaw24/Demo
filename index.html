@@ -2,1187 +2,655 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NewsHub - Latest Breaking News</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Form Filling Application</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Global Styles */
         :root {
-            --primary-color: #d9232e;
-            --secondary-color: #333;
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4895ef;
             --light-color: #f8f9fa;
             --dark-color: #212529;
-            --text-color: #333;
-            --text-light: #6c757d;
-            --font-main: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            --success-color: #4cc9f0;
+            --warning-color: #f72585;
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            font-family: var(--font-main);
-            color: var(--text-color);
+            background-color: #f5f7fb;
+            color: var(--dark-color);
             line-height: 1.6;
-            background-color: #f5f5f5;
-            overflow-x: hidden;
-        }
-        
-        a {
-            text-decoration: none;
-            color: var(--secondary-color);
-        }
-        
-        ul {
-            list-style: none;
         }
         
         .container {
-            width: 100%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 15px;
+            padding: 2rem;
         }
         
-        .flex {
+        .form-app {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 8px 15px;
-            background: var(--primary-color);
-            color: white;
-            border-radius: 4px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        
-        .btn:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
-        
-        /* Mobile Menu Toggle */
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--secondary-color);
-            font-size: 24px;
-            cursor: pointer;
-            padding: 10px;
-        }
-        
-        /* Top Header */
-        .top-header {
-            background: var(--dark-color);
-            color: white;
-            padding: 8px 0;
-            font-size: 12px;
-            position: relative;
-            z-index: 1000;
-        }
-        
-        .trending-ticker {
-            flex: 1;
-            overflow: hidden;
-            white-space: nowrap;
-            margin-right: 10px;
-        }
-        
-        .trending-ticker span {
-            display: inline-block;
-            padding-left: 100%;
-            animation: ticker 20s linear infinite;
-        }
-        
-        @keyframes ticker {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
-        }
-        
-        .search-bar {
-            margin: 0 10px;
-            position: relative;
-            flex: 0 0 120px;
-        }
-        
-        .search-bar input {
-            padding: 5px 10px 5px 30px;
-            border-radius: 20px;
-            border: none;
-            width: 100%;
-            font-size: 12px;
-        }
-        
-        .search-bar i {
-            position: absolute;
-            left: 10px;
-            top: 6px;
-            color: var(--text-light);
-            font-size: 12px;
-        }
-        
-        .weather-widget {
-            display: flex;
-            align-items: center;
-            font-size: 12px;
-        }
-        
-        .weather-widget i {
-            margin-right: 5px;
-            color: #f39c12;
-            font-size: 14px;
-        }
-        
-        /* Main Header */
-        .main-header {
+            min-height: 90vh;
             background: white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            padding: 10px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sidebar {
+            width: 300px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(135deg, #4361ee, #3f37c9);
+            color: white;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
         }
         
         .logo {
-            font-size: 22px;
+            font-size: 1.8rem;
             font-weight: 700;
-            color: var(--primary-color);
-        }
-        
-        .logo span {
-            color: var(--secondary-color);
-        }
-        
-        .live-badge {
-            background: var(--primary-color);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 10px;
-            font-weight: bold;
-            margin-left: 10px;
-            animation: pulse 1.5s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.6; }
-            100% { opacity: 1; }
-        }
-        
-        .main-nav {
-            transition: all 0.3s ease;
-        }
-        
-        .main-nav ul {
-            display: flex;
-        }
-        
-        .main-nav ul li {
-            position: relative;
-        }
-        
-        .main-nav ul li a {
-            padding: 8px 12px;
-            font-weight: 600;
-            transition: color 0.3s ease;
-            font-size: 14px;
-            display: block;
-        }
-        
-        .main-nav ul li a:hover {
-            color: var(--primary-color);
-        }
-        
-        .main-nav ul li:hover > .dropdown {
-            display: block;
-        }
-        
-        .dropdown {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: white;
-            width: 200px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            display: none;
-            z-index: 10;
-        }
-        
-        .dropdown li a {
-            display: block;
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-        }
-        
-        /* Breaking News */
-        .breaking-news {
-            background: var(--primary-color);
-            color: white;
-            padding: 8px 0;
-            font-size: 13px;
-        }
-        
-        .breaking-news .container {
+            margin-bottom: 2rem;
             display: flex;
             align-items: center;
         }
         
-        .breaking-label {
-            background: var(--dark-color);
-            padding: 4px 8px;
-            font-weight: bold;
+        .logo i {
             margin-right: 10px;
-            white-space: nowrap;
-            font-size: 12px;
+            color: var(--accent-color);
         }
         
-        .breaking-ticker {
-            flex: 1;
-            overflow: hidden;
+        .nav-menu {
+            flex-grow: 1;
         }
         
-        .breaking-ticker span {
-            display: inline-block;
-            padding-left: 100%;
-            animation: ticker 15s linear infinite;
-        }
-        
-        /* Hero Section */
-        .hero {
-            padding: 20px 0;
-        }
-        
-        .hero-article {
-            position: relative;
-            height: 300px;
+        .nav-item {
+            padding: 0.8rem 1rem;
+            margin-bottom: 0.5rem;
             border-radius: 8px;
-            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
         }
         
-        .hero-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .nav-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
         }
         
-        .hero-content {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+        .nav-item.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            font-weight: 600;
+        }
+        
+        .nav-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .user-info {
+            font-size: 0.9rem;
+        }
+        
+        .user-name {
+            font-weight: 600;
+        }
+        
+        .user-role {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+        
+        .main-content {
+            flex-grow: 1;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .form-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
             color: white;
-            padding: 20px;
         }
         
-        .hero-category {
-            display: inline-block;
-            background: var(--primary-color);
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid #ddd;
+            color: var(--dark-color);
+        }
+        
+        .btn-outline:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .btn-print {
+            background-color: #6c757d;
             color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 11px;
-            margin-bottom: 8px;
         }
         
-        .hero-title {
-            font-size: 20px;
-            margin-bottom: 8px;
-            line-height: 1.3;
+        .btn-print:hover {
+            background-color: #5a6268;
         }
         
-        .hero-summary {
-            margin-bottom: 12px;
-            font-size: 14px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+        .btn i {
+            margin-right: 8px;
         }
         
-        /* Trending Section */
-        .trending-section {
-            padding: 20px 0;
+        .form-container {
+            background-color: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .form-section {
+            margin-bottom: 2rem;
         }
         
         .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #eee;
         }
         
         .section-title {
-            font-size: 18px;
-            position: relative;
-            padding-bottom: 8px;
-        }
-        
-        .section-title:after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 40px;
-            height: 3px;
-            background: var(--primary-color);
-        }
-        
-        .trending-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-        }
-        
-        .trending-item {
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-            display: flex;
-        }
-        
-        .trending-item:hover {
-            transform: translateY(-3px);
-        }
-        
-        .trending-number {
-            font-size: 30px;
-            font-weight: bold;
-            color: #eee;
-            margin-right: 10px;
-            min-width: 40px;
-            text-align: center;
-            align-self: center;
-        }
-        
-        .trending-content {
-            padding: 12px;
-        }
-        
-        .trending-title {
-            font-size: 16px;
-            margin-bottom: 8px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        
-        .trending-meta {
-            font-size: 11px;
-            color: var(--text-light);
-        }
-        
-        /* Category News */
-        .category-section {
-            padding: 20px 0;
-        }
-        
-        .category-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-        
-        .category-item {
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .category-image {
-            width: 100%;
-            height: 120px;
-            object-fit: cover;
-        }
-        
-        .category-content {
-            padding: 12px;
-        }
-        
-        .category-name {
-            color: var(--primary-color);
-            font-size: 12px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        
-        .category-title {
-            font-size: 14px;
-            margin-bottom: 8px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        
-        .category-meta {
-            font-size: 11px;
-            color: var(--text-light);
-        }
-        
-        /* Blog Section */
-        .blog-section {
-            padding: 20px 0;
-        }
-        
-        .blog-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-        
-        .blog-item {
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .blog-image {
-            width: 100%;
-            height: 100px;
-            object-fit: cover;
-        }
-        
-        .blog-content {
-            padding: 12px;
-        }
-        
-        .blog-title {
-            font-size: 13px;
-            margin-bottom: 8px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        
-        .blog-meta {
-            font-size: 11px;
-            color: var(--text-light);
-        }
-        
-        /* Ad Sections */
-        .ad-section {
-            padding: 20px 0;
-            text-align: center;
-        }
-        
-        .ad-banner {
-            background: #eee;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
-        
-        .ad-slider {
-            background: #eee;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            height: 200px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .ad-slide {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            transition: opacity 1s ease;
-        }
-        
-        .ad-slide.active {
-            opacity: 1;
-        }
-        
-        /* Footer */
-        .main-footer {
-            background: var(--dark-color);
-            color: white;
-            padding: 30px 0 15px;
-        }
-        
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 25px;
-            margin-bottom: 25px;
-        }
-        
-        .footer-title {
-            font-size: 16px;
-            margin-bottom: 15px;
-            position: relative;
-            padding-bottom: 8px;
-        }
-        
-        .footer-title:after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 30px;
-            height: 2px;
-            background: var(--primary-color);
-        }
-        
-        .footer-links li {
-            margin-bottom: 8px;
-        }
-        
-        .footer-links a {
-            color: #aaa;
-            transition: color 0.3s ease;
-            font-size: 13px;
-        }
-        
-        .footer-links a:hover {
-            color: white;
-        }
-        
-        .newsletter input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 8px;
-            border-radius: 4px;
-            border: none;
-            font-size: 13px;
-        }
-        
-        .social-links {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .social-links a {
-            display: inline-block;
-            width: 36px;
-            height: 36px;
-            background: #333;
-            color: white;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 36px;
-            margin: 5px;
-            transition: background 0.3s ease;
-            font-size: 14px;
-        }
-        
-        .social-links a:hover {
-            background: var(--primary-color);
-        }
-        
-        .copyright {
-            text-align: center;
-            padding-top: 15px;
-            border-top: 1px solid #444;
-            color: #aaa;
-            font-size: 12px;
-            line-height: 1.5;
-        }
-        
-        /* Mobile Menu */
-        .mobile-menu {
-            position: fixed;
-            top: 0;
-            left: -100%;
-            width: 80%;
-            max-width: 300px;
-            height: 100vh;
-            background: white;
-            z-index: 1000;
-            transition: all 0.3s ease;
-            overflow-y: auto;
-            padding: 20px;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-        }
-        
-        .mobile-menu.active {
-            left: 0;
-        }
-        
-        .mobile-menu-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .mobile-menu-logo {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-        
-        .close-menu {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: var(--secondary-color);
-        }
-        
-        .mobile-nav ul li {
-            margin-bottom: 10px;
-        }
-        
-        .mobile-nav ul li a {
-            display: block;
-            padding: 10px;
+            font-size: 1.2rem;
             font-weight: 600;
-            border-bottom: 1px solid #eee;
+            color: var(--dark-color);
         }
         
-        .mobile-nav ul li a i {
-            float: right;
+        .section-toggle {
+            color: var(--accent-color);
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
         }
         
-        .mobile-dropdown {
-            display: none;
-            padding-left: 15px;
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
         }
         
-        .mobile-dropdown li a {
-            font-weight: normal;
-            font-size: 14px;
+        .form-group {
+            margin-bottom: 1.5rem;
         }
         
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 999;
-            display: none;
+        .form-group.full-width {
+            grid-column: span 2;
         }
         
-        .overlay.active {
+        .form-label {
             display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #555;
         }
         
-        /* Responsive Styles */
-        @media (min-width: 576px) {
-            .trending-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .blog-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            
-            .footer-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
         }
         
-        @media (min-width: 768px) {
-            .top-header {
-                font-size: 14px;
-            }
-            
-            .search-bar {
-                flex: 0 0 150px;
-            }
-            
-            .search-bar input {
-                font-size: 14px;
-            }
-            
-            .logo {
-                font-size: 24px;
-            }
-            
-            .live-badge {
-                font-size: 12px;
-                padding: 5px 10px;
-            }
-            
-            .main-nav ul li a {
-                font-size: 15px;
-            }
-            
-            .breaking-news {
-                font-size: 14px;
-            }
-            
-            .hero-title {
-                font-size: 24px;
-            }
-            
-            .hero-summary {
-                font-size: 15px;
-            }
-            
-            .section-title {
-                font-size: 20px;
-            }
-            
-            .trending-title {
-                font-size: 17px;
-            }
-            
-            .category-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            
-            .footer-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(72, 149, 239, 0.2);
         }
         
-        @media (min-width: 992px) {
-            .menu-toggle {
-                display: none;
+        .form-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #eee;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-draft {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-completed {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        /* Print-specific styles */
+        @media print {
+            body * {
+                visibility: hidden;
             }
-            
-            .mobile-menu {
-                display: none;
+            .print-content, .print-content * {
+                visibility: visible;
             }
-            
-            .overlay {
+            .print-content {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 20px;
+            }
+            .no-print {
                 display: none !important;
             }
-            
-            .trending-grid {
-                grid-template-columns: repeat(3, 1fr);
+            .form-container {
+                box-shadow: none;
+                border: none;
             }
-            
-            .category-grid {
-                grid-template-columns: repeat(4, 1fr);
+            .form-control {
+                border: none;
+                padding: 0;
+                background: transparent;
             }
-            
-            .blog-grid {
-                grid-template-columns: repeat(4, 1fr);
+            table {
+                width: 100%;
+                border-collapse: collapse;
             }
-            
-            .footer-grid {
-                grid-template-columns: repeat(4, 1fr);
+            th, td {
+                border: 1px solid #ddd;
+                padding: 8px;
             }
         }
         
-        @media (max-width: 991px) {
-            .menu-toggle {
-                display: block;
+        @media (max-width: 992px) {
+            .form-app {
+                flex-direction: column;
             }
             
-            .main-nav {
-                display: none;
+            .sidebar {
+                width: 100%;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-group.full-width {
+                grid-column: span 1;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Mobile Menu Overlay -->
-    <div class="overlay"></div>
-    
-    <!-- Mobile Menu -->
-    <div class="mobile-menu">
-        <div class="mobile-menu-header">
-            <div class="mobile-menu-logo">News<span>Hub</span></div>
-            <button class="close-menu"><i class="fas fa-times"></i></button>
-        </div>
-        <nav class="mobile-nav">
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li>
-                    <a href="#">Politics <i class="fas fa-chevron-down"></i></a>
-                    <ul class="mobile-dropdown">
-                        <li><a href="#">National</a></li>
-                        <li><a href="#">International</a></li>
-                        <li><a href="#">Elections</a></li>
-                        <li><a href="#">Policy</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#">Business <i class="fas fa-chevron-down"></i></a>
-                    <ul class="mobile-dropdown">
-                        <li><a href="#">Markets</a></li>
-                        <li><a href="#">Economy</a></li>
-                        <li><a href="#">Startups</a></li>
-                        <li><a href="#">Personal Finance</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#">Technology <i class="fas fa-chevron-down"></i></a>
-                    <ul class="mobile-dropdown">
-                        <li><a href="#">Gadgets</a></li>
-                        <li><a href="#">AI</a></li>
-                        <li><a href="#">Cybersecurity</a></li>
-                        <li><a href="#">Apps</a></li>
-                    </ul>
-                </li>
-                <li><a href="#">Sports</a></li>
-                <li><a href="#">Entertainment</a></li>
-                <li><a href="#">More <i class="fas fa-chevron-down"></i></a></li>
-            </ul>
-        </nav>
-    </div>
-    
-    <!-- Top Header -->
-    <header class="top-header">
-        <div class="container flex">
-            <div class="trending-ticker">
-                <span>• Stock markets hit record high • Election polls show surprising results • New tech gadget breaks sales records</span>
-            </div>
-            <div class="search-bar">
-                <input type="text" placeholder="Search...">
-                <i class="fas fa-search"></i>
-            </div>
-            <div class="weather-widget">
-                <i class="fas fa-sun"></i>
-                <span>32°C</span>
-            </div>
-        </div>
-    </header>
-    
-    <!-- Main Header -->
-    <header class="main-header">
-        <div class="container flex">
-            <button class="menu-toggle">
-                <i class="fas fa-bars"></i>
-            </button>
-            <div class="logo">News<span>Hub</span></div>
-            <div class="live-badge">
-                <i class="fas fa-circle"></i> LIVE
-            </div>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="#">Home</a></li>
-                    <li>
-                        <a href="#">Politics <i class="fas fa-caret-down"></i></a>
-                        <ul class="dropdown">
-                            <li><a href="#">National</a></li>
-                            <li><a href="#">International</a></li>
-                            <li><a href="#">Elections</a></li>
-                            <li><a href="#">Policy</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#">Business <i class="fas fa-caret-down"></i></a>
-                        <ul class="dropdown">
-                            <li><a href="#">Markets</a></li>
-                            <li><a href="#">Economy</a></li>
-                            <li><a href="#">Startups</a></li>
-                            <li><a href="#">Personal Finance</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#">Technology</a></li>
-                    <li><a href="#">Sports</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-    
-    <!-- Breaking News -->
-    <section class="breaking-news">
-        <div class="container">
-            <div class="breaking-label">BREAKING</div>
-            <div class="breaking-ticker">
-                <span>• Major earthquake hits coastal region - rescue operations underway • Government announces new economic stimulus package</span>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-article">
-                <img src="https://via.placeholder.com/1200x400" alt="Featured News" class="hero-image">
-                <div class="hero-content">
-                    <span class="hero-category">WORLD NEWS</span>
-                    <h1 class="hero-title">Global Leaders Gather for Climate Summit Amid Rising Concerns</h1>
-                    <p class="hero-summary">World leaders are meeting in emergency session to address the growing climate crisis as new reports show accelerating ice melt.</p>
-                    <a href="#" class="btn">Read More</a>
+    <div class="container">
+        <div class="form-app">
+            <!-- Sidebar Navigation -->
+            <div class="sidebar no-print">
+                <div class="logo">
+                    <i class="fas fa-file-alt"></i>
+                    <span>FormPro</span>
                 </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Trending Section -->
-    <section class="trending-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Trending Now</h2>
-                <a href="#" class="btn">View All</a>
-            </div>
-            <div class="trending-grid">
-                <div class="trending-item">
-                    <div class="trending-number">1</div>
-                    <div class="trending-content">
-                        <h3 class="trending-title">Stock Markets Reach All-Time High Amid Economic Recovery</h3>
-                        <div class="trending-meta">2 hours ago • 1,245 views</div>
-                    </div>
-                </div>
-                <div class="trending-item">
-                    <div class="trending-number">2</div>
-                    <div class="trending-content">
-                        <h3 class="trending-title">New Study Reveals Benefits of Mediterranean Diet</h3>
-                        <div class="trending-meta">4 hours ago • 892 views</div>
-                    </div>
-                </div>
-                <div class="trending-item">
-                    <div class="trending-number">3</div>
-                    <div class="trending-content">
-                        <h3 class="trending-title">Tech Giant Unveils Revolutionary Smartphone With Foldable Screen</h3>
-                        <div class="trending-meta">6 hours ago • 1,567 views</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Category News -->
-    <section class="category-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Latest News</h2>
-                <a href="#" class="btn">View All</a>
-            </div>
-            <div class="category-grid">
-                <div class="category-item">
-                    <img src="https://via.placeholder.com/300x150" alt="Politics" class="category-image">
-                    <div class="category-content">
-                        <div class="category-name">POLITICS</div>
-                        <h3 class="category-title">Senate Passes Controversial Bill After All-Night Session</h3>
-                        <div class="category-meta">1 hour ago</div>
-                    </div>
-                </div>
-                <div class="category-item">
-                    <img src="https://via.placeholder.com/300x150" alt="Business" class="category-image">
-                    <div class="category-content">
-                        <div class="category-name">BUSINESS</div>
-                        <h3 class="category-title">Major Merger Creates New Market Leader in Tech Sector</h3>
-                        <div class="category-meta">3 hours ago</div>
-                    </div>
-                </div>
-                <div class="category-item">
-                    <img src="https://via.placeholder.com/300x150" alt="Technology" class="category-image">
-                    <div class="category-content">
-                        <div class="category-name">TECHNOLOGY</div>
-                        <h3 class="category-title">Breakthrough in Quantum Computing Announced</h3>
-                        <div class="category-meta">5 hours ago</div>
-                    </div>
-                </div>
-                <div class="category-item">
-                    <img src="https://via.placeholder.com/300x150" alt="Sports" class="category-image">
-                    <div class="category-content">
-                        <div class="category-name">SPORTS</div>
-                        <h3 class="category-title">Underdog Team Advances to Finals in Stunning Upset</h3>
-                        <div class="category-meta">2 hours ago</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Blog Section -->
-    <section class="blog-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Latest Blogs</h2>
-                <a href="#" class="btn">View All</a>
-            </div>
-            <div class="blog-grid">
-                <div class="blog-item">
-                    <img src="https://via.placeholder.com/300x120" alt="Blog" class="blog-image">
-                    <div class="blog-content">
-                        <h3 class="blog-title">How Remote Work Is Changing Urban Real Estate Markets</h3>
-                        <div class="blog-meta">By David Wilson • 2 days ago</div>
-                    </div>
-                </div>
-                <div class="blog-item">
-                    <img src="https://via.placeholder.com/300x120" alt="Blog" class="blog-image">
-                    <div class="blog-content">
-                        <h3 class="blog-title">The Future of Electric Vehicles: What to Expect in 2024</h3>
-                        <div class="blog-meta">By Emily Park • 1 day ago</div>
-                    </div>
-                </div>
-                <div class="blog-item">
-                    <img src="https://via.placeholder.com/300x120" alt="Blog" class="blog-image">
-                    <div class="blog-content">
-                        <h3 class="blog-title">Mental Health in the Digital Age: Finding Balance</h3>
-                        <div class="blog-meta">By Dr. Lisa Wong • 3 days ago</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Ad Sections -->
-    <section class="ad-section">
-        <div class="container">
-            <div class="ad-slider">
-                <h3>Sponsored Content</h3>
-                <div class="ad-slide active">
-                    <img src="https://via.placeholder.com/600x300" alt="Ad 1">
-                </div>
-                <div class="ad-slide">
-                    <img src="https://via.placeholder.com/600x300" alt="Ad 2">
-                </div>
-                <div class="ad-slide">
-                    <img src="https://via.placeholder.com/600x300" alt="Ad 3">
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Footer -->
-    <footer class="main-footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <h3 class="footer-title">About Us</h3>
-                    <p>NewsHub is your trusted source for the latest breaking news and in-depth analysis.</p>
-                    <ul class="footer-links">
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Careers</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3 class="footer-title">Categories</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Politics</a></li>
-                        <li><a href="#">Business</a></li>
-                        <li><a href="#">Technology</a></li>
-                        <li><a href="#">Sports</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3 class="footer-title">Legal</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Cookie Policy</a></li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="social-links">
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-youtube"></i></a>
-            </div>
-            
-            <div class="copyright">
-                <p>&copy; 2023 NewsHub. All Rights Reserved.</p>
-                <p>Powered by NewsHub CMS</p>
-            </div>
-        </div>
-    </footer>
-    
-    <script>
-        // Mobile Menu Toggle
-        const menuToggle = document.querySelector('.menu-toggle');
-        const mobileMenu = document.querySelector('.mobile-menu');
-        const closeMenu = document.querySelector('.close-menu');
-        const overlay = document.querySelector('.overlay');
-        
-        menuToggle.addEventListener('click', () => {
-            mobileMenu.classList.add('active');
-            overlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        });
-        
-        closeMenu.addEventListener('click', () => {
-            mobileMenu.classList.remove('active');
-            overlay.classList.remove('active');
-            document.body.style.overflow = '';
-        });
-        
-        overlay.addEventListener('click', () => {
-            mobileMenu.classList.remove('active');
-            overlay.classList.remove('active');
-            document.body.style.overflow = '';
-        });
-        
-        // Mobile Dropdown Toggle
-        const mobileDropdownToggles = document.querySelectorAll('.mobile-nav ul li a i');
-        
-        mobileDropdownToggles.forEach(toggle => {
-            toggle.addEventListener('click', (e) => {
-                e.preventDefault();
-                const parentLi = toggle.closest('li');
-                const dropdown = parentLi.querySelector('.mobile-dropdown');
                 
-                if (dropdown.style.display === 'block') {
-                    dropdown.style.display = 'none';
-                    toggle.classList.remove('fa-chevron-up');
-                    toggle.classList.add('fa-chevron-down');
-                } else {
-                    dropdown.style.display = 'block';
-                    toggle.classList.remove('fa-chevron-down');
-                    toggle.classList.add('fa-chevron-up');
-                }
+                <div class="nav-menu">
+                    <div class="nav-item active">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </div>
+                    <div class="nav-item">
+                        <i class="fas fa-file-signature"></i>
+                        <span>Forms</span>
+                    </div>
+                    <div class="nav-item">
+                        <i class="fas fa-database"></i>
+                        <span>Templates</span>
+                    </div>
+                    <div class="nav-item">
+                        <i class="fas fa-users"></i>
+                        <span>Contacts</span>
+                    </div>
+                    <div class="nav-item">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Analytics</span>
+                    </div>
+                    <div class="nav-item">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </div>
+                </div>
+                
+                <div class="user-profile">
+                    <div class="user-avatar">JD</div>
+                    <div class="user-info">
+                        <div class="user-name">John Doe</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Content Area -->
+            <div class="main-content">
+                <div class="form-header no-print">
+                    <h1 class="form-title">Transport Invoice Form</h1>
+                    <div class="form-actions">
+                        <span class="status-badge status-draft">DRAFT</span>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-save"></i> Save
+                        </button>
+                        <button class="btn btn-print" onclick="window.print()">
+                            <i class="fas fa-print"></i> Print
+                        </button>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Submit
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="form-container print-content">
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h2 class="section-title">Consignor Details</h2>
+                            <span class="section-toggle no-print">Edit Section</span>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="consignor-name" class="form-label">Consignor Name</label>
+                                <input type="text" id="consignor-name" class="form-control" placeholder="Enter consignor name" value="ASIAN PAINTS LTD">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="consignor-contact" class="form-label">Contact Number</label>
+                                <input type="tel" id="consignor-contact" class="form-control" placeholder="Enter contact number" value="7808958144">
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label for="consignor-address" class="form-label">Address (From)</label>
+                                <input type="text" id="consignor-address" class="form-control" placeholder="Enter address" value="Dhanbad">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="cn-number" class="form-label">C/N Number</label>
+                                <input type="text" id="cn-number" class="form-control" placeholder="Enter C/N number" value="P/AS/25-26/02685">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="cn-date" class="form-label">C/N Date</label>
+                                <input type="date" id="cn-date" class="form-control" value="2025-05-20">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h2 class="section-title">Consignee Details</h2>
+                            <span class="section-toggle no-print">Edit Section</span>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="consignee-name" class="form-label">Consignee Name</label>
+                                <input type="text" id="consignee-name" class="form-control" placeholder="Enter consignee name" value="RAJESH HARDWARE PLY CENTER">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="consignee-contact" class="form-label">Contact Number</label>
+                                <input type="tel" id="consignee-contact" class="form-control" placeholder="Enter contact number">
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label for="consignee-address" class="form-label">Address (To)</label>
+                                <input type="text" id="consignee-address" class="form-control" placeholder="Enter address" value="Jamtara">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="invoice-date" class="form-label">Invoice Date</label>
+                                <input type="date" id="invoice-date" class="form-control" value="2025-06-04">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="waybill-number" class="form-label">Way Bill Number</label>
+                                <input type="text" id="waybill-number" class="form-control" placeholder="Enter way bill number" value="04-06-2025">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h2 class="section-title">Transport Details</h2>
+                            <span class="section-toggle no-print">Edit Section</span>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="from-location" class="form-label">From</label>
+                                <input type="text" id="from-location" class="form-control" value="Dhanbad">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="to-location" class="form-label">To</label>
+                                <input type="text" id="to-location" class="form-control" value="Jamtara">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="truck-number" class="form-label">Truck Number</label>
+                                <input type="text" id="truck-number" class="form-control" value="JH01DU-8224">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="transporter" class="form-label">Transporter</label>
+                                <input type="text" id="transporter" class="form-control" value="Shri Ram Logistics">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="insurance" class="form-label">Insurance</label>
+                                <input type="text" id="insurance" class="form-control" value="Asian Paints Products">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="gst-number" class="form-label">GST Number</label>
+                                <input type="text" id="gst-number" class="form-control" value="20ADMPA8920C1Z6">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h2 class="section-title">Items Details</h2>
+                            <span class="section-toggle no-print">Add Item</span>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <table style="width: 100%; border-collapse: collapse;">
+                                    <thead>
+                                        <tr style="background-color: #f8f9fa; text-align: left;">
+                                            <th style="padding: 12px 15px; border-bottom: 1px solid #ddd;">SL No.</th>
+                                            <th style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Invoice No</th>
+                                            <th style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Packages</th>
+                                            <th style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Weight (KG)</th>
+                                            <th style="padding: 12px 15px; border-bottom: 1px solid #ddd;">Value (Rs.)</th>
+                                            <th style="padding: 12px 15px; border-bottom: 1px solid #ddd;" class="no-print"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">
+                                                <input type="text" class="form-control" value="1" style="width: 50px;">
+                                            </td>
+                                            <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">
+                                                <input type="text" class="form-control" value="1309941891">
+                                            </td>
+                                            <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">
+                                                <input type="text" class="form-control" value="01">
+                                            </td>
+                                            <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">
+                                                <input type="text" class="form-control" value="62.02">
+                                            </td>
+                                            <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">
+                                                <input type="text" class="form-control" value="2193.3">
+                                            </td>
+                                            <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;" class="no-print">
+                                                <button style="background: none; border: none; color: var(--warning-color); cursor: pointer;">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">
+                                                <input type="text" class="form-control" value="2" style="width: 50px;">
+                                            </td>
+                                            <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">
+                                                <input type="text" class="form-control" value="1282761451">
+                                            </td>
+                                            <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">
+                                                <input type="text" class="form-control" value="13">
+                                            </td>
+                                            <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">
+                                                <input type="text" class="form-control" value="202.9">
+                                            </td>
+                                            <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;">
+                                                <input type="text" class="form-control" value="17966">
+                                            </td>
+                                            <td style="padding: 12px 15px; border-bottom: 1px solid #ddd;" class="no-print">
+                                                <button style="background: none; border: none; color: var(--warning-color); cursor: pointer;">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4" style="padding: 12px 15px; text-align: right; font-weight: bold;">TOTAL</td>
+                                            <td style="padding: 12px 15px; font-weight: bold;">20159.3</td>
+                                            <td class="no-print"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label for="notes" class="form-label">Additional Notes</label>
+                                <textarea id="notes" class="form-control" rows="3" placeholder="Enter any additional notes">TO BE BILLED AT RANCHI</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-footer no-print">
+                        <button class="btn btn-outline">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-check"></i> Complete Form
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to handle print button click
+        function printForm() {
+            // Create a print-specific version of the form
+            const printContent = document.querySelector('.print-content').innerHTML;
+            const originalContent = document.body.innerHTML;
+            
+            document.body.innerHTML = `
+                <div style="padding: 20px;">
+                    <h1 style="text-align: center; margin-bottom: 20px;">PATLIPUTRA TRANSPORT CORPORATION</h1>
+                    ${printContent}
+                </div>
+                <button style="position: fixed; bottom: 20px; right: 20px; padding: 10px 20px; background: #4361ee; color: white; border: none; border-radius: 5px; cursor: pointer;" 
+                        onclick="window.close()">Close Print</button>
+            `;
+            
+            // Remove input borders and make them look like plain text
+            const inputs = document.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                input.style.border = 'none';
+                input.style.backgroundColor = 'transparent';
+                input.style.padding = '0';
+                input.style.boxShadow = 'none';
             });
+            
+            window.print();
+            
+            // Restore original content after printing
+            setTimeout(() => {
+                document.body.innerHTML = originalContent;
+            }, 500);
+        }
+        
+        // Attach event listener to print button
+        document.addEventListener('DOMContentLoaded', function() {
+            const printBtn = document.querySelector('.btn-print');
+            printBtn.addEventListener('click', printForm);
         });
-        
-        // Ad Slider Automation
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.ad-slide');
-        
-        function showSlide(n) {
-            slides.forEach(slide => slide.classList.remove('active'));
-            currentSlide = (n + slides.length) % slides.length;
-            slides[currentSlide].classList.add('active');
-        }
-        
-        function nextSlide() {
-            showSlide(currentSlide + 1);
-        }
-        
-        // Change slide every 5 seconds
-        setInterval(nextSlide, 5000);
-        
-        // Touch events for mobile swipe
-        let touchStartX = 0;
-        let touchEndX = 0;
-        const adSlider = document.querySelector('.ad-slider');
-        
-        adSlider.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        }, false);
-        
-        adSlider.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        }, false);
-        
-        function handleSwipe() {
-            if (touchEndX < touchStartX) {
-                nextSlide();
-            }
-            if (touchEndX > touchStartX) {
-                showSlide(currentSlide - 1);
-            }
-        }
     </script>
 </body>
 </html>
