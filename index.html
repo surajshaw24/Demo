@@ -1,23 +1,30 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PTC Invoice</title>
+    <title>PTC Invoice Generator</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
         }
-        .invoice-container {
+        .form-container, .invoice-container {
             width: 100%;
             max-width: 800px;
             margin: 0 auto;
-            border: 1px solid #000;
             padding: 20px;
             box-sizing: border-box;
+        }
+        .form-container {
+            background-color: #f5f5f5;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .invoice-container {
+            border: 1px solid #000;
+            display: none;
         }
         .header {
             text-align: center;
@@ -103,11 +110,190 @@
             font-weight: bold;
             margin-bottom: 5px;
         }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        .form-col {
+            flex: 1;
+        }
+        .item-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .item-row input {
+            flex: 1;
+            padding: 8px;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        @media print {
+            .form-container, .no-print {
+                display: none !important;
+            }
+            .invoice-container {
+                display: block !important;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="invoice-container">
-        <div class="copy-label">TRANSPORTER COPY</div>
+    <div class="form-container">
+        <h2>PTC Invoice Generator</h2>
+        
+        <div class="form-row">
+            <div class="form-col">
+                <div class="form-group">
+                    <label for="copyType">Copy Type</label>
+                    <select id="copyType">
+                        <option value="TRANSPORTER COPY">TRANSPORTER COPY</option>
+                        <option value="CONSIGNOR COPY">CONSIGNOR COPY</option>
+                        <option value="CONSIGNEE COPY">CONSIGNEE COPY</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <h3>Consignor Details</h3>
+        <div class="form-row">
+            <div class="form-col">
+                <div class="form-group">
+                    <label for="consignorName">Name</label>
+                    <input type="text" id="consignorName" value="ASIAN PAINTS LTD">
+                </div>
+                <div class="form-group">
+                    <label for="consignorAddress">Address</label>
+                    <input type="text" id="consignorAddress" value="Dhanbad">
+                </div>
+            </div>
+            <div class="form-col">
+                <div class="form-group">
+                    <label for="consignorContact">Contact No</label>
+                    <input type="text" id="consignorContact" value="7808958144">
+                </div>
+                <div class="form-group">
+                    <label for="cnNo">C/N No</label>
+                    <input type="text" id="cnNo" value="P/AS/25-26/02685">
+                </div>
+                <div class="form-group">
+                    <label for="cnDate">C/N Date</label>
+                    <input type="text" id="cnDate" value="20-05-2025">
+                </div>
+            </div>
+        </div>
+        
+        <h3>Consignee Details</h3>
+        <div class="form-row">
+            <div class="form-col">
+                <div class="form-group">
+                    <label for="consigneeName">Name</label>
+                    <input type="text" id="consigneeName" value="RAJESH HARDWARE PLY CENTER">
+                </div>
+                <div class="form-group">
+                    <label for="consigneeAddress">Address</label>
+                    <input type="text" id="consigneeAddress" value="Jamtara">
+                </div>
+            </div>
+            <div class="form-col">
+                <div class="form-group">
+                    <label for="consigneeContact">Contact No</label>
+                    <input type="text" id="consigneeContact">
+                </div>
+                <div class="form-group">
+                    <label for="invDate">Inv. Date</label>
+                    <input type="text" id="invDate" value="04-06-2025">
+                </div>
+                <div class="form-group">
+                    <label for="wayBillNo">Way Bill No.</label>
+                    <input type="text" id="wayBillNo" value="04-06-2025">
+                </div>
+            </div>
+        </div>
+        
+        <h3>Transport Details</h3>
+        <div class="form-row">
+            <div class="form-col">
+                <div class="form-group">
+                    <label for="fromLocation">From</label>
+                    <input type="text" id="fromLocation" value="Dhanbad">
+                </div>
+                <div class="form-group">
+                    <label for="toLocation">To</label>
+                    <input type="text" id="toLocation" value="Jamtara">
+                </div>
+            </div>
+            <div class="form-col">
+                <div class="form-group">
+                    <label for="truckNo">Truck No</label>
+                    <input type="text" id="truckNo" value="JH01DU-8224">
+                </div>
+                <div class="form-group">
+                    <label for="transporter">Transporter</label>
+                    <input type="text" id="transporter" value="Shri Ram Logistics">
+                </div>
+                <div class="form-group">
+                    <label for="insurance">Insurance</label>
+                    <input type="text" id="insurance" value="Asian Paints Products">
+                </div>
+            </div>
+        </div>
+        
+        <h3>Items</h3>
+        <div id="itemsContainer">
+            <div class="item-row">
+                <input type="text" placeholder="SL No." value="1" class="item-sl">
+                <input type="text" placeholder="Invoice No" value="1309941891" class="item-invoice">
+                <input type="text" placeholder="Packages" value="01" class="item-packages">
+                <input type="text" placeholder="Weight (KG)" value="62.02" class="item-weight">
+                <input type="text" placeholder="Value (Rs.)" value="2193.3" class="item-value">
+            </div>
+            <div class="item-row">
+                <input type="text" placeholder="SL No." value="2" class="item-sl">
+                <input type="text" placeholder="Invoice No" value="1282761451" class="item-invoice">
+                <input type="text" placeholder="Packages" value="13" class="item-packages">
+                <input type="text" placeholder="Weight (KG)" value="202.9" class="item-weight">
+                <input type="text" placeholder="Value (Rs.)" value="17966" class="item-value">
+            </div>
+            <!-- Additional empty rows will be added here -->
+        </div>
+        <button type="button" onclick="addItemRow()" class="no-print">Add Item</button>
+        
+        <div class="button-group">
+            <button type="button" onclick="generateInvoice()">Generate Invoice</button>
+            <button type="button" onclick="window.print()" class="no-print">Print Invoice</button>
+        </div>
+    </div>
+    
+    <div class="invoice-container" id="invoiceOutput">
+        <div class="copy-label" id="copyTypeOutput">TRANSPORTER COPY</div>
         
         <div class="header">
             <div class="company-name">PATLIPUTRA TRANSPORT CORPORATION</div>
@@ -121,23 +307,23 @@
                 <div class="section-title">CONSIGNOR DETAILS</div>
                 <div class="detail-row">
                     <div class="detail-label">Name:</div>
-                    <div class="detail-value">ASIAN PAINTS LTD</div>
+                    <div class="detail-value" id="consignorNameOutput">ASIAN PAINTS LTD</div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Address:</div>
-                    <div class="detail-value">Dhanbad</div>
+                    <div class="detail-value" id="consignorAddressOutput">Dhanbad</div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Contact No:</div>
-                    <div class="detail-value">7808958144</div>
+                    <div class="detail-value" id="consignorContactOutput">7808958144</div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">C/N No:</div>
-                    <div class="detail-value">P/AS/25-26/02685</div>
+                    <div class="detail-value" id="cnNoOutput">P/AS/25-26/02685</div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">C/N Date:</div>
-                    <div class="detail-value">20-05-2025</div>
+                    <div class="detail-value" id="cnDateOutput">20-05-2025</div>
                 </div>
             </div>
             
@@ -145,23 +331,23 @@
                 <div class="section-title">CONSIGNEE DETAILS</div>
                 <div class="detail-row">
                     <div class="detail-label">Name:</div>
-                    <div class="detail-value">RAJESH HARDWARE PLY CENTER</div>
+                    <div class="detail-value" id="consigneeNameOutput">RAJESH HARDWARE PLY CENTER</div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Address:</div>
-                    <div class="detail-value">Jamtara</div>
+                    <div class="detail-value" id="consigneeAddressOutput">Jamtara</div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Contact No:</div>
-                    <div class="detail-value"></div>
+                    <div class="detail-value" id="consigneeContactOutput"></div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Inv. Date:</div>
-                    <div class="detail-value">04-06-2025</div>
+                    <div class="detail-value" id="invDateOutput">04-06-2025</div>
                 </div>
                 <div class="detail-row">
                     <div class="detail-label">Way Bill No.:</div>
-                    <div class="detail-value">04-06-2025</div>
+                    <div class="detail-value" id="wayBillNoOutput">04-06-2025</div>
                 </div>
             </div>
         </div>
@@ -169,21 +355,21 @@
         <div class="transport-details">
             <div class="detail-row">
                 <div class="detail-label">From:</div>
-                <div class="detail-value">Dhanbad</div>
+                <div class="detail-value" id="fromLocationOutput">Dhanbad</div>
                 <div class="detail-label">To:</div>
-                <div class="detail-value">Jamtara</div>
+                <div class="detail-value" id="toLocationOutput">Jamtara</div>
                 <div class="detail-label">Truck No:</div>
-                <div class="detail-value">JH01DU-8224</div>
+                <div class="detail-value" id="truckNoOutput">JH01DU-8224</div>
             </div>
             <div class="detail-row">
                 <div class="detail-label">Transporter:</div>
-                <div class="detail-value">Shri Ram Logistics</div>
+                <div class="detail-value" id="transporterOutput">Shri Ram Logistics</div>
                 <div class="detail-label">Insurance:</div>
-                <div class="detail-value">Asian Paints Products</div>
+                <div class="detail-value" id="insuranceOutput">Asian Paints Products</div>
             </div>
         </div>
         
-        <table class="items-table">
+        <table class="items-table" id="itemsTableOutput">
             <thead>
                 <tr>
                     <th>SL NO.</th>
@@ -194,84 +380,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>1309941891</td>
-                    <td>01</td>
-                    <td>62.02</td>
-                    <td>2193.3</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>1282761451</td>
-                    <td>13</td>
-                    <td>202.9</td>
-                    <td>17966</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>6</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>7</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>8</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>9</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>10</td>
-                    <td></td>
-                    <td></td>
-                    <td>0</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td colspan="3"></td>
-                    <td><strong>TOTAL</strong></td>
-                    <td><strong>20159.3</strong></td>
-                </tr>
-                <tr>
-                    <td colspan="5" style="text-align: left; padding-left: 20px;">TO BE BILLED AT RANCHI</td>
-                </tr>
+                <!-- Items will be added here dynamically -->
             </tbody>
         </table>
         
@@ -287,5 +396,109 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Initialize with some empty rows
+        document.addEventListener('DOMContentLoaded', function() {
+            for (let i = 3; i <= 10; i++) {
+                addItemRow(i);
+            }
+        });
+
+        function addItemRow(slNo) {
+            const container = document.getElementById('itemsContainer');
+            const row = document.createElement('div');
+            row.className = 'item-row';
+            
+            const sl = slNo || (container.children.length + 1);
+            
+            row.innerHTML = `
+                <input type="text" placeholder="SL No." value="${sl}" class="item-sl">
+                <input type="text" placeholder="Invoice No" class="item-invoice">
+                <input type="text" placeholder="Packages" class="item-packages">
+                <input type="text" placeholder="Weight (KG)" class="item-weight">
+                <input type="text" placeholder="Value (Rs.)" class="item-value">
+            `;
+            
+            container.appendChild(row);
+        }
+
+        function generateInvoice() {
+            // Copy Type
+            document.getElementById('copyTypeOutput').textContent = document.getElementById('copyType').value;
+            
+            // Consignor Details
+            document.getElementById('consignorNameOutput').textContent = document.getElementById('consignorName').value;
+            document.getElementById('consignorAddressOutput').textContent = document.getElementById('consignorAddress').value;
+            document.getElementById('consignorContactOutput').textContent = document.getElementById('consignorContact').value;
+            document.getElementById('cnNoOutput').textContent = document.getElementById('cnNo').value;
+            document.getElementById('cnDateOutput').textContent = document.getElementById('cnDate').value;
+            
+            // Consignee Details
+            document.getElementById('consigneeNameOutput').textContent = document.getElementById('consigneeName').value;
+            document.getElementById('consigneeAddressOutput').textContent = document.getElementById('consigneeAddress').value;
+            document.getElementById('consigneeContactOutput').textContent = document.getElementById('consigneeContact').value;
+            document.getElementById('invDateOutput').textContent = document.getElementById('invDate').value;
+            document.getElementById('wayBillNoOutput').textContent = document.getElementById('wayBillNo').value;
+            
+            // Transport Details
+            document.getElementById('fromLocationOutput').textContent = document.getElementById('fromLocation').value;
+            document.getElementById('toLocationOutput').textContent = document.getElementById('toLocation').value;
+            document.getElementById('truckNoOutput').textContent = document.getElementById('truckNo').value;
+            document.getElementById('transporterOutput').textContent = document.getElementById('transporter').value;
+            document.getElementById('insuranceOutput').textContent = document.getElementById('insurance').value;
+            
+            // Items
+            const itemsContainer = document.getElementById('itemsContainer');
+            const itemsTable = document.getElementById('itemsTableOutput').getElementsByTagName('tbody')[0];
+            itemsTable.innerHTML = '';
+            
+            let totalValue = 0;
+            
+            for (let i = 0; i < itemsContainer.children.length; i++) {
+                const row = itemsContainer.children[i];
+                const sl = row.querySelector('.item-sl').value;
+                const invoice = row.querySelector('.item-invoice').value;
+                const packages = row.querySelector('.item-packages').value;
+                const weight = row.querySelector('.item-weight').value;
+                const value = row.querySelector('.item-value').value;
+                
+                if (invoice || packages || weight || value) {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${sl}</td>
+                        <td>${invoice}</td>
+                        <td>${packages}</td>
+                        <td>${weight}</td>
+                        <td>${value}</td>
+                    `;
+                    itemsTable.appendChild(tr);
+                    
+                    if (value) {
+                        totalValue += parseFloat(value) || 0;
+                    }
+                }
+            }
+            
+            // Add total row
+            const totalRow = document.createElement('tr');
+            totalRow.innerHTML = `
+                <td colspan="3"></td>
+                <td><strong>TOTAL</strong></td>
+                <td><strong>${totalValue.toFixed(2)}</strong></td>
+            `;
+            itemsTable.appendChild(totalRow);
+            
+            // Add billing location row
+            const locationRow = document.createElement('tr');
+            locationRow.innerHTML = `
+                <td colspan="5" style="text-align: left; padding-left: 20px;">TO BE BILLED AT RANCHI</td>
+            `;
+            itemsTable.appendChild(locationRow);
+            
+            // Show the invoice
+            document.getElementById('invoiceOutput').style.display = 'block';
+        }
+    </script>
 </body>
 </html>
