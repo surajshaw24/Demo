@@ -3,26 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PTC Transport Invoice System</title>
+    <title>PTC Transport Invoice</title>
     <style>
         /* === Base Styles === */
         :root {
             --primary-color: #2c5e1a;
-            --secondary-color: #f5f5f5;
             --border-color: #ddd;
             --text-dark: #333;
-            --text-light: #777;
-        }
-        
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
+            font-family: Arial, sans-serif;
+            line-height: 1.5;
             color: var(--text-dark);
             background-color: #f9f9f9;
             padding: 20px;
@@ -51,7 +43,7 @@
             }
         }
         
-        /* === Form Styles === */
+        /* === Form Container === */
         .form-container {
             max-width: 1000px;
             margin: 0 auto 30px;
@@ -61,136 +53,6 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         
-        .form-header {
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--primary-color);
-        }
-        
-        .form-header h2 {
-            color: var(--primary-color);
-            margin-bottom: 5px;
-        }
-        
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        }
-        
-        .form-section {
-            margin-bottom: 20px;
-        }
-        
-        .section-title {
-            font-size: 16px;
-            color: var(--primary-color);
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .section-title::before {
-            content: "";
-            display: inline-block;
-            width: 4px;
-            height: 16px;
-            background: var(--primary-color);
-            margin-right: 8px;
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-        
-        input, select, textarea {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            font-size: 14px;
-            transition: all 0.3s;
-        }
-        
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(44, 94, 26, 0.1);
-        }
-        
-        /* === Items Table === */
-        .items-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 15px 0;
-        }
-        
-        .items-table th {
-            background: var(--secondary-color);
-            padding: 10px;
-            text-align: left;
-            font-size: 13px;
-            font-weight: 600;
-        }
-        
-        .items-table td {
-            padding: 10px;
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        .items-table input {
-            width: 100%;
-            border: none;
-            padding: 8px;
-            background: transparent;
-        }
-        
-        .items-table input:focus {
-            background: white;
-            border: 1px solid var(--border-color);
-        }
-        
-        /* === Buttons === */
-        .btn {
-            padding: 10px 20px;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        
-        .btn:hover {
-            background: #1e4211;
-            transform: translateY(-1px);
-        }
-        
-        .btn-outline {
-            background: white;
-            color: var(--primary-color);
-            border: 1px solid var(--primary-color);
-        }
-        
-        .btn-outline:hover {
-            background: var(--secondary-color);
-        }
-        
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        
         /* === A4 Invoice Container === */
         .a4-container {
             width: 210mm;
@@ -198,10 +60,11 @@
             margin: 20px auto;
             background: white;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            position: relative;
             padding: 20mm;
+            position: relative;
         }
         
+        /* === Invoice Header === */
         .invoice-header {
             text-align: center;
             margin-bottom: 15mm;
@@ -221,11 +84,6 @@
             margin-bottom: 2mm;
         }
         
-        .gst-no {
-            font-size: 10pt;
-            font-weight: bold;
-        }
-        
         .copy-label {
             text-align: right;
             font-weight: bold;
@@ -233,7 +91,7 @@
             font-size: 12pt;
         }
         
-        /* === Invoice Details === */
+        /* === Invoice Grid Layout === */
         .details-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -241,6 +99,15 @@
             margin-bottom: 10mm;
         }
         
+        .transport-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5mm;
+            margin-bottom: 10mm;
+            font-size: 10pt;
+        }
+        
+        /* === Detail Sections === */
         .detail-section {
             margin-bottom: 5mm;
         }
@@ -262,19 +129,6 @@
         .detail-label {
             width: 40mm;
             font-weight: bold;
-        }
-        
-        .detail-value {
-            flex: 1;
-        }
-        
-        /* === Transport Details === */
-        .transport-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 5mm;
-            margin-bottom: 10mm;
-            font-size: 10pt;
         }
         
         /* === Invoice Table === */
@@ -347,237 +201,150 @@
             font-weight: bold;
         }
         
-        .mt-10 {
-            margin-top: 10mm;
+        .btn {
+            padding: 10px 20px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .btn:hover {
+            background: #1e4211;
         }
     </style>
 </head>
 <body>
     <!-- Form Container -->
     <div class="form-container no-print">
-        <div class="form-header">
-            <h2>PTC Transport Invoice Generator</h2>
-            <p>Fill out the form below to generate a professional transport invoice</p>
-        </div>
+        <h2>PTC Transport Invoice Generator</h2>
         
-        <div class="form-grid">
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 20px;">
             <!-- Left Column -->
             <div>
-                <div class="form-section">
-                    <div class="section-title">Invoice Details</div>
-                    <div class="form-group">
-                        <label for="copyType">Copy Type</label>
-                        <select id="copyType">
-                            <option value="TRANSPORTER COPY">TRANSPORTER COPY</option>
-                            <option value="CONSIGNOR COPY">CONSIGNOR COPY</option>
-                            <option value="CONSIGNEE COPY">CONSIGNEE COPY</option>
-                            <option value="OFFICE COPY">OFFICE COPY</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="invoiceNo">Invoice Number</label>
-                        <input type="text" id="invoiceNo" placeholder="INV-2023-001">
-                    </div>
-                    <div class="form-group">
-                        <label for="invoiceDate">Invoice Date</label>
-                        <input type="date" id="invoiceDate">
-                    </div>
+                <h3>Consignor Details</h3>
+                <div style="margin-bottom: 15px;">
+                    <label>Name</label>
+                    <input type="text" id="consignorName" value="PATLIPUTRA TRANSPORT CORPORATION" style="width: 100%; padding: 8px;">
                 </div>
-                
-                <div class="form-section">
-                    <div class="section-title">Consignor Details</div>
-                    <div class="form-group">
-                        <label for="consignorName">Name</label>
-                        <input type="text" id="consignorName" value="PATLIPUTRA TRANSPORT CORPORATION">
+                <div style="margin-bottom: 15px;">
+                    <label>Address</label>
+                    <textarea id="consignorAddress" style="width: 100%; padding: 8px; height: 60px;">H.O-PATLIPUTRA TRANSPORT CORPORATION, Patna, Bihar, 800002</textarea>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+                    <div>
+                        <label>GSTIN</label>
+                        <input type="text" id="consignorGst" value="20ADMPA8920C1Z6" style="width: 100%; padding: 8px;">
                     </div>
-                    <div class="form-group">
-                        <label for="consignorAddress">Address</label>
-                        <textarea id="consignorAddress" rows="2">H.O-PATLIPUTRA TRANSPORT CORPORATION, Patna, Bihar, 800002</textarea>
-                    </div>
-                    <div class="form-row" style="display: flex; gap: 10px;">
-                        <div style="flex: 1;">
-                            <div class="form-group">
-                                <label for="consignorGst">GSTIN</label>
-                                <input type="text" id="consignorGst" value="20ADMPA8920C1Z6">
-                            </div>
-                        </div>
-                        <div style="flex: 1;">
-                            <div class="form-group">
-                                <label for="consignorPhone">Phone</label>
-                                <input type="text" id="consignorPhone" placeholder="+91 ">
-                            </div>
-                        </div>
+                    <div>
+                        <label>Phone</label>
+                        <input type="text" id="consignorPhone" style="width: 100%; padding: 8px;">
                     </div>
                 </div>
             </div>
             
             <!-- Right Column -->
             <div>
-                <div class="form-section">
-                    <div class="section-title">Consignee Details</div>
-                    <div class="form-group">
-                        <label for="consigneeName">Name</label>
-                        <input type="text" id="consigneeName" placeholder="Customer Name">
-                    </div>
-                    <div class="form-group">
-                        <label for="consigneeAddress">Address</label>
-                        <textarea id="consigneeAddress" rows="2" placeholder="Customer Address"></textarea>
-                    </div>
-                    <div class="form-row" style="display: flex; gap: 10px;">
-                        <div style="flex: 1;">
-                            <div class="form-group">
-                                <label for="consigneeGst">GSTIN</label>
-                                <input type="text" id="consigneeGst" placeholder="22AAAAA0000A1Z5">
-                            </div>
-                        </div>
-                        <div style="flex: 1;">
-                            <div class="form-group">
-                                <label for="consigneePhone">Phone</label>
-                                <input type="text" id="consigneePhone" placeholder="+91 ">
-                            </div>
-                        </div>
-                    </div>
+                <h3>Consignee Details</h3>
+                <div style="margin-bottom: 15px;">
+                    <label>Name</label>
+                    <input type="text" id="consigneeName" style="width: 100%; padding: 8px;">
                 </div>
-                
-                <div class="form-section">
-                    <div class="section-title">Transport Details</div>
-                    <div class="form-row" style="display: flex; gap: 10px;">
-                        <div style="flex: 1;">
-                            <div class="form-group">
-                                <label for="lrNo">LR Number</label>
-                                <input type="text" id="lrNo" placeholder="LR-XXXXXX">
-                            </div>
-                        </div>
-                        <div style="flex: 1;">
-                            <div class="form-group">
-                                <label for="lrDate">LR Date</label>
-                                <input type="date" id="lrDate">
-                            </div>
-                        </div>
+                <div style="margin-bottom: 15px;">
+                    <label>Address</label>
+                    <textarea id="consigneeAddress" style="width: 100%; padding: 8px; height: 60px;"></textarea>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+                    <div>
+                        <label>GSTIN</label>
+                        <input type="text" id="consigneeGst" style="width: 100%; padding: 8px;">
+                    </div>
+                    <div>
+                        <label>Phone</label>
+                        <input type="text" id="consigneePhone" style="width: 100%; padding: 8px;">
                     </div>
                 </div>
             </div>
         </div>
         
-        <div class="form-section">
-            <div class="section-title">Transport Information</div>
-            <div class="form-row" style="display: flex; gap: 10px; margin-bottom: 10px;">
-                <div style="flex: 1;">
-                    <div class="form-group">
-                        <label for="fromPlace">From</label>
-                        <input type="text" id="fromPlace" placeholder="Source Location">
-                    </div>
-                </div>
-                <div style="flex: 1;">
-                    <div class="form-group">
-                        <label for="toPlace">To</label>
-                        <input type="text" id="toPlace" placeholder="Destination">
-                    </div>
-                </div>
-                <div style="flex: 1;">
-                    <div class="form-group">
-                        <label for="vehicleNo">Vehicle No.</label>
-                        <input type="text" id="vehicleNo" placeholder="JH01AB1234">
-                    </div>
-                </div>
+        <h3>Transport Details</h3>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px;">
+            <div>
+                <label>From</label>
+                <input type="text" id="fromPlace" style="width: 100%; padding: 8px;">
             </div>
-            
-            <div class="form-row" style="display: flex; gap: 10px;">
-                <div style="flex: 1;">
-                    <div class="form-group">
-                        <label for="transporter">Transporter</label>
-                        <input type="text" id="transporter" placeholder="Transporter Name">
-                    </div>
-                </div>
-                <div style="flex: 1;">
-                    <div class="form-group">
-                        <label for="driverName">Driver Name</label>
-                        <input type="text" id="driverName" placeholder="Driver Name">
-                    </div>
-                </div>
-                <div style="flex: 1;">
-                    <div class="form-group">
-                        <label for="driverContact">Driver Contact</label>
-                        <input type="text" id="driverContact" placeholder="Driver Phone">
-                    </div>
-                </div>
+            <div>
+                <label>To</label>
+                <input type="text" id="toPlace" style="width: 100%; padding: 8px;">
+            </div>
+            <div>
+                <label>Vehicle No.</label>
+                <input type="text" id="vehicleNo" style="width: 100%; padding: 8px;">
             </div>
         </div>
         
-        <div class="form-section">
-            <div class="section-title">Items/Goods</div>
-            <table class="items-table">
-                <thead>
-                    <tr>
-                        <th width="5%">#</th>
-                        <th width="25%">Description</th>
-                        <th width="15%">HSN Code</th>
-                        <th width="15%">Invoice No</th>
-                        <th width="10%">Packages</th>
-                        <th width="10%">Weight (KG)</th>
-                        <th width="15%">Value (₹)</th>
-                        <th width="5%"></th>
-                    </tr>
-                </thead>
-                <tbody id="itemRows">
-                    <tr>
-                        <td>1</td>
-                        <td><input type="text" class="item-desc" placeholder="Item description"></td>
-                        <td><input type="text" class="item-hsn" placeholder="HSN Code"></td>
-                        <td><input type="text" class="item-invoice" placeholder="Invoice No"></td>
-                        <td><input type="number" class="item-packages" placeholder="0"></td>
-                        <td><input type="number" class="item-weight" placeholder="0.00"></td>
-                        <td><input type="number" class="item-value" placeholder="0.00"></td>
-                        <td><button type="button" class="btn btn-danger" onclick="removeItemRow(this)" style="padding: 5px; background: #dc3545;">×</button></td>
-                    </tr>
-                </tbody>
-            </table>
-            <button type="button" class="btn btn-outline" onclick="addItemRow()" style="margin-top: 10px;">+ Add Item</button>
-        </div>
-        
-        <div class="form-section">
-            <div class="section-title">Payment Details</div>
-            <div class="form-row" style="display: flex; gap: 10px;">
-                <div style="flex: 1;">
-                    <div class="form-group">
-                        <label for="freightCharge">Freight Charge (₹)</label>
-                        <input type="number" id="freightCharge" placeholder="0.00">
-                    </div>
-                </div>
-                <div style="flex: 1;">
-                    <div class="form-group">
-                        <label for="advancePaid">Advance Paid (₹)</label>
-                        <input type="number" id="advancePaid" placeholder="0.00">
-                    </div>
-                </div>
-                <div style="flex: 1;">
-                    <div class="form-group">
-                        <label for="balanceDue">Balance Due (₹)</label>
-                        <input type="number" id="balanceDue" placeholder="0.00" readonly>
-                    </div>
-                </div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px;">
+            <div>
+                <label>Transporter</label>
+                <input type="text" id="transporter" style="width: 100%; padding: 8px;">
             </div>
-            
-            <div class="form-group">
-                <label for="paymentMode">Payment Mode</label>
-                <select id="paymentMode">
-                    <option value="Cash">Cash</option>
-                    <option value="Cheque">Cheque</option>
-                    <option value="Online Transfer">Online Transfer</option>
-                    <option value="Credit">Credit</option>
-                </select>
+            <div>
+                <label>Driver Name</label>
+                <input type="text" id="driverName" style="width: 100%; padding: 8px;">
             </div>
-            
-            <div class="form-group">
-                <label for="notes">Special Instructions</label>
-                <textarea id="notes" rows="2" placeholder="Any special instructions..."></textarea>
+            <div>
+                <label>Driver Contact</label>
+                <input type="text" id="driverContact" style="width: 100%; padding: 8px;">
             </div>
         </div>
         
-        <div class="btn-group">
-            <button type="button" class="btn" onclick="generateInvoice()">Generate Invoice</button>
-            <button type="button" class="btn btn-outline" onclick="resetForm()">Reset Form</button>
-            <button type="button" class="btn" onclick="window.print()">Print Invoice</button>
+        <h3>Items/Goods</h3>
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+            <thead>
+                <tr style="background: #f2f2f2;">
+                    <th style="padding: 8px; border: 1px solid #ddd;">#</th>
+                    <th style="padding: 8px; border: 1px solid #ddd;">Description</th>
+                    <th style="padding: 8px; border: 1px solid #ddd;">HSN Code</th>
+                    <th style="padding: 8px; border: 1px solid #ddd;">Invoice No</th>
+                    <th style="padding: 8px; border: 1px solid #ddd;">Packages</th>
+                    <th style="padding: 8px; border: 1px solid #ddd;">Weight (KG)</th>
+                    <th style="padding: 8px; border: 1px solid #ddd;">Value (₹)</th>
+                </tr>
+            </thead>
+            <tbody id="itemRows">
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #ddd;">1</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;"><input type="text" style="width: 100%; border: none;"></td>
+                    <td style="padding: 8px; border: 1px solid #ddd;"><input type="text" style="width: 100%; border: none;"></td>
+                    <td style="padding: 8px; border: 1px solid #ddd;"><input type="text" style="width: 100%; border: none;"></td>
+                    <td style="padding: 8px; border: 1px solid #ddd;"><input type="number" style="width: 100%; border: none;"></td>
+                    <td style="padding: 8px; border: 1px solid #ddd;"><input type="number" style="width: 100%; border: none;"></td>
+                    <td style="padding: 8px; border: 1px solid #ddd;"><input type="number" style="width: 100%; border: none;"></td>
+                </tr>
+            </tbody>
+        </table>
+        <button type="button" onclick="addItemRow()" style="margin-bottom: 20px;">+ Add Item</button>
+        
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px;">
+            <div>
+                <label>Freight Charge (₹)</label>
+                <input type="number" id="freightCharge" style="width: 100%; padding: 8px;">
+            </div>
+            <div>
+                <label>Advance Paid (₹)</label>
+                <input type="number" id="advancePaid" style="width: 100%; padding: 8px;">
+            </div>
+            <div>
+                <label>Balance Due (₹)</label>
+                <input type="number" id="balanceDue" style="width: 100%; padding: 8px;" readonly>
+            </div>
+        </div>
+        
+        <div style="display: flex; gap: 10px;">
+            <button type="button" onclick="generateInvoice()">Generate Invoice</button>
+            <button type="button" onclick="window.print()">Print Invoice</button>
         </div>
     </div>
     
@@ -637,22 +404,6 @@
             <div>
                 <div class="detail-title">TRANSPORT DETAILS</div>
                 <div class="detail-row">
-                    <div class="detail-label">LR No:</div>
-                    <div class="detail-value" id="previewLrNo"></div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label">LR Date:</div>
-                    <div class="detail-value" id="previewLrDate"></div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label">Vehicle No:</div>
-                    <div class="detail-value" id="previewVehicleNo"></div>
-                </div>
-            </div>
-            
-            <div>
-                <div class="detail-title">ROUTE DETAILS</div>
-                <div class="detail-row">
                     <div class="detail-label">From:</div>
                     <div class="detail-value" id="previewFromPlace"></div>
                 </div>
@@ -661,13 +412,17 @@
                     <div class="detail-value" id="previewToPlace"></div>
                 </div>
                 <div class="detail-row">
-                    <div class="detail-label">Transporter:</div>
-                    <div class="detail-value" id="previewTransporter"></div>
+                    <div class="detail-label">Vehicle No:</div>
+                    <div class="detail-value" id="previewVehicleNo"></div>
                 </div>
             </div>
             
             <div>
-                <div class="detail-title">DRIVER DETAILS</div>
+                <div class="detail-title">TRANSPORTER INFO</div>
+                <div class="detail-row">
+                    <div class="detail-label">Transporter:</div>
+                    <div class="detail-value" id="previewTransporter"></div>
+                </div>
                 <div class="detail-row">
                     <div class="detail-label">Driver Name:</div>
                     <div class="detail-value" id="previewDriverName"></div>
@@ -676,9 +431,21 @@
                     <div class="detail-label">Contact No:</div>
                     <div class="detail-value" id="previewDriverContact"></div>
                 </div>
+            </div>
+            
+            <div>
+                <div class="detail-title">INVOICE DETAILS</div>
                 <div class="detail-row">
                     <div class="detail-label">Invoice No:</div>
                     <div class="detail-value" id="previewInvoiceNo"></div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Date:</div>
+                    <div class="detail-value" id="previewDate"></div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">LR No:</div>
+                    <div class="detail-value" id="previewLrNo"></div>
                 </div>
             </div>
         </div>
@@ -705,8 +472,6 @@
                     <td colspan="4" rowspan="3" style="vertical-align: top; text-align: left; padding-left: 5mm;">
                         <div class="text-bold">Payment Terms:</div>
                         <div id="previewPaymentMode" style="margin-top: 2mm;"></div>
-                        <div class="text-bold" style="margin-top: 2mm;">Special Instructions:</div>
-                        <div id="previewNotes" style="margin-top: 2mm;"></div>
                     </td>
                     <td colspan="2" class="text-bold text-right">Freight Charge:</td>
                     <td class="text-right" id="previewFreightCharge">₹0.00</td>
@@ -740,34 +505,7 @@
     </div>
 
     <script>
-        // ========== Global Variables ==========
-        let invoiceData = {
-            items: [],
-            totals: {
-                packages: 0,
-                weight: 0,
-                value: 0
-            }
-        };
-        
-        // ========== DOM Ready ==========
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set today's date as default for invoice and LR
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('invoiceDate').value = today;
-            document.getElementById('lrDate').value = today;
-            
-            // Add first item row if none exists
-            if (document.querySelectorAll('#itemRows tr').length === 0) {
-                addItemRow();
-            }
-            
-            // Calculate balance when freight or advance changes
-            document.getElementById('freightCharge').addEventListener('input', calculateBalance);
-            document.getElementById('advancePaid').addEventListener('input', calculateBalance);
-        });
-        
-        // ========== Form Functions ==========
+        // Add item row
         function addItemRow() {
             const tbody = document.getElementById('itemRows');
             const rowCount = tbody.children.length;
@@ -775,178 +513,135 @@
             
             newRow.innerHTML = `
                 <td>${rowCount + 1}</td>
-                <td><input type="text" class="item-desc" placeholder="Item description"></td>
-                <td><input type="text" class="item-hsn" placeholder="HSN Code"></td>
-                <td><input type="text" class="item-invoice" placeholder="Invoice No"></td>
-                <td><input type="number" class="item-packages" placeholder="0" onchange="calculateItemTotals()"></td>
-                <td><input type="number" class="item-weight" placeholder="0.00" onchange="calculateItemTotals()"></td>
-                <td><input type="number" class="item-value" placeholder="0.00" onchange="calculateItemTotals()"></td>
-                <td><button type="button" class="btn btn-danger" onclick="removeItemRow(this)" style="padding: 5px; background: #dc3545;">×</button></td>
+                <td><input type="text" style="width: 100%; border: none;"></td>
+                <td><input type="text" style="width: 100%; border: none;"></td>
+                <td><input type="text" style="width: 100%; border: none;"></td>
+                <td><input type="number" style="width: 100%; border: none;"></td>
+                <td><input type="number" style="width: 100%; border: none;"></td>
+                <td><input type="number" style="width: 100%; border: none;"></td>
             `;
             
             tbody.appendChild(newRow);
         }
         
-        function removeItemRow(button) {
-            const row = button.closest('tr');
-            row.parentNode.removeChild(row);
-            
-            // Update serial numbers
-            document.querySelectorAll('#itemRows tr').forEach((row, index) => {
-                row.cells[0].textContent = index + 1;
-            });
-            
-            calculateItemTotals();
-        }
-        
-        function calculateItemTotals() {
-            invoiceData.items = [];
-            invoiceData.totals = {
-                packages: 0,
-                weight: 0,
-                value: 0
-            };
-            
-            document.querySelectorAll('#itemRows tr').forEach(row => {
-                const item = {
-                    slNo: row.cells[0].textContent,
-                    description: row.querySelector('.item-desc').value,
-                    hsn: row.querySelector('.item-hsn').value,
-                    invoiceNo: row.querySelector('.item-invoice').value,
-                    packages: parseFloat(row.querySelector('.item-packages').value) || 0,
-                    weight: parseFloat(row.querySelector('.item-weight').value) || 0,
-                    value: parseFloat(row.querySelector('.item-value').value) || 0
-                };
-                
-                invoiceData.items.push(item);
-                
-                invoiceData.totals.packages += item.packages;
-                invoiceData.totals.weight += item.weight;
-                invoiceData.totals.value += item.value;
-            });
-            
-            calculateBalance();
-        }
-        
-        function calculateBalance() {
-            const freightCharge = parseFloat(document.getElementById('freightCharge').value) || 0;
-            const advancePaid = parseFloat(document.getElementById('advancePaid').value) || 0;
-            const balanceDue = freightCharge - advancePaid;
-            
-            document.getElementById('balanceDue').value = balanceDue.toFixed(2);
-        }
-        
-        function resetForm() {
-            if (confirm('Are you sure you want to reset the form? All data will be lost.')) {
-                document.querySelector('form').reset();
-                document.getElementById('itemRows').innerHTML = '';
-                addItemRow();
-                invoiceData = {
-                    items: [],
-                    totals: {
-                        packages: 0,
-                        weight: 0,
-                        value: 0
-                    }
-                };
-            }
-        }
-        
-        // ========== Invoice Generation ==========
+        // Generate invoice
         function generateInvoice() {
-            // Calculate totals if not already done
-            calculateItemTotals();
+            // Set copy type
+            document.getElementById('copyTypeOutput').textContent = 
+                document.getElementById('copyType').value;
             
-            // Copy Type
-            document.getElementById('copyTypeOutput').textContent = document.getElementById('copyType').value;
+            // Set consignor details
+            document.getElementById('previewConsignorName').textContent = 
+                document.getElementById('consignorName').value;
+            document.getElementById('previewConsignorAddress').textContent = 
+                document.getElementById('consignorAddress').value;
+            document.getElementById('previewConsignorGst').textContent = 
+                document.getElementById('consignorGst').value;
+            document.getElementById('previewConsignorPhone').textContent = 
+                document.getElementById('consignorPhone').value;
             
-            // Invoice Details
-            document.getElementById('previewInvoiceNo').textContent = document.getElementById('invoiceNo').value || 'N/A';
+            // Set consignee details
+            document.getElementById('previewConsigneeName').textContent = 
+                document.getElementById('consigneeName').value;
+            document.getElementById('previewConsigneeAddress').textContent = 
+                document.getElementById('consigneeAddress').value;
+            document.getElementById('previewConsigneeGst').textContent = 
+                document.getElementById('consigneeGst').value;
+            document.getElementById('previewConsigneePhone').textContent = 
+                document.getElementById('consigneePhone').value;
             
-            // Dates
-            document.getElementById('previewLrDate').textContent = formatDate(document.getElementById('lrDate').value);
+            // Set transport details
+            document.getElementById('previewFromPlace').textContent = 
+                document.getElementById('fromPlace').value;
+            document.getElementById('previewToPlace').textContent = 
+                document.getElementById('toPlace').value;
+            document.getElementById('previewVehicleNo').textContent = 
+                document.getElementById('vehicleNo').value;
+            document.getElementById('previewTransporter').textContent = 
+                document.getElementById('transporter').value;
+            document.getElementById('previewDriverName').textContent = 
+                document.getElementById('driverName').value;
+            document.getElementById('previewDriverContact').textContent = 
+                document.getElementById('driverContact').value;
             
-            // Consignor Details
-            document.getElementById('previewConsignorName').textContent = document.getElementById('consignorName').value;
-            document.getElementById('previewConsignorAddress').textContent = document.getElementById('consignorAddress').value;
-            document.getElementById('previewConsignorGst').textContent = document.getElementById('consignorGst').value;
-            document.getElementById('previewConsignorPhone').textContent = document.getElementById('consignorPhone').value || 'N/A';
+            // Set invoice details
+            document.getElementById('previewInvoiceNo').textContent = 
+                document.getElementById('invoiceNo').value || 'N/A';
             
-            // Consignee Details
-            document.getElementById('previewConsigneeName').textContent = document.getElementById('consigneeName').value || 'N/A';
-            document.getElementById('previewConsigneeAddress').textContent = document.getElementById('consigneeAddress').value || 'N/A';
-            document.getElementById('previewConsigneeGst').textContent = document.getElementById('consigneeGst').value || 'N/A';
-            document.getElementById('previewConsigneePhone').textContent = document.getElementById('consigneePhone').value || 'N/A';
+            // Set current date
+            const today = new Date();
+            document.getElementById('previewDate').textContent = 
+                formatDate(today);
+            document.getElementById('previewLrNo').textContent = 
+                document.getElementById('lrNo').value || 'N/A';
             
-            // Transport Details
-            document.getElementById('previewLrNo').textContent = document.getElementById('lrNo').value || 'N/A';
-            document.getElementById('previewVehicleNo').textContent = document.getElementById('vehicleNo').value || 'N/A';
-            document.getElementById('previewFromPlace').textContent = document.getElementById('fromPlace').value || 'N/A';
-            document.getElementById('previewToPlace').textContent = document.getElementById('toPlace').value || 'N/A';
-            document.getElementById('previewTransporter').textContent = document.getElementById('transporter').value || 'N/A';
-            document.getElementById('previewDriverName').textContent = document.getElementById('driverName').value || 'N/A';
-            document.getElementById('previewDriverContact').textContent = document.getElementById('driverContact').value || 'N/A';
-            
-            // Payment Details
-            document.getElementById('previewPaymentMode').textContent = document.getElementById('paymentMode').value;
-            document.getElementById('previewNotes').textContent = document.getElementById('notes').value || 'None';
-            
-            // Freight Charges
+            // Set payment details
             const freightCharge = parseFloat(document.getElementById('freightCharge').value) || 0;
             const advancePaid = parseFloat(document.getElementById('advancePaid').value) || 0;
             const balanceDue = freightCharge - advancePaid;
             
-            document.getElementById('previewFreightCharge').textContent = `₹${freightCharge.toFixed(2)}`;
-            document.getElementById('previewAdvancePaid').textContent = `₹${advancePaid.toFixed(2)}`;
-            document.getElementById('previewBalanceDue').textContent = `₹${balanceDue.toFixed(2)}`;
+            document.getElementById('previewFreightCharge').textContent = 
+                '₹' + freightCharge.toFixed(2);
+            document.getElementById('previewAdvancePaid').textContent = 
+                '₹' + advancePaid.toFixed(2);
+            document.getElementById('previewBalanceDue').textContent = 
+                '₹' + balanceDue.toFixed(2);
             
-            // Items
+            // Set items
+            const itemRows = document.getElementById('itemRows').children;
             const previewTbody = document.getElementById('previewItemRows');
             previewTbody.innerHTML = '';
             
-            if (invoiceData.items.length === 0) {
+            if (itemRows.length === 0) {
                 previewTbody.innerHTML = `
                     <tr>
                         <td colspan="7" style="text-align: center;">No items added</td>
                     </tr>
                 `;
             } else {
-                invoiceData.items.forEach(item => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${item.slNo}</td>
-                        <td>${item.description || '-'}</td>
-                        <td>${item.hsn || '-'}</td>
-                        <td>${item.invoiceNo || '-'}</td>
-                        <td>${item.packages}</td>
-                        <td>${item.weight.toFixed(2)}</td>
-                        <td>₹${item.value.toFixed(2)}</td>
+                for (let i = 0; i < itemRows.length; i++) {
+                    const row = itemRows[i];
+                    const inputs = row.querySelectorAll('input');
+                    
+                    const newRow = document.createElement('tr');
+                    newRow.innerHTML = `
+                        <td>${i + 1}</td>
+                        <td>${inputs[0].value || '-'}</td>
+                        <td>${inputs[1].value || '-'}</td>
+                        <td>${inputs[2].value || '-'}</td>
+                        <td>${inputs[3].value || '0'}</td>
+                        <td>${inputs[4].value || '0.00'}</td>
+                        <td>₹${inputs[5].value ? parseFloat(inputs[5].value).toFixed(2) : '0.00'}</td>
                     `;
-                    previewTbody.appendChild(row);
-                });
+                    previewTbody.appendChild(newRow);
+                }
             }
             
-            // Delivery Date
-            const today = new Date();
-            document.getElementById('previewDeliveryDate').textContent = `Delivered On: ${formatDate(today.toISOString())}`;
+            // Set delivery date
+            document.getElementById('previewDeliveryDate').textContent = 
+                'Delivered On: ' + formatDate(today);
             
             // Scroll to preview
-            document.getElementById('invoicePreview').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('invoicePreview').scrollIntoView();
             
             alert('Invoice generated successfully! Click "Print Invoice" to print.');
         }
         
-        // ========== Utility Functions ==========
-        function formatDate(dateString) {
-            if (!dateString) return 'N/A';
-            
-            const date = new Date(dateString);
-            const day = date.getDate().toString().padStart(2, '0');
-            const month = (date.getMonth() + 1).toString().padStart(2, '0');
-            const year = date.getFullYear();
-            
+        // Format date as DD-MM-YYYY
+        function formatDate(date) {
+            const d = new Date(date);
+            const day = d.getDate().toString().padStart(2, '0');
+            const month = (d.getMonth() + 1).toString().padStart(2, '0');
+            const year = d.getFullYear();
             return `${day}-${month}-${year}`;
         }
+        
+        // Initialize with today's date
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            document.getElementById('invoiceDate').value = today.toISOString().split('T')[0];
+            document.getElementById('lrDate').value = today.toISOString().split('T')[0];
+        });
     </script>
 </body>
 </html>
