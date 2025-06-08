@@ -5,813 +5,590 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PTC Invoice System</title>
     <style>
-        :root {
-            --primary-color: #2c5e1a;
-            --secondary-color: #f5f5f5;
-            --border-color: #ddd;
-            --text-dark: #333;
-            --text-light: #777;
-        }
-        
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
+        /* Base Styles */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: var(--text-dark);
+            font-family: 'Arial', sans-serif;
+            line-height: 1.5;
+            color: #333;
             background-color: #f9f9f9;
             padding: 20px;
         }
         
-        .app-container {
-            display: grid;
-            grid-template-columns: 350px 1fr;
-            gap: 20px;
-            max-width: 1400px;
+        /* A4 Page Dimensions - 210mm x 297mm */
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        
+        .a4-page {
+            width: 210mm;
+            min-height: 297mm;
             margin: 0 auto;
-        }
-        
-        /* Form Panel */
-        .form-panel {
             background: white;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            height: fit-content;
-            position: sticky;
-            top: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            position: relative;
         }
         
-        .form-header {
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--primary-color);
+        .invoice-container {
+            padding: 15mm;
+            height: 100%;
         }
         
-        .form-header h2 {
-            color: var(--primary-color);
+        /* Header Styles */
+        .header {
+            text-align: center;
+            margin-bottom: 10mm;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5mm;
         }
         
-        .form-section {
-            margin-bottom: 25px;
+        .company-name {
+            font-size: 18pt;
+            font-weight: bold;
+            margin-bottom: 2mm;
+        }
+        
+        .company-address {
+            font-size: 10pt;
+            margin-bottom: 1mm;
+        }
+        
+        .gst-no {
+            font-size: 10pt;
+            font-weight: bold;
+        }
+        
+        /* Invoice Details */
+        .invoice-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8mm;
+        }
+        
+        .consignor-details, .consignee-details {
+            width: 48%;
         }
         
         .section-title {
-            font-size: 16px;
-            color: var(--primary-color);
-            margin-bottom: 12px;
+            font-weight: bold;
+            margin-bottom: 2mm;
+            border-bottom: 1px dashed #000;
+            font-size: 11pt;
+        }
+        
+        .detail-row {
             display: flex;
-            align-items: center;
+            margin-bottom: 1mm;
+            font-size: 10pt;
         }
         
-        .section-title::before {
-            content: "";
-            display: inline-block;
-            width: 4px;
-            height: 16px;
-            background: var(--primary-color);
-            margin-right: 8px;
+        .detail-label {
+            width: 35mm;
+            font-weight: bold;
         }
         
-        .form-group {
-            margin-bottom: 12px;
+        .detail-value {
+            flex-grow: 1;
         }
         
-        label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 4px;
-            color: var(--text-dark);
+        /* Transport Details */
+        .transport-details {
+            margin-bottom: 8mm;
         }
         
-        input, select, textarea {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            font-size: 14px;
-            transition: border 0.3s;
-        }
-        
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 2px rgba(44, 94, 26, 0.1);
-        }
-        
-        .form-row {
-            display: flex;
-            gap: 12px;
-        }
-        
-        .form-col {
-            flex: 1;
+        .transport-details .detail-row {
+            margin-bottom: 1mm;
         }
         
         /* Items Table */
         .items-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
+            margin-bottom: 8mm;
+            font-size: 10pt;
+            page-break-inside: avoid;
+        }
+        
+        .items-table th, .items-table td {
+            border: 1px solid #000;
+            padding: 2mm;
+            text-align: center;
         }
         
         .items-table th {
-            background: var(--secondary-color);
-            padding: 8px;
-            text-align: left;
-            font-size: 13px;
-            font-weight: 600;
+            background-color: #f2f2f2;
+            font-weight: bold;
         }
         
-        .items-table td {
-            padding: 8px;
-            border-bottom: 1px solid var(--border-color);
+        /* Footer */
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10mm;
+            font-size: 10pt;
+            position: absolute;
+            bottom: 15mm;
+            width: calc(100% - 30mm);
         }
         
-        .items-table input {
+        .footer-section {
+            width: 48%;
+        }
+        
+        .signature-area {
+            height: 25mm;
+            border-top: 1px dashed #000;
+            margin-top: 2mm;
+            position: relative;
+        }
+        
+        .signature-text {
+            position: absolute;
+            bottom: 0;
             width: 100%;
-            border: none;
-            padding: 6px;
-            background: transparent;
+            text-align: center;
+            font-size: 10pt;
         }
         
-        .items-table input:focus {
+        .stamp-area {
+            height: 25mm;
+            border: 1px solid #000;
+            margin-top: 2mm;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Print Specific Styles */
+        @media print {
+            body {
+                background: none;
+                padding: 0;
+            }
+            
+            .a4-page {
+                box-shadow: none;
+                margin: 0;
+                width: 100%;
+                height: 100%;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+            
+            /* Ensure each invoice starts on a new page */
+            .invoice-container {
+                page-break-after: always;
+            }
+            
+            /* Last page shouldn't have page break */
+            .invoice-container:last-child {
+                page-break-after: auto;
+            }
+        }
+        
+        /* Form Styles (Non-Print) */
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto 20px;
+            padding: 20px;
             background: white;
-            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         
-        .btn {
-            padding: 8px 16px;
-            background: var(--primary-color);
-            color: white;
-            border: none;
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
             border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.3s;
         }
         
-        .btn:hover {
-            background: #1e4211;
-        }
-        
-        .btn-outline {
-            background: white;
-            color: var(--primary-color);
-            border: 1px solid var(--primary-color);
-        }
-        
-        .btn-outline:hover {
-            background: var(--secondary-color);
-        }
-        
-        .btn-danger {
-            background: #dc3545;
-        }
-        
-        .btn-danger:hover {
-            background: #bb2d3b;
-        }
-        
-        .action-buttons {
+        .button-group {
             display: flex;
             gap: 10px;
             margin-top: 20px;
         }
         
-        /* Invoice Preview */
-        .invoice-panel {
-            background: white;
-            border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .invoice-container {
-            max-width: 800px;
-            margin: 0 auto;
-            border: 1px solid #e0e0e0;
-            padding: 25px;
-            background: white;
-        }
-        
-        /* Print Styles */
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-            .invoice-panel, .invoice-panel * {
-                visibility: visible;
-            }
-            .invoice-panel {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                padding: 0;
-                box-shadow: none;
-            }
-            .no-print {
-                display: none !important;
-            }
-        }
-        
-        /* Advanced UI Elements */
-        .status-badge {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-            background: #e9ecef;
-            color: var(--text-dark);
-        }
-        
-        .status-badge.active {
-            background: #d4edda;
-            color: #155724;
-        }
-        
-        .tab-container {
-            display: flex;
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 20px;
-        }
-        
-        .tab {
-            padding: 8px 16px;
+        button {
+            padding: 10px 15px;
+            background: #2c5e1a;
+            color: white;
+            border: none;
+            border-radius: 4px;
             cursor: pointer;
-            border-bottom: 2px solid transparent;
-            font-size: 14px;
-            font-weight: 600;
         }
         
-        .tab.active {
-            border-bottom-color: var(--primary-color);
-            color: var(--primary-color);
+        button:hover {
+            background: #1e4211;
         }
         
-        /* Animation */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .animated {
-            animation: fadeIn 0.3s ease-out;
+        /* Copy Label */
+        .copy-label {
+            text-align: right;
+            font-weight: bold;
+            margin-bottom: 2mm;
+            font-size: 11pt;
         }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <!-- Form Panel -->
-        <div class="form-panel animated">
-            <div class="form-header">
-                <h2>Invoice Generator</h2>
-                <div class="status-badge active" id="formStatus">Draft</div>
-            </div>
-            
-            <div class="tab-container">
-                <div class="tab active" data-tab="basic">Basic</div>
-                <div class="tab" data-tab="items">Items</div>
-                <div class="tab" data-tab="transport">Transport</div>
-            </div>
-            
-            <div id="basicTab" class="tab-content">
-                <div class="form-section">
-                    <div class="form-group">
-                        <label for="invoiceNo">Invoice Number</label>
-                        <input type="text" id="invoiceNo" placeholder="INV-2023-001">
-                    </div>
-                    <div class="form-row">
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label for="invoiceDate">Invoice Date</label>
-                                <input type="date" id="invoiceDate">
-                            </div>
-                        </div>
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label for="dueDate">Due Date</label>
-                                <input type="date" id="dueDate">
-                            </div>
-                        </div>
-                    </div>
+    <!-- Form Container -->
+    <div class="form-container no-print">
+        <h2>PTC Invoice Generator</h2>
+        
+        <div class="form-group">
+            <label for="copyType">Copy Type</label>
+            <select id="copyType" class="form-control">
+                <option value="TRANSPORTER COPY">TRANSPORTER COPY</option>
+                <option value="CONSIGNOR COPY">CONSIGNOR COPY</option>
+                <option value="CONSIGNEE COPY">CONSIGNEE COPY</option>
+                <option value="OFFICE COPY">OFFICE COPY</option>
+            </select>
+        </div>
+        
+        <div class="form-row" style="display: flex; gap: 15px;">
+            <div style="flex: 1;">
+                <div class="form-group">
+                    <label for="consignorName">Consignor Name</label>
+                    <input type="text" id="consignorName" value="ASIAN PAINTS LTD">
                 </div>
-                
-                <div class="form-section">
-                    <div class="section-title">From (Consignor)</div>
-                    <div class="form-group">
-                        <label for="consignorName">Name</label>
-                        <input type="text" id="consignorName" value="Patliputra Transport Corporation">
-                    </div>
-                    <div class="form-group">
-                        <label for="consignorAddress">Address</label>
-                        <textarea id="consignorAddress" rows="2">H.O-PATLIPUTRA TRANSPORT CORPORATION, Patna, Bihar, 800002</textarea>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label for="consignorGst">GSTIN</label>
-                                <input type="text" id="consignorGst" value="20ADMPA8920C1Z6">
-                            </div>
-                        </div>
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label for="consignorPhone">Phone</label>
-                                <input type="text" id="consignorPhone" placeholder="+91 ">
-                            </div>
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <label for="consignorAddress">Address</label>
+                    <textarea id="consignorAddress" rows="2">Dhanbad</textarea>
                 </div>
-                
-                <div class="form-section">
-                    <div class="section-title">To (Consignee)</div>
-                    <div class="form-group">
-                        <label for="consigneeName">Name</label>
-                        <input type="text" id="consigneeName" placeholder="Customer Name">
-                    </div>
-                    <div class="form-group">
-                        <label for="consigneeAddress">Address</label>
-                        <textarea id="consigneeAddress" rows="2" placeholder="Customer Address"></textarea>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label for="consigneeGst">GSTIN</label>
-                                <input type="text" id="consigneeGst" placeholder="22AAAAA0000A1Z5">
-                            </div>
-                        </div>
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label for="consigneePhone">Phone</label>
-                                <input type="text" id="consigneePhone" placeholder="+91 ">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="action-buttons">
-                    <button type="button" class="btn" onclick="nextTab('items')">Next: Items</button>
+                <div class="form-group">
+                    <label for="consignorContact">Contact No</label>
+                    <input type="text" id="consignorContact" value="7808958144">
                 </div>
             </div>
-            
-            <div id="itemsTab" class="tab-content" style="display: none;">
-                <div class="form-section">
-                    <div class="section-title">Items</div>
-                    <table class="items-table">
-                        <thead>
-                            <tr>
-                                <th width="5%">#</th>
-                                <th width="35%">Description</th>
-                                <th width="15%">HSN</th>
-                                <th width="15%">Qty</th>
-                                <th width="15%">Rate</th>
-                                <th width="15%">Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody id="itemRows">
-                            <tr>
-                                <td>1</td>
-                                <td><input type="text" class="item-desc" placeholder="Item description"></td>
-                                <td><input type="text" class="item-hsn" placeholder="HSN Code"></td>
-                                <td><input type="number" class="item-qty" placeholder="0" onchange="calculateRow(this)"></td>
-                                <td><input type="number" class="item-rate" placeholder="0.00" onchange="calculateRow(this)"></td>
-                                <td><input type="number" class="item-amount" placeholder="0.00" readonly></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <button type="button" class="btn btn-outline" onclick="addItemRow()" style="margin-top: 10px;">+ Add Item</button>
+            <div style="flex: 1;">
+                <div class="form-group">
+                    <label for="consigneeName">Consignee Name</label>
+                    <input type="text" id="consigneeName" value="RAJESH HARDWARE PLY CENTER">
                 </div>
-                
-                <div class="form-section">
-                    <div class="section-title">Summary</div>
-                    <div class="form-row">
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label for="subTotal">Sub Total</label>
-                                <input type="number" id="subTotal" readonly>
-                            </div>
-                        </div>
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label for="taxRate">Tax Rate (%)</label>
-                                <input type="number" id="taxRate" value="18" onchange="calculateTotal()">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="taxAmount">Tax Amount</label>
-                        <input type="number" id="taxAmount" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="totalAmount">Total Amount</label>
-                        <input type="number" id="totalAmount" readonly>
-                    </div>
+                <div class="form-group">
+                    <label for="consigneeAddress">Address</label>
+                    <textarea id="consigneeAddress" rows="2">Jamtara</textarea>
                 </div>
-                
-                <div class="action-buttons">
-                    <button type="button" class="btn btn-outline" onclick="prevTab('basic')">Previous</button>
-                    <button type="button" class="btn" onclick="nextTab('transport')">Next: Transport</button>
-                </div>
-            </div>
-            
-            <div id="transportTab" class="tab-content" style="display: none;">
-                <div class="form-section">
-                    <div class="section-title">Transport Details</div>
-                    <div class="form-row">
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label for="lrNo">LR Number</label>
-                                <input type="text" id="lrNo" placeholder="LR-XXXXXX">
-                            </div>
-                        </div>
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label for="lrDate">LR Date</label>
-                                <input type="date" id="lrDate">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label for="vehicleNo">Vehicle No.</label>
-                                <input type="text" id="vehicleNo" placeholder="JH01AB1234">
-                            </div>
-                        </div>
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label for="driverName">Driver Name</label>
-                                <input type="text" id="driverName" placeholder="Driver Name">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label for="fromPlace">From</label>
-                                <input type="text" id="fromPlace" placeholder="Source Location">
-                            </div>
-                        </div>
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label for="toPlace">To</label>
-                                <input type="text" id="toPlace" placeholder="Destination">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="transporter">Transporter</label>
-                        <input type="text" id="transporter" placeholder="Transporter Name">
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label for="freightCharge">Freight Charge</label>
-                                <input type="number" id="freightCharge" placeholder="0.00">
-                            </div>
-                        </div>
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label for="paymentMode">Payment Mode</label>
-                                <select id="paymentMode">
-                                    <option value="Cash">Cash</option>
-                                    <option value="Cheque">Cheque</option>
-                                    <option value="Online">Online</option>
-                                    <option value="Credit">Credit</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="form-section">
-                    <div class="section-title">Notes</div>
-                    <div class="form-group">
-                        <textarea id="notes" rows="3" placeholder="Any special instructions..."></textarea>
-                    </div>
-                </div>
-                
-                <div class="action-buttons">
-                    <button type="button" class="btn btn-outline" onclick="prevTab('items')">Previous</button>
-                    <button type="button" class="btn" onclick="generateInvoice()">Generate Invoice</button>
+                <div class="form-group">
+                    <label for="consigneeContact">Contact No</label>
+                    <input type="text" id="consigneeContact">
                 </div>
             </div>
         </div>
         
-        <!-- Invoice Preview Panel -->
-        <div class="invoice-panel animated">
-            <div class="form-header" style="margin-bottom: 15px;">
-                <h2>Invoice Preview</h2>
-                <div class="status-badge" id="previewStatus">Not Generated</div>
-            </div>
-            
-            <div class="invoice-container" id="invoicePreview">
-                <div style="text-align: center; margin-bottom: 30px;">
-                    <h2 style="color: var(--primary-color); margin-bottom: 5px;">PATLIPUTRA TRANSPORT CORPORATION</h2>
-                    <p style="font-size: 14px; color: var(--text-light);">H.O-PATLIPUTRA TRANSPORT CORPORATION, Patna, Bihar, 800002</p>
-                    <p style="font-size: 14px; color: var(--text-light);">GSTIN: 20ADMPA8920C1Z6 | Phone: +91 XXXXXXXXXX</p>
+        <div class="form-row" style="display: flex; gap: 15px;">
+            <div style="flex: 1;">
+                <div class="form-group">
+                    <label for="fromLocation">From</label>
+                    <input type="text" id="fromLocation" value="Dhanbad">
                 </div>
-                
-                <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-                    <div>
-                        <h3 style="color: var(--primary-color); margin-bottom: 10px;">INVOICE</h3>
-                        <p style="font-size: 14px;"><strong>Invoice No:</strong> <span id="previewInvoiceNo">INV-2023-001</span></p>
-                        <p style="font-size: 14px;"><strong>Date:</strong> <span id="previewInvoiceDate">01-Jan-2023</span></p>
-                        <p style="font-size: 14px;"><strong>Due Date:</strong> <span id="previewDueDate">15-Jan-2023</span></p>
-                    </div>
-                    <div style="text-align: right;">
-                        <p style="font-size: 14px;"><strong>LR No:</strong> <span id="previewLrNo">LR-XXXXXX</span></p>
-                        <p style="font-size: 14px;"><strong>LR Date:</strong> <span id="previewLrDate">01-Jan-2023</span></p>
-                        <p style="font-size: 14px;"><strong>Vehicle No:</strong> <span id="previewVehicleNo">JH01AB1234</span></p>
-                    </div>
-                </div>
-                
-                <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-                    <div style="flex: 1; padding-right: 20px;">
-                        <h4 style="border-bottom: 1px solid var(--border-color); padding-bottom: 5px; margin-bottom: 10px;">Consignor</h4>
-                        <p style="font-size: 14px; font-weight: 600;" id="previewConsignorName">Patliputra Transport Corporation</p>
-                        <p style="font-size: 14px;" id="previewConsignorAddress">H.O-PATLIPUTRA TRANSPORT CORPORATION, Patna, Bihar, 800002</p>
-                        <p style="font-size: 14px;"><strong>GSTIN:</strong> <span id="previewConsignorGst">20ADMPA8920C1Z6</span></p>
-                        <p style="font-size: 14px;"><strong>Phone:</strong> <span id="previewConsignorPhone">+91 XXXXXXXXXX</span></p>
-                    </div>
-                    <div style="flex: 1; padding-left: 20px;">
-                        <h4 style="border-bottom: 1px solid var(--border-color); padding-bottom: 5px; margin-bottom: 10px;">Consignee</h4>
-                        <p style="font-size: 14px; font-weight: 600;" id="previewConsigneeName">Customer Name</p>
-                        <p style="font-size: 14px;" id="previewConsigneeAddress">Customer Address</p>
-                        <p style="font-size: 14px;"><strong>GSTIN:</strong> <span id="previewConsigneeGst">22AAAAA0000A1Z5</span></p>
-                        <p style="font-size: 14px;"><strong>Phone:</strong> <span id="previewConsigneePhone">+91 XXXXXXXXXX</span></p>
-                    </div>
-                </div>
-                
-                <div style="margin-bottom: 20px;">
-                    <h4 style="border-bottom: 1px solid var(--border-color); padding-bottom: 5px; margin-bottom: 10px;">Transport Details</h4>
-                    <div style="display: flex; justify-content: space-between; font-size: 14px;">
-                        <p><strong>From:</strong> <span id="previewFromPlace">Patna</span></p>
-                        <p><strong>To:</strong> <span id="previewToPlace">Ranchi</span></p>
-                        <p><strong>Transporter:</strong> <span id="previewTransporter">ABC Transport</span></p>
-                        <p><strong>Driver:</strong> <span id="previewDriverName">John Doe</span></p>
-                    </div>
-                </div>
-                
-                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
-                    <thead>
-                        <tr style="background-color: var(--secondary-color);">
-                            <th style="padding: 10px; text-align: left; border: 1px solid var(--border-color);">#</th>
-                            <th style="padding: 10px; text-align: left; border: 1px solid var(--border-color);">Description</th>
-                            <th style="padding: 10px; text-align: left; border: 1px solid var(--border-color);">HSN</th>
-                            <th style="padding: 10px; text-align: right; border: 1px solid var(--border-color);">Qty</th>
-                            <th style="padding: 10px; text-align: right; border: 1px solid var(--border-color);">Rate</th>
-                            <th style="padding: 10px; text-align: right; border: 1px solid var(--border-color);">Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody id="previewItemRows">
-                        <tr>
-                            <td style="padding: 8px; border: 1px solid var(--border-color);">1</td>
-                            <td style="padding: 8px; border: 1px solid var(--border-color);">Transport Charges</td>
-                            <td style="padding: 8px; border: 1px solid var(--border-color);">9965</td>
-                            <td style="padding: 8px; border: 1px solid var(--border-color); text-align: right;">1</td>
-                            <td style="padding: 8px; border: 1px solid var(--border-color); text-align: right;">₹5,000.00</td>
-                            <td style="padding: 8px; border: 1px solid var(--border-color); text-align: right;">₹5,000.00</td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="3" rowspan="3" style="padding: 8px; border: 1px solid var(--border-color); vertical-align: top;">
-                                <p style="font-weight: 600;">Payment Terms:</p>
-                                <p style="font-size: 13px;" id="previewPaymentMode">Cash</p>
-                                <p style="font-size: 13px;" id="previewNotes">No special instructions</p>
-                            </td>
-                            <td colspan="2" style="padding: 8px; border: 1px solid var(--border-color); text-align: right; font-weight: 600;">Sub Total:</td>
-                            <td style="padding: 8px; border: 1px solid var(--border-color); text-align: right;" id="previewSubTotal">₹5,000.00</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" style="padding: 8px; border: 1px solid var(--border-color); text-align: right; font-weight: 600;">Tax (18%):</td>
-                            <td style="padding: 8px; border: 1px solid var(--border-color); text-align: right;" id="previewTaxAmount">₹900.00</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" style="padding: 8px; border: 1px solid var(--border-color); text-align: right; font-weight: 600;">Total:</td>
-                            <td style="padding: 8px; border: 1px solid var(--border-color); text-align: right; font-weight: 600;" id="previewTotalAmount">₹5,900.00</td>
-                        </tr>
-                    </tfoot>
-                </table>
-                
-                <div style="display: flex; justify-content: space-between; margin-top: 40px;">
-                    <div style="width: 200px; text-align: center;">
-                        <p style="border-top: 1px dashed var(--border-color); padding-top: 10px; margin-bottom: 5px;">Consignee Signature</p>
-                        <p style="font-size: 13px; color: var(--text-light);">Date: ___________</p>
-                    </div>
-                    <div style="width: 200px; text-align: center;">
-                        <p style="border-top: 1px dashed var(--border-color); padding-top: 10px; margin-bottom: 5px;">Authorized Signature</p>
-                        <p style="font-size: 13px; color: var(--text-light);">For PATLIPUTRA TRANSPORT CORPORATION</p>
-                    </div>
+                <div class="form-group">
+                    <label for="truckNo">Truck No</label>
+                    <input type="text" id="truckNo" value="JH01DU-8224">
                 </div>
             </div>
+            <div style="flex: 1;">
+                <div class="form-group">
+                    <label for="toLocation">To</label>
+                    <input type="text" id="toLocation" value="Jamtara">
+                </div>
+                <div class="form-group">
+                    <label for="transporter">Transporter</label>
+                    <input type="text" id="transporter" value="Shri Ram Logistics">
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="insurance">Insurance</label>
+            <input type="text" id="insurance" value="Asian Paints Products">
+        </div>
+        
+        <h3>Items</h3>
+        <div id="itemsContainer">
+            <div class="form-row" style="display: flex; gap: 5px; margin-bottom: 5px;">
+                <input type="text" placeholder="SL No." value="1" style="width: 50px;">
+                <input type="text" placeholder="Invoice No" value="1309941891" style="flex: 1;">
+                <input type="text" placeholder="Packages" value="01" style="width: 80px;">
+                <input type="text" placeholder="Weight (KG)" value="62.02" style="width: 100px;">
+                <input type="text" placeholder="Value (Rs.)" value="2193.3" style="width: 120px;">
+            </div>
+            <div class="form-row" style="display: flex; gap: 5px; margin-bottom: 5px;">
+                <input type="text" placeholder="SL No." value="2" style="width: 50px;">
+                <input type="text" placeholder="Invoice No" value="1282761451" style="flex: 1;">
+                <input type="text" placeholder="Packages" value="13" style="width: 80px;">
+                <input type="text" placeholder="Weight (KG)" value="202.9" style="width: 100px;">
+                <input type="text" placeholder="Value (Rs.)" value="17966" style="width: 120px;">
+            </div>
+        </div>
+        <button type="button" onclick="addItemRow()" style="margin-top: 10px;">+ Add Item</button>
+        
+        <div class="button-group">
+            <button type="button" onclick="generateInvoice()">Generate Invoice</button>
+            <button type="button" onclick="window.print()">Print Invoice</button>
+        </div>
+    </div>
+    
+    <!-- Invoice Container (A4 Page) -->
+    <div class="a4-page">
+        <div class="invoice-container">
+            <div class="copy-label" id="copyTypeOutput">TRANSPORTER COPY</div>
             
-            <div class="action-buttons no-print" style="margin-top: 20px;">
-                <button type="button" class="btn" onclick="window.print()">Print Invoice</button>
-                <button type="button" class="btn btn-outline" onclick="saveAsPDF()">Save as PDF</button>
-                <button type="button" class="btn btn-outline" onclick="sendEmail()">Email Invoice</button>
+            <div class="header">
+                <div class="company-name">PATLIPUTRA TRANSPORT CORPORATION</div>
+                <div class="company-address">H.O-PATLIPUTRA TRANSPORT CORPORATION, Patna, Bihar, 800002</div>
+                <div class="company-address">B.O- Ranchi</div>
+                <div class="gst-no">GST NO-20ADMPA8920C1Z6</div>
+            </div>
+            
+            <div class="invoice-details">
+                <div class="consignor-details">
+                    <div class="section-title">CONSIGNOR DETAILS</div>
+                    <div class="detail-row">
+                        <div class="detail-label">Name:</div>
+                        <div class="detail-value" id="consignorNameOutput">ASIAN PAINTS LTD</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Address:</div>
+                        <div class="detail-value" id="consignorAddressOutput">Dhanbad</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Contact No:</div>
+                        <div class="detail-value" id="consignorContactOutput">7808958144</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">C/N No:</div>
+                        <div class="detail-value" id="cnNoOutput">P/AS/25-26/02685</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">C/N Date:</div>
+                        <div class="detail-value" id="cnDateOutput">20-05-2025</div>
+                    </div>
+                </div>
+                
+                <div class="consignee-details">
+                    <div class="section-title">CONSIGNEE DETAILS</div>
+                    <div class="detail-row">
+                        <div class="detail-label">Name:</div>
+                        <div class="detail-value" id="consigneeNameOutput">RAJESH HARDWARE PLY CENTER</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Address:</div>
+                        <div class="detail-value" id="consigneeAddressOutput">Jamtara</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Contact No:</div>
+                        <div class="detail-value" id="consigneeContactOutput"></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Inv. Date:</div>
+                        <div class="detail-value" id="invDateOutput">04-06-2025</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Way Bill No.:</div>
+                        <div class="detail-value" id="wayBillNoOutput">04-06-2025</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="transport-details">
+                <div class="detail-row">
+                    <div class="detail-label">From:</div>
+                    <div class="detail-value" id="fromLocationOutput">Dhanbad</div>
+                    <div class="detail-label">To:</div>
+                    <div class="detail-value" id="toLocationOutput">Jamtara</div>
+                    <div class="detail-label">Truck No:</div>
+                    <div class="detail-value" id="truckNoOutput">JH01DU-8224</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Transporter:</div>
+                    <div class="detail-value" id="transporterOutput">Shri Ram Logistics</div>
+                    <div class="detail-label">Insurance:</div>
+                    <div class="detail-value" id="insuranceOutput">Asian Paints Products</div>
+                </div>
+            </div>
+            
+            <table class="items-table">
+                <thead>
+                    <tr>
+                        <th>SL NO.</th>
+                        <th>INVOICE NO</th>
+                        <th>PACKAGES</th>
+                        <th>WEIGHT (KG)</th>
+                        <th>VALUE(₹)</th>
+                    </tr>
+                </thead>
+                <tbody id="itemsTableOutput">
+                    <tr>
+                        <td>1</td>
+                        <td>1309941891</td>
+                        <td>01</td>
+                        <td>62.02</td>
+                        <td>2193.3</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>1282761451</td>
+                        <td>13</td>
+                        <td>202.9</td>
+                        <td>17966</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"></td>
+                        <td><strong>TOTAL</strong></td>
+                        <td><strong>20159.3</strong></td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" style="text-align: left; padding-left: 5mm;">TO BE BILLED AT RANCHI</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="footer">
+                <div class="footer-section">
+                    <div>PATLIPUTRA TRANSPORT CORPORATION</div>
+                    <div style="font-style: italic; margin-top: 1mm;">DOOR DELIVERY</div>
+                    <div class="signature-area">
+                        <div class="signature-text">Authorized Signature</div>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <div>CONSIGNEE RECEIPT DATE & STAMP</div>
+                    <div class="stamp-area">
+                        <div id="deliveryDateOutput"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Tab Navigation
-        function showTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.style.display = 'none';
-            });
-            document.getElementById(tabId + 'Tab').style.display = 'block';
-            
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelector(`.tab[data-tab="${tabId}"]`).classList.add('active');
-        }
-        
-        function nextTab(tabId) {
-            // Validate current tab before proceeding
-            if (validateCurrentTab()) {
-                showTab(tabId);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        }
-        
-        function prevTab(tabId) {
-            showTab(tabId);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-        
-        function validateCurrentTab() {
-            // Add validation logic here if needed
-            return true;
-        }
-        
-        // Initialize tabs
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                showTab(this.getAttribute('data-tab'));
-            });
-        });
-        
-        // Item Management
+        // Add item row
         function addItemRow() {
-            const tbody = document.getElementById('itemRows');
-            const rowCount = tbody.children.length;
-            const newRow = document.createElement('tr');
-            newRow.innerHTML = `
-                <td>${rowCount + 1}</td>
-                <td><input type="text" class="item-desc" placeholder="Item description"></td>
-                <td><input type="text" class="item-hsn" placeholder="HSN Code"></td>
-                <td><input type="number" class="item-qty" placeholder="0" onchange="calculateRow(this)"></td>
-                <td><input type="number" class="item-rate" placeholder="0.00" onchange="calculateRow(this)"></td>
-                <td><input type="number" class="item-amount" placeholder="0.00" readonly></td>
+            const container = document.getElementById('itemsContainer');
+            const row = document.createElement('div');
+            row.className = 'form-row';
+            row.style.display = 'flex';
+            row.style.gap = '5px';
+            row.style.marginBottom = '5px';
+            
+            const slNo = container.children.length + 1;
+            
+            row.innerHTML = `
+                <input type="text" placeholder="SL No." value="${slNo}" style="width: 50px;">
+                <input type="text" placeholder="Invoice No" style="flex: 1;">
+                <input type="text" placeholder="Packages" style="width: 80px;">
+                <input type="text" placeholder="Weight (KG)" style="width: 100px;">
+                <input type="text" placeholder="Value (Rs.)" style="width: 120px;">
             `;
-            tbody.appendChild(newRow);
-        }
-        
-        function calculateRow(input) {
-            const row = input.closest('tr');
-            const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
-            const rate = parseFloat(row.querySelector('.item-rate').value) || 0;
-            const amount = qty * rate;
-            row.querySelector('.item-amount').value = amount.toFixed(2);
-            calculateTotal();
-        }
-        
-        function calculateTotal() {
-            let subTotal = 0;
-            document.querySelectorAll('.item-amount').forEach(input => {
-                subTotal += parseFloat(input.value) || 0;
-            });
             
-            const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
-            const taxAmount = subTotal * (taxRate / 100);
-            const totalAmount = subTotal + taxAmount;
-            
-            document.getElementById('subTotal').value = subTotal.toFixed(2);
-            document.getElementById('taxAmount').value = taxAmount.toFixed(2);
-            document.getElementById('totalAmount').value = totalAmount.toFixed(2);
+            container.appendChild(row);
         }
         
-        // Generate Invoice
+        // Generate invoice from form data
         function generateInvoice() {
-            // Basic Info
-            document.getElementById('previewInvoiceNo').textContent = document.getElementById('invoiceNo').value;
-            document.getElementById('previewInvoiceDate').textContent = formatDate(document.getElementById('invoiceDate').value);
-            document.getElementById('previewDueDate').textContent = formatDate(document.getElementById('dueDate').value);
+            // Copy type
+            document.getElementById('copyTypeOutput').textContent = document.getElementById('copyType').value;
             
-            // Consignor Info
-            document.getElementById('previewConsignorName').textContent = document.getElementById('consignorName').value;
-            document.getElementById('previewConsignorAddress').textContent = document.getElementById('consignorAddress').value;
-            document.getElementById('previewConsignorGst').textContent = document.getElementById('consignorGst').value;
-            document.getElementById('previewConsignorPhone').textContent = document.getElementById('consignorPhone').value;
+            // Consignor details
+            document.getElementById('consignorNameOutput').textContent = document.getElementById('consignorName').value;
+            document.getElementById('consignorAddressOutput').textContent = document.getElementById('consignorAddress').value;
+            document.getElementById('consignorContactOutput').textContent = document.getElementById('consignorContact').value;
             
-            // Consignee Info
-            document.getElementById('previewConsigneeName').textContent = document.getElementById('consigneeName').value;
-            document.getElementById('previewConsigneeAddress').textContent = document.getElementById('consigneeAddress').value;
-            document.getElementById('previewConsigneeGst').textContent = document.getElementById('consigneeGst').value;
-            document.getElementById('previewConsigneePhone').textContent = document.getElementById('consigneePhone').value;
+            // Consignee details
+            document.getElementById('consigneeNameOutput').textContent = document.getElementById('consigneeName').value;
+            document.getElementById('consigneeAddressOutput').textContent = document.getElementById('consigneeAddress').value;
+            document.getElementById('consigneeContactOutput').textContent = document.getElementById('consigneeContact').value;
             
-            // Transport Info
-            document.getElementById('previewLrNo').textContent = document.getElementById('lrNo').value;
-            document.getElementById('previewLrDate').textContent = formatDate(document.getElementById('lrDate').value);
-            document.getElementById('previewVehicleNo').textContent = document.getElementById('vehicleNo').value;
-            document.getElementById('previewFromPlace').textContent = document.getElementById('fromPlace').value;
-            document.getElementById('previewToPlace').textContent = document.getElementById('toPlace').value;
-            document.getElementById('previewTransporter').textContent = document.getElementById('transporter').value;
-            document.getElementById('previewDriverName').textContent = document.getElementById('driverName').value;
+            // Transport details
+            document.getElementById('fromLocationOutput').textContent = document.getElementById('fromLocation').value;
+            document.getElementById('toLocationOutput').textContent = document.getElementById('toLocation').value;
+            document.getElementById('truckNoOutput').textContent = document.getElementById('truckNo').value;
+            document.getElementById('transporterOutput').textContent = document.getElementById('transporter').value;
+            document.getElementById('insuranceOutput').textContent = document.getElementById('insurance').value;
             
-            // Payment Info
-            document.getElementById('previewPaymentMode').textContent = document.getElementById('paymentMode').value;
-            document.getElementById('previewNotes').textContent = document.getElementById('notes').value || 'No special instructions';
+            // Items table
+            const container = document.getElementById('itemsContainer');
+            const tableBody = document.getElementById('itemsTableOutput');
             
-            // Items
-            const previewTbody = document.getElementById('previewItemRows');
-            previewTbody.innerHTML = '';
+            // Clear existing rows except total row
+            tableBody.innerHTML = '';
             
-            document.querySelectorAll('#itemRows tr').forEach(row => {
-                const desc = row.querySelector('.item-desc').value;
-                const hsn = row.querySelector('.item-hsn').value;
-                const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
-                const rate = parseFloat(row.querySelector('.item-rate').value) || 0;
-                const amount = parseFloat(row.querySelector('.item-amount').value) || 0;
+            let totalValue = 0;
+            let totalWeight = 0;
+            let totalPackages = 0;
+            
+            // Add items from form
+            for (let i = 0; i < container.children.length; i++) {
+                const row = container.children[i];
+                const inputs = row.querySelectorAll('input');
                 
-                if (desc || hsn || qty || rate || amount) {
-                    const newRow = document.createElement('tr');
-                    newRow.innerHTML = `
-                        <td style="padding: 8px; border: 1px solid var(--border-color);">${row.rowIndex}</td>
-                        <td style="padding: 8px; border: 1px solid var(--border-color);">${desc}</td>
-                        <td style="padding: 8px; border: 1px solid var(--border-color);">${hsn}</td>
-                        <td style="padding: 8px; border: 1px solid var(--border-color); text-align: right;">${qty}</td>
-                        <td style="padding: 8px; border: 1px solid var(--border-color); text-align: right;">₹${rate.toFixed(2)}</td>
-                        <td style="padding: 8px; border: 1px solid var(--border-color); text-align: right;">₹${amount.toFixed(2)}</td>
+                const slNo = inputs[0].value;
+                const invoiceNo = inputs[1].value;
+                const packages = inputs[2].value;
+                const weight = inputs[3].value;
+                const value = inputs[4].value;
+                
+                if (invoiceNo || packages || weight || value) {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${slNo}</td>
+                        <td>${invoiceNo}</td>
+                        <td>${packages}</td>
+                        <td>${weight}</td>
+                        <td>${value}</td>
                     `;
-                    previewTbody.appendChild(newRow);
+                    tableBody.appendChild(tr);
+                    
+                    totalValue += parseFloat(value) || 0;
+                    totalWeight += parseFloat(weight) || 0;
+                    totalPackages += parseInt(packages) || 0;
                 }
-            });
-            
-            // Totals
-            document.getElementById('previewSubTotal').textContent = `₹${document.getElementById('subTotal').value}`;
-            document.getElementById('previewTaxAmount').textContent = `₹${document.getElementById('taxAmount').value}`;
-            document.getElementById('previewTotalAmount').textContent = `₹${document.getElementById('totalAmount').value}`;
-            
-            // Update status
-            document.getElementById('previewStatus').textContent = 'Generated';
-            document.getElementById('previewStatus').classList.add('active');
-            
-            // Scroll to preview
-            document.querySelector('.invoice-panel').scrollIntoView({ behavior: 'smooth' });
-        }
-        
-        // Helper Functions
-        function formatDate(dateString) {
-            if (!dateString) return '';
-            const date = new Date(dateString);
-            const options = { day: '2-digit', month: 'short', year: 'numeric' };
-            return date.toLocaleDateString('en-IN', options);
-        }
-        
-        function saveAsPDF() {
-            alert('PDF generation would be implemented with a library like jsPDF or a server-side solution');
-            // In a real implementation, you would use jsPDF or similar library
-            // or make an API call to a server-side PDF generation service
-        }
-        
-        function sendEmail() {
-            alert('Email functionality would be implemented with a backend service');
-            // In a real implementation, you would make an API call to your email service
-        }
-        
-        // Initialize date fields with today's date
-        document.addEventListener('DOMContentLoaded', function() {
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('invoiceDate').value = today;
-            
-            // Set due date to 15 days from today
-            const dueDate = new Date();
-            dueDate.setDate(dueDate.getDate() + 15);
-            document.getElementById('dueDate').value = dueDate.toISOString().split('T')[0];
-            
-            // Set LR date to today
-            document.getElementById('lrDate').value = today;
-            
-            // Add first item row if none exists
-            if (document.querySelectorAll('#itemRows tr').length === 0) {
-                addItemRow();
             }
+            
+            // Add total row
+            const totalRow = document.createElement('tr');
+            totalRow.innerHTML = `
+                <td colspan="3"></td>
+                <td><strong>TOTAL</strong></td>
+                <td><strong>${totalValue.toFixed(2)}</strong></td>
+            `;
+            tableBody.appendChild(totalRow);
+            
+            // Add billing location row
+            const locationRow = document.createElement('tr');
+            locationRow.innerHTML = `
+                <td colspan="5" style="text-align: left; padding-left: 5mm;">TO BE BILLED AT RANCHI</td>
+            `;
+            tableBody.appendChild(locationRow);
+            
+            // Set delivery date (today)
+            const today = new Date();
+            const formattedDate = `${today.getDate().toString().padStart(2, '0')}-${(today.getMonth()+1).toString().padStart(2, '0')}-${today.getFullYear()}`;
+            document.getElementById('deliveryDateOutput').textContent = `Delivered On: ${formattedDate}`;
+            
+            alert('Invoice generated successfully! Click Print Invoice to print.');
+        }
+        
+        // Initialize with today's date for invoice
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            document.getElementById('invDateOutput').textContent = `${today.getDate().toString().padStart(2, '0')}-${(today.getMonth()+1).toString().padStart(2, '0')}-${today.getFullYear()}`;
+            document.getElementById('wayBillNoOutput').textContent = `${today.getDate().toString().padStart(2, '0')}-${(today.getMonth()+1).toString().padStart(2, '0')}-${today.getFullYear()}`;
         });
     </script>
 </body>
