@@ -3,645 +3,415 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PTC Transport Invoice</title>
+    <title>PTC - Invoice</title>
     <style>
-        /* === Base Styles === */
-        :root {
-            --primary-color: #2c5e1a;
-            --border-color: #ddd;
-            --text-dark: #333;
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
         
         body {
-            font-family: Arial, sans-serif;
-            line-height: 1.5;
-            color: var(--text-dark);
-            background-color: #f9f9f9;
-            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
         }
         
-        /* === A4 Page Settings === */
-        @page {
-            size: A4;
-            margin: 15mm 10mm;
-        }
-        
-        @media print {
-            body {
-                background: none;
-                padding: 0;
-            }
-            
-            .no-print {
-                display: none !important;
-            }
-            
-            .a4-container {
-                box-shadow: none;
-                margin: 0;
-                padding: 0;
-            }
-        }
-        
-        /* === Form Container === */
-        .form-container {
-            max-width: 1000px;
-            margin: 0 auto 30px;
-            padding: 25px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        
-        /* === A4 Invoice Container === */
-        .a4-container {
-            width: 210mm;
-            min-height: 297mm;
+        .invoice-container {
+            max-width: 800px;
             margin: 20px auto;
             background: white;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            padding: 20mm;
-            position: relative;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
         }
         
-        /* === Invoice Header === */
         .invoice-header {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            padding: 25px;
             text-align: center;
-            margin-bottom: 15mm;
-            padding-bottom: 5mm;
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        .company-name {
-            font-size: 24pt;
-            font-weight: bold;
-            margin-bottom: 3mm;
-            color: var(--primary-color);
-        }
-        
-        .company-address {
-            font-size: 10pt;
-            margin-bottom: 2mm;
-        }
-        
-        .copy-label {
-            text-align: right;
-            font-weight: bold;
-            margin-bottom: 5mm;
-            font-size: 12pt;
-        }
-        
-        /* === Invoice Grid Layout === */
-        .details-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10mm;
-            margin-bottom: 10mm;
-        }
-        
-        .transport-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 5mm;
-            margin-bottom: 10mm;
-            font-size: 10pt;
-        }
-        
-        /* === Detail Sections === */
-        .detail-section {
-            margin-bottom: 5mm;
-        }
-        
-        .detail-title {
-            font-weight: bold;
-            margin-bottom: 2mm;
-            border-bottom: 1px dashed #000;
-            font-size: 11pt;
-            padding-bottom: 1mm;
-        }
-        
-        .detail-row {
-            display: flex;
-            margin-bottom: 1mm;
-            font-size: 10pt;
-        }
-        
-        .detail-label {
-            width: 40mm;
-            font-weight: bold;
-        }
-        
-        /* === Invoice Table === */
-        .invoice-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 10mm;
-            font-size: 10pt;
-        }
-        
-        .invoice-table th {
-            background: #f2f2f2;
-            padding: 2mm;
-            border: 1px solid #ddd;
-            font-weight: bold;
-            text-align: center;
-        }
-        
-        .invoice-table td {
-            padding: 2mm;
-            border: 1px solid #ddd;
-            text-align: center;
-        }
-        
-        /* === Footer === */
-        .invoice-footer {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 15mm;
-            position: absolute;
-            bottom: 20mm;
-            width: calc(100% - 40mm);
-        }
-        
-        .footer-section {
-            width: 45%;
-        }
-        
-        .signature-area {
-            height: 30mm;
-            border-top: 1px dashed #000;
-            margin-top: 5mm;
             position: relative;
         }
         
-        .signature-text {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-            font-size: 10pt;
+        .invoice-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
         }
         
-        .stamp-area {
-            height: 30mm;
-            border: 1px solid #000;
-            margin-top: 5mm;
+        .invoice-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 80px;
+            height: 80px;
+            background-color: white;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 10pt;
+            font-weight: bold;
+            color: #1e3c72;
+            font-size: 24px;
         }
         
-        /* === Utility Classes === */
-        .text-right {
+        .invoice-body {
+            padding: 30px;
+        }
+        
+        .company-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+        
+        .company-info div {
+            flex: 1;
+        }
+        
+        .company-info h3 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .company-info p {
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        .consignment-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        
+        .consignment-details div {
+            flex: 1;
+        }
+        
+        .consignment-details h4 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .consignment-details p {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .highlight-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #1e3c72;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .highlight-box p {
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        
+        table th {
+            background-color: #1e3c72;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 500;
+        }
+        
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .total-section {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 30px;
+        }
+        
+        .total-box {
+            background-color: #f8f9fa;
+            padding: 15px 25px;
+            border-radius: 5px;
+            width: 300px;
+        }
+        
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .grand-total {
+            font-size: 18px;
+            color: #1e3c72;
+            font-weight: 600;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+        
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .footer div {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .signature {
+            margin-top: 50px;
             text-align: right;
         }
         
-        .text-bold {
-            font-weight: bold;
+        .stamp-placeholder {
+            width: 120px;
+            height: 120px;
+            border: 2px dashed #ccc;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
         }
         
-        .btn {
-            padding: 10px 20px;
-            background: var(--primary-color);
+        .copy-notice {
+            background-color: #1e3c72;
             color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 600;
+            padding: 10px;
+            text-align: center;
+            font-weight: 500;
+            margin-top: 20px;
         }
         
-        .btn:hover {
-            background: #1e4211;
+        .delivery-badge {
+            background-color: #28a745;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-block;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <!-- Form Container -->
-    <div class="form-container no-print">
-        <h2>PTC Transport Invoice Generator</h2>
-        
-        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 20px;">
-            <!-- Left Column -->
-            <div>
-                <h3>Consignor Details</h3>
-                <div style="margin-bottom: 15px;">
-                    <label>Name</label>
-                    <input type="text" id="consignorName" value="PATLIPUTRA TRANSPORT CORPORATION" style="width: 100%; padding: 8px;">
-                </div>
-                <div style="margin-bottom: 15px;">
-                    <label>Address</label>
-                    <textarea id="consignorAddress" style="width: 100%; padding: 8px; height: 60px;">H.O-PATLIPUTRA TRANSPORT CORPORATION, Patna, Bihar, 800002</textarea>
-                </div>
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
-                    <div>
-                        <label>GSTIN</label>
-                        <input type="text" id="consignorGst" value="20ADMPA8920C1Z6" style="width: 100%; padding: 8px;">
-                    </div>
-                    <div>
-                        <label>Phone</label>
-                        <input type="text" id="consignorPhone" style="width: 100%; padding: 8px;">
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Right Column -->
-            <div>
-                <h3>Consignee Details</h3>
-                <div style="margin-bottom: 15px;">
-                    <label>Name</label>
-                    <input type="text" id="consigneeName" style="width: 100%; padding: 8px;">
-                </div>
-                <div style="margin-bottom: 15px;">
-                    <label>Address</label>
-                    <textarea id="consigneeAddress" style="width: 100%; padding: 8px; height: 60px;"></textarea>
-                </div>
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
-                    <div>
-                        <label>GSTIN</label>
-                        <input type="text" id="consigneeGst" style="width: 100%; padding: 8px;">
-                    </div>
-                    <div>
-                        <label>Phone</label>
-                        <input type="text" id="consigneePhone" style="width: 100%; padding: 8px;">
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <h3>Transport Details</h3>
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px;">
-            <div>
-                <label>From</label>
-                <input type="text" id="fromPlace" style="width: 100%; padding: 8px;">
-            </div>
-            <div>
-                <label>To</label>
-                <input type="text" id="toPlace" style="width: 100%; padding: 8px;">
-            </div>
-            <div>
-                <label>Vehicle No.</label>
-                <input type="text" id="vehicleNo" style="width: 100%; padding: 8px;">
-            </div>
-        </div>
-        
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px;">
-            <div>
-                <label>Transporter</label>
-                <input type="text" id="transporter" style="width: 100%; padding: 8px;">
-            </div>
-            <div>
-                <label>Driver Name</label>
-                <input type="text" id="driverName" style="width: 100%; padding: 8px;">
-            </div>
-            <div>
-                <label>Driver Contact</label>
-                <input type="text" id="driverContact" style="width: 100%; padding: 8px;">
-            </div>
-        </div>
-        
-        <h3>Items/Goods</h3>
-        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
-            <thead>
-                <tr style="background: #f2f2f2;">
-                    <th style="padding: 8px; border: 1px solid #ddd;">#</th>
-                    <th style="padding: 8px; border: 1px solid #ddd;">Description</th>
-                    <th style="padding: 8px; border: 1px solid #ddd;">HSN Code</th>
-                    <th style="padding: 8px; border: 1px solid #ddd;">Invoice No</th>
-                    <th style="padding: 8px; border: 1px solid #ddd;">Packages</th>
-                    <th style="padding: 8px; border: 1px solid #ddd;">Weight (KG)</th>
-                    <th style="padding: 8px; border: 1px solid #ddd;">Value (₹)</th>
-                </tr>
-            </thead>
-            <tbody id="itemRows">
-                <tr>
-                    <td style="padding: 8px; border: 1px solid #ddd;">1</td>
-                    <td style="padding: 8px; border: 1px solid #ddd;"><input type="text" style="width: 100%; border: none;"></td>
-                    <td style="padding: 8px; border: 1px solid #ddd;"><input type="text" style="width: 100%; border: none;"></td>
-                    <td style="padding: 8px; border: 1px solid #ddd;"><input type="text" style="width: 100%; border: none;"></td>
-                    <td style="padding: 8px; border: 1px solid #ddd;"><input type="number" style="width: 100%; border: none;"></td>
-                    <td style="padding: 8px; border: 1px solid #ddd;"><input type="number" style="width: 100%; border: none;"></td>
-                    <td style="padding: 8px; border: 1px solid #ddd;"><input type="number" style="width: 100%; border: none;"></td>
-                </tr>
-            </tbody>
-        </table>
-        <button type="button" onclick="addItemRow()" style="margin-bottom: 20px;">+ Add Item</button>
-        
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px;">
-            <div>
-                <label>Freight Charge (₹)</label>
-                <input type="number" id="freightCharge" style="width: 100%; padding: 8px;">
-            </div>
-            <div>
-                <label>Advance Paid (₹)</label>
-                <input type="number" id="advancePaid" style="width: 100%; padding: 8px;">
-            </div>
-            <div>
-                <label>Balance Due (₹)</label>
-                <input type="number" id="balanceDue" style="width: 100%; padding: 8px;" readonly>
-            </div>
-        </div>
-        
-        <div style="display: flex; gap: 10px;">
-            <button type="button" onclick="generateInvoice()">Generate Invoice</button>
-            <button type="button" onclick="window.print()">Print Invoice</button>
-        </div>
-    </div>
-    
-    <!-- A4 Invoice Preview -->
-    <div class="a4-container" id="invoicePreview">
-        <div class="copy-label" id="copyTypeOutput">TRANSPORTER COPY</div>
-        
+    <div class="invoice-container">
         <div class="invoice-header">
-            <div class="company-name">PATLIPUTRA TRANSPORT CORPORATION</div>
-            <div class="company-address">H.O-PATLIPUTRA TRANSPORT CORPORATION, Patna, Bihar, 800002</div>
-            <div class="company-address">B.O- Ranchi | GST NO: 20ADMPA8920C1Z6</div>
+            <div class="logo">PTC</div>
+            <h1>SHRI NARAYAN LOGISTICS</h1>
+            <p>H.O-PATLIPUTRA TRANSPORT CORPORATION, Patna, Bihar, 800002</p>
         </div>
         
-        <div class="details-grid">
-            <div class="detail-section">
-                <div class="detail-title">CONSIGNOR DETAILS</div>
-                <div class="detail-row">
-                    <div class="detail-label">Name:</div>
-                    <div class="detail-value" id="previewConsignorName">PATLIPUTRA TRANSPORT CORPORATION</div>
+        <div class="invoice-body">
+            <div class="company-info">
+                <div>
+                    <h3>Consignor Details</h3>
+                    <p><strong>Name:</strong> ASIAN PAINTS LTD</p>
+                    <p><strong>Address:</strong> Dhanbad</p>
+                    <p><strong>Contact:</strong> 7808958144</p>
                 </div>
-                <div class="detail-row">
-                    <div class="detail-label">Address:</div>
-                    <div class="detail-value" id="previewConsignorAddress">H.O-PATLIPUTRA TRANSPORT CORPORATION, Patna, Bihar, 800002</div>
+                <div>
+                    <h3>Consignee Details</h3>
+                    <p><strong>Name:</strong> RAJESH HARDWARE PLY CENTER</p>
+                    <p><strong>Address:</strong> Jamtara</p>
+                    <p><strong>Contact:</strong> -</p>
                 </div>
-                <div class="detail-row">
-                    <div class="detail-label">GSTIN:</div>
-                    <div class="detail-value" id="previewConsignorGst">20ADMPA8920C1Z6</div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label">Phone:</div>
-                    <div class="detail-value" id="previewConsignorPhone"></div>
+                <div>
+                    <h3>Invoice Details</h3>
+                    <p><strong>Invoice Date:</strong> 04-06-2025</p>
+                    <p><strong>C/N No:</strong> P/AS/25-26/02685</p>
+                    <p><strong>C/N Date:</strong> 20-05-2025</p>
                 </div>
             </div>
             
-            <div class="detail-section">
-                <div class="detail-title">CONSIGNEE DETAILS</div>
-                <div class="detail-row">
-                    <div class="detail-label">Name:</div>
-                    <div class="detail-value" id="previewConsigneeName"></div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label">Address:</div>
-                    <div class="detail-value" id="previewConsigneeAddress"></div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label">GSTIN:</div>
-                    <div class="detail-value" id="previewConsigneeGst"></div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label">Phone:</div>
-                    <div class="detail-value" id="previewConsigneePhone"></div>
-                </div>
+            <div class="highlight-box">
+                <p><strong>Truck No:</strong> JH01DU-8224</p>
+                <p><strong>From:</strong> Dhanbad <strong>To:</strong> Jamtara</p>
+                <p><strong>Transporter:</strong> Asian Paints Products</p>
+                <p><strong>Insurance:</strong> -</p>
+                <p><strong>Way Bill No.:</strong> -</p>
+                <div class="delivery-badge">DOOR DELIVERY</div>
             </div>
-        </div>
-        
-        <div class="transport-grid">
-            <div>
-                <div class="detail-title">TRANSPORT DETAILS</div>
-                <div class="detail-row">
-                    <div class="detail-label">From:</div>
-                    <div class="detail-value" id="previewFromPlace"></div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label">To:</div>
-                    <div class="detail-value" id="previewToPlace"></div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label">Vehicle No:</div>
-                    <div class="detail-value" id="previewVehicleNo"></div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>SL No.</th>
+                        <th>Invoice No</th>
+                        <th>Packages</th>
+                        <th>Weight (KG)</th>
+                        <th>Value (Rs.)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>1309941891</td>
+                        <td>01</td>
+                        <td>62.02</td>
+                        <td>2193.3</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>1282761451</td>
+                        <td>13</td>
+                        <td>202.9</td>
+                        <td>17966</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>14</td>
+                        <td>-</td>
+                        <td>14</td>
+                        <td>264.92</td>
+                        <td>20159.3</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="total-section">
+                <div class="total-box">
+                    <div class="total-row">
+                        <span>Total Weight:</span>
+                        <span>529.84 KG</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Total Value:</span>
+                        <span>₹40,318.6</span>
+                    </div>
+                    <div class="total-row grand-total">
+                        <span>Grand Total:</span>
+                        <span>₹40,318.6</span>
+                    </div>
                 </div>
             </div>
             
-            <div>
-                <div class="detail-title">TRANSPORTER INFO</div>
-                <div class="detail-row">
-                    <div class="detail-label">Transporter:</div>
-                    <div class="detail-value" id="previewTransporter"></div>
+            <div class="footer">
+                <div>
+                    <p>TO BE BILLED AT RANCHI</p>
+                    <p>B.O- Ranchi</p>
+                    <p>GST NO-20ADMPA8920C1Z6</p>
                 </div>
-                <div class="detail-row">
-                    <div class="detail-label">Driver Name:</div>
-                    <div class="detail-value" id="previewDriverName"></div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label">Contact No:</div>
-                    <div class="detail-value" id="previewDriverContact"></div>
+                <div>
+                    <p>CONSIGNEE RECEIPT DATE & STAMP</p>
+                    <div class="stamp-placeholder">STAMP</div>
                 </div>
             </div>
             
-            <div>
-                <div class="detail-title">INVOICE DETAILS</div>
-                <div class="detail-row">
-                    <div class="detail-label">Invoice No:</div>
-                    <div class="detail-value" id="previewInvoiceNo"></div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label">Date:</div>
-                    <div class="detail-value" id="previewDate"></div>
-                </div>
-                <div class="detail-row">
-                    <div class="detail-label">LR No:</div>
-                    <div class="detail-value" id="previewLrNo"></div>
-                </div>
+            <div class="signature">
+                <p>Authorized Signatory</p>
             </div>
-        </div>
-        
-        <table class="invoice-table">
-            <thead>
-                <tr>
-                    <th>SL No.</th>
-                    <th>DESCRIPTION</th>
-                    <th>HSN CODE</th>
-                    <th>INVOICE NO</th>
-                    <th>PACKAGES</th>
-                    <th>WEIGHT (KG)</th>
-                    <th>VALUE (₹)</th>
-                </tr>
-            </thead>
-            <tbody id="previewItemRows">
-                <tr>
-                    <td colspan="7" style="text-align: center;">No items added</td>
-                </tr>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="4" rowspan="3" style="vertical-align: top; text-align: left; padding-left: 5mm;">
-                        <div class="text-bold">Payment Terms:</div>
-                        <div id="previewPaymentMode" style="margin-top: 2mm;"></div>
-                    </td>
-                    <td colspan="2" class="text-bold text-right">Freight Charge:</td>
-                    <td class="text-right" id="previewFreightCharge">₹0.00</td>
-                </tr>
-                <tr>
-                    <td colspan="2" class="text-bold text-right">Advance Paid:</td>
-                    <td class="text-right" id="previewAdvancePaid">₹0.00</td>
-                </tr>
-                <tr>
-                    <td colspan="2" class="text-bold text-right">Balance Due:</td>
-                    <td class="text-right text-bold" id="previewBalanceDue">₹0.00</td>
-                </tr>
-            </tfoot>
-        </table>
-        
-        <div class="invoice-footer">
-            <div class="footer-section">
-                <div>PATLIPUTRA TRANSPORT CORPORATION</div>
-                <div style="font-style: italic; margin-top: 2mm;">DOOR DELIVERY</div>
-                <div class="signature-area">
-                    <div class="signature-text">Authorized Signature</div>
-                </div>
-            </div>
-            <div class="footer-section">
-                <div>CONSIGNEE RECEIPT DATE & STAMP</div>
-                <div class="stamp-area">
-                    <div id="previewDeliveryDate"></div>
-                </div>
-            </div>
+            
+            <div class="copy-notice">TRANSPORTER COPY</div>
         </div>
     </div>
-
-    <script>
-        // Add item row
-        function addItemRow() {
-            const tbody = document.getElementById('itemRows');
-            const rowCount = tbody.children.length;
-            const newRow = document.createElement('tr');
-            
-            newRow.innerHTML = `
-                <td>${rowCount + 1}</td>
-                <td><input type="text" style="width: 100%; border: none;"></td>
-                <td><input type="text" style="width: 100%; border: none;"></td>
-                <td><input type="text" style="width: 100%; border: none;"></td>
-                <td><input type="number" style="width: 100%; border: none;"></td>
-                <td><input type="number" style="width: 100%; border: none;"></td>
-                <td><input type="number" style="width: 100%; border: none;"></td>
-            `;
-            
-            tbody.appendChild(newRow);
-        }
-        
-        // Generate invoice
-        function generateInvoice() {
-            // Set copy type
-            document.getElementById('copyTypeOutput').textContent = 
-                document.getElementById('copyType').value;
-            
-            // Set consignor details
-            document.getElementById('previewConsignorName').textContent = 
-                document.getElementById('consignorName').value;
-            document.getElementById('previewConsignorAddress').textContent = 
-                document.getElementById('consignorAddress').value;
-            document.getElementById('previewConsignorGst').textContent = 
-                document.getElementById('consignorGst').value;
-            document.getElementById('previewConsignorPhone').textContent = 
-                document.getElementById('consignorPhone').value;
-            
-            // Set consignee details
-            document.getElementById('previewConsigneeName').textContent = 
-                document.getElementById('consigneeName').value;
-            document.getElementById('previewConsigneeAddress').textContent = 
-                document.getElementById('consigneeAddress').value;
-            document.getElementById('previewConsigneeGst').textContent = 
-                document.getElementById('consigneeGst').value;
-            document.getElementById('previewConsigneePhone').textContent = 
-                document.getElementById('consigneePhone').value;
-            
-            // Set transport details
-            document.getElementById('previewFromPlace').textContent = 
-                document.getElementById('fromPlace').value;
-            document.getElementById('previewToPlace').textContent = 
-                document.getElementById('toPlace').value;
-            document.getElementById('previewVehicleNo').textContent = 
-                document.getElementById('vehicleNo').value;
-            document.getElementById('previewTransporter').textContent = 
-                document.getElementById('transporter').value;
-            document.getElementById('previewDriverName').textContent = 
-                document.getElementById('driverName').value;
-            document.getElementById('previewDriverContact').textContent = 
-                document.getElementById('driverContact').value;
-            
-            // Set invoice details
-            document.getElementById('previewInvoiceNo').textContent = 
-                document.getElementById('invoiceNo').value || 'N/A';
-            
-            // Set current date
-            const today = new Date();
-            document.getElementById('previewDate').textContent = 
-                formatDate(today);
-            document.getElementById('previewLrNo').textContent = 
-                document.getElementById('lrNo').value || 'N/A';
-            
-            // Set payment details
-            const freightCharge = parseFloat(document.getElementById('freightCharge').value) || 0;
-            const advancePaid = parseFloat(document.getElementById('advancePaid').value) || 0;
-            const balanceDue = freightCharge - advancePaid;
-            
-            document.getElementById('previewFreightCharge').textContent = 
-                '₹' + freightCharge.toFixed(2);
-            document.getElementById('previewAdvancePaid').textContent = 
-                '₹' + advancePaid.toFixed(2);
-            document.getElementById('previewBalanceDue').textContent = 
-                '₹' + balanceDue.toFixed(2);
-            
-            // Set items
-            const itemRows = document.getElementById('itemRows').children;
-            const previewTbody = document.getElementById('previewItemRows');
-            previewTbody.innerHTML = '';
-            
-            if (itemRows.length === 0) {
-                previewTbody.innerHTML = `
-                    <tr>
-                        <td colspan="7" style="text-align: center;">No items added</td>
-                    </tr>
-                `;
-            } else {
-                for (let i = 0; i < itemRows.length; i++) {
-                    const row = itemRows[i];
-                    const inputs = row.querySelectorAll('input');
-                    
-                    const newRow = document.createElement('tr');
-                    newRow.innerHTML = `
-                        <td>${i + 1}</td>
-                        <td>${inputs[0].value || '-'}</td>
-                        <td>${inputs[1].value || '-'}</td>
-                        <td>${inputs[2].value || '-'}</td>
-                        <td>${inputs[3].value || '0'}</td>
-                        <td>${inputs[4].value || '0.00'}</td>
-                        <td>₹${inputs[5].value ? parseFloat(inputs[5].value).toFixed(2) : '0.00'}</td>
-                    `;
-                    previewTbody.appendChild(newRow);
-                }
-            }
-            
-            // Set delivery date
-            document.getElementById('previewDeliveryDate').textContent = 
-                'Delivered On: ' + formatDate(today);
-            
-            // Scroll to preview
-            document.getElementById('invoicePreview').scrollIntoView();
-            
-            alert('Invoice generated successfully! Click "Print Invoice" to print.');
-        }
-        
-        // Format date as DD-MM-YYYY
-        function formatDate(date) {
-            const d = new Date(date);
-            const day = d.getDate().toString().padStart(2, '0');
-            const month = (d.getMonth() + 1).toString().padStart(2, '0');
-            const year = d.getFullYear();
-            return `${day}-${month}-${year}`;
-        }
-        
-        // Initialize with today's date
-        document.addEventListener('DOMContentLoaded', function() {
-            const today = new Date();
-            document.getElementById('invoiceDate').value = today.toISOString().split('T')[0];
-            document.getElementById('lrDate').value = today.toISOString().split('T')[0];
-        });
-    </script>
 </body>
 </html>
