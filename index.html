@@ -5,412 +5,264 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PTC - Invoice</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-        
         body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
             background-color: #f5f5f5;
-            color: #333;
         }
-        
         .invoice-container {
-            max-width: 800px;
-            margin: 20px auto;
-            background: white;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        
-        .invoice-header {
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            color: white;
-            padding: 25px;
-            text-align: center;
-            position: relative;
-        }
-        
-        .invoice-header h1 {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-        
-        .invoice-header p {
-            font-size: 14px;
-            opacity: 0.9;
-        }
-        
-        .logo {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            width: 80px;
-            height: 80px;
+            width: 800px;
+            margin: 0 auto;
             background-color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: #1e3c72;
-            font-size: 24px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border: 1px solid #ddd;
         }
-        
-        .invoice-body {
-            padding: 30px;
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
         }
-        
+        .header h1 {
+            margin: 0;
+            color: #003366;
+        }
+        .header p {
+            margin: 5px 0;
+        }
         .company-info {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 30px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 20px;
+            margin-bottom: 20px;
         }
-        
         .company-info div {
-            flex: 1;
+            width: 48%;
         }
-        
-        .company-info h3 {
-            color: #1e3c72;
-            margin-bottom: 10px;
-            font-size: 18px;
-        }
-        
-        .company-info p {
-            margin-bottom: 5px;
-            font-size: 14px;
-        }
-        
-        .consignment-details {
+        .consignor-consignee {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
-        
-        .consignment-details div {
-            flex: 1;
+        .consignor, .consignee {
+            width: 48%;
+            border: 1px solid #ddd;
+            padding: 10px;
         }
-        
-        .consignment-details h4 {
-            color: #1e3c72;
-            margin-bottom: 10px;
-            font-size: 16px;
+        .consignor h3, .consignee h3 {
+            margin-top: 0;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
         }
-        
-        .consignment-details p {
-            margin-bottom: 8px;
-            font-size: 14px;
+        .invoice-details {
+            margin-bottom: 20px;
         }
-        
-        .highlight-box {
-            background-color: #f8f9fa;
-            border-left: 4px solid #1e3c72;
-            padding: 15px;
-            margin-bottom: 25px;
-            border-radius: 0 5px 5px 0;
-        }
-        
-        .highlight-box p {
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-        
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
-        
-        table th {
-            background-color: #1e3c72;
-            color: white;
-            padding: 12px;
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
             text-align: left;
-            font-weight: 500;
         }
-        
-        table td {
-            padding: 12px;
-            border-bottom: 1px solid #eee;
+        th {
+            background-color: #f2f2f2;
         }
-        
-        table tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        
-        .total-section {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 30px;
-        }
-        
-        .total-box {
-            background-color: #f8f9fa;
-            padding: 15px 25px;
-            border-radius: 5px;
-            width: 300px;
-        }
-        
         .total-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            font-weight: 500;
+            font-weight: bold;
+            background-color: #f2f2f2;
         }
-        
-        .grand-total {
-            font-size: 18px;
-            color: #1e3c72;
-            font-weight: 600;
-            border-top: 1px solid #ddd;
-            padding-top: 10px;
-            margin-top: 10px;
-        }
-        
         .footer {
             display: flex;
             justify-content: space-between;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
+            margin-top: 30px;
         }
-        
-        .footer div {
-            flex: 1;
-            text-align: center;
-        }
-        
         .signature {
-            margin-top: 50px;
-            text-align: right;
-        }
-        
-        .stamp-placeholder {
-            width: 120px;
-            height: 120px;
-            border: 2px dashed #ccc;
-            margin: 20px auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #999;
-        }
-        
-        .copy-notice {
-            background-color: #1e3c72;
-            color: white;
-            padding: 10px;
+            width: 45%;
             text-align: center;
-            font-weight: 500;
-            margin-top: 20px;
         }
-        
-        .delivery-badge {
-            background-color: #28a745;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500;
-            display: inline-block;
+        .stamp-area {
+            border: 1px dashed #999;
+            height: 100px;
             margin-top: 10px;
+        }
+        .note {
+            margin-top: 20px;
+            font-style: italic;
+            color: #666;
+        }
+        .watermark {
+            position: absolute;
+            opacity: 0.1;
+            font-size: 80px;
+            color: #003366;
+            transform: rotate(-45deg);
+            z-index: -1;
+            left: 30%;
+            top: 40%;
+        }
+        .copy-info {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #003366;
         }
     </style>
 </head>
 <body>
     <div class="invoice-container">
-        <div class="invoice-header">
-            <div class="logo">PTC</div>
+        <div class="watermark">PTC</div>
+        
+        <div class="copy-info">TRANSPORTER COPY</div>
+        
+        <div class="header">
             <h1>SHRI NARAYAN LOGISTICS</h1>
             <p>H.O-PATLIPUTRA TRANSPORT CORPORATION, Patna, Bihar, 800002</p>
+            <p>GST NO-20ADMPA8920C1Z6 | B.O- Ranchi</p>
         </div>
         
-        <div class="invoice-body">
-            <div class="company-info">
-                <div>
-                    <h3>Consignor Details</h3>
-                    <p><strong>Name:</strong> ASIAN PAINTS LTD</p>
-                    <p><strong>Address:</strong> Dhanbad</p>
-                    <p><strong>Contact:</strong> 7808958144</p>
-                </div>
-                <div>
-                    <h3>Consignee Details</h3>
-                    <p><strong>Name:</strong> RAJESH HARDWARE PLY CENTER</p>
-                    <p><strong>Address:</strong> Jamtara</p>
-                    <p><strong>Contact:</strong> -</p>
-                </div>
-                <div>
-                    <h3>Invoice Details</h3>
-                    <p><strong>Invoice Date:</strong> 04-06-2025</p>
-                    <p><strong>C/N No:</strong> P/AS/25-26/02685</p>
-                    <p><strong>C/N Date:</strong> 20-05-2025</p>
-                </div>
+        <div class="consignor-consignee">
+            <div class="consignor">
+                <h3>CONSIGNOR NAME</h3>
+                <p>ASIAN PAINTS LTD</p>
+                <p>ADDRESS (FROM): Dhanbad</p>
+                <p>CONTACT NO: 7808958144</p>
             </div>
-            
-            <div class="highlight-box">
-                <p><strong>Truck No:</strong> JH01DU-8224</p>
-                <p><strong>From:</strong> Dhanbad <strong>To:</strong> Jamtara</p>
-                <p><strong>Transporter:</strong> Asian Paints Products</p>
-                <p><strong>Insurance:</strong> -</p>
-                <p><strong>Way Bill No.:</strong> -</p>
-                <div class="delivery-badge">DOOR DELIVERY</div>
+            <div class="consignee">
+                <h3>CONSIGNEE NAME</h3>
+                <p>RAJESH HARDWARE PLY CENTER</p>
+                <p>ADDRESS (TO): Jamtara</p>
+                <p>CONTACT NO: </p>
             </div>
-            
-            <table>
-                <thead>
-                    <tr>
-                        <th>SL No.</th>
-                        <th>Invoice No</th>
-                        <th>Packages</th>
-                        <th>Weight (KG)</th>
-                        <th>Value (Rs.)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>1309941891</td>
-                        <td>01</td>
-                        <td>62.02</td>
-                        <td>2193.3</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>1282761451</td>
-                        <td>13</td>
-                        <td>202.9</td>
-                        <td>17966</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>6</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>7</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>8</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>9</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>10</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>11</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>12</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>13</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>14</td>
-                        <td>-</td>
-                        <td>14</td>
-                        <td>264.92</td>
-                        <td>20159.3</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <div class="total-section">
-                <div class="total-box">
-                    <div class="total-row">
-                        <span>Total Weight:</span>
-                        <span>529.84 KG</span>
-                    </div>
-                    <div class="total-row">
-                        <span>Total Value:</span>
-                        <span>₹40,318.6</span>
-                    </div>
-                    <div class="total-row grand-total">
-                        <span>Grand Total:</span>
-                        <span>₹40,318.6</span>
-                    </div>
-                </div>
+        </div>
+        
+        <div class="invoice-details">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <div><strong>C/N NO-</strong> P/AS/25-26/02685</div>
+                <div><strong>C/N DATE:</strong> 20-05-2025</div>
+                <div><strong>INV. DATE:</strong> 04-06-2025</div>
+                <div><strong>Way Bill No.:</strong> 2193.3</div>
             </div>
-            
-            <div class="footer">
-                <div>
-                    <p>TO BE BILLED AT RANCHI</p>
-                    <p>B.O- Ranchi</p>
-                    <p>GST NO-20ADMPA8920C1Z6</p>
-                </div>
-                <div>
-                    <p>CONSIGNEE RECEIPT DATE & STAMP</p>
-                    <div class="stamp-placeholder">STAMP</div>
-                </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <div><strong>Truck No:</strong> JH01DU-8224</div>
+                <div><strong>Insurance:</strong> 0</div>
+                <div><strong>FROM:</strong> Dhanbad</div>
+                <div><strong>TO:</strong> Jamtara</div>
             </div>
-            
+            <div style="margin-bottom: 10px;">
+                <strong>Transporter:</strong> Asian Paints Products
+            </div>
+        </div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>SL NO.</th>
+                    <th>INVOICE NO</th>
+                    <th>PACKAGES</th>
+                    <th>WEIGHT (KG)</th>
+                    <th>VALUE(Rs.)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>1309941891</td>
+                    <td>01</td>
+                    <td>62.02</td>
+                    <td>17966</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>1282761451</td>
+                    <td>13</td>
+                    <td>202.9</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td></td>
+                    <td></td>
+                    <td>14</td>
+                    <td>264.92</td>
+                </tr>
+                <tr class="total-row">
+                    <td colspan="3">TOTAL</td>
+                    <td>264.92</td>
+                    <td>20159.3</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="note">
+            <p>TO BE BILLED AT RANCHI</p>
+            <p>PATLIPUTRA TRANSPORT CORPORATION</p>
+            <p>DOOR DELIVERY</p>
+        </div>
+        
+        <div class="footer">
             <div class="signature">
-                <p>Authorized Signatory</p>
+                <p>Consignee Signature</p>
+                <div class="stamp-area"></div>
             </div>
-            
-            <div class="copy-notice">TRANSPORTER COPY</div>
+            <div class="signature">
+                <p>CONSIGNEE RECEIPT DATE & STAMP</p>
+                <div class="stamp-area"></div>
+            </div>
         </div>
     </div>
 </body>
