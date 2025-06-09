@@ -5,38 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PTC - Smart Invoice System</title>
     <style>
+        @page {
+            size: A4 landscape;
+            margin: 0;
+        }
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 0;
             background-color: #f5f5f5;
         }
+        @media print {
+            body {
+                background-color: white;
+            }
+            .action-buttons, .ai-suggestions, .save-options {
+                display: none !important;
+            }
+        }
         .invoice-container {
-            width: 800px;
-            margin: 0 auto;
+            width: 290mm;
+            min-height: 200mm;
+            margin: 10px auto;
             background-color: white;
-            padding: 20px;
+            padding: 15mm;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             border: 1px solid #ddd;
             position: relative;
         }
         .header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             border-bottom: 2px solid #333;
             padding-bottom: 10px;
         }
         .header h1 {
             margin: 0;
             color: #003366;
+            font-size: 24px;
         }
         .header p {
             margin: 5px 0;
+            font-size: 14px;
         }
         .company-info {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         .company-info div {
             width: 48%;
@@ -44,25 +59,29 @@
         .consignor-consignee {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         .consignor, .consignee {
             width: 48%;
             border: 1px solid #ddd;
             padding: 10px;
+            font-size: 14px;
         }
         .consignor h3, .consignee h3 {
             margin-top: 0;
             border-bottom: 1px solid #ddd;
             padding-bottom: 5px;
+            font-size: 16px;
         }
         .invoice-details {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            font-size: 14px;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            font-size: 14px;
         }
         table, th, td {
             border: 1px solid #ddd;
@@ -81,26 +100,28 @@
         .footer {
             display: flex;
             justify-content: space-between;
-            margin-top: 30px;
+            margin-top: 20px;
         }
         .signature {
             width: 45%;
             text-align: center;
+            font-size: 14px;
         }
         .stamp-area {
             border: 1px dashed #999;
-            height: 100px;
+            height: 80px;
             margin-top: 10px;
         }
         .note {
-            margin-top: 20px;
+            margin-top: 15px;
             font-style: italic;
             color: #666;
+            font-size: 14px;
         }
         .watermark {
             position: absolute;
             opacity: 0.1;
-            font-size: 80px;
+            font-size: 120px;
             color: #003366;
             transform: rotate(-45deg);
             z-index: -1;
@@ -112,20 +133,22 @@
             font-weight: bold;
             margin-bottom: 10px;
             color: #003366;
+            font-size: 16px;
         }
         .action-buttons {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            padding: 0 15mm;
         }
         button {
-            padding: 10px 15px;
+            padding: 8px 12px;
             background-color: #003366;
             color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
         }
         button:hover {
             background-color: #004080;
@@ -134,67 +157,76 @@
             background-color: #f8f8f8;
             padding: 10px;
             border-radius: 4px;
-            margin-bottom: 15px;
+            margin: 0 15mm 15px;
             border-left: 4px solid #003366;
+            font-size: 14px;
         }
         .ai-suggestions h4 {
             margin-top: 0;
         }
         input, select {
-            padding: 8px;
+            padding: 6px;
             border: 1px solid #ddd;
             border-radius: 4px;
             width: 100%;
             box-sizing: border-box;
             margin-bottom: 5px;
+            font-size: 13px;
         }
         .item-row input {
             width: 90%;
+            padding: 4px;
         }
         .save-options {
             display: none;
             background-color: #f8f8f8;
-            padding: 15px;
-            margin-top: 15px;
+            padding: 10px;
+            margin: 0 15mm 15px;
             border-radius: 4px;
+            font-size: 14px;
+        }
+        .add-row-btn {
+            text-align: center;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
+    <div class="action-buttons">
+        <button id="aiFillBtn">AI Auto-Fill</button>
+        <button id="printBtn">Print Invoice</button>
+        <button id="saveBtn">Save Invoice</button>
+        <button id="resetBtn">Reset All</button>
+        <button id="addRowBtn">Add Row</button>
+    </div>
+    
+    <div id="aiSuggestions" class="ai-suggestions" style="display: none;">
+        <h4>AI Suggestions</h4>
+        <p id="suggestionText"></p>
+        <button id="applySuggestion">Apply Suggestion</button>
+        <button id="ignoreSuggestion">Ignore</button>
+    </div>
+    
+    <div class="save-options" id="saveOptions">
+        <h4>Save Options</h4>
+        <input type="text" id="fileName" placeholder="Enter file name">
+        <select id="saveFormat">
+            <option value="pdf">PDF</option>
+            <option value="json">JSON</option>
+            <option value="csv">CSV</option>
+        </select>
+        <button id="confirmSave">Save</button>
+        <button id="cancelSave">Cancel</button>
+    </div>
+    
     <div class="invoice-container">
         <div class="watermark">PTC</div>
-        
-        <div class="action-buttons">
-            <button id="aiFillBtn">AI Auto-Fill</button>
-            <button id="printBtn">Print Invoice</button>
-            <button id="saveBtn">Save Invoice</button>
-            <button id="resetBtn">Reset All</button>
-        </div>
-        
-        <div id="aiSuggestions" class="ai-suggestions" style="display: none;">
-            <h4>AI Suggestions</h4>
-            <p id="suggestionText"></p>
-            <button id="applySuggestion">Apply Suggestion</button>
-            <button id="ignoreSuggestion">Ignore</button>
-        </div>
-        
-        <div class="save-options" id="saveOptions">
-            <h4>Save Options</h4>
-            <input type="text" id="fileName" placeholder="Enter file name">
-            <select id="saveFormat">
-                <option value="pdf">PDF</option>
-                <option value="json">JSON</option>
-                <option value="csv">CSV</option>
-            </select>
-            <button id="confirmSave">Save</button>
-            <button id="cancelSave">Cancel</button>
-        </div>
         
         <div class="copy-info">TRANSPORTER COPY</div>
         
         <div class="header">
             <h1>SHRI NARAYAN LOGISTICS</h1>
-            <p><input type="text" id="hoAddress" value="H.O-PATLIPUTRA TRANSPORT CORPORATION, Patna, Bihar, 800002"></p>
+            <p><input type="text" id="hoAddress" value="H.O-PATLIPUTRA TRANSPORT CORPORATION, Patna, Bihar, 800002" style="width: 80%;"></p>
             <p>GST NO: <input type="text" id="gstNo" value="20ADMPA8920C1Z6" style="width: 150px;"> | B.O: <input type="text" id="boAddress" value="Ranchi" style="width: 100px;"></p>
         </div>
         
@@ -216,8 +248,8 @@
         <div class="invoice-details">
             <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                 <div><strong>C/N NO-</strong> <input type="text" id="cnNo" value="P/AS/25-26/02685" style="width: 150px;"></div>
-                <div><strong>C/N DATE:</strong> <input type="date" id="cnDate" value="2025-05-20"></div>
-                <div><strong>INV. DATE:</strong> <input type="date" id="invDate" value="2025-06-04"></div>
+                <div><strong>C/N DATE:</strong> <input type="date" id="cnDate" value="2025-05-20" style="width: 120px;"></div>
+                <div><strong>INV. DATE:</strong> <input type="date" id="invDate" value="2025-06-04" style="width: 120px;"></div>
                 <div><strong>Way Bill No.:</strong> <input type="text" id="wayBillNo" value="2193.3" style="width: 80px;"></div>
             </div>
             <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
@@ -234,11 +266,11 @@
         <table id="itemsTable">
             <thead>
                 <tr>
-                    <th>SL NO.</th>
-                    <th>INVOICE NO</th>
-                    <th>PACKAGES</th>
-                    <th>WEIGHT (KG)</th>
-                    <th>VALUE(Rs.)</th>
+                    <th style="width: 5%;">SL NO.</th>
+                    <th style="width: 20%;">INVOICE NO</th>
+                    <th style="width: 10%;">PACKAGES</th>
+                    <th style="width: 15%;">WEIGHT (KG)</th>
+                    <th style="width: 15%;">VALUE(Rs.)</th>
                 </tr>
             </thead>
             <tbody>
@@ -312,6 +344,7 @@
                     <td><input type="text" class="weight" value="14"></td>
                     <td><input type="text" class="value" value="264.92"></td>
                 </tr>
+                <!-- Additional rows will be added here by JavaScript -->
                 <tr class="total-row">
                     <td colspan="3">TOTAL</td>
                     <td id="totalWeight">264.92</td>
@@ -339,6 +372,9 @@
     </div>
 
     <script>
+        // Initialize row counter
+        let rowCounter = 10;
+        
         // AI Auto-Fill Functionality
         document.getElementById('aiFillBtn').addEventListener('click', function() {
             // Simulate AI analysis and suggestions
@@ -419,8 +455,38 @@
                 document.getElementById('billedAt').value = 'RANCHI';
                 document.getElementById('deliveryType').value = 'DOOR DELIVERY';
                 
+                // Remove all dynamically added rows
+                const rows = document.querySelectorAll('.item-row');
+                for(let i = 10; i < rows.length; i++) {
+                    rows[i].remove();
+                }
+                rowCounter = 10;
+                
                 calculateTotals();
             }
+        });
+
+        // Add Row Functionality
+        document.getElementById('addRowBtn').addEventListener('click', function() {
+            rowCounter++;
+            const tbody = document.querySelector('#itemsTable tbody');
+            const totalRow = document.querySelector('.total-row');
+            
+            const newRow = document.createElement('tr');
+            newRow.className = 'item-row';
+            newRow.innerHTML = `
+                <td>${rowCounter}</td>
+                <td><input type="text" class="invoice-no"></td>
+                <td><input type="text" class="packages"></td>
+                <td><input type="text" class="weight"></td>
+                <td><input type="text" class="value"></td>
+            `;
+            
+            tbody.insertBefore(newRow, totalRow);
+            
+            // Add event listeners to new inputs
+            newRow.querySelector('.weight').addEventListener('change', calculateTotals);
+            newRow.querySelector('.value').addEventListener('change', calculateTotals);
         });
 
         // Calculate totals when values change
