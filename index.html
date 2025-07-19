@@ -3,157 +3,1142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Color Trading Prediction Game (Demo)</title>
+    <title>Advanced Color Trading Prediction (Demo)</title>
     <style>
+        :root {
+            --red: #ff4444;
+            --green: #44ff44;
+            --violet: #aa44ff;
+            --blue: #4444ff;
+            --yellow: #ffff44;
+            --dark-bg: #1a1a2e;
+            --card-bg: #16213e;
+            --text-color: #e6e6e6;
+        }
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
             margin: 0;
             padding: 20px;
             text-align: center;
         }
         .container {
-            max-width: 600px;
+            max-width: 800px;
             margin: 0 auto;
-            background: white;
+            background: var(--card-bg);
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
         }
         h1 {
-            color: #333;
+            color: #fff;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+        }
+        .subtitle {
+            color: #aaa;
+            margin-bottom: 30px;
+        }
+        .dashboard {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 10px;
+        }
+        .stats {
+            text-align: left;
+        }
+        .bet-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .bet-amount-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .quick-bet-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        .quick-bet {
+            padding: 5px 10px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
+        .quick-bet:hover {
+            background: rgba(255,255,255,0.2);
         }
         .bet-options {
             display: flex;
             justify-content: space-around;
             margin: 20px 0;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         .bet-btn {
-            padding: 15px 25px;
+            padding: 20px;
             font-size: 18px;
             cursor: pointer;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
             color: white;
             font-weight: bold;
+            min-width: 120px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .bet-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        }
+        .bet-btn:active {
+            transform: translateY(1px);
+        }
+        .bet-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255,255,255,0.3),
+                rgba(255,255,255,0)
+            );
+            transform: rotate(30deg);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .bet-btn:hover::after {
+            opacity: 1;
         }
         #red {
-            background-color: #ff4444;
+            background-color: var(--red);
         }
         #green {
-            background-color: #44ff44;
+            background-color: var(--green);
         }
         #violet {
-            background-color: #aa44ff;
+            background-color: var(--violet);
+        }
+        #blue {
+            background-color: var(--blue);
+        }
+        #yellow {
+            background-color: var(--yellow);
+        }
+        .history-container {
+            margin: 30px 0;
         }
         .history {
-            margin: 20px 0;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 5px;
+            gap: 8px;
+            margin-top: 15px;
         }
         .history-item {
-            width: 30px;
-            height: 30px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: black;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .history-item.win::after {
+            content: '✓';
+            position: absolute;
+            bottom: -15px;
+            color: white;
+            font-size: 12px;
+        }
+        .history-item.loss::after {
+            content: '✗';
+            position: absolute;
+            bottom: -15px;
+            color: white;
+            font-size: 12px;
         }
         .red {
-            background-color: #ff4444;
+            background-color: var(--red);
         }
         .green {
-            background-color: #44ff44;
+            background-color: var(--green);
         }
         .violet {
-            background-color: #aa44ff;
+            background-color: var(--violet);
+        }
+        .blue {
+            background-color: var(--blue);
+        }
+        .yellow {
+            background-color: var(--yellow);
         }
         #result {
             font-size: 24px;
             margin: 20px 0;
             font-weight: bold;
+            min-height: 36px;
+        }
+        .win-result {
+            color: #4CAF50;
+            animation: pulse 0.5s 2;
+        }
+        .loss-result {
+            color: #F44336;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
         #balance {
-            font-size: 20px;
+            font-size: 22px;
             margin: 10px 0;
+            font-weight: bold;
         }
-        input {
+        input, select {
             padding: 10px;
             font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.2);
+            color: white;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: rgba(255,255,255,0.3);
+        }
+        #betAmount {
             width: 100px;
+            margin: 0 10px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .stat-card {
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 10px;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        .stat-label {
+            font-size: 14px;
+            color: #aaa;
+        }
+        .chart-container {
+            margin-top: 30px;
+            height: 200px;
+            position: relative;
+        }
+        .chart-bar {
+            position: absolute;
+            bottom: 0;
+            width: 30px;
+            transition: height 0.5s;
+            border-radius: 5px 5px 0 0;
+        }
+        .settings-panel {
+            text-align: left;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+        }
+        .settings-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin: 10px 0;
+        }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #4CAF50;
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .close-modal {
+            float: right;
+            cursor: pointer;
+            font-size: 24px;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background: rgba(0,0,0,0.2);
+            border-radius: 5px 5px 0 0;
+            margin-right: 5px;
+        }
+        .tab.active {
+            background: rgba(255,255,255,0.1);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .timer {
+            font-size: 18px;
+            margin: 10px 0;
+            color: #aaa;
+        }
+        .progress-bar {
+            height: 5px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, #4CAF50, #8BC34A);
+            width: 0%;
+            transition: width 1s linear;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Color Trading Prediction (Demo)</h1>
-        <div id="balance">Balance: $1000</div>
+        <h1>Advanced Color Trading Prediction</h1>
+        <div class="subtitle">DEMO VERSION - NOT FOR REAL MONEY</div>
+        
+        <div class="dashboard">
+            <div class="stats">
+                <div id="balance">Balance: $10,000</div>
+                <div class="timer">Next round in: <span id="countdown">10</span>s</div>
+                <div class="progress-bar">
+                    <div class="progress" id="progress"></div>
+                </div>
+            </div>
+            <div class="bet-controls">
+                <div class="bet-amount-control">
+                    <button class="quick-bet" onclick="adjustBet(10)">+10</button>
+                    <button class="quick-bet" onclick="adjustBet(100)">+100</button>
+                    <button class="quick-bet" onclick="adjustBet(1000)">+1K</button>
+                    <input type="number" id="betAmount" min="1" value="100">
+                    <button class="quick-bet" onclick="adjustBet(-10)">-10</button>
+                    <button class="quick-bet" onclick="adjustBet(-100)">-100</button>
+                    <button class="quick-bet" onclick="adjustBet(-1000)">-1K</button>
+                </div>
+                <div class="quick-bet-buttons">
+                    <button class="quick-bet" onclick="setBetPercent(0.25)">25%</button>
+                    <button class="quick-bet" onclick="setBetPercent(0.5)">50%</button>
+                    <button class="quick-bet" onclick="setBetPercent(0.75)">75%</button>
+                    <button class="quick-bet" onclick="setBetPercent(1)">MAX</button>
+                </div>
+            </div>
+        </div>
         
         <div class="bet-options">
             <button class="bet-btn" id="red">RED (2x)</button>
             <button class="bet-btn" id="green">GREEN (2x)</button>
             <button class="bet-btn" id="violet">VIOLET (3x)</button>
-        </div>
-        
-        <div>
-            <label for="betAmount">Bet Amount: $</label>
-            <input type="number" id="betAmount" min="1" value="10">
+            <button class="bet-btn" id="blue">BLUE (4x)</button>
+            <button class="bet-btn" id="yellow">YELLOW (5x)</button>
         </div>
         
         <div id="result">Place your bet!</div>
         
-        <h3>Prediction History</h3>
-        <div class="history" id="history"></div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="total-bets">0</div>
+                <div class="stat-label">Total Bets</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="wins">0</div>
+                <div class="stat-label">Wins</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="losses">0</div>
+                <div class="stat-label">Losses</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="win-rate">0%</div>
+                <div class="stat-label">Win Rate</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="profit">$0</div>
+                <div class="stat-label">Profit</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="current-streak">0</div>
+                <div class="stat-label">Current Streak</div>
+            </div>
+        </div>
+        
+        <div class="history-container">
+            <h3>Prediction History</h3>
+            <div class="history" id="history"></div>
+        </div>
+        
+        <div class="chart-container" id="chart"></div>
+        
+        <div class="settings-panel">
+            <h3>Settings</h3>
+            <div class="settings-row">
+                <span>Sound Effects</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="soundToggle" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="settings-row">
+                <span>Animations</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="animationsToggle" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="settings-row">
+                <span>Color Mode</span>
+                <select id="colorMode">
+                    <option value="3">3 Colors (Red/Green/Violet)</option>
+                    <option value="5" selected>5 Colors (All)</option>
+                </select>
+            </div>
+        </div>
+        
+        <button onclick="openModal('help')" style="margin-top: 20px; padding: 10px 20px; background: rgba(255,255,255,0.1); border: none; border-radius: 5px; color: white; cursor: pointer;">Help & Info</button>
+        <button onclick="openModal('stats')" style="margin-top: 20px; padding: 10px 20px; background: rgba(255,255,255,0.1); border: none; border-radius: 5px; color: white; cursor: pointer;">Advanced Stats</button>
+    </div>
+    
+    <div class="modal" id="helpModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('help')">&times;</span>
+            <h2>Help & Information</h2>
+            <div class="tabs">
+                <div class="tab active" onclick="openTab('help', 'how-to-play')">How to Play</div>
+                <div class="tab" onclick="openTab('help', 'rules')">Rules</div>
+                <div class="tab" onclick="openTab('help', 'about')">About</div>
+            </div>
+            <div class="tab-content active" id="how-to-play">
+                <h3>How to Play</h3>
+                <p>1. Set your bet amount using the controls</p>
+                <p>2. Choose a color to bet on</p>
+                <p>3. Wait for the result</p>
+                <p>4. If your color matches the result, you win!</p>
+                <p>Multipliers: Red/Green (2x), Violet (3x), Blue (4x), Yellow (5x)</p>
+            </div>
+            <div class="tab-content" id="rules">
+                <h3>Game Rules</h3>
+                <p>- This is a demo version with no real money involved</p>
+                <p>- Results are randomly generated</p>
+                <p>- You can change settings like color mode and sound effects</p>
+                <p>- The game tracks your statistics automatically</p>
+            </div>
+            <div class="tab-content" id="about">
+                <h3>About This Demo</h3>
+                <p>This is an educational demonstration of a color prediction game interface.</p>
+                <p><strong>WARNING:</strong> Real color trading platforms are often unregulated gambling schemes or scams.</p>
+                <p>This demo is for HTML/JS learning purposes only.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="statsModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('stats')">&times;</span>
+            <h2>Advanced Statistics</h2>
+            <div class="tabs">
+                <div class="tab active" onclick="openTab('stats', 'color-stats')">Color Stats</div>
+                <div class="tab" onclick="openTab('stats', 'history')">Bet History</div>
+                <div class="tab" onclick="openTab('stats', 'performance')">Performance</div>
+            </div>
+            <div class="tab-content active" id="color-stats">
+                <h3>Color Distribution</h3>
+                <div id="colorStatsChart" style="height: 200px; margin: 20px 0;"></div>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr>
+                        <th style="text-align: left; padding: 8px; border-bottom: 1px solid #444;">Color</th>
+                        <th style="text-align: right; padding: 8px; border-bottom: 1px solid #444;">Count</th>
+                        <th style="text-align: right; padding: 8px; border-bottom: 1px solid #444;">Percentage</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border-bottom: 1px solid #444;">Red</td>
+                        <td style="text-align: right; padding: 8px; border-bottom: 1px solid #444;" id="red-count">0</td>
+                        <td style="text-align: right; padding: 8px; border-bottom: 1px solid #444;" id="red-percent">0%</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border-bottom: 1px solid #444;">Green</td>
+                        <td style="text-align: right; padding: 8px; border-bottom: 1px solid #444;" id="green-count">0</td>
+                        <td style="text-align: right; padding: 8px; border-bottom: 1px solid #444;" id="green-percent">0%</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border-bottom: 1px solid #444;">Violet</td>
+                        <td style="text-align: right; padding: 8px; border-bottom: 1px solid #444;" id="violet-count">0</td>
+                        <td style="text-align: right; padding: 8px; border-bottom: 1px solid #444;" id="violet-percent">0%</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border-bottom: 1px solid #444;">Blue</td>
+                        <td style="text-align: right; padding: 8px; border-bottom: 1px solid #444;" id="blue-count">0</td>
+                        <td style="text-align: right; padding: 8px; border-bottom: 1px solid #444;" id="blue-percent">0%</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border-bottom: 1px solid #444;">Yellow</td>
+                        <td style="text-align: right; padding: 8px; border-bottom: 1px solid #444;" id="yellow-count">0</td>
+                        <td style="text-align: right; padding: 8px; border-bottom: 1px solid #444;" id="yellow-percent">0%</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="tab-content" id="history">
+                <h3>Bet History</h3>
+                <div style="max-height: 300px; overflow-y: auto;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <tr>
+                            <th style="text-align: left; padding: 8px; border-bottom: 1px solid #444;">Round</th>
+                            <th style="text-align: left; padding: 8px; border-bottom: 1px solid #444;">Bet</th>
+                            <th style="text-align: left; padding: 8px; border-bottom: 1px solid #444;">Amount</th>
+                            <th style="text-align: left; padding: 8px; border-bottom: 1px solid #444;">Result</th>
+                            <th style="text-align: left; padding: 8px; border-bottom: 1px solid #444;">Outcome</th>
+                            <th style="text-align: right; padding: 8px; border-bottom: 1px solid #444;">Profit</th>
+                        </tr>
+                        <tbody id="betHistoryTable">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-content" id="performance">
+                <h3>Performance Analysis</h3>
+                <div id="performanceChart" style="height: 200px; margin: 20px 0;"></div>
+                <div class="stats-grid" style="grid-template-columns: repeat(2, 1fr);">
+                    <div class="stat-card">
+                        <div class="stat-value" id="best-color">-</div>
+                        <div class="stat-label">Most Profitable Color</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="worst-color">-</div>
+                        <div class="stat-label">Least Profitable Color</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="longest-streak">0</div>
+                        <div class="stat-label">Longest Win Streak</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="longest-loss-streak">0</div>
+                        <div class="stat-label">Longest Loss Streak</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <script>
-        let balance = 1000;
-        const history = [];
-        const colors = ["red", "green", "violet"];
-        const multipliers = { red: 2, green: 2, violet: 3 };
+    <audio id="winSound" src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3" preload="auto"></audio>
+    <audio id="loseSound" src="https://assets.mixkit.co/sfx/preview/mixkit-retro-arcade-lose-2027.mp3" preload="auto"></audio>
+    <audio id="betSound" src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.mp3" preload="auto"></audio>
+    <audio id="countdownSound" src="https://assets.mixkit.co/sfx/preview/mixkit-game-clock-countdown-921.mp3" preload="auto"></audio>
 
-        document.querySelectorAll('.bet-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const selectedColor = this.id;
-                const betAmount = parseInt(document.getElementById('betAmount').value);
-                
-                if (betAmount > balance) {
-                    alert("Not enough balance!");
-                    return;
-                }
-                
-                // Deduct bet amount
-                balance -= betAmount;
-                document.getElementById('balance').textContent = `Balance: $${balance}`;
-                
-                // Simulate a random result (can be manipulated in real scams)
-                const result = colors[Math.floor(Math.random() * colors.length)];
-                history.push(result);
-                
-                // Update history display
-                updateHistory();
-                
-                // Check if player won
-                if (selectedColor === result) {
-                    const winAmount = betAmount * multipliers[selectedColor];
-                    balance += winAmount;
-                    document.getElementById('result').textContent = `You won $${winAmount}! (${result.toUpperCase()})`;
-                } else {
-                    document.getElementById('result').textContent = `You lost! (${result.toUpperCase()})`;
-                }
-                
-                document.getElementById('balance').textContent = `Balance: $${balance}`;
+    <script>
+        // Game state
+        let balance = 10000;
+        let betAmount = 100;
+        let gameHistory = [];
+        let stats = {
+            totalBets: 0,
+            wins: 0,
+            losses: 0,
+            profit: 0,
+            currentStreak: 0,
+            longestStreak: 0,
+            longestLossStreak: 0,
+            currentLossStreak: 0,
+            colorCounts: { red: 0, green: 0, violet: 0, blue: 0, yellow: 0 },
+            colorProfit: { red: 0, green: 0, violet: 0, blue: 0, yellow: 0 }
+        };
+        let roundTime = 10; // seconds
+        let countdown = roundTime;
+        let timerInterval;
+        let isRoundInProgress = false;
+        let betHistory = [];
+        
+        // Multipliers
+        const multipliers = { 
+            red: 2, 
+            green: 2, 
+            violet: 3,
+            blue: 4,
+            yellow: 5
+        };
+        
+        // Available colors based on mode
+        let availableColors = ['red', 'green', 'violet', 'blue', 'yellow'];
+        
+        // DOM elements
+        const balanceEl = document.getElementById('balance');
+        const betAmountEl = document.getElementById('betAmount');
+        const resultEl = document.getElementById('result');
+        const historyEl = document.getElementById('history');
+        const countdownEl = document.getElementById('countdown');
+        const progressEl = document.getElementById('progress');
+        
+        // Stats elements
+        const totalBetsEl = document.getElementById('total-bets');
+        const winsEl = document.getElementById('wins');
+        const lossesEl = document.getElementById('losses');
+        const winRateEl = document.getElementById('win-rate');
+        const profitEl = document.getElementById('profit');
+        const currentStreakEl = document.getElementById('current-streak');
+        
+        // Settings
+        const soundToggle = document.getElementById('soundToggle');
+        const animationsToggle = document.getElementById('animationsToggle');
+        const colorMode = document.getElementById('colorMode');
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateUI();
+            startRoundTimer();
+            
+            // Set up bet buttons
+            document.querySelectorAll('.bet-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (isRoundInProgress) {
+                        alert("Round in progress! Wait for the next round.");
+                        return;
+                    }
+                    
+                    const selectedColor = this.id;
+                    placeBet(selectedColor);
+                });
             });
+            
+            // Set up bet amount input
+            betAmountEl.addEventListener('change', function() {
+                betAmount = parseInt(this.value) || 10;
+                if (betAmount < 1) betAmount = 1;
+                this.value = betAmount;
+            });
+            
+            // Set up settings
+            soundToggle.addEventListener('change', toggleSound);
+            animationsToggle.addEventListener('change', toggleAnimations);
+            colorMode.addEventListener('change', changeColorMode);
+            
+            // Initialize chart
+            updateChart();
         });
         
+        // Game functions
+        function placeBet(color) {
+            if (betAmount > balance) {
+                alert("Not enough balance!");
+                return;
+            }
+            
+            if (betAmount < 1) {
+                alert("Bet amount must be at least 1!");
+                return;
+            }
+            
+            playSound('bet');
+            
+            // Deduct bet amount
+            balance -= betAmount;
+            updateUI();
+            
+            // Start the round
+            isRoundInProgress = true;
+            startRound(color);
+        }
+        
+        function startRound(betColor) {
+            // Disable bet buttons
+            document.querySelectorAll('.bet-btn').forEach(btn => {
+                btn.disabled = true;
+            });
+            
+            // Show countdown with animation
+            let roundCountdown = 3;
+            resultEl.textContent = `Round starting in ${roundCountdown}...`;
+            
+            const roundInterval = setInterval(() => {
+                roundCountdown--;
+                
+                if (roundCountdown > 0) {
+                    resultEl.textContent = `Round starting in ${roundCountdown}...`;
+                } else {
+                    clearInterval(roundInterval);
+                    resolveRound(betColor);
+                }
+            }, 1000);
+        }
+        
+        function resolveRound(betColor) {
+            // Generate random result
+            const result = availableColors[Math.floor(Math.random() * availableColors.length)];
+            
+            // Update stats
+            stats.colorCounts[result]++;
+            stats.totalBets++;
+            
+            // Check if player won
+            let winAmount = 0;
+            let isWin = false;
+            
+            if (betColor === result) {
+                isWin = true;
+                winAmount = betAmount * multipliers[betColor];
+                balance += winAmount;
+                
+                // Update win stats
+                stats.wins++;
+                stats.currentStreak++;
+                stats.currentLossStreak = 0;
+                if (stats.currentStreak > stats.longestStreak) {
+                    stats.longestStreak = stats.currentStreak;
+                }
+                
+                stats.profit += winAmount - betAmount;
+                stats.colorProfit[betColor] += winAmount - betAmount;
+                
+                // Show win
+                resultEl.textContent = `WIN! ${result.toUpperCase()} (+$${winAmount})`;
+                resultEl.className = 'win-result';
+                playSound('win');
+            } else {
+                isWin = false;
+                
+                // Update loss stats
+                stats.losses++;
+                stats.currentStreak = 0;
+                stats.currentLossStreak++;
+                if (stats.currentLossStreak > stats.longestLossStreak) {
+                    stats.longestLossStreak = stats.currentLossStreak;
+                }
+                
+                stats.profit -= betAmount;
+                stats.colorProfit[betColor] -= betAmount;
+                
+                // Show loss
+                resultEl.textContent = `LOSS! Result: ${result.toUpperCase()}`;
+                resultEl.className = 'loss-result';
+                playSound('lose');
+            }
+            
+            // Add to history
+            gameHistory.push(result);
+            if (gameHistory.length > 15) {
+                gameHistory.shift();
+            }
+            
+            // Add to bet history
+            betHistory.unshift({
+                round: stats.totalBets,
+                bet: betColor,
+                amount: betAmount,
+                result: result,
+                outcome: isWin ? 'Win' : 'Loss',
+                profit: isWin ? winAmount - betAmount : -betAmount
+            });
+            
+            if (betHistory.length > 50) {
+                betHistory.pop();
+            }
+            
+            updateUI();
+            updateStats();
+            updateHistory();
+            updateChart();
+            
+            // Re-enable bet buttons after short delay
+            setTimeout(() => {
+                document.querySelectorAll('.bet-btn').forEach(btn => {
+                    btn.disabled = false;
+                });
+                isRoundInProgress = false;
+            }, 1000);
+        }
+        
+        function startRoundTimer() {
+            clearInterval(timerInterval);
+            countdown = roundTime;
+            updateTimer();
+            
+            timerInterval = setInterval(() => {
+                countdown--;
+                updateTimer();
+                
+                if (countdown <= 0) {
+                    playSound('countdown');
+                    countdown = roundTime;
+                }
+            }, 1000);
+        }
+        
+        function updateTimer() {
+            countdownEl.textContent = countdown;
+            progressEl.style.width = `${(countdown / roundTime) * 100}%`;
+            
+            // Change progress color when time is running out
+            if (countdown <= 3) {
+                progressEl.style.background = 'linear-gradient(to right, #FF5722, #F44336)';
+            } else {
+                progressEl.style.background = 'linear-gradient(to right, #4CAF50, #8BC34A)';
+            }
+        }
+        
+        function updateUI() {
+            balanceEl.textContent = `Balance: $${balance.toLocaleString()}`;
+            betAmountEl.value = betAmount;
+        }
+        
+        function updateStats() {
+            totalBetsEl.textContent = stats.totalBets;
+            winsEl.textContent = stats.wins;
+            lossesEl.textContent = stats.losses;
+            
+            const winRate = stats.totalBets > 0 ? (stats.wins / stats.totalBets * 100) : 0;
+            winRateEl.textContent = `${winRate.toFixed(1)}%`;
+            
+            profitEl.textContent = `$${stats.profit.toLocaleString()}`;
+            currentStreakEl.textContent = stats.currentStreak;
+        }
+        
         function updateHistory() {
-            const historyDiv = document.getElementById('history');
-            historyDiv.innerHTML = '';
-            history.slice(-15).forEach(color => {
+            historyEl.innerHTML = '';
+            
+            gameHistory.forEach((color, index) => {
                 const item = document.createElement('div');
                 item.className = `history-item ${color}`;
-                historyDiv.appendChild(item);
+                
+                // Show win/loss indicator for recent bets
+                if (index === 0 && betHistory.length > 0) {
+                    item.classList.add(betHistory[0].outcome.toLowerCase());
+                }
+                
+                historyEl.appendChild(item);
             });
+        }
+        
+        function updateChart() {
+            const chartEl = document.getElementById('chart');
+            chartEl.innerHTML = '';
+            
+            const maxCount = Math.max(...Object.values(stats.colorCounts), 1);
+            const colors = ['red', 'green', 'violet', 'blue', 'yellow'];
+            const width = 30;
+            const gap = (chartEl.offsetWidth - (colors.length * width)) / (colors.length + 1);
+            
+            colors.forEach((color, index) => {
+                if (!availableColors.includes(color)) return;
+                
+                const count = stats.colorCounts[color] || 0;
+                const height = (count / maxCount) * 150;
+                
+                const bar = document.createElement('div');
+                bar.className = 'chart-bar';
+                bar.style.height = `${height}px`;
+                bar.style.left = `${gap + (index * (width + gap))}px`;
+                bar.style.backgroundColor = `var(--${color})`;
+                
+                const label = document.createElement('div');
+                label.textContent = count;
+                label.style.position = 'absolute';
+                label.style.bottom = `${height + 5}px`;
+                label.style.width = '100%';
+                label.style.textAlign = 'center';
+                label.style.color = 'white';
+                
+                bar.appendChild(label);
+                chartEl.appendChild(bar);
+            });
+        }
+        
+        // Bet amount controls
+        function adjustBet(amount) {
+            betAmount += amount;
+            if (betAmount < 1) betAmount = 1;
+            if (betAmount > balance) betAmount = balance;
+            betAmountEl.value = betAmount;
+        }
+        
+        function setBetPercent(percent) {
+            betAmount = Math.floor(balance * percent);
+            if (betAmount < 1) betAmount = 1;
+            betAmountEl.value = betAmount;
+        }
+        
+        // Settings functions
+        function toggleSound() {
+            // In a real app, this would enable/disable sound
+            console.log(`Sound ${soundToggle.checked ? 'enabled' : 'disabled'}`);
+        }
+        
+        function toggleAnimations() {
+            // In a real app, this would enable/disable animations
+            console.log(`Animations ${animationsToggle.checked ? 'enabled' : 'disabled'}`);
+        }
+        
+        function changeColorMode() {
+            const mode = colorMode.value;
+            if (mode === '3') {
+                availableColors = ['red', 'green', 'violet'];
+                document.getElementById('blue').style.display = 'none';
+                document.getElementById('yellow').style.display = 'none';
+            } else {
+                availableColors = ['red', 'green', 'violet', 'blue', 'yellow'];
+                document.getElementById('blue').style.display = 'block';
+                document.getElementById('yellow').style.display = 'block';
+            }
+        }
+        
+        // Modal functions
+        function openModal(modalId) {
+            document.getElementById(`${modalId}Modal`).style.display = 'flex';
+            
+            if (modalId === 'stats') {
+                updateAdvancedStats();
+            }
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(`${modalId}Modal`).style.display = 'none';
+        }
+        
+        function openTab(modalId, tabId) {
+            // Hide all tab contents
+            document.querySelectorAll(`#${modalId}Modal .tab-content`).forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Deactivate all tabs
+            document.querySelectorAll(`#${modalId}Modal .tab`).forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Activate selected tab
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+        
+        function updateAdvancedStats() {
+            // Update color stats
+            const total = stats.totalBets;
+            ['red', 'green', 'violet', 'blue', 'yellow'].forEach(color => {
+                document.getElementById(`${color}-count`).textContent = stats.colorCounts[color] || 0;
+                const percent = total > 0 ? (stats.colorCounts[color] / total * 100) : 0;
+                document.getElementById(`${color}-percent`).textContent = `${percent.toFixed(1)}%`;
+            });
+            
+            // Update bet history table
+            const tableBody = document.getElementById('betHistoryTable');
+            tableBody.innerHTML = '';
+            
+            betHistory.forEach(bet => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td style="padding: 8px; border-bottom: 1px solid #444;">${bet.round}</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #444;"><div class="history-item ${bet.bet}" style="display: inline-block;"></div></td>
+                    <td style="padding: 8px; border-bottom: 1px solid #444;">$${bet.amount}</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #444;"><div class="history-item ${bet.result}" style="display: inline-block;"></div></td>
+                    <td style="padding: 8px; border-bottom: 1px solid #444; color: ${bet.outcome === 'Win' ? '#4CAF50' : '#F44336'}">${bet.outcome}</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #444; text-align: right; color: ${bet.profit >= 0 ? '#4CAF50' : '#F44336'}">${bet.profit >= 0 ? '+' : ''}$${bet.profit}</td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+            
+            // Update performance stats
+            document.getElementById('longest-streak').textContent = stats.longestStreak;
+            document.getElementById('longest-loss-streak').textContent = stats.longestLossStreak;
+            
+            // Find most and least profitable colors
+            let bestColor = '-';
+            let bestProfit = -Infinity;
+            let worstColor = '-';
+            let worstProfit = Infinity;
+            
+            Object.entries(stats.colorProfit).forEach(([color, profit]) => {
+                if (profit > bestProfit) {
+                    bestColor = color;
+                    bestProfit = profit;
+                }
+                if (profit < worstProfit) {
+                    worstColor = color;
+                    worstProfit = profit;
+                }
+            });
+            
+            document.getElementById('best-color').textContent = bestColor !== '-' ? `${bestColor} ($${bestProfit})` : '-';
+            document.getElementById('worst-color').textContent = worstColor !== '-' ? `${worstColor} ($${worstProfit})` : '-';
+            
+            // Update charts in modal
+            updateColorStatsChart();
+            updatePerformanceChart();
+        }
+        
+        function updateColorStatsChart() {
+            const chartEl = document.getElementById('colorStatsChart');
+            chartEl.innerHTML = '';
+            
+            const colors = ['red', 'green', 'violet', 'blue', 'yellow'];
+            const counts = colors.map(color => stats.colorCounts[color] || 0);
+            const maxCount = Math.max(...counts, 1);
+            
+            const width = 40;
+            const gap = (chartEl.offsetWidth - (colors.length * width)) / (colors.length + 1);
+            
+            colors.forEach((color, index) => {
+                if (!availableColors.includes(color)) return;
+                
+                const count = stats.colorCounts[color] || 0;
+                const height = (count / maxCount) * 180;
+                
+                const bar = document.createElement('div');
+                bar.className = 'chart-bar';
+                bar.style.height = `${height}px`;
+                bar.style.left = `${gap + (index * (width + gap))}px`;
+                bar.style.width = `${width}px`;
+                bar.style.backgroundColor = `var(--${color})`;
+                
+                const label = document.createElement('div');
+                label.textContent = count;
+                label.style.position = 'absolute';
+                label.style.bottom = `${height + 5}px`;
+                label.style.width = '100%';
+                label.style.textAlign = 'center';
+                label.style.color = 'white';
+                
+                bar.appendChild(label);
+                chartEl.appendChild(bar);
+            });
+        }
+        
+        function updatePerformanceChart() {
+            const chartEl = document.getElementById('performanceChart');
+            chartEl.innerHTML = '';
+            
+            // Show last 10 bet results
+            const recentBets = betHistory.slice(0, 10).reverse();
+            if (recentBets.length === 0) return;
+            
+            const maxAmount = Math.max(...recentBets.map(bet => Math.abs(bet.profit)), 1);
+            const width = 30;
+            const gap = (chartEl.offsetWidth - (recentBets.length * width)) / (recentBets.length + 1);
+            
+            recentBets.forEach((bet, index) => {
+                const profit = bet.profit;
+                const height = (Math.abs(profit) / maxAmount) * 180;
+                const isPositive = profit >= 0;
+                
+                const bar = document.createElement('div');
+                bar.className = 'chart-bar';
+                bar.style.height = `${height}px`;
+                bar.style.left = `${gap + (index * (width + gap))}px`;
+                bar.style.width = `${width}px`;
+                bar.style.backgroundColor = isPositive ? '#4CAF50' : '#F44336';
+                bar.style.bottom = isPositive ? 'auto' : '50%';
+                bar.style.top = isPositive ? 'auto' : '50%';
+                
+                const label = document.createElement('div');
+                label.textContent = profit >= 0 ? `+${profit}` : profit;
+                label.style.position = 'absolute';
+                label.style[isPositive ? 'bottom' : 'top'] = `${height + 5}px`;
+                label.style.width = '100%';
+                label.style.textAlign = 'center';
+                label.style.color = 'white';
+                
+                bar.appendChild(label);
+                chartEl.appendChild(bar);
+            });
+        }
+        
+        // Sound functions
+        function playSound(type) {
+            if (!soundToggle.checked) return;
+            
+            const sounds = {
+                win: document.getElementById('winSound'),
+                lose: document.getElementById('loseSound'),
+                bet: document.getElementById('betSound'),
+                countdown: document.getElementById('countdownSound')
+            };
+            
+            if (sounds[type]) {
+                sounds[type].currentTime = 0;
+                sounds[type].play();
+            }
         }
     </script>
 </body>
