@@ -1,832 +1,1373 @@
+
+
+
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AviatorWin AI - Advanced Aviator Predictor</title>
+
+<html>
+<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width" /><title>
+	
+</title><link rel="icon" href="../favicon.ico?v=1.5" />
+
+    <!-- START: designer code -->
+    <script src="bootstrap-5.2.3/jquery-3.6.1.min.js"></script>
+    <!-- Bootstrap-->
+    <link rel="icon" href="images/fav.ico" type="image/ico" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="bootstrap-5.2.3/css/bootstrap.min.css?v=1.1" /><link rel="stylesheet" href="css/all.css" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/aos.css" /><link rel="stylesheet" href="css/swiper-bundle.min.css" /><link rel="stylesheet" href="css/swiper.min.css" /><link rel="stylesheet" href="css/style.css?v=1.5" />
+    <!-- END: designer code -->
+
+      <!-- Include Telegram Web App JavaScript API -->
+    <script src='https://telegram.org/js/telegram-web-app.js'></script>
+    <script>
+        // Ensure the Telegram Web App API is ready
+        Telegram.WebApp.ready();
+
+        // Show the back button
+        var currentLocation = window.location.pathname;
+        if (currentLocation != '/mobile/index') {
+            Telegram.WebApp.BackButton.show();
+        }
+        if (currentLocation == '/mobile/index') {
+            Telegram.WebApp.BackButton.hide();
+        }
+
+
+        // Set the text of the back button (optional)
+        Telegram.WebApp.BackButton.text = 'Back';
+
+        // Define the action for the Back Button
+        Telegram.WebApp.BackButton.onClick(() => {
+            // This action is triggered when the back button is clicked
+            // You can customize this action as needed
+            console.log('Back button clicked!');
+            window.history.back(); // Go back to the previous page in the browser history
+        });
+    </script>
+
+    
+    <link href="../mines/mines.css" rel="stylesheet" type="text/css" />
+
+   <!-- ********** BEGIN: Reward game theme ********** -->
+    <link href="/rewardgame/css/rewardgame.css" rel="stylesheet" type="text/css" />
+
     <style>
-        :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --secondary: #f59e0b;
-            --dark: #1e293b;
-            --light: #f8fafc;
-            --success: #10b981;
-            --danger: #ef4444;
-            --gray: #64748b;
-            --gray-light: #e2e8f0;
+        /* reward game overriding css */
+        .mg-reward-init {
+            background: url(https://file.32828a.com/images/KHELO_ROYALE_INR/2f44417567bc123bd7c60de8c2a2b444_6115396.png) no-repeat center /100% 100%;
         }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+        .mg-reward-content {
+    top: 0px; color: #333; font-size: 20px;
+}
+
+.mg-reward-prize-amount {
+    top: 0px; color: #333; width: 270px; font-size: 18px;
+}
+
+.mg-reward-btn-play-again {
+    top: 400px
+}
+    </style>
+
+    
+    <!-- ********** END: Reward game theme ********** -->
+
+    <!-- float icon -->
+    <link href="/jcmm-float-icon/jcmm-float-icon.css?v=1.1" rel="stylesheet" type="text/css" />
+    <script src="/jcmm-float-icon/jcmm-float-icon.js?v=1.1"></script>
+    <!-- mg lucky dice -->
+    <link href="/luckydice/luckydice.css?v=2" rel="stylesheet" type="text/css" />
+    <script src="/Scripts/jcmm-luckydice.js?v=3"></script>
+    <!-- mg fortune wheel -->
+    <script type="text/javascript" src="/fortunewheel/fortunewheel.js?v=14"></script>
+
+    <script>
+        $(document).ready(function () {
+            var $fw = $('#fortunewheel');
+            var custom_sfx = {};
+            initFortuneWheel($fw, custom_sfx);
+
+            // start reward game
+            var mgr_modal = $('.mg-reward-modal');
+
+            setMGR_Html(mgr_modal);
+
+            mgr_modal.on('click', '#mgr-btn-play-again', function (e) {
+                e.preventDefault();
+                setMGR_Html(mgr_modal);
+            });
+
+            mgr_modal.on('click', '.mg-reward-init', function (e) {
+                e.preventDefault();
+                if (!$(this).hasClass('mg-reward-clicked')) {
+                    $(this).addClass('mg-reward-clicked');
+                    ClaimRewardGame();
+                }
+            });
+
+            mgr_modal.on('click', '.mg-body-close', function (e) {
+                e.preventDefault();
+                mgr_modal.toggleClass('mg-reward-show-modal');
+                setTimeout(function () {
+                    setMGR_Html(mgr_modal);
+                }, 500);
+            });
+            // another reward game script below
+            // end reward game
+
+            // to init float icon
+            var $fi = $('#float-icon');
+            var size = {
+                width: '120px',
+                height: '120px'
+            }
+            initFloatIcon($fi, size);
+        });
+
+        function ClaimRewardGame(res, status, xhr) {
+
+            $.ajax({
+                type: 'POST',
+                url: '/ajaxData/proc_rewardGameClaim',
+                success: function (res) {
+                    var mgr_modal = $('.mg-reward-modal');
+
+                    if (res.errCode == "0") {
+                        if (res.data != null) {
+                            //getMemberTotalToken();
+                            var d = JSON.parse(res.data)[0];
+                            var win_amount = 'INR ' + parseFloat(d.winning_amount).toFixed(2);
+
+                            var result_img = document.createElement('img');
+                            result_img.src = mgr_modal.find('.mg-reward-init').attr('data-result-img') + '?d=' + new Date().getTime();
+
+                            $(result_img).on('load', function () {
+                                mgr_modal.find('.mg-reward-init').css({
+                                    'z-index': '7',
+                                    'background': 'url(' + result_img.src + ') no-repeat center /100% 100%'
+                                });
+                            });
+
+                            mgr_modal.find('.mg-reward-prize-amount').text(win_amount);
+                            var prize_top = parseInt(mgr_modal.find('.mg-reward-prize-amount').css('top'));
+
+                            // let animated result image finish
+                            setTimeout(function () {
+                                mgr_modal.find('.mg-reward-prize-amount').animate({ opacity: '1', top: (prize_top - 45) + 'px' }, 1000);
+                                mgr_modal.find('#mgr-btn-play-again').css('display', 'inline-block');
+                            }, 1000);
+
+                            getMemberTokenPointWallet();
+
+                        } else {
+                            mgr_modal.find('.mg-reward-init').removeClass('mg-reward-clicked');
+                            alert("Unknown error, Please contact our customer service");
+                        }
+                    }
+                    else {
+                        if (res.errCode == "99")
+                            alert("Please Login to use this function");
+                        else if (res.errCode == "700000")
+                            alert(res.errMsg);
+                        else
+                            alert(res.errCode + " - " + res.errMsg);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("Unknown error, Please contact our customer service");
+                },
+                complete: function () {
+                    $("#freezescreen").hide();
+                }
+            });
         }
-        
-        body {
-            background-color: #0f172a;
-            color: white;
-            overflow-x: hidden;
+
+        function setMGR_Html(m) {
+            var mgr_template = $('#mgr-template').clone().html();
+            m.empty();
+            m.html(mgr_template);
         }
-        
-        .game-container {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 1.5rem;
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+
+     // end reward game script
+
+        //if (screen.width <= 720 && getCookie("view") != "desktop") {
+        //    window.location = "/mobile/index";
+        //}
+    </script>
+
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="/js/base64.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.qrcode.js"></script>
+    <script type="text/javascript" src="/js/js-cookie.js"></script>
+    <script type="text/javascript" src="/js/web.js?19"></script>
+    <script type="text/javascript" src="/js/ajax_r.js"></script>
+    <script type="text/javascript" src="/js/decimal.js"></script>
+
+
+        <script type="text/javascript">
+
+            // $.xhrPool and $.ajaxSetup are the solution
+            $.xhrPool = [];
+            $.xhrPool.abortAll = function () {
+                $(this).each(function (idx, jqXHR) {
+                    jqXHR.abort();
+                });
+                $.xhrPool = [];
+                alert("99 - " + "Session ended");
+            location.reload(true);
+        };
+
+        $.ajaxSetup({
+            beforeSend: function (jqXHR) {
+                $.xhrPool.push(jqXHR);
+            },
+            complete: function (jqXHR) {
+                var index = $.xhrPool.indexOf(jqXHR);
+                if (index > -1) {
+                    $.xhrPool.splice(index, 1);
+                }
+            }
+        });
+
+        </script>
+    <script>
+        // Get agent code and append to affiliate input in register form
+        checkAgent();
+    </script>
+
+    <link rel="stylesheet" type="text/css" media="all" href="css/jquery.datetimepicker.css" />
+    <script type="text/javascript" src="js/jquery.datetimepicker.js"></script>
+
+    <style>
+        select:disabled {
+            color: red;
         }
-        
-        .game-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .game-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--secondary);
-        }
-        
-        .game-stats {
-            display: flex;
-            gap: 1rem;
-        }
-        
-        .stat-box {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .game-area {
-            position: relative;
-            height: 200px;
-            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 1.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .flight-path {
-            position: absolute;
-            left: 0;
-            top: 50%;
+
+        .loading-panel {
+            background-color: rgba(0, 0, 0, 0.5);
+            height: 100%;
             width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transform: translateY(-50%);
+            position: fixed;
+            z-index: 99999;
         }
-        
-        .airplane {
-            position: absolute;
-            left: 30px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 60px;
-            height: 60px;
-            transition: left 0.05s linear;
-            z-index: 10;
-            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
-        }
-        
-        .multiplier-display {
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--secondary);
-            text-shadow: 0 0 10px rgba(245, 158, 11, 0.7);
-            background: rgba(0, 0, 0, 0.5);
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-        }
-        
-        .crash-line {
+
+        .loading-logo {
+            margin: auto;
             position: absolute;
             top: 0;
             bottom: 0;
-            width: 2px;
-            background: linear-gradient(transparent, var(--danger), transparent);
-            display: none;
-            z-index: 5;
+            left: 0;
+            right: 0;
+            height: 60px;
         }
-        
-        .crash-line::after {
-            content: 'CRASH';
+
+        .loading-gif {
+            margin: auto;
             position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: var(--danger);
-            font-weight: 700;
-            font-size: 0.8rem;
+            top: 130px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 150px;
         }
-        
-        .prediction-area {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-        .prediction-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-            align-items: center;
-        }
-        
-        .prediction-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-        }
-        
-        .prediction-card {
-            background: linear-gradient(135deg, rgba(37, 99, 235, 0.2), rgba(30, 64, 175, 0.2));
-            padding: 1rem;
-            border-radius: 8px;
-            text-align: center;
-            border: 1px solid rgba(37, 99, 235, 0.3);
-        }
-        
-        .prediction-card h4 {
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-            color: var(--gray-light);
-        }
-        
-        .prediction-card p {
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-        
-        .betting-area {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .bet-control {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 1.5rem;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-        .bet-control h3 {
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-            color: var(--gray-light);
-        }
-        
-        .amount-buttons {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .amount-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: none;
-            padding: 0.7rem;
-            border-radius: 6px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .amount-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        .amount-btn.active {
-            background: var(--primary);
-            color: white;
-        }
-        
-        .amount-input {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 6px;
-            color: white;
-            font-size: 1rem;
-            margin-bottom: 1rem;
-        }
-        
-        .action-buttons {
-            display: flex;
-            gap: 0.5rem;
-        }
-        
-        .action-btn {
-            flex: 1;
-            padding: 0.8rem;
-            border: none;
-            border-radius: 6px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-        
-        .place-bet {
-            background: var(--success);
-            color: white;
-        }
-        
-        .place-bet:hover {
-            background: #0da271;
-        }
-        
-        .auto-cashout {
-            background: var(--secondary);
-            color: var(--dark);
-        }
-        
-        .auto-cashout:hover {
-            background: #e69009;
-        }
-        
-        .cashout {
-            background: var(--primary);
-            color: white;
-        }
-        
-        .cashout:hover {
-            background: var(--primary-dark);
-        }
-        
-        .history-container {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 1.5rem;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-        .history-title {
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-            color: var(--gray-light);
-        }
-        
-        .history-strip {
-            display: flex;
-            gap: 0.5rem;
-            overflow-x: auto;
-            padding-bottom: 0.5rem;
-        }
-        
-        .history-item {
-            min-width: 40px;
-            height: 40px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 0.9rem;
-            flex-shrink: 0;
-        }
-        
-        .history-item.win {
-            background: rgba(16, 185, 129, 0.15);
-            color: var(--success);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-        }
-        
-        .history-item.loss {
-            background: rgba(239, 68, 68, 0.15);
-            color: var(--danger);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-        }
-        
-        .clouds {
+
+        .pregame_Transfer {
+            margin: auto;
             position: absolute;
             top: 0;
+            bottom: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
+            right: 0;
+            height: 200px;
         }
-        
-        .cloud {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            filter: blur(5px);
+
+        button:disabled {
+            color: #fff;
+            background-color: #6c757d;
+            border-color: #6c757d;
+            opacity: .65;
         }
-        
-        @keyframes airplaneTilt {
-            0%, 100% { transform: translateY(-50%) rotate(0deg); }
-            50% { transform: translateY(-50%) rotate(3deg); }
+
+        label.error {
+            display: block;
+            margin-top: 10px;
+            font-size: small;
         }
-        
-        @keyframes crashShake {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            50% { transform: translateX(5px); }
-            75% { transform: translateX(-5px); }
-            100% { transform: translateX(0); }
+
+        form label.error {
+            margin-top: 10px;
+            color: red;
         }
-        
-        @media (max-width: 768px) {
-            .game-container {
-                margin: 1rem;
-                padding: 1rem;
-            }
-            
-            .betting-area {
-                grid-template-columns: 1fr;
-            }
-            
-            .prediction-cards {
-                grid-template-columns: 1fr 1fr;
-            }
-            
-            .game-stats {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
+
+        .red-font {
+            color: red;
         }
+
+
+        /*#frusername ::placeholder {
+            color: red;
+            opacity: 1;*/ /* Firefox */
+        /*}
+
+        #frusername ::-ms-input-placeholder {*/ /* Edge 12-18 */
+            /*color: red;
+        }*/
+
     </style>
+
+
+
+    <script type="text/javascript">
+
+        $(function () {
+            $.xhrPool = [];
+            $.xhrPool.abortAll = function () {
+                $(this).each(function (i, jqXHR) {   //  cycle through list of recorded connection                 
+                    jqXHR.abort();  //  aborts connection
+                    $.xhrPool.splice(i, 1); //  removes from list by index
+                });
+                $(this).each(function (idx, jqXHR) {
+                    var index = $.inArray(jqXHR, $.xhrPool);
+                    if (index > -1) {
+                        $.xhrPool.splice(index, 1);
+                    }
+                });
+                var alerted = getCookie("alerted");
+
+                if (alerted != 'yes') {
+                    alert("Session Ended , Unknown error, Please contact our customer service");
+                    localStorage.setItem('alerted', 'yes');
+                    setCookies("alerted", 'yes');
+                }
+            }
+
+            $.ajaxSetup({
+                beforeSend: function (jqXHR) {
+                    $.xhrPool.push(jqXHR);
+                }, //  and connection to list
+                complete: function (jqXHR) {
+                    var i = $.inArray(jqXHR, $.xhrPool);   //  get index for current connection completed
+                    if (i > -1) {
+                        $.xhrPool.splice(i, 1); //  removes from list by index
+                    }
+                    //window.location = "";
+                }
+            });
+        })
+    </script>
+
+
+
+    
+
+    <script type="text/javascript" src="../mines/mines.js?v=20230327v2"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var $mines = $('#mines');
+            initMines($mines);
+        });
+    </script>
 </head>
+
 <body>
-    <div class="game-container">
-        <div class="game-header">
-            <div class="game-title">Aviator Predictor Pro</div>
-            <div class="game-stats">
-                <div class="stat-box">
-                    <i class="fas fa-coins"></i> $<span id="balance">1000.00</span>
-                </div>
-                <div class="stat-box">
-                    <i class="fas fa-trophy"></i> <span id="wins">0</span>
-                </div>
-                <div class="stat-box">
-                    <i class="fas fa-times"></i> <span id="losses">0</span>
-                </div>
+
+    
+
+    <div id="freezescreen" class="loading-panel" style="display: none;">
+        <img src="../../web/images/logo.png?v=1.0" class="loading-logo" /><br />
+        <img src="../../bingo/images/common/_preload_indicator.gif" class="loading-gif" />
+    </div>
+
+
+    <div id="mines"></div>
+
+    
+    <!-- float icon -->
+    <div id="float-icon" style="display: none;">
+        <div class="float-icon-close" style="transform: translateY(0px); animation: 2s ease-in-out 0s infinite normal none running float; color: red; cursor: pointer; font-weight: 900;" id="floatClose">X</div>
+    </div>
+
+
+    
+    <div style="display: none;" id="mgr-template">
+        <div class="mg-reward-modal-content">
+            <!-- first bg -->
+            <div class="mg-reward mg-reward-init" data-result-img="https://file.32828a.com/images/KHELO_ROYALE_INR/632a2406bbcbcd553eec45ac14b40a0a_6115693.png"></div>
+
+            <!-- display result -->
+            <div class="mg-reward-prize-amount mg-reward-hide">-</div>
+
+            <!-- display msg -->
+            <div class="mg-reward-content">
+                <h3></h3>
+            </div>
+
+            <div class="mg-reward-btn-play-again">
+                <button class="btn btn-danger" id="mgr-btn-play-again" style="display: none;">PLAY AGAIN</button>
             </div>
         </div>
-        
-        <div class="game-area" id="gameArea">
-            <div class="clouds" id="clouds"></div>
-            <div class="flight-path"></div>
-            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBmaWxsPSJ3aGl0ZSIgZD0iTTQ4NS4yIDI0OS4yTDM5OS4zIDE2My4zYy0xMi41LTEyLjUtMzIuOC0xMi41LTQ1LjMgMHMtMTIuNSAzMi44IDAgNDUuM0w0MDEuNCAyNTZsLTQ3LjQgNDcuNGMtMTIuNSAxMi41LTEyLjUgMzIuOCAwIDQ1LjNzMzIuOCAxMi41IDQ1LjMgMGw4NS45LTg1LjljMTIuNS0xMi41IDEyLjUtMzIuOCAwLTQ1LjN6TTy4NCAyNDkuMmw4NS45LTg1LjljMTIuNS0xMi41IDMyLjgtMTIuNSA0NS4zIDBzMTIuNSAzMi44IDAgNDUuM0wxMTAuNiAyNTZsNDcuNCA0Ny40YzEyLjUgMTIuNSAxMi41IDMyLjggMCA0NS4zcy0zMi44IDEyLjUtNDUuMyAwTDguODQgMjk0LjVjLTEyLjUtMTIuNS0xMi41LTMyLjggMC00NS4zeiIvPjwvc3ZnPg==" class="airplane" id="airplane">
-            <div class="multiplier-display" id="multiplier">1.00x</div>
-            <div class="crash-line" id="crashLine"></div>
-        </div>
-        
-        <div class="prediction-area">
-            <div class="prediction-header">
-                <h3>AI Predictions <span class="ai-badge">LIVE</span></h3>
-                <div class="stat-box">
-                    <i class="fas fa-clock"></i> <span id="countdown">10</span>s
-                </div>
+        <a href="#" class="mg-body-close"></a>
+    </div>
+    
+    <div class="mg-reward-modal"></div>
+    <div id="lucky-dice-div"></div>
+
+    <!-- reward game -->
+
+    <div class="t-modal">
+    
+    <div id="redemption_claim_modal" class="modal fade rep_modal" tabindex="-1" role="dialog">
+
+        <div class="modal-dialog fortune modal-dialog-centered" style="text-align:center;" role="document">
+            <div class="modal-content fortune">
+                    <button type="button" class="close-download" data-bs-dismiss="modal">x</button>
+                    <div class="daily-wrap-in">
+                        <form class="modal-congrat" id="form_redeem">
+                            <input type="hidden" id="hdnRedeemId" name="reward_redemption_id" />
+                            <input type="hidden" id="wallet_balance" />
+
+                            <div class="image-wrap">
+                                <img class="img-wrap" id="redeem_img">
+                            </div>
+                            <h5><span id="redeem_amount"></span></h5>
+                            <div class="claim-btn-wrap">
+                                <button type="submit" class="redeem-btn" id="redeem_submitbtn">
+                                    Claim
+                                    
+                                    
+                                </button>
+                            </div>
+                        </form>
+                    </div>
             </div>
-            <div class="prediction-cards">
-                <div class="prediction-card">
-                    <h4>Next Crash</h4>
-                    <p id="nextCrash">2.45x</p>
-                </div>
-                <div class="prediction-card">
-                    <h4>Confidence</h4>
-                    <p id="confidence">85%</p>
-                </div>
-                <div class="prediction-card">
-                    <h4>Safe Cashout</h4>
-                    <p id="safeCashout">1.85x</p>
-                </div>
-                <div class="prediction-card">
-                    <h4>Risk Level</h4>
-                    <p id="riskLevel">Medium</p>
-                </div>
-            </div>
         </div>
-        
-        <div class="betting-area">
-            <div class="bet-control">
-                <h3>Bet Amount</h3>
-                <div class="amount-buttons">
-                    <button class="amount-btn" data-amount="10">$10</button>
-                    <button class="amount-btn" data-amount="50">$50</button>
-                    <button class="amount-btn" data-amount="100">$100</button>
-                    <button class="amount-btn" data-amount="500">$500</button>
-                    <button class="amount-btn" data-amount="1000">$1K</button>
-                    <button class="amount-btn" data-amount="5000">$5K</button>
-                </div>
-                <input type="number" class="amount-input" id="betAmount" placeholder="Custom amount" min="1" value="10">
-                <div class="action-buttons">
-                    <button class="action-btn place-bet" id="placeBet">
-                        <i class="fas fa-arrow-down"></i> Place Bet
+
+    </div>
+    
+
+    
+    <div class="modal fade" id="popupAnnouncementListingModal">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content" style="background-color:black;">
+                <div class="modal-header">
+                    
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="color:white; font-size:30px; font-weight:bold;">
+                        <span aria-hidden="true">×</span>
                     </button>
-                    <button class="action-btn auto-cashout" id="autoCashout">
-                        <i class="fas fa-robot"></i> Auto 2x
-                    </button>
                 </div>
-            </div>
-            
-            <div class="bet-control">
-                <h3>Cashout</h3>
-                <div class="amount-buttons">
-                    <button class="amount-btn" data-multiplier="1.5">1.5x</button>
-                    <button class="amount-btn" data-multiplier="2">2x</button>
-                    <button class="amount-btn" data-multiplier="5">5x</button>
-                    <button class="amount-btn active" data-multiplier="0">Manual</button>
+                <div id="myCarouselBanner" class="carousel slide" data-ride="carousel">
+                    <!-- Indicators -->
+
+
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner" id="popupCarouselInner">
+                    </div>
+
+                    <!-- Left and right controls -->
+                    <a class="carousel-control-prev" href="#myCarouselBanner" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#myCarouselBanner" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        
+                        <span class="sr-only">Next</span>
+                    </a>
                 </div>
-                <div class="action-buttons">
-                    <button class="action-btn cashout" id="cashoutBtn" disabled>
-                        <i class="fas fa-hand-holding-usd"></i> Cashout <span id="cashoutMultiplier">(1.00x)</span>
-                    </button>
+                <div class="modal-footer">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="doNotShowAgainCheckBox">Do Not Show Again
+                    </label>
                 </div>
             </div>
         </div>
-        
-        <div class="history-container">
-            <h3 class="history-title">Recent Results</h3>
-            <div class="history-strip" id="historyStrip"></div>
+    </div>
+    <!-- Popup Announcement End Modal -->	
+
+
+    
+      <div class="modal fade promo-modal" id="fortune_modal" tabindex="-1" aria-labelledby="promoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title" id="promoModalLabel">
+                FORTUNE WHEEL INFORMATION
+              </h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="promo-body">
+                <div>
+                  <p>How To Join?</p>
+                  <ul>
+					<li>Step 1: Accumulate total Deposit of 5000 to get 1 Token.</li>
+					<li>Step 2: Click the Events Icon to play lucky wheel & Get Rewards</li>
+                  </ul>
+                  <p>Terms and Conditions</p>
+                  <ul>
+					<li>This promotion is open to all Khelo Royale register members.</li>
+					<li>Each member will get 1 (one) token with the accumulate INR 5000 deposits.</li>
+					<li>The credit bonus amount must be turnover at least 1(one) time prior withdrawal.</li>
+					<li>Each member can get unlimited 1number of token per day.</li>
+					<li>Credits bonus can be used to play all games, excluded fishing games.</li>
+					<li>The credits bonus cannot be combined with any other promotions.</li>
+					<li>Each member only allowed to have 1(one) registered account in Khelo Royale only. If we found out members create more than 1(one) accounts (Before creating multiple accounts, members must contact our customer service and request for creating multiple accounts) OR having more than 1(one) account using the same IP address, these accounts will be treated as an organizational account. Khelo Royale reserves the right to terminate all these accounts, and credits will be frozen permanently.</li>
+					<li>Members are not allowed to transfer out the amount from game account before completing the required turnover.</li>
+					<li>Khelo Royale has the right to change the reward events and its terms at any time.</li>
+					<li>Khelo Royale General Terms & Conditions apply.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+        <div class="modal fade side-menu left" id="side-menu-modal" tabindex="-1" aria-labelledby="side-menu-modalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="side-menu-wrap">
+                            <!-- <div class="side-logo">
+              <img src="images/side-menu/logo.png">
+              <a href="#" data-bs-dismiss="modal" class="side-arrow-btn">
+                <i class="fa-solid fa-arrow-left"></i>
+              </a>
+            </div> -->
+                            <div class="side-menu">
+                                <a href="index.aspx" class="side-menu-box">
+                                    <img src="images/side-menu/home.png">
+                                    <span>Home</span>
+                                </a>
+                                
+
+                                <a href="promotion.aspx" class="side-menu-box">
+                                    <img src="images/side-menu/promotion.png">
+                                    <span>Promotion</span>
+                                </a>
+                                
+
+                                
+                                  <a href="giftshop.aspx" class="side-menu-box">
+                                    <img src="images/side-menu/giftshop.png">
+                                    <span>GIFT SHOP</span>
+                                  </a>
+                                
+                                <a href="tnc.aspx" class="side-menu-box">
+                                    <img src="images/side-menu/tnc.png">
+                                    <span>Terms & Conditions</span>
+                                </a>
+                                <a href="contact-us.aspx" class="side-menu-box">
+                                    <img src="images/side-menu/contact.png">
+                                    <span>Contact Us</span>
+                                </a>
+                                <a href="about-us.aspx" class="side-menu-box">
+                                    <img src="images/side-menu/about.png">
+                                    <span>About Us</span>
+                                </a>
+                                <a href="../web/index.aspx" class="side-menu-box">
+                                    <img src="images/side-menu/desktop.png">
+                                    <span>Desktop</span>
+                                </a>
+                                
+                            </div>
+                            
+                            <div class="side-btn">
+                                <a href="login.aspx" class="side-login-btn">Login</a>
+                                <a href="register.aspx" class="side-join-btn">Register</a>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade blc-modal" id="balance-modal" tabindex="-1" aria-labelledby="promoModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                    <div class="modal-body">
+                        <div class="dropbl ">
+                            <div class="btn-bln-all">
+                                <div class="btn-ttl">Main Wallet </div>
+                                <div class="btn-amt">
+                                    <span>0.00</span>
+                                    <span>
+                                        <button class="btnall">All IN</button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="bln-all">
+                                <ul>
+                                    <li>
+                                        <div class="bln-in">
+                                            <div class="bln-icon">
+                                                <span>AG Gaming</span>
+                                            </div>
+                                            <div class="blc-amt">
+                                                <button class="btn-out">Out</button>
+                                                <div class="blc-inout">
+                                                    <div class="btn-ammt">88.88</div>
+                                                    <button class="btn-in">In</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="bln-in">
+                                            <div class="bln-icon">
+                                                <span>AG Gaming</span>
+                                            </div>
+                                            <div class="blc-amt">
+                                                <button class="btn-out">Out</button>
+                                                <div class="blc-inout">
+                                                    <div class="btn-ammt">88.88</div>
+                                                    <button class="btn-in">In</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="bln-in">
+                                            <div class="bln-icon">
+                                                <span>AG Gaming</span>
+                                            </div>
+                                            <div class="blc-amt">
+                                                <button class="btn-out">Out</button>
+                                                <div class="blc-inout">
+                                                    <div class="btn-ammt">88.88</div>
+                                                    <button class="btn-in">In</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="bln-in">
+                                            <div class="bln-icon">
+                                                <span>AG Gaming</span>
+                                            </div>
+                                            <div class="blc-amt">
+                                                <button class="btn-out">Out</button>
+                                                <div class="blc-inout">
+                                                    <div class="btn-ammt">88.88</div>
+                                                    <button class="btn-in">In</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="bln-in">
+                                            <div class="bln-icon">
+                                                <span>AG Gaming</span>
+                                            </div>
+                                            <div class="blc-amt">
+                                                <button class="btn-out">Out</button>
+                                                <div class="blc-inout">
+                                                    <div class="btn-ammt">88.88</div>
+                                                    <button class="btn-in">In</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="bln-in">
+                                            <div class="bln-icon">
+                                                <span>AG Gaming</span>
+                                            </div>
+                                            <div class="blc-amt">
+                                                <button class="btn-out">Out</button>
+                                                <div class="blc-inout">
+                                                    <div class="btn-ammt">88.88</div>
+                                                    <button class="btn-in">In</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="bln-in">
+                                            <div class="bln-icon">
+                                                <span>AG Gaming</span>
+                                            </div>
+                                            <div class="blc-amt">
+                                                <button class="btn-out">Out</button>
+                                                <div class="blc-inout">
+                                                    <div class="btn-ammt">88.88</div>
+                                                    <button class="btn-in">In</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="bln-in">
+                                            <div class="bln-icon">
+                                                <span>AG Gaming</span>
+                                            </div>
+                                            <div class="blc-amt">
+                                                <button class="btn-out">Out</button>
+                                                <div class="blc-inout">
+                                                    <div class="btn-ammt">88.88</div>
+                                                    <button class="btn-in">In</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="bln-in">
+                                            <div class="bln-icon">
+                                                <span>AG Gaming</span>
+                                            </div>
+                                            <div class="blc-amt">
+                                                <button class="btn-out">Out</button>
+                                                <div class="blc-inout">
+                                                    <div class="btn-ammt">88.88</div>
+                                                    <button class="btn-in">In</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="bln-in">
+                                            <div class="bln-icon">
+                                                <span>AG Gaming</span>
+                                            </div>
+                                            <div class="blc-amt">
+                                                <button class="btn-out">Out</button>
+                                                <div class="blc-inout">
+                                                    <div class="btn-ammt">88.88</div>
+                                                    <button class="btn-in">In</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="bln-in">
+                                            <div class="bln-icon">
+                                                <span>AG Gaming</span>
+                                            </div>
+                                            <div class="blc-amt">
+                                                <button class="btn-out">Out</button>
+                                                <div class="blc-inout">
+                                                    <div class="btn-ammt">88.88</div>
+                                                    <button class="btn-in">In</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="bln-in">
+                                            <div class="bln-icon">
+                                                <span>AG Gaming</span>
+                                            </div>
+                                            <div class="blc-amt">
+                                                <button class="btn-out">Out</button>
+                                                <div class="blc-inout">
+                                                    <div class="btn-ammt">88.88</div>
+                                                    <button class="btn-in">In</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="bln-in">
+                                            <div class="bln-icon">
+                                                <span>AG Gaming</span>
+                                            </div>
+                                            <div class="blc-amt">
+                                                <button class="btn-out">Out</button>
+                                                <div class="blc-inout">
+                                                    <div class="btn-ammt">88.88</div>
+                                                    <button class="btn-in">In</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="bln-in">
+                                            <div class="bln-icon">
+                                                <span>AG Gaming</span>
+                                            </div>
+                                            <div class="blc-amt">
+                                                <button class="btn-out">Out</button>
+                                                <div class="blc-inout">
+                                                    <div class="btn-ammt">88.88</div>
+                                                    <button class="btn-in">In</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="bln-in">
+                                            <div class="bln-icon">
+                                                <span>AG Gaming</span>
+                                            </div>
+                                            <div class="blc-amt">
+                                                <button class="btn-out">Out</button>
+                                                <div class="blc-inout">
+                                                    <div class="btn-ammt">88.88</div>
+                                                    <button class="btn-in">In</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="bln-in">
+                                            <div class="bln-icon">
+                                                <span>AG Gaming</span>
+                                            </div>
+                                            <div class="blc-amt">
+                                                <button class="btn-out">Out</button>
+                                                <div class="blc-inout">
+                                                    <div class="btn-ammt">88.88</div>
+                                                    <button class="btn-in">In</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="bln-in">
+                                            <div class="bln-icon">
+                                                <span>AG Gaming</span>
+                                            </div>
+                                            <div class="blc-amt">
+                                                <button class="btn-out">Out</button>
+                                                <div class="blc-inout">
+                                                    <div class="btn-ammt">88.88</div>
+                                                    <button class="btn-in">In</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="bln-in">
+                                            <div class="bln-icon">
+                                                <span>AG Gaming</span>
+                                            </div>
+                                            <div class="blc-amt">
+                                                <button class="btn-out">Out</button>
+                                                <div class="blc-inout">
+                                                    <div class="btn-ammt">88.88</div>
+                                                    <button class="btn-in">In</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  <!-- End Modal -->
+
+    <!-- Header -->
+    <div class="t-header">
+        <div class="top-header">
+            <div class="top-menu" data-bs-toggle="modal" data-bs-target="#side-menu-modal">
+                <img src="images/index/all.png">
+            </div>
+            <a href="index.aspx" class="top-logo">
+                <img src="images/index/Khelo_Royale_logo.png">
+            </a>
+            <div class="dropdown lang-btn">
+                <a class="dropdown-toggle" href="#" role="button" id="language-menu" data-bs-toggle="dropdown" aria-expanded="false">
+                    
+                </a>
+                <ul class="dropdown-menu" style="z-index: 10;">
+                    <li>
+                        <a class="dropdown-item" href="#" onclick="setlanguage('hi-IN')">
+                            <img src="images/index/flag-india.png">
+                        </a>
+
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#" onclick="setlanguage('en-US')">
+                            <img src="images/index/flag-uk.png">
+                        </a>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- End Header -->
+    <!-- Body Content -->
+
+
+    
+
+    <div class="t-body">
+        <div class="login-wrap">
+            <div class="login-logo">
+                <img src="images/login/logo.png">
+            </div>
+            <div class="login-tab">
+                <a href="login.aspx" class="active">Login</a>
+                <a href="register.aspx">Register</a>
+            </div>
+            <div class="login-content">
+                <form id="form_login">
+                    <div class="login-form-box">
+                        <i class="fa-solid fa-user login-icon"></i>
+                        <input type="text" placeholder="USERNAME" name="username" id="frusername">
+                    </div>
+                    <div class="login-form-box">
+                        <i class="fa-solid fa-lock login-icon"></i>
+                        
+                        <input type="password" placeholder="PASSWORD" class="top-pw" name="password" id="frpassword">
+                        <span toggle="#frpassword" class="fas registrationPassIcon toggle-password fa-eye-slash"></span>
+                    </div>
+
+                    <div class="login-row">
+                        <a href="forget-password.aspx" class="login-forget">Forgot Password?</a>
+                    </div>
+                    <div class="login-btn-wrap">
+                        <button type="button" class="login-btn mt-3" id="loginsubmitbtn2" onclick="$('#form_login').submit();">Login</button>                
+
+                    </div>
+                </form>
+            </div>
+
         </div>
     </div>
 
+  <script>
+      // password field
+      $(".toggle-password").click(function () {
+
+          $(this).toggleClass("fa-eye fa-eye-slash");
+          var input = $($(this).attr("toggle"));
+          if (input.attr("type") == "password") {
+              input.attr("type", "text");
+          } else {
+              input.attr("type", "password");
+          }
+      });
+  </script>
     <script>
-        // Game State
-        const gameState = {
-            running: false,
-            multiplier: 1.0,
-            crashPoint: 0,
-            betAmount: 10,
-            autoCashout: 0,
-            balance: 1000,
-            wins: 0,
-            losses: 0,
-            isBetPlaced: false,
-            countdown: 10,
-            history: [],
-            gameSpeed: 100, // ms per game tick
-            maxMultiplier: 100,
-            airplanePosition: 0
-        };
+        $("#form_login").validate({
+            errorPlacement: function (error, element) {
+                var n = element.attr("id");
+                if (n == "frusername") {
+                    element.attr("placeholder", "Please insert Username.");
+                }
+                else if (n == "frpassword") {
+                    element.attr("placeholder", "Please insert Password.");
+                        }
+                    },
+                    rules: {
+                username: {
+            required: true,
+        },
+                password: {
+                required: true,
+            },
+            },
+            highlight: function (element) {
+                $('.logput').css('background-color', 'pink');
+                $('.logput').css('color', 'black');
+            },
+            unhighlight: function (element) {
+                $('.logput').css('background-color', 'lightgreen');
+                $('.logput').css('color', 'black');
+            },
+            submitHandler: function (form) {
+                $("#freezescreen").css("display", "");
+                $("#loginloadingbtn").css("display", "");
+                $("#loginsubmitbtn2").css("display", "none");
+                $.ajax({
+                    type: 'POST',
+                    url: '../ajaxData/proc_memLogin',
+                    data: $('#form_login').serialize(),
+                    cache: false,
+                    dataType: 'json',
+                    success: function (d) {
 
-        // DOM Elements
-        const elements = {
-            airplane: document.getElementById('airplane'),
-            multiplierDisplay: document.getElementById('multiplier'),
-            gameArea: document.getElementById('gameArea'),
-            crashLine: document.getElementById('crashLine'),
-            balanceDisplay: document.getElementById('balance'),
-            winsDisplay: document.getElementById('wins'),
-            lossesDisplay: document.getElementById('losses'),
-            placeBetBtn: document.getElementById('placeBet'),
-            cashoutBtn: document.getElementById('cashoutBtn'),
-            autoCashoutBtn: document.getElementById('autoCashout'),
-            betAmountInput: document.getElementById('betAmount'),
-            countdownDisplay: document.getElementById('countdown'),
-            historyStrip: document.getElementById('historyStrip'),
-            nextCrashDisplay: document.getElementById('nextCrash'),
-            confidenceDisplay: document.getElementById('confidence'),
-            safeCashoutDisplay: document.getElementById('safeCashout'),
-            riskLevelDisplay: document.getElementById('riskLevel'),
-            cashoutMultiplierDisplay: document.getElementById('cashoutMultiplier'),
-            cloudsContainer: document.getElementById('clouds')
-        };
+                        $("#freezescreen").css("display", "none");
+                        $("#loginloadingbtn").css("display", "none");
+                        $("#loginsubmitbtn2").css("display", "");
+                        if (d.errCode == "0") {
 
-        // Game Loop Variables
-        let gameInterval;
-        let countdownInterval;
-        let crashAnimationFrame;
+                            $('#form_login')[0].reset();
 
-        // Initialize the game
-        function initGame() {
-            createClouds();
-            updateUI();
-            generatePrediction();
-            startCountdown();
-            setupEventListeners();
-        }
 
-        // Create decorative clouds
-        function createClouds() {
-            const cloudCount = 8;
-            for (let i = 0; i < cloudCount; i++) {
-                const cloud = document.createElement('div');
-                cloud.className = 'cloud';
-                
-                // Random cloud properties
-                const size = Math.random() * 50 + 30;
-                const opacity = Math.random() * 0.2 + 0.05;
-                const left = Math.random() * 100;
-                const top = Math.random() * 100;
-                const blur = Math.random() * 5 + 3;
-                
-                cloud.style.width = `${size}px`;
-                cloud.style.height = `${size}px`;
-                cloud.style.left = `${left}%`;
-                cloud.style.top = `${top}%`;
-                cloud.style.opacity = opacity;
-                cloud.style.filter = `blur(${blur}px)`;
-                
-                elements.cloudsContainer.appendChild(cloud);
-            }
-        }
-
-        // Set up event listeners
-        function setupEventListeners() {
-            // Bet amount buttons
-            document.querySelectorAll('.amount-btn[data-amount]').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    gameState.betAmount = parseFloat(btn.dataset.amount);
-                    elements.betAmountInput.value = gameState.betAmount;
-                    updateActiveButtons();
-                });
-            });
-
-            // Cashout multiplier buttons
-            document.querySelectorAll('.amount-btn[data-multiplier]').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    gameState.autoCashout = parseFloat(btn.dataset.multiplier);
-                    if (gameState.autoCashout > 0) {
-                        elements.autoCashoutBtn.textContent = `Auto ${gameState.autoCashout}x`;
+                            window.location.href = "index";
+                        } else {
+                            showErrorMessage(d.errCode, d.errMsg);
+                            /*if (d.errCode == "100006") {
+                                sessionStorage.setItem("inactiveUser", $("#frusername").val());
+                                window.location.href = "account_activation";
+                            }*/
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        $("#freezescreen").css("display", "none");
+                        $("#loginloadingbtn").css("display", "none");
+                        $("#loginsubmitbtn2").css("display", "");
+                        alert("Unknown error, Please contact our customer service");
                     }
-                    updateActiveButtons();
                 });
-            });
-
-            // Custom bet amount input
-            elements.betAmountInput.addEventListener('input', () => {
-                gameState.betAmount = parseFloat(elements.betAmountInput.value) || 0;
-                updateActiveButtons();
-            });
-
-            // Place bet button
-            elements.placeBetBtn.addEventListener('click', placeBet);
-
-            // Cashout button
-            elements.cashoutBtn.addEventListener('click', cashout);
-
-            // Auto cashout button
-            elements.autoCashoutBtn.addEventListener('click', () => {
-                const newMultiplier = prompt('Set auto cashout multiplier (0 for manual):', gameState.autoCashout || 2);
-                if (newMultiplier !== null) {
-                    gameState.autoCashout = parseFloat(newMultiplier) || 0;
-                    elements.autoCashoutBtn.textContent = gameState.autoCashout > 0 ? 
-                        `Auto ${gameState.autoCashout}x` : 'Auto Off';
-                    updateActiveButtons();
                 }
-            });
-        }
+        });
 
-        // Update active button states
-        function updateActiveButtons() {
-            // Bet amount buttons
-            document.querySelectorAll('.amount-btn[data-amount]').forEach(btn => {
-                btn.classList.toggle('active', parseFloat(btn.dataset.amount) === gameState.betAmount);
-            });
 
-            // Cashout multiplier buttons
-            document.querySelectorAll('.amount-btn[data-multiplier]').forEach(btn => {
-                btn.classList.toggle('active', parseFloat(btn.dataset.multiplier) === gameState.autoCashout);
-            });
-        }
-
-        // Start the countdown to next round
-        function startCountdown() {
-            gameState.countdown = 10;
-            updateUI();
-            clearInterval(countdownInterval);
-            
-            countdownInterval = setInterval(() => {
-                gameState.countdown--;
-                updateUI();
-                
-                if (gameState.countdown <= 0) {
-                    clearInterval(countdownInterval);
-                    if (!gameState.running) {
-                        startGame();
-                    }
-                }
-            }, 1000);
-        }
-
-        // Generate AI prediction
-        function generatePrediction() {
-            // Base prediction with some randomness
-            const baseCrash = 1.5 + Math.random() * 3; // 1.5-4.5x
-            const confidence = 70 + Math.floor(Math.random() * 30); // 70-99%
-            const safeCashout = baseCrash * 0.75; // 75% of predicted crash
-            
-            // Risk level based on volatility
-            const volatility = Math.random();
-            let riskLevel;
-            if (volatility < 0.3) riskLevel = 'Low';
-            else if (volatility < 0.7) riskLevel = 'Medium';
-            else riskLevel = 'High';
-            
-            // Actual crash point will be within 80-120% of prediction
-            gameState.crashPoint = baseCrash * (0.8 + Math.random() * 0.4);
-
-            // Update UI
-            elements.nextCrashDisplay.textContent = baseCrash.toFixed(2) + 'x';
-            elements.confidenceDisplay.textContent = confidence + '%';
-            elements.safeCashoutDisplay.textContent = safeCashout.toFixed(2) + 'x';
-            elements.riskLevelDisplay.textContent = riskLevel;
-        }
-
-        // Place a bet
-        function placeBet() {
-            if (gameState.running || gameState.isBetPlaced) return;
-            
-            // Validate bet amount
-            if (gameState.betAmount <= 0 || isNaN(gameState.betAmount)) {
-                alert('Please enter a valid bet amount');
-                return;
-            }
-            
-            if (gameState.betAmount > gameState.balance) {
-                alert('Insufficient balance');
-                return;
-            }
-            
-            // Deduct bet amount and update state
-            gameState.balance -= gameState.betAmount;
-            gameState.isBetPlaced = true;
-            
-            // Update UI
-            elements.placeBetBtn.disabled = true;
-            elements.cashoutBtn.disabled = false;
-            updateUI();
-            
-            // Add slight airplane animation when bet is placed
-            elements.airplane.style.animation = 'airplaneTilt 0.5s infinite alternate';
-        }
-
-        // Cash out
-        function cashout() {
-            if (!gameState.isBetPlaced || !gameState.running) return;
-            
-            // Calculate winnings
-            const winAmount = gameState.betAmount * gameState.multiplier;
-            gameState.balance += winAmount;
-            gameState.wins++;
-            
-            // Add to history
-            addToHistory(true, gameState.multiplier);
-            
-            // Reset for next bet
-            resetBet();
-            updateUI();
-        }
-
-        // Start the game round
-        function startGame() {
-            gameState.running = true;
-            gameState.multiplier = 1.0;
-            
-            // Reset airplane position
-            gameState.airplanePosition = 0;
-            elements.airplane.style.left = '30px';
-            
-            // Position crash line (convert multiplier to % of game area width)
-            const gameWidth = elements.gameArea.offsetWidth - 90; // Account for airplane width
-            const crashPosition = 30 + (gameWidth * 0.95); // Show at 95% of max
-            elements.crashLine.style.left = `${crashPosition}px`;
-            elements.crashLine.style.display = 'block';
-            
-            // Start game loop
-            clearInterval(gameInterval);
-            gameInterval = setInterval(updateGame, gameState.gameSpeed);
-        }
-
-        // Update game state
-        function updateGame() {
-            // Increase multiplier with accelerating growth
-            const growthRate = 0.02 + (gameState.multiplier * 0.001);
-            gameState.multiplier += growthRate * (0.8 + Math.random() * 0.4);
-            
-            // Update airplane position
-            const gameWidth = elements.gameArea.offsetWidth - 90;
-            const progress = Math.min(gameState.multiplier / 10, 1); // Cap at 10x for display
-            gameState.airplanePosition = 30 + (gameWidth * progress);
-            elements.airplane.style.left = `${gameState.airplanePosition}px`;
-            
-            // Update multiplier display
-            elements.multiplierDisplay.textContent = gameState.multiplier.toFixed(2) + 'x';
-            
-            // Update cashout button if bet is placed
-            if (gameState.isBetPlaced) {
-                elements.cashoutMultiplierDisplay.textContent = `(${gameState.multiplier.toFixed(2)}x)`;
-                
-                // Auto cashout if set
-                if (gameState.autoCashout > 0 && gameState.multiplier >= gameState.autoCashout) {
-                    cashout();
-                    return;
-                }
-            }
-            
-            // Check for crash
-            if (gameState.multiplier >= gameState.crashPoint) {
-                endGame();
-            }
-            
-            // Small chance of random early crash (1% when above 2x)
-            if (gameState.multiplier > 2 && Math.random() < 0.01) {
-                endGame();
-            }
-        }
-
-        // End the game (crash)
-        function endGame() {
-            clearInterval(gameInterval);
-            gameState.running = false;
-            
-            // Crash animation
-            elements.gameArea.style.animation = 'crashShake 0.3s';
-            setTimeout(() => {
-                elements.gameArea.style.animation = '';
-            }, 300);
-            
-            // If bet was placed and not cashed out
-            if (gameState.isBetPlaced) {
-                gameState.losses++;
-                addToHistory(false, 0);
-                resetBet();
-            }
-            
-            // Start next round
-            generatePrediction();
-            startCountdown();
-            updateUI();
-        }
-
-        // Reset bet state
-        function resetBet() {
-            gameState.isBetPlaced = false;
-            elements.placeBetBtn.disabled = false;
-            elements.cashoutBtn.disabled = true;
-            elements.airplane.style.animation = '';
-        }
-
-        // Add result to history
-        function addToHistory(win, multiplier) {
-            // Add to history array (limit to 20 items)
-            gameState.history.unshift({
-                win: win,
-                multiplier: multiplier
-            });
-            
-            if (gameState.history.length > 20) {
-                gameState.history.pop();
-            }
-            
-            // Update history display
-            updateHistoryDisplay();
-        }
-
-        // Update history display
-        function updateHistoryDisplay() {
-            elements.historyStrip.innerHTML = '';
-            
-            gameState.history.forEach(item => {
-                const historyItem = document.createElement('div');
-                historyItem.className = `history-item ${item.win ? 'win' : 'loss'}`;
-                historyItem.textContent = item.win ? item.multiplier.toFixed(1) + 'x' : 'CRASH';
-                elements.historyStrip.appendChild(historyItem);
-            });
-        }
-
-        // Update all UI elements
-        function updateUI() {
-            elements.balanceDisplay.textContent = gameState.balance.toFixed(2);
-            elements.winsDisplay.textContent = gameState.wins;
-            elements.lossesDisplay.textContent = gameState.losses;
-            elements.countdownDisplay.textContent = gameState.countdown;
-        }
-
-        // Initialize the game when page loads
-        window.addEventListener('load', initGame);
     </script>
+
+
+
+
+    <!-- End Body Content -->
+    <!-- Footer -->
+    <div class="menu-btm">
+        <div class="menu-wrapper">
+            <a href="promotion.aspx">
+                <img src="images/footer/promotion.png">
+                <span>Promotion</span>
+            </a>
+
+            
+            <a href="#" id="walletLink">
+                <img src="images/footer/account.png">
+                <span>Account</span>
+            </a>
+            
+
+            <a href="index.aspx" class="menu-btm-home">
+                <img src="images/footer/ftr-home.png">
+            </a>
+
+            <a href="contact-us.aspx">
+                <img src="images/footer/livechat.png">
+                <span>Live Chat</span>
+            </a>
+
+            
+                <a href="#" id="accountLink">
+                    <img src="images/footer/wallet.png">
+                    <span>Wallet</span>
+                </a>
+            
+
+        </div>
+    </div>
+
+    <!-- End Footer -->
+
+
+
+  <script src="bootstrap-5.2.3/popper.min.js"></script>
+  <script src="bootstrap-5.2.3/js/bootstrap.min.js"></script>
+  <script src="js/aos.js"></script>
+  <script src="js/smooth.scroll.js"></script>
+  <script src="js/swiper-bundle.min.js"></script>
+  
+
+
+    <script>
+        $(document).ready(function () {
+            getBannerList();
+            getAnnouncement();
+            getListImage();
+
+
+            
+            $('#depositLink, #walletLink, #accountLink').on('click', function (event) {
+                alert("Please login first.");
+
+            });
+
+            setAgentCode();
+            refreshVCode('fp', 'forgotPasswordVeriCode');
+
+		
+            
+
+            if (getCookie("push-noti") == null) {
+                getPopupAnnouncement();
+                getPopupAnnouncementList();
+            }
+
+            $('#doNotShowAgainCheckBox').click(function () {
+                if ($('#doNotShowAgainCheckBox').is(":checked")) {
+                    setCookies("push-noti", new Date().toTimeString(), 1);
+                }
+            });
+
+            $("#floatClose").click(function () {
+                $("#float-icon").css("display", "none");
+            });
+
+        });
+
+
+        ////////// Start Global Use
+
+        function getPopupAnnouncementList() {
+            $.ajax({
+                type: 'GET',
+                url: '/ajaxData/proc_getPopupAnnouncementList',
+                success: function (d) {
+                    if (d.errCode == "0") {
+                     $(d.data).each(function (idx) {
+            
+
+                            var desktopImg = this.d_image;
+                            var mobileImg = this.m_image;
+                            var alt = this.alt;
+                            var description = this.description;
+                            var title = this.title;
+
+                            if (!this.is_active) return;
+
+                            var ind = '';
+
+                            if (idx == 0)
+                                ind += '<li data-bs-target="#myCarousel" data-bs-slide-to="' + idx + '" class="active"></li>';
+                            else
+                                ind += '<li data-bs-target="#myCarousel" data-bs-slide-to="' + idx + '"></li>';
+
+                            $('#announcementCarousel').append(ind);
+
+                            var html = '';
+
+                            if (idx == 0)
+                                html += '<div class="carousel-item active">';
+                            else
+                                html += '<div class="carousel-item">';
+
+                            html += '<img src="' + mobileImg + '" loading="lazy" alt="' + alt + '" class="d-block img-fluid w-100">';
+                            //html += '<div class="carousel-caption">';
+                            //html += '<h3>' + title + '</h3>';
+                            //html += '<p>' + description + '</p>';
+                            //html += '</div>';
+                            html += '</div>';
+
+                            $('#popupCarouselInner').append(html);
+                        });
+
+                        $('#popupAnnouncementListingModal').modal('show');
+                    }
+                    else {
+                        console.log("getPopupAnnouncementList: " + d.errMsg);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                 alert("Unknown error, Please contact our customer service");
+             }
+         });
+        }
+
+        function getBannerList() {
+
+            $.ajax({
+                type: 'GET',
+                url: '/ajaxData/proc_getBannerList',
+                success: function (d) {
+                    if (d.errCode == "0") {
+
+                        $(d.data).each(function (idx) {
+                            var link = this.link;
+                            var image = replaceHTTPS(this.image); // this.image2
+
+                            var html = '';
+                            var html1 = '';
+
+                            if (idx == 0) {
+                                html = '<div class="carousel-item active">';
+                                html1 = '<div class="carousel-item active">';
+                            }
+                            else {
+                                html = '<div class="carousel-item">';
+                                html1 = '<div class="carousel-item">';
+                            }
+
+                            if (link) {
+                                html += '<a href="' + link + '">';
+                                html1 += '<a href="' + link + '">';
+                            }
+                            else {
+                                html += '<a href="#">';
+                                html1 += '<a href="#">';
+                            }
+
+                            html += '<img class="d-block w-100" src="' + image + '" alt="First slide"></a></div>';
+                            html1 += '<img class="d-block w-100" src="' + image + '" alt="First slide"></a></div>';
+
+                            //$(".carousel-inner").append(html);
+                            $("#carousel-inner").append(html);
+                            //$(".mobile-slider .carousel-inner").append(html1);
+
+                        });
+
+
+                    }
+                    else
+                        alert(d.errMsg);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("Unknown error, Please contact our customer service");
+                }
+            });
+        }
+
+        function showTelegramIframe() {
+
+            var iframe = document.getElementById('telegram-iframe');
+            var currentUrl = "https://kheloroyale.com";
+            iframe.src = currentUrl + '/web/telegram';
+
+        }
+
+        function setlanguage(language) {
+            clearCookies("selected-lang");
+            setCookies("selected-lang", language, "720");
+            location.reload();
+        }
+
+        function refreshVCode(s_name, ele_id) {
+            $('#' + ele_id).attr('src', '/ajaxData/proc_captchaCode?s=' + s_name + '&v=' + Math.floor(Math.random() * 100));
+        }
+
+        function ajaxFail(err, status, xhr) {
+            $("#freezescreen").hide();
+            alert("Unknown error, Please contact our customer service");
+        }
+
+        function ajaxAlways(res, status, xhr) {
+            if (res.errCode == "99") {
+                alert("Session timeout. Please login again.");
+            }
+        }
+
+        function setAgentCode() {
+            var affid = getCookie("ag");
+            console.log("ag Code :'" + affid + "'");
+            if (affid != null && affid != "") {
+                console.log("ag code found");
+                $("#agent").val(affid);
+                $("#agent").prop('readonly', true);
+            }
+        }
+
+
+        //start popupgame link
+        popUpGameLink = function (prod_code, prod_type, prod_html5, game_id, width, height) {
+        
+            alert("Please login first.");
+             
+        }
+
+        ////// launch seamless
+        popUpSGameLink = function (prod_code, prod_type, prod_html5, game_id, width, height) {
+            
+            alert("Please login first.");
+            
+        }
+
+        ////////// End Global Use
+
+        function backToMobile(cookiesname) {
+            clearCookies(cookiesname);
+            location.reload();
+        }
+
+        function refreshBalance() {
+            $("#top_balance").html("<img src='/web/images/load-indicator.gif'>");
+            populateProductBalance();
+        }
+
+        function getPopupAnnouncement() {
+
+            var url = "../ajaxData/proc_getPopupAnnouncement";
+            ajaxRequest("GET", url, null, getPopupAnnouncementDone, ajaxFail, ajaxAlways, false, false);
+        }
+
+        function getPopupAnnouncementDone(res, status, xhr) {
+            if (res.errCode == "0") {
+                setCookies("push-noti", new Date().toTimeString(), 0.01);
+
+
+                if (!res.data.is_active) return;
+
+                if (res.data.d_image)
+                    $("#popupAnnouncementModal #dImage").html('<img class="img-responsive" src=" ' + res.data.d_image + '">');
+                //if (res.data.m_image)
+                //$("#popupAnnouncementModal #mImage").html('<img class="img-responsive" src=" ' + res.data.m_image + '">');
+
+                if (res.data.title)
+                    $("#popupAnnouncementModal .modal-title").text(res.data.title);
+                if (res.data.description)
+                    $("#popupAnnouncementModal .modal-desc").html(res.data.description);
+
+                $("#popupAnnouncementModal").modal();
+                $(".modal-backdrop.in").css({ opacity: 0 });
+            }
+
+        }
+
+        function getListImage() {
+            var image_lang = '';
+            var image_lang_mobile = '';
+
+            if (getCookie("selected-lang") == "en-US") {
+                image_lang += '<img src="images/index/flag-uk.png">';
+            }
+            else {
+                image_lang += '<img src="images/index/flag-india.png">';
+            }
+
+
+            $("#language-menu").append(image_lang);
+
+        }
+
+
+
+
+
+        function logout() {
+            $.ajax({
+                type: 'POST',
+                url: '../ajaxData/proc_memLogout',
+                cache: false,
+                dataType: 'json',
+                success: function (d) {
+                    if (d.errCode == "0")
+                        window.location.href = "index";
+                    else
+                        showErrorMessage(d.errCode, d.errMsg);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("Unknown error, Please contact our customer service");
+                }
+            });
+        }
+
+        function currencyFormat(value) {
+            localeCurrency("en-US", value, false); // last parameter "true/false" will be loaded from AppSettings in future
+        }
+
+
+
+
+        
+
+    </script>
+
+
+    
+
 </body>
 </html>
