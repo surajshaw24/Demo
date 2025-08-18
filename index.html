@@ -3,1058 +3,977 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aviator Pro - Advanced Predictor</title>
+    <title>Premium Motor Insurance Solutions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #3b82f6;
-            --primary-dark: #2563eb;
-            --secondary: #f59e0b;
-            --success: #10b981;
-            --danger: #ef4444;
-            --dark: #0f172a;
-            --darker: #020617;
-            --light: #f8fafc;
-            --gray: #64748b;
+            --primary: #0056b3;
+            --secondary: #ff7f00;
+            --dark: #333;
+            --light: #f8f9fa;
+            --success: #28a745;
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background: var(--darker);
-            color: var(--light);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
         }
         
-        .game-container {
-            max-width: 900px;
-            margin: 2rem auto;
-            padding: 1.5rem;
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
         
-        .game-container::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at center, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
-            z-index: -1;
-            animation: pulse 15s infinite alternate;
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary), #003366);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 0.1; }
-            100% { transform: scale(1.2); opacity: 0.2; }
-        }
-        
-        .game-header {
+        .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        .game-title {
-            font-size: 1.5rem;
+        .logo {
+            font-size: 1.8rem;
             font-weight: 700;
-            background: linear-gradient(to right, var(--secondary), var(--primary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            color: var(--secondary);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 2rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+        
+        nav ul li a:hover {
+            color: var(--secondary);
+        }
+        
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--secondary);
+            transition: width 0.3s ease;
+        }
+        
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+        
+        .cta-button {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .cta-button:hover {
+            background-color: #e67300;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1601584115197-04ecc0da31e8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') no-repeat center center/cover;
+            height: 80vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            animation: fadeIn 1.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .hero-buttons .cta-button {
+            font-size: 1.1rem;
+            padding: 1rem 2rem;
+        }
+        
+        .secondary-button {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+        
+        .secondary-button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        /* Main Heading */
+        .main-heading {
+            text-align: center;
+            margin: 4rem 0 2rem;
+            position: relative;
+        }
+        
+        .main-heading h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
             display: inline-block;
         }
         
-        .game-stats {
-            display: flex;
-            gap: 1rem;
-        }
-        
-        .stat-box {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .game-area {
-            position: relative;
-            height: 220px;
-            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 1.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .flight-path {
+        .main-heading h2::after {
+            content: '';
             position: absolute;
-            left: 0;
-            top: 50%;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transform: translateY(-50%);
-        }
-        
-        .airplane {
-            position: absolute;
-            left: 30px;
-            top: 50%;
-            transform: translateY(-50%) rotate(0deg);
-            width: 70px;
-            height: 70px;
-            transition: left 0.05s linear;
-            z-index: 10;
-            filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.5));
-            transform-origin: center center;
-        }
-        
-        .multiplier-display {
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: var(--secondary);
-            text-shadow: 0 0 15px rgba(245, 158, 11, 0.8);
-            background: rgba(0, 0, 0, 0.6);
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            font-feature-settings: "tnum";
-            font-variant-numeric: tabular-nums;
-            border: 1px solid rgba(245, 158, 11, 0.3);
-        }
-        
-        .crash-line {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: linear-gradient(transparent, var(--danger), transparent);
-            display: none;
-            z-index: 5;
-        }
-        
-        .crash-line::after {
-            content: 'CRASH';
-            position: absolute;
-            bottom: 10px;
+            bottom: -10px;
             left: 50%;
             transform: translateX(-50%);
-            color: var(--danger);
-            font-weight: 700;
-            font-size: 0.8rem;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
+            width: 80px;
+            height: 4px;
+            background-color: var(--secondary);
+            border-radius: 2px;
         }
         
-        .particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 2;
+        /* Features Section */
+        .features {
+            padding: 4rem 0;
+            background-color: white;
         }
         
-        .particle {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            pointer-events: none;
-        }
-        
-        .clouds {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-        
-        .cloud {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            filter: blur(8px);
-            opacity: 0;
-            animation: cloudFade 15s infinite;
-        }
-        
-        @keyframes cloudFade {
-            0%, 100% { opacity: 0; transform: translateX(-20px); }
-            10%, 90% { opacity: 0.1; }
-            50% { opacity: 0.2; transform: translateX(20px); }
-        }
-        
-        .prediction-area {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(5px);
-        }
-        
-        .prediction-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-            align-items: center;
-        }
-        
-        .ai-badge {
-            background: linear-gradient(to right, var(--primary), #8b5cf6);
-            color: white;
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            margin-left: 0.5rem;
-            animation: pulse 2s infinite;
-        }
-        
-        .prediction-cards {
+        .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
         }
         
-        .prediction-card {
-            background: linear-gradient(135deg, rgba(37, 99, 235, 0.15), rgba(30, 64, 175, 0.15));
-            padding: 1rem;
-            border-radius: 8px;
+        .feature-card {
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 2rem;
             text-align: center;
-            border: 1px solid rgba(37, 99, 235, 0.3);
-            backdrop-filter: blur(5px);
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e0e0e0;
         }
         
-        .prediction-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.2);
-        }
-        
-        .prediction-card h4 {
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-            color: var(--gray-light);
-        }
-        
-        .prediction-card p {
-            font-size: 1.6rem;
-            font-weight: 700;
-            font-feature-settings: "tnum";
-            font-variant-numeric: tabular-nums;
-        }
-        
-        .betting-area {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .bet-control {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 1.5rem;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(5px);
-        }
-        
-        .bet-control h3 {
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-            color: var(--gray-light);
-        }
-        
-        .amount-buttons {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .amount-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 0.7rem;
-            border-radius: 6px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .amount-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        .amount-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary-dark);
-            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
-        }
-        
-        .amount-input {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 6px;
-            color: white;
-            font-size: 1rem;
-            margin-bottom: 1rem;
-            transition: border-color 0.2s;
-        }
-        
-        .amount-input:focus {
-            outline: none;
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
             border-color: var(--primary);
         }
         
-        .action-buttons {
-            display: flex;
-            gap: 0.5rem;
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
         }
         
-        .action-btn {
-            flex: 1;
-            padding: 0.9rem;
-            border: none;
-            border-radius: 6px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            font-size: 0.95rem;
-        }
-        
-        .place-bet {
-            background: var(--success);
-            color: white;
-            box-shadow: 0 2px 10px rgba(16, 185, 129, 0.3);
-        }
-        
-        .place-bet:hover {
-            background: #0da271;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
-        }
-        
-        .place-bet:active {
-            transform: translateY(0);
-        }
-        
-        .auto-cashout {
-            background: var(--secondary);
-            color: var(--dark);
-            box-shadow: 0 2px 10px rgba(245, 158, 11, 0.3);
-        }
-        
-        .auto-cashout:hover {
-            background: #e69009;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(245, 158, 11, 0.4);
-        }
-        
-        .auto-cashout:active {
-            transform: translateY(0);
-        }
-        
-        .cashout {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3);
-        }
-        
-        .cashout:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
-        }
-        
-        .cashout:active {
-            transform: translateY(0);
-        }
-        
-        .history-container {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 1.5rem;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(5px);
-        }
-        
-        .history-title {
+        .feature-card h3 {
+            font-size: 1.5rem;
             margin-bottom: 1rem;
-            font-size: 1.1rem;
-            color: var(--gray-light);
+            color: var(--dark);
         }
         
-        .history-strip {
-            display: flex;
-            gap: 0.5rem;
-            overflow-x: auto;
-            padding-bottom: 0.5rem;
+        /* Insurance Types */
+        .insurance-types {
+            padding: 4rem 0;
+            background-color: var(--light);
         }
         
-        .history-item {
-            min-width: 45px;
-            height: 45px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 0.9rem;
-            flex-shrink: 0;
-            transition: transform 0.2s;
+        .types-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
         }
         
-        .history-item:hover {
+        .type-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .type-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .type-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .type-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .type-card:hover .type-image img {
             transform: scale(1.1);
         }
         
-        .history-item.win {
-            background: rgba(16, 185, 129, 0.15);
-            color: var(--success);
-            border: 1px solid rgba(16, 185, 129, 0.3);
+        .type-content {
+            padding: 1.5rem;
         }
         
-        .history-item.loss {
-            background: rgba(239, 68, 68, 0.15);
-            color: var(--danger);
-            border: 1px solid rgba(239, 68, 68, 0.3);
+        .type-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
         }
         
-        @keyframes airplaneTilt {
-            0%, 100% { transform: translateY(-50%) rotate(0deg) translateX(0); }
-            25% { transform: translateY(-50%) rotate(3deg) translateX(2px); }
-            50% { transform: translateY(-50%) rotate(0deg) translateX(0); }
-            75% { transform: translateY(-50%) rotate(-3deg) translateX(-2px); }
+        /* Partners Section */
+        .partners {
+            padding: 4rem 0;
+            background-color: white;
         }
         
-        @keyframes crashShake {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            50% { transform: translateX(10px); }
-            75% { transform: translateX(-10px); }
-            100% { transform: translateX(0); }
+        .partners-slider {
+            margin-top: 3rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            align-items: center;
         }
         
-        @keyframes explosion {
-            0% { transform: scale(0); opacity: 1; }
-            100% { transform: scale(10); opacity: 0; }
+        .partner-logo {
+            height: 80px;
+            filter: grayscale(100%);
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+        
+        .partner-logo:hover {
+            filter: grayscale(0%);
+            opacity: 1;
+            transform: scale(1.1);
+        }
+        
+        /* Advisor Section */
+        .advisor {
+            padding: 4rem 0;
+            background: linear-gradient(135deg, var(--primary), #003366);
+            color: white;
+        }
+        
+        .advisor-container {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .advisor-image {
+            flex: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .advisor-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .advisor-info {
+            flex: 1;
+        }
+        
+        .advisor-info h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .advisor-info p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .advisor-contact {
+            margin-top: 2rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-item i {
+            margin-right: 1rem;
+            font-size: 1.2rem;
+            color: var(--secondary);
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            padding: 4rem 0;
+            background-color: var(--light);
+        }
+        
+        .testimonial-slider {
+            max-width: 800px;
+            margin: 3rem auto 0;
+        }
+        
+        .testimonial-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin: 0 1rem;
+            text-align: center;
+        }
+        
+        .testimonial-text {
+            font-size: 1.1rem;
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .testimonial-text::before,
+        .testimonial-text::after {
+            content: '"';
+            font-size: 2rem;
+            color: var(--secondary);
+            opacity: 0.5;
+        }
+        
+        .testimonial-author {
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            padding: 5rem 0;
+            background: linear-gradient(rgba(0, 86, 179, 0.9), rgba(0, 86, 179, 0.9)), url('https://images.unsplash.com/photo-1601584115163-1a7c27f45a04?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') no-repeat center center/cover;
+            color: white;
+            text-align: center;
+        }
+        
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta-section p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+        
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--secondary);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-column ul li a {
+            color: #ccc;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-column ul li a:hover {
+            color: var(--secondary);
+            padding-left: 5px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--secondary);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .advisor-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .contact-item {
+                justify-content: center;
+            }
         }
         
         @media (max-width: 768px) {
-            .game-container {
-                margin: 1rem;
-                padding: 1rem;
-                border-radius: 12px;
-            }
-            
-            .betting-area {
-                grid-template-columns: 1fr;
-            }
-            
-            .prediction-cards {
-                grid-template-columns: 1fr 1fr;
-            }
-            
-            .game-stats {
+            .header-container {
                 flex-direction: column;
-                gap: 0.5rem;
-                align-items: flex-end;
+                text-align: center;
             }
             
-            .game-area {
-                height: 180px;
+            nav ul {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
             }
             
-            .airplane {
-                width: 60px;
-                height: 60px;
+            nav ul li {
+                margin: 0.5rem 1rem;
             }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .main-heading h2 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .main-heading h2 {
+                font-size: 1.6rem;
+            }
+            
+            .feature-card, .type-card {
+                padding: 1.5rem;
+            }
+        }
+        
+        /* Animation Classes */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Form Styles */
+        .quote-form {
+            background-color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 3rem auto 0;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.2);
+        }
+        
+        .form-submit {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .form-submit:hover {
+            background-color: #004494;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Tagline Styles */
+        .tagline {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin: 2rem 0;
+            font-style: italic;
+            position: relative;
+        }
+        
+        .tagline::before,
+        .tagline::after {
+            content: '""';
+            color: var(--primary);
+            font-size: 2rem;
+            opacity: 0.5;
+            margin: 0 10px;
         }
     </style>
 </head>
 <body>
-    <div class="game-container">
-        <div class="game-header">
-            <div class="game-title">Aviator Predictor Pro</div>
-            <div class="game-stats">
-                <div class="stat-box">
-                    <i class="fas fa-coins"></i> $<span id="balance">1,000.00</span>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>MotorShield</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#insurance">Insurance Types</a></li>
+                    <li><a href="#partners">Partners</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="cta-button">Get a Quote</button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>LOOKING TO RENEW OR BUY MOTOR INSURANCE?</h1>
+            <p>Comprehensive coverage solutions for all your commercial vehicle needs at the most competitive rates</p>
+            <div class="hero-buttons">
+                <button class="cta-button">Get Instant Quote</button>
+                <button class="secondary-button">Learn More</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="services">
+        <div class="container">
+            <div class="main-heading">
+                <h2>Why Choose Us</h2>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <h3>Wide Coverage</h3>
+                    <p>Insurance for Trucks, Pickups, Tankers, Buses & More. We cover all types of commercial vehicles.</p>
                 </div>
-                <div class="stat-box">
-                    <i class="fas fa-trophy"></i> <span id="wins">0</span>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h3>Top Providers</h3>
+                    <p>Policies from All Top Insurance Companies. We partner with the best in the industry.</p>
                 </div>
-                <div class="stat-box">
-                    <i class="fas fa-times"></i> <span id="losses">0</span>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Fast Service</h3>
+                    <p>Fast Renewal & Hassle-Free Claims. Our streamlined processes save you time and effort.</p>
+                </div>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-rupee-sign"></i>
+                    </div>
+                    <h3>Best Value</h3>
+                    <p>Lowest Premiums, Best Coverage. We negotiate the best rates to maximize your savings.</p>
                 </div>
             </div>
         </div>
-        
-        <div class="game-area" id="gameArea">
-            <div class="clouds" id="clouds"></div>
-            <div class="flight-path"></div>
-            <div class="particles" id="particles"></div>
-            <svg class="airplane" id="airplane" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 16L5 14M5 14L8 11M5 14L3 12M5 14L7 16M21 8L19 10M19 10L16 13M19 10L21 12M19 10L17 8M9 15L12 12M12 12L15 9M12 12L9 9M12 12L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <div class="multiplier-display" id="multiplier">1.00x</div>
-            <div class="crash-line" id="crashLine"></div>
-        </div>
-        
-        <div class="prediction-area">
-            <div class="prediction-header">
-                <h3>AI Predictions <span class="ai-badge">LIVE</span></h3>
-                <div class="stat-box">
-                    <i class="fas fa-clock"></i> <span id="countdown">10</span>s
-                </div>
-            </div>
-            <div class="prediction-cards">
-                <div class="prediction-card">
-                    <h4>Next Crash</h4>
-                    <p id="nextCrash">2.45x</p>
-                </div>
-                <div class="prediction-card">
-                    <h4>Confidence</h4>
-                    <p id="confidence">85%</p>
-                </div>
-                <div class="prediction-card">
-                    <h4>Safe Cashout</h4>
-                    <p id="safeCashout">1.85x</p>
-                </div>
-                <div class="prediction-card">
-                    <h4>Risk Level</h4>
-                    <p id="riskLevel">Medium</p>
-                </div>
-            </div>
-        </div>
-        
-        <div class="betting-area">
-            <div class="bet-control">
-                <h3>Bet Amount</h3>
-                <div class="amount-buttons">
-                    <button class="amount-btn" data-amount="10">$10</button>
-                    <button class="amount-btn" data-amount="50">$50</button>
-                    <button class="amount-btn" data-amount="100">$100</button>
-                    <button class="amount-btn" data-amount="500">$500</button>
-                    <button class="amount-btn" data-amount="1000">$1K</button>
-                    <button class="amount-btn" data-amount="5000">$5K</button>
-                </div>
-                <input type="number" class="amount-input" id="betAmount" placeholder="Custom amount" min="1" value="10">
-                <div class="action-buttons">
-                    <button class="action-btn place-bet" id="placeBet">
-                        <i class="fas fa-arrow-down"></i> Place Bet
-                    </button>
-                    <button class="action-btn auto-cashout" id="autoCashout">
-                        <i class="fas fa-robot"></i> Auto 2x
-                    </button>
-                </div>
-            </div>
-            
-            <div class="bet-control">
-                <h3>Cashout</h3>
-                <div class="amount-buttons">
-                    <button class="amount-btn" data-multiplier="1.5">1.5x</button>
-                    <button class="amount-btn" data-multiplier="2">2x</button>
-                    <button class="amount-btn" data-multiplier="5">5x</button>
-                    <button class="amount-btn active" data-multiplier="0">Manual</button>
-                </div>
-                <div class="action-buttons">
-                    <button class="action-btn cashout" id="cashoutBtn" disabled>
-                        <i class="fas fa-hand-holding-usd"></i> Cashout <span id="cashoutMultiplier">(1.00x)</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="history-container">
-            <h3 class="history-title">Recent Results</h3>
-            <div class="history-strip" id="historyStrip"></div>
+    </section>
+
+    <!-- Tagline -->
+    <div class="container">
+        <div class="tagline animate-on-scroll">
+            Your Trusted Partner for Commercial Vehicle Insurance
         </div>
     </div>
 
+    <!-- Insurance Types -->
+    <section class="insurance-types" id="insurance">
+        <div class="container">
+            <div class="main-heading">
+                <h2>Our Insurance Solutions</h2>
+            </div>
+            <div class="types-grid">
+                <div class="type-card animate-on-scroll">
+                    <div class="type-image">
+                        <img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Truck Insurance">
+                    </div>
+                    <div class="type-content">
+                        <h3>Truck Insurance</h3>
+                        <p>Comprehensive coverage for all types of trucks with special provisions for goods in transit.</p>
+                        <button class="secondary-button" style="margin-top: 1rem;">Learn More</button>
+                    </div>
+                </div>
+                <div class="type-card animate-on-scroll">
+                    <div class="type-image">
+                        <img src="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2079&q=80" alt="Pickup Insurance">
+                    </div>
+                    <div class="type-content">
+                        <h3>Pickup Insurance</h3>
+                        <p>Specialized coverage for pickup trucks with flexible options for different usage patterns.</p>
+                        <button class="secondary-button" style="margin-top: 1rem;">Learn More</button>
+                    </div>
+                </div>
+                <div class="type-card animate-on-scroll">
+                    <div class="type-image">
+                        <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Bus Insurance">
+                    </div>
+                    <div class="type-content">
+                        <h3>Bus Insurance</h3>
+                        <p>Complete protection for passenger buses including liability coverage for passengers.</p>
+                        <button class="secondary-button" style="margin-top: 1rem;">Learn More</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partners Section -->
+    <section class="partners" id="partners">
+        <div class="container">
+            <div class="main-heading">
+                <h2>Our Insurance Partners</h2>
+            </div>
+            <div class="partners-slider">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Bajaj_Allianz_Logo.svg/2560px-Bajaj_Allianz_Logo.svg.png" alt="Bajaj Allianz" class="partner-logo" style="height: 40px;">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Reliance_General_Insurance_Logo.svg/1200px-Reliance_General_Insurance_Logo.svg.png" alt="Reliance General Insurance" class="partner-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/United_India_Insurance_Logo.svg/2560px-United_India_Insurance_Logo.svg.png" alt="United India Insurance" class="partner-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Tata_AIG_logo.svg/2560px-Tata_AIG_logo.svg.png" alt="Tata AIG" class="partner-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Cholamandalam_MS_Logo.svg/1200px-Cholamandalam_MS_Logo.svg.png" alt="Chola MS" class="partner-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/SBI_General_Insurance_logo.svg/1200px-SBI_General_Insurance_logo.svg.png" alt="SBI General Insurance" class="partner-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Liberty_General_Insurance_logo.svg/1200px-Liberty_General_Insurance_logo.svg.png" alt="Liberty General Insurance" class="partner-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/National_Insurance_Company_logo.svg/1200px-National_Insurance_Company_logo.svg.png" alt="National Insurance" class="partner-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Shriram_General_Insurance_Logo.svg/1200px-Shriram_General_Insurance_Logo.svg.png" alt="Shriram General Insurance" class="partner-logo">
+            </div>
+        </div>
+    </section>
+
+    <!-- Advisor Section -->
+    <section class="advisor" id="contact">
+        <div class="container advisor-container">
+            <div class="advisor-image animate-on-scroll">
+                <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1061&q=80" alt="Insurance Advisor">
+            </div>
+            <div class="advisor-info animate-on-scroll">
+                <h2>Manish Kumar</h2>
+                <p>Insurance Advisor with over 10 years of experience in commercial vehicle insurance. I specialize in finding the perfect coverage for your business needs at the most competitive rates.</p>
+                <p>Let me help you navigate the complex world of commercial vehicle insurance and find the best solution for your fleet.</p>
+                <div class="advisor-contact">
+                    <div class="contact-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>8797443442</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>manish.kumar@motorshield.com</span>
+                    </div>
+                </div>
+                <button class="cta-button" style="margin-top: 1.5rem;">Contact Me</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quote Form -->
+    <section class="features">
+        <div class="container">
+            <div class="main-heading">
+                <h2>Get a Free Quote</h2>
+            </div>
+            <form class="quote-form animate-on-scroll">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="vehicle-type">Vehicle Type</label>
+                    <select id="vehicle-type" class="form-control" required>
+                        <option value="">Select Vehicle Type</option>
+                        <option value="truck">Truck</option>
+                        <option value="pickup">Pickup</option>
+                        <option value="tanker">Tanker</option>
+                        <option value="bus">Bus</option>
+                        <option value="other">Other Commercial Vehicle</option>
+                    </select>
+                </div>
+                <button type="submit" class="form-submit">Get Quote Now</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="animate-on-scroll">Ready to Protect Your Commercial Vehicles?</h2>
+            <p class="animate-on-scroll">Get comprehensive coverage at unbeatable prices. Our experts are standing by to help you find the perfect insurance solution for your business needs.</p>
+            <button class="cta-button animate-on-scroll" style="font-size: 1.2rem; padding: 1.2rem 2.5rem;">Call Now: 8797443442</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-column">
+                    <h3>MotorShield</h3>
+                    <p>Your trusted partner for all commercial vehicle insurance needs. We provide the best coverage at the most competitive rates.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#insurance">Insurance Types</a></li>
+                        <li><a href="#partners">Our Partners</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Insurance Types</h3>
+                    <ul>
+                        <li><a href="#">Truck Insurance</a></li>
+                        <li><a href="#">Pickup Insurance</a></li>
+                        <li><a href="#">Tanker Insurance</a></li>
+                        <li><a href="#">Bus Insurance</a></li>
+                        <li><a href="#">Fleet Insurance</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Insurance Plaza, Mumbai</li>
+                        <li><i class="fas fa-phone-alt"></i> 8797443442</li>
+                        <li><i class="fas fa-envelope"></i> info@motorshield.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 MotorShield Commercial Vehicle Insurance. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
     <script>
-        // Enhanced Game State with Physics
-        const game = {
-            state: {
-                running: false,
-                multiplier: 1.0,
-                crashPoint: 0,
-                betAmount: 10,
-                autoCashout: 0,
-                balance: 1000,
-                wins: 0,
-                losses: 0,
-                isBetPlaced: false,
-                countdown: 10,
-                history: [],
-                gameSpeed: 100,
-                maxMultiplier: 100,
-                airplanePosition: 0,
-                velocity: 0,
-                acceleration: 0.0002,
-                turbulence: 0,
-                particles: []
-            },
+        // Animation on scroll functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const animateElements = document.querySelectorAll('.animate-on-scroll');
             
-            elements: {
-                airplane: document.getElementById('airplane'),
-                multiplierDisplay: document.getElementById('multiplier'),
-                gameArea: document.getElementById('gameArea'),
-                crashLine: document.getElementById('crashLine'),
-                balanceDisplay: document.getElementById('balance'),
-                winsDisplay: document.getElementById('wins'),
-                lossesDisplay: document.getElementById('losses'),
-                placeBetBtn: document.getElementById('placeBet'),
-                cashoutBtn: document.getElementById('cashoutBtn'),
-                autoCashoutBtn: document.getElementById('autoCashout'),
-                betAmountInput: document.getElementById('betAmount'),
-                countdownDisplay: document.getElementById('countdown'),
-                historyStrip: document.getElementById('historyStrip'),
-                nextCrashDisplay: document.getElementById('nextCrash'),
-                confidenceDisplay: document.getElementById('confidence'),
-                safeCashoutDisplay: document.getElementById('safeCashout'),
-                riskLevelDisplay: document.getElementById('riskLevel'),
-                cashoutMultiplierDisplay: document.getElementById('cashoutMultiplier'),
-                cloudsContainer: document.getElementById('clouds'),
-                particlesContainer: document.getElementById('particles')
-            },
-            
-            intervals: {
-                game: null,
-                countdown: null
-            },
-            
-            init() {
-                this.createClouds();
-                this.createParticles();
-                this.updateUI();
-                this.generatePrediction();
-                this.startCountdown();
-                this.setupEventListeners();
-                
-                // Start animation loop
-                requestAnimationFrame(this.animate.bind(this));
-            },
-            
-            createClouds() {
-                const cloudCount = 12;
-                for (let i = 0; i < cloudCount; i++) {
-                    const cloud = document.createElement('div');
-                    cloud.className = 'cloud';
-                    
-                    const size = Math.random() * 80 + 40;
-                    const opacity = Math.random() * 0.15 + 0.05;
-                    const left = Math.random() * 100;
-                    const top = Math.random() * 100;
-                    const blur = Math.random() * 10 + 5;
-                    const delay = Math.random() * 15;
-                    
-                    cloud.style.width = `${size}px`;
-                    cloud.style.height = `${size}px`;
-                    cloud.style.left = `${left}%`;
-                    cloud.style.top = `${top}%`;
-                    cloud.style.opacity = opacity;
-                    cloud.style.filter = `blur(${blur}px)`;
-                    cloud.style.animationDelay = `${delay}s`;
-                    
-                    this.elements.cloudsContainer.appendChild(cloud);
-                }
-            },
-            
-            createParticles() {
-                // Create initial particles
-                for (let i = 0; i < 20; i++) {
-                    this.state.particles.push({
-                        x: Math.random() * this.elements.gameArea.offsetWidth,
-                        y: Math.random() * this.elements.gameArea.offsetHeight,
-                        size: Math.random() * 2 + 1,
-                        speed: Math.random() * 0.2 + 0.1,
-                        opacity: Math.random() * 0.1 + 0.05,
-                        direction: Math.random() * Math.PI * 2
-                    });
-                }
-            },
-            
-            animateParticles() {
-                // Clear existing particles
-                this.elements.particlesContainer.innerHTML = '';
-                
-                // Update and render particles
-                this.state.particles.forEach(particle => {
-                    // Update position
-                    particle.x += Math.cos(particle.direction) * particle.speed;
-                    particle.y += Math.sin(particle.direction) * particle.speed;
-                    
-                    // Wrap around screen edges
-                    if (particle.x < 0) particle.x = this.elements.gameArea.offsetWidth;
-                    if (particle.x > this.elements.gameArea.offsetWidth) particle.x = 0;
-                    if (particle.y < 0) particle.y = this.elements.gameArea.offsetHeight;
-                    if (particle.y > this.elements.gameArea.offsetHeight) particle.y = 0;
-                    
-                    // Create particle element
-                    const particleEl = document.createElement('div');
-                    particleEl.className = 'particle';
-                    particleEl.style.width = `${particle.size}px`;
-                    particleEl.style.height = `${particle.size}px`;
-                    particleEl.style.left = `${particle.x}px`;
-                    particleEl.style.top = `${particle.y}px`;
-                    particleEl.style.opacity = particle.opacity;
-                    particleEl.style.backgroundColor = `rgba(255, 255, 255, ${particle.opacity})`;
-                    
-                    this.elements.particlesContainer.appendChild(particleEl);
-                });
-            },
-            
-            animate() {
-                // Update airplane tilt based on velocity
-                if (this.state.running) {
-                    const tiltAmount = Math.min(this.state.velocity * 50, 15);
-                    const turbulence = Math.sin(Date.now() * 0.005) * this.state.turbulence;
-                    this.elements.airplane.style.transform = `translateY(-50%) rotate(${turbulence + tiltAmount}deg)`;
-                }
-                
-                this.animateParticles();
-                requestAnimationFrame(this.animate.bind(this));
-            },
-            
-            setupEventListeners() {
-                // Bet amount buttons
-                document.querySelectorAll('.amount-btn[data-amount]').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        this.state.betAmount = parseFloat(btn.dataset.amount);
-                        this.elements.betAmountInput.value = this.state.betAmount;
-                        this.updateActiveButtons();
-                    });
-                });
-
-                // Cashout multiplier buttons
-                document.querySelectorAll('.amount-btn[data-multiplier]').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        this.state.autoCashout = parseFloat(btn.dataset.multiplier);
-                        if (this.state.autoCashout > 0) {
-                            this.elements.autoCashoutBtn.textContent = `Auto ${this.state.autoCashout}x`;
-                        }
-                        this.updateActiveButtons();
-                    });
-                });
-
-                // Custom bet amount input
-                this.elements.betAmountInput.addEventListener('input', () => {
-                    this.state.betAmount = parseFloat(this.elements.betAmountInput.value) || 0;
-                    this.updateActiveButtons();
-                });
-
-                // Place bet button
-                this.elements.placeBetBtn.addEventListener('click', this.placeBet.bind(this));
-
-                // Cashout button
-                this.elements.cashoutBtn.addEventListener('click', this.cashout.bind(this));
-
-                // Auto cashout button
-                this.elements.autoCashoutBtn.addEventListener('click', () => {
-                    const newMultiplier = prompt('Set auto cashout multiplier (0 for manual):', this.state.autoCashout || 2);
-                    if (newMultiplier !== null) {
-                        this.state.autoCashout = parseFloat(newMultiplier) || 0;
-                        this.elements.autoCashoutBtn.textContent = this.state.autoCashout > 0 ? 
-                            `Auto ${this.state.autoCashout}x` : 'Auto Off';
-                        this.updateActiveButtons();
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
                     }
                 });
-            },
+            }, {
+                threshold: 0.1
+            });
             
-            updateActiveButtons() {
-                // Bet amount buttons
-                document.querySelectorAll('.amount-btn[data-amount]').forEach(btn => {
-                    btn.classList.toggle('active', parseFloat(btn.dataset.amount) === this.state.betAmount);
-                });
-
-                // Cashout multiplier buttons
-                document.querySelectorAll('.amount-btn[data-multiplier]').forEach(btn => {
-                    btn.classList.toggle('active', parseFloat(btn.dataset.multiplier) === this.state.autoCashout);
-                });
-            },
+            animateElements.forEach(element => {
+                observer.observe(element);
+            });
             
-            startCountdown() {
-                this.state.countdown = 10;
-                this.updateUI();
-                clearInterval(this.intervals.countdown);
-                
-                this.intervals.countdown = setInterval(() => {
-                    this.state.countdown--;
-                    this.updateUI();
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
                     
-                    if (this.state.countdown <= 0) {
-                        clearInterval(this.intervals.countdown);
-                        if (!this.state.running) {
-                            this.startGame();
-                        }
-                    }
-                }, 1000);
-            },
-            
-            generatePrediction() {
-                // Base prediction with volatility-based randomness
-                const volatility = 0.5 + Math.random() * 0.5; // 0.5-1.0
-                const baseCrash = 1.3 + Math.random() * 4 * volatility; // 1.3-5.3x
-                const confidence = Math.floor(70 + Math.random() * 25 * (1 - volatility)); // 70-95%
-                const safeCashout = baseCrash * (0.7 + Math.random() * 0.1); // 70-80% of prediction
-                
-                // Risk level based on volatility
-                let riskLevel;
-                if (volatility < 0.7) riskLevel = 'Low';
-                else if (volatility < 0.9) riskLevel = 'Medium';
-                else riskLevel = 'High';
-                
-                // Actual crash point will be within 80-120% of prediction
-                this.state.crashPoint = baseCrash * (0.8 + Math.random() * 0.4);
-                this.state.turbulence = volatility * 0.5; // More turbulence for volatile rounds
-
-                // Update UI
-                this.elements.nextCrashDisplay.textContent = baseCrash.toFixed(2) + 'x';
-                this.elements.confidenceDisplay.textContent = confidence + '%';
-                this.elements.safeCashoutDisplay.textContent = safeCashout.toFixed(2) + 'x';
-                this.elements.riskLevelDisplay.textContent = riskLevel;
-            },
-            
-            placeBet() {
-                if (this.state.running || this.state.isBetPlaced) return;
-                
-                // Validate bet amount
-                if (this.state.betAmount <= 0 || isNaN(this.state.betAmount)) {
-                    alert('Please enter a valid bet amount');
-                    return;
-                }
-                
-                if (this.state.betAmount > this.state.balance) {
-                    alert('Insufficient balance');
-                    return;
-                }
-                
-                // Deduct bet amount and update state
-                this.state.balance -= this.state.betAmount;
-                this.state.isBetPlaced = true;
-                
-                // Update UI
-                this.elements.placeBetBtn.disabled = true;
-                this.elements.cashoutBtn.disabled = false;
-                this.updateUI();
-                
-                // Add airplane animation
-                this.elements.airplane.style.animation = 'airplaneTilt 0.8s infinite';
-            },
-            
-            cashout() {
-                if (!this.state.isBetPlaced || !this.state.running) return;
-                
-                // Calculate winnings
-                const winAmount = this.state.betAmount * this.state.multiplier;
-                this.state.balance += winAmount;
-                this.state.wins++;
-                
-                // Add explosion effect
-                this.createExplosion(this.state.airplanePosition, this.elements.gameArea.offsetHeight / 2);
-                
-                // Add to history
-                this.addToHistory(true, this.state.multiplier);
-                
-                // Reset for next bet
-                this.resetBet();
-                this.updateUI();
-            },
-            
-            createExplosion(x, y) {
-                const explosion = document.createElement('div');
-                explosion.style.position = 'absolute';
-                explosion.style.left = `${x}px`;
-                explosion.style.top = `${y}px`;
-                explosion.style.width = '20px';
-                explosion.style.height = '20px';
-                explosion.style.borderRadius = '50%';
-                explosion.style.background = 'radial-gradient(circle, rgba(245,158,11,1) 0%, rgba(239,68,68,0) 70%)';
-                explosion.style.transformOrigin = 'center center';
-                explosion.style.animation = 'explosion 0.5s forwards';
-                explosion.style.zIndex = '20';
-                
-                this.elements.gameArea.appendChild(explosion);
-                
-                // Remove after animation
-                setTimeout(() => {
-                    explosion.remove();
-                }, 500);
-            },
-            
-            startGame() {
-                this.state.running = true;
-                this.state.multiplier = 1.0;
-                this.state.velocity = 0;
-                this.state.acceleration = 0.0002;
-                
-                // Reset airplane position
-                this.state.airplanePosition = 30;
-                this.elements.airplane.style.left = '30px';
-                
-                // Position crash line
-                const gameWidth = this.elements.gameArea.offsetWidth - 90;
-                const crashPosition = 30 + (gameWidth * 0.95);
-                this.elements.crashLine.style.left = `${crashPosition}px`;
-                this.elements.crashLine.style.display = 'block';
-                
-                // Start game loop
-                clearInterval(this.intervals.game);
-                this.intervals.game = setInterval(this.updateGame.bind(this), this.state.gameSpeed);
-            },
-            
-            updateGame() {
-                // Increase velocity with acceleration
-                this.state.velocity += this.state.acceleration;
-                
-                // Apply turbulence
-                const turbulenceEffect = Math.sin(Date.now() * 0.005) * this.state.turbulence * 0.1;
-                
-                // Update multiplier with velocity and turbulence
-                this.state.multiplier += this.state.velocity + turbulenceEffect;
-                
-                // Update airplane position
-                const gameWidth = this.elements.gameArea.offsetWidth - 90;
-                const progress = Math.min(this.state.multiplier / 10, 1);
-                this.state.airplanePosition = 30 + (gameWidth * progress);
-                this.elements.airplane.style.left = `${this.state.airplanePosition}px`;
-                
-                // Update multiplier display
-                this.elements.multiplierDisplay.textContent = this.state.multiplier.toFixed(2) + 'x';
-                
-                // Update cashout button if bet is placed
-                if (this.state.isBetPlaced) {
-                    this.elements.cashoutMultiplierDisplay.textContent = `(${this.state.multiplier.toFixed(2)}x)`;
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
                     
-                    // Auto cashout if set
-                    if (this.state.autoCashout > 0 && this.state.multiplier >= this.state.autoCashout) {
-                        this.cashout();
-                        return;
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
                     }
-                }
-                
-                // Check for crash
-                if (this.state.multiplier >= this.state.crashPoint) {
-                    this.endGame();
-                    return;
-                }
-                
-                // Small chance of random early crash (scales with multiplier)
-                if (this.state.multiplier > 1.5 && Math.random() < 0.005 * Math.log(this.state.multiplier)) {
-                    this.endGame();
-                }
-            },
-            
-            endGame() {
-                clearInterval(this.intervals.game);
-                this.state.running = false;
-                
-                // Crash animation
-                this.elements.gameArea.style.animation = 'crashShake 0.4s';
-                setTimeout(() => {
-                    this.elements.gameArea.style.animation = '';
-                }, 400);
-                
-                // Create explosion at crash point
-                this.createExplosion(this.state.airplanePosition, this.elements.gameArea.offsetHeight / 2);
-                
-                // If bet was placed and not cashed out
-                if (this.state.isBetPlaced) {
-                    this.state.losses++;
-                    this.addToHistory(false, 0);
-                    this.resetBet();
-                }
-                
-                // Start next round
-                this.generatePrediction();
-                this.startCountdown();
-                this.updateUI();
-            },
-            
-            resetBet() {
-                this.state.isBetPlaced = false;
-                this.elements.placeBetBtn.disabled = false;
-                this.elements.cashoutBtn.disabled = true;
-                this.elements.airplane.style.animation = '';
-            },
-            
-            addToHistory(win, multiplier) {
-                // Add to history array (limit to 20 items)
-                this.state.history.unshift({
-                    win: win,
-                    multiplier: multiplier
                 });
-                
-                if (this.state.history.length > 20) {
-                    this.state.history.pop();
-                }
-                
-                // Update history display
-                this.updateHistoryDisplay();
-            },
-            
-            updateHistoryDisplay() {
-                this.elements.historyStrip.innerHTML = '';
-                
-                this.state.history.forEach(item => {
-                    const historyItem = document.createElement('div');
-                    historyItem.className = `history-item ${item.win ? 'win' : 'loss'}`;
-                    historyItem.textContent = item.win ? item.multiplier.toFixed(1) + 'x' : 'CRASH';
-                    this.elements.historyStrip.appendChild(historyItem);
-                });
-            },
-            
-            updateUI() {
-                this.elements.balanceDisplay.textContent = this.state.balance.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                this.elements.winsDisplay.textContent = this.state.wins;
-                this.elements.lossesDisplay.textContent = this.state.losses;
-                this.elements.countdownDisplay.textContent = this.state.countdown;
-            }
-        };
-
-        // Initialize the game when page loads
-        window.addEventListener('load', () => game.init());
+            });
+        });
     </script>
 </body>
 </html>
