@@ -3,977 +3,737 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Motor Insurance Solutions</title>
+    <title>Shri Narayan Logistics - Premium Transport Services in Jharkhand & Bihar</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <style>
         :root {
-            --primary: #0056b3;
-            --secondary: #ff7f00;
-            --dark: #333;
-            --light: #f8f9fa;
-            --success: #28a745;
+            --primary-color: #0056b3;
+            --primary-light: #e6f0ff;
+            --secondary-color: #ff7f00;
+            --secondary-light: #fff0e6;
+            --accent-color: #00c853;
+            --dark-color: #222;
+            --medium-dark: #444;
+            --light-color: #f8f9fa;
+            --white: #fff;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --gradient-primary: linear-gradient(135deg, #0056b3 0%, #0083ff 100%);
+            --gradient-secondary: linear-gradient(135deg, #ff7f00 0%, #ffaa00 100%);
+            --gradient-accent: linear-gradient(135deg, #00c853 0%, #5efc82 100%);
+            --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --box-shadow-hover: 0 15px 40px rgba(0, 0, 0, 0.2);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background-color: #f5f5f5;
-            color: #333;
-            line-height: 1.6;
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.7;
+            color: var(--medium-dark);
+            overflow-x: hidden;
+            background-color: var(--white);
+        }
+        
+        h1, h2, h3, h4, h5 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: var(--dark-color);
+            line-height: 1.3;
+        }
+        
+        a {
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        img {
+            max-width: 100%;
+            height: auto;
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 0 20px;
         }
         
+        .section-padding {
+            padding: 100px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 70px;
+            position: relative;
+        }
+        
+        .section-title h2 {
+            font-size: 2.8rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background: var(--gradient-secondary);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        
+        .section-title p {
+            max-width: 700px;
+            margin: 0 auto;
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            transition: var(--transition);
+        }
+        
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: var(--white);
+            box-shadow: 0 5px 15px rgba(0, 86, 179, 0.3);
+        }
+        
+        .btn-primary:hover {
+            box-shadow: 0 10px 25px rgba(0, 86, 179, 0.5);
+            transform: translateY(-3px);
+        }
+        
+        .btn-primary::before {
+            background: var(--gradient-primary);
+        }
+        
+        .btn-primary:hover::before {
+            opacity: 0.9;
+        }
+        
+        .btn-secondary {
+            background: var(--gradient-secondary);
+            color: var(--white);
+            box-shadow: 0 5px 15px rgba(255, 127, 0, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            box-shadow: 0 10px 25px rgba(255, 127, 0, 0.5);
+            transform: translateY(-3px);
+        }
+        
+        .btn-secondary::before {
+            background: var(--gradient-secondary);
+        }
+        
+        .btn-secondary:hover::before {
+            opacity: 0.9;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+        
         /* Header Styles */
         header {
-            background: linear-gradient(135deg, var(--primary), #003366);
-            color: white;
-            padding: 1rem 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            position: sticky;
+            position: fixed;
             top: 0;
-            z-index: 100;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: var(--transition);
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-scrolled {
+            background-color: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+            padding: 10px 0;
         }
         
         .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 20px 0;
         }
         
         .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
             display: flex;
             align-items: center;
         }
         
-        .logo i {
-            margin-right: 10px;
-            color: var(--secondary);
+        .logo img {
+            height: 60px;
+            margin-right: 15px;
         }
         
+        .logo-text h1 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            font-weight: 800;
+            margin-bottom: 0;
+            line-height: 1.2;
+        }
+        
+        .logo-text span {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+            display: block;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        
+        /* Navigation */
         nav ul {
             display: flex;
             list-style: none;
         }
         
         nav ul li {
-            margin-left: 2rem;
-        }
-        
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            padding: 0.5rem 0;
+            margin-left: 30px;
             position: relative;
         }
         
-        nav ul li a:hover {
-            color: var(--secondary);
+        nav ul li a {
+            color: var(--dark-color);
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 10px 0;
+            position: relative;
         }
         
         nav ul li a::after {
             content: '';
             position: absolute;
+            width: 0;
+            height: 3px;
+            background: var(--gradient-secondary);
             bottom: 0;
             left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--secondary);
-            transition: width 0.3s ease;
+            transition: var(--transition);
+            border-radius: 3px;
+        }
+        
+        nav ul li a:hover {
+            color: var(--primary-color);
         }
         
         nav ul li a:hover::after {
             width: 100%;
         }
         
-        .cta-button {
-            background-color: var(--secondary);
-            color: white;
-            border: none;
-            padding: 0.7rem 1.5rem;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        nav ul li.active a {
+            color: var(--primary-color);
         }
         
-        .cta-button:hover {
-            background-color: #e67300;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        nav ul li.active a::after {
+            width: 100%;
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: var(--dark-color);
+            cursor: pointer;
+            z-index: 1001;
         }
         
         /* Hero Section */
         .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1601584115197-04ecc0da31e8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') no-repeat center center/cover;
-            height: 80vh;
+            height: 100vh;
+            min-height: 800px;
             display: flex;
             align-items: center;
-            text-align: center;
-            color: white;
             position: relative;
+            overflow: hidden;
+            background: linear-gradient(rgba(0, 30, 60, 0.85), rgba(0, 30, 60, 0.85)), url('https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') no-repeat center center/cover;
+            color: var(--white);
         }
         
         .hero-content {
             max-width: 800px;
-            margin: 0 auto;
-            padding: 2rem;
-            animation: fadeIn 1.5s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            margin-top: 80px;
         }
         
         .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1.5rem;
+            font-size: 4rem;
+            margin-bottom: 25px;
             line-height: 1.2;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
         
         .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
         }
         
-        .hero-buttons {
+        .hero-btns {
             display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 2rem;
+            gap: 20px;
+            flex-wrap: wrap;
         }
         
-        .hero-buttons .cta-button {
-            font-size: 1.1rem;
-            padding: 1rem 2rem;
-        }
-        
-        .secondary-button {
-            background-color: transparent;
-            color: white;
-            border: 2px solid white;
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1.1rem;
-        }
-        
-        .secondary-button:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-        }
-        
-        /* Main Heading */
-        .main-heading {
-            text-align: center;
-            margin: 4rem 0 2rem;
-            position: relative;
-        }
-        
-        .main-heading h2 {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-            display: inline-block;
-        }
-        
-        .main-heading h2::after {
-            content: '';
+        .hero-image {
             position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background-color: var(--secondary);
-            border-radius: 2px;
+            right: 0;
+            bottom: 0;
+            width: 50%;
+            max-width: 800px;
+            z-index: 1;
+            animation: float 6s ease-in-out infinite;
         }
         
-        /* Features Section */
-        .features {
-            padding: 4rem 0;
-            background-color: white;
+        /* About Section */
+        .about-section {
+            position: relative;
+            overflow: hidden;
         }
         
-        .features-grid {
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+        }
+        
+        .about-text {
+            flex: 1;
+        }
+        
+        .about-text h3 {
+            font-size: 2.2rem;
+            margin-bottom: 25px;
+            color: var(--primary-color);
+        }
+        
+        .about-text p {
+            margin-bottom: 20px;
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+        
+        .about-features {
+            margin-top: 40px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
         }
         
-        .feature-card {
-            background-color: var(--light);
-            border-radius: 10px;
-            padding: 2rem;
-            text-align: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            border: 1px solid #e0e0e0;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-            border-color: var(--primary);
+        .about-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
         }
         
         .feature-icon {
-            font-size: 3rem;
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-        }
-        
-        .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--dark);
-        }
-        
-        /* Insurance Types */
-        .insurance-types {
-            padding: 4rem 0;
-            background-color: var(--light);
-        }
-        
-        .types-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-        
-        .type-card {
-            background-color: white;
+            width: 50px;
+            height: 50px;
+            background: var(--primary-light);
             border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+        
+        .feature-text h4 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: var(--dark-color);
+        }
+        
+        .feature-text p {
+            font-size: 0.95rem;
+            margin-bottom: 0;
+            color: var(--gray);
+        }
+        
+        .about-image {
+            flex: 1;
+            position: relative;
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
+            box-shadow: var(--box-shadow);
+            z-index: 1;
         }
         
-        .type-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-        
-        .type-image {
-            height: 200px;
-            overflow: hidden;
-        }
-        
-        .type-image img {
+        .about-image::before {
+            content: '';
+            position: absolute;
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
+            background: var(--gradient-primary);
+            opacity: 0.1;
+            z-index: 2;
         }
         
-        .type-card:hover .type-image img {
-            transform: scale(1.1);
-        }
-        
-        .type-content {
-            padding: 1.5rem;
-        }
-        
-        .type-content h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
-        
-        /* Partners Section */
-        .partners {
-            padding: 4rem 0;
-            background-color: white;
-        }
-        
-        .partners-slider {
-            margin-top: 3rem;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 2rem;
-            align-items: center;
-        }
-        
-        .partner-logo {
-            height: 80px;
-            filter: grayscale(100%);
-            opacity: 0.7;
-            transition: all 0.3s ease;
-        }
-        
-        .partner-logo:hover {
-            filter: grayscale(0%);
-            opacity: 1;
-            transform: scale(1.1);
-        }
-        
-        /* Advisor Section */
-        .advisor {
-            padding: 4rem 0;
-            background: linear-gradient(135deg, var(--primary), #003366);
-            color: white;
-        }
-        
-        .advisor-container {
-            display: flex;
-            align-items: center;
-            gap: 3rem;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        
-        .advisor-image {
-            flex: 1;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-        
-        .advisor-image img {
+        .about-image img {
             width: 100%;
             height: auto;
             display: block;
+            transition: transform 5s ease;
         }
         
-        .advisor-info {
+        .about-image:hover img {
+            transform: scale(1.1);
+        }
+        
+        /* Services Section */
+        .services-section {
+            background-color: var(--light-color);
+            position: relative;
+        }
+        
+        .services-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .service-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient-primary);
+            transition: var(--transition);
+            z-index: -1;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--box-shadow-hover);
+        }
+        
+        .service-card:hover::before {
+            height: 100%;
+            opacity: 0.05;
+        }
+        
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 25px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            transition: var(--transition);
+        }
+        
+        .service-card:hover .service-icon {
+            background: var(--gradient-primary);
+            color: var(--white);
+            transform: rotateY(180deg);
+        }
+        
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .service-card p {
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+        
+        .service-link {
+            color: var(--primary-color);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .service-link i {
+            transition: var(--transition);
+        }
+        
+        .service-link:hover i {
+            transform: translateX(5px);
+        }
+        
+        /* Facts Section */
+        .facts-section {
+            background: linear-gradient(rgba(0, 36, 49, 0.9), rgba(0, 36, 49, 0.9)), url('https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') no-repeat center center/cover;
+            color: var(--white);
+            text-align: center;
+            padding: 100px 0;
+            position: relative;
+        }
+        
+        .facts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .fact-item {
+            padding: 30px 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .fact-item::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            transition: var(--transition);
+        }
+        
+        .fact-item:hover::before {
+            border-color: var(--secondary-color);
+            transform: scale(1.05);
+        }
+        
+        .fact-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: var(--gradient-secondary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+        
+        .fact-text {
+            font-size: 1.2rem;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+        
+        /* Fleet Section */
+        .fleet-section {
+            position: relative;
+        }
+        
+        .fleet-content {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            margin-bottom: 60px;
+        }
+        
+        .fleet-text {
             flex: 1;
         }
         
-        .advisor-info h2 {
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
+        .fleet-text h3 {
+            font-size: 2.2rem;
+            margin-bottom: 25px;
+            color: var(--primary-color);
         }
         
-        .advisor-info p {
-            margin-bottom: 1.5rem;
+        .fleet-text p {
+            margin-bottom: 20px;
+            color: var(--gray);
             font-size: 1.1rem;
         }
         
-        .advisor-contact {
-            margin-top: 2rem;
+        .fleet-image {
+            flex: 1;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
         }
         
-        .contact-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1rem;
+        .fleet-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 5s ease;
         }
         
-        .contact-item i {
-            margin-right: 1rem;
-            font-size: 1.2rem;
-            color: var(--secondary);
+        .fleet-image:hover img {
+            transform: scale(1.1);
         }
         
-        /* Testimonials */
-        .testimonials {
-            padding: 4rem 0;
-            background-color: var(--light);
-        }
-        
-        .testimonial-slider {
-            max-width: 800px;
-            margin: 3rem auto 0;
-        }
-        
-        .testimonial-card {
-            background-color: white;
-            border-radius: 10px;
-            padding: 2rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            margin: 0 1rem;
-            text-align: center;
-        }
-        
-        .testimonial-text {
-            font-size: 1.1rem;
-            font-style: italic;
-            margin-bottom: 1.5rem;
-            position: relative;
-        }
-        
-        .testimonial-text::before,
-        .testimonial-text::after {
-            content: '"';
-            font-size: 2rem;
-            color: var(--secondary);
-            opacity: 0.5;
-        }
-        
-        .testimonial-author {
-            font-weight: 700;
-            color: var(--primary);
-        }
-        
-        /* CTA Section */
-        .cta-section {
-            padding: 5rem 0;
-            background: linear-gradient(rgba(0, 86, 179, 0.9), rgba(0, 86, 179, 0.9)), url('https://images.unsplash.com/photo-1601584115163-1a7c27f45a04?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') no-repeat center center/cover;
-            color: white;
-            text-align: center;
-        }
-        
-        .cta-section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .cta-section p {
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin: 0 auto 2rem;
-        }
-        
-        /* Footer */
-        footer {
-            background-color: var(--dark);
-            color: white;
-            padding: 4rem 0 2rem;
-        }
-        
-        .footer-container {
+        .fleet-features {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
         }
         
-        .footer-column h3 {
-            font-size: 1.3rem;
-            margin-bottom: 1.5rem;
+        .fleet-feature {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 40px 30px;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            text-align: center;
             position: relative;
-            padding-bottom: 10px;
+            overflow: hidden;
+            z-index: 1;
         }
         
-        .footer-column h3::after {
+        .fleet-feature::before {
             content: '';
             position: absolute;
-            bottom: 0;
+            top: 0;
             left: 0;
-            width: 50px;
-            height: 2px;
-            background-color: var(--secondary);
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-primary);
+            opacity: 0;
+            z-index: -1;
+            transition: var(--transition);
         }
         
-        .footer-column ul {
-            list-style: none;
+        .fleet-feature:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--box-shadow-hover);
         }
         
-        .footer-column ul li {
-            margin-bottom: 0.8rem;
+        .fleet-feature:hover::before {
+            opacity: 0.05;
         }
         
-        .footer-column ul li a {
-            color: #ccc;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        
-        .footer-column ul li a:hover {
-            color: var(--secondary);
-            padding-left: 5px;
-        }
-        
-        .social-links {
+        .fleet-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 25px;
+            background: var(--primary-light);
+            border-radius: 50%;
             display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-        
-        .social-links a {
-            display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            color: white;
-            transition: all 0.3s ease;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            transition: var(--transition);
         }
         
-        .social-links a:hover {
-            background-color: var(--secondary);
-            transform: translateY(-3px);
+        .fleet-feature:hover .fleet-icon {
+            background: var(--gradient-primary);
+            color: var(--white);
+            transform: rotateY(180deg);
         }
         
-        .copyright {
-            text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #aaa;
-            font-size: 0.9rem;
-        }
-        
-        /* Responsive Styles */
-        @media (max-width: 992px) {
-            .hero h1 {
-                font-size: 2.8rem;
-            }
-            
-            .advisor-container {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .contact-item {
-                justify-content: center;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .header-container {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            nav ul {
-                margin-top: 1rem;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            
-            nav ul li {
-                margin: 0.5rem 1rem;
-            }
-            
-            .hero h1 {
-                font-size: 2.2rem;
-            }
-            
-            .hero-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .main-heading h2 {
-                font-size: 2rem;
-            }
-        }
-        
-        @media (max-width: 576px) {
-            .hero h1 {
-                font-size: 1.8rem;
-            }
-            
-            .hero p {
-                font-size: 1rem;
-            }
-            
-            .main-heading h2 {
-                font-size: 1.6rem;
-            }
-            
-            .feature-card, .type-card {
-                padding: 1.5rem;
-            }
-        }
-        
-        /* Animation Classes */
-        .animate-on-scroll {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease;
-        }
-        
-        .animate-on-scroll.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        /* Form Styles */
-        .quote-form {
-            background-color: white;
-            border-radius: 10px;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            margin: 3rem auto 0;
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--dark);
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-        
-        .form-control:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.2);
-        }
-        
-        .form-submit {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 5px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-        }
-        
-        .form-submit:hover {
-            background-color: #004494;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        /* Tagline Styles */
-        .tagline {
-            text-align: center;
+        .fleet-feature h3 {
             font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--secondary);
-            margin: 2rem 0;
-            font-style: italic;
+            margin-bottom: 15px;
+        }
+        
+        .fleet-feature p {
+            color: var(--gray);
+        }
+        
+        /* Team Section */
+        .team-section {
+            background-color: var(--light-color);
             position: relative;
         }
         
-        .tagline::before,
-        .tagline::after {
-            content: '""';
-            color: var(--primary);
-            font-size: 2rem;
-            opacity: 0.5;
-            margin: 0 10px;
+        .team-description {
+            max-width: 800px;
+            margin: 0 auto 60px;
+            text-align: center;
+            color: var(--gray);
+            font-size: 1.1rem;
         }
-    </style>
-</head>
-<body>
-    <!-- Header -->
-    <header>
-        <div class="container header-container">
-            <div class="logo">
-                <i class="fas fa-shield-alt"></i>
-                <span>MotorShield</span>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="#insurance">Insurance Types</a></li>
-                    <li><a href="#partners">Partners</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
-            <button class="cta-button">Get a Quote</button>
-        </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="hero-content">
-            <h1>LOOKING TO RENEW OR BUY MOTOR INSURANCE?</h1>
-            <p>Comprehensive coverage solutions for all your commercial vehicle needs at the most competitive rates</p>
-            <div class="hero-buttons">
-                <button class="cta-button">Get Instant Quote</button>
-                <button class="secondary-button">Learn More</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="features" id="services">
-        <div class="container">
-            <div class="main-heading">
-                <h2>Why Choose Us</h2>
-            </div>
-            <div class="features-grid">
-                <div class="feature-card animate-on-scroll">
-                    <div class="feature-icon">
-                        <i class="fas fa-truck"></i>
-                    </div>
-                    <h3>Wide Coverage</h3>
-                    <p>Insurance for Trucks, Pickups, Tankers, Buses & More. We cover all types of commercial vehicles.</p>
-                </div>
-                <div class="feature-card animate-on-scroll">
-                    <div class="feature-icon">
-                        <i class="fas fa-building"></i>
-                    </div>
-                    <h3>Top Providers</h3>
-                    <p>Policies from All Top Insurance Companies. We partner with the best in the industry.</p>
-                </div>
-                <div class="feature-card animate-on-scroll">
-                    <div class="feature-icon">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <h3>Fast Service</h3>
-                    <p>Fast Renewal & Hassle-Free Claims. Our streamlined processes save you time and effort.</p>
-                </div>
-                <div class="feature-card animate-on-scroll">
-                    <div class="feature-icon">
-                        <i class="fas fa-rupee-sign"></i>
-                    </div>
-                    <h3>Best Value</h3>
-                    <p>Lowest Premiums, Best Coverage. We negotiate the best rates to maximize your savings.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Tagline -->
-    <div class="container">
-        <div class="tagline animate-on-scroll">
-            Your Trusted Partner for Commercial Vehicle Insurance
-        </div>
-    </div>
-
-    <!-- Insurance Types -->
-    <section class="insurance-types" id="insurance">
-        <div class="container">
-            <div class="main-heading">
-                <h2>Our Insurance Solutions</h2>
-            </div>
-            <div class="types-grid">
-                <div class="type-card animate-on-scroll">
-                    <div class="type-image">
-                        <img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Truck Insurance">
-                    </div>
-                    <div class="type-content">
-                        <h3>Truck Insurance</h3>
-                        <p>Comprehensive coverage for all types of trucks with special provisions for goods in transit.</p>
-                        <button class="secondary-button" style="margin-top: 1rem;">Learn More</button>
-                    </div>
-                </div>
-                <div class="type-card animate-on-scroll">
-                    <div class="type-image">
-                        <img src="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2079&q=80" alt="Pickup Insurance">
-                    </div>
-                    <div class="type-content">
-                        <h3>Pickup Insurance</h3>
-                        <p>Specialized coverage for pickup trucks with flexible options for different usage patterns.</p>
-                        <button class="secondary-button" style="margin-top: 1rem;">Learn More</button>
-                    </div>
-                </div>
-                <div class="type-card animate-on-scroll">
-                    <div class="type-image">
-                        <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Bus Insurance">
-                    </div>
-                    <div class="type-content">
-                        <h3>Bus Insurance</h3>
-                        <p>Complete protection for passenger buses including liability coverage for passengers.</p>
-                        <button class="secondary-button" style="margin-top: 1rem;">Learn More</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Partners Section -->
-    <section class="partners" id="partners">
-        <div class="container">
-            <div class="main-heading">
-                <h2>Our Insurance Partners</h2>
-            </div>
-            <div class="partners-slider">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Bajaj_Allianz_Logo.svg/2560px-Bajaj_Allianz_Logo.svg.png" alt="Bajaj Allianz" class="partner-logo" style="height: 40px;">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Reliance_General_Insurance_Logo.svg/1200px-Reliance_General_Insurance_Logo.svg.png" alt="Reliance General Insurance" class="partner-logo">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/United_India_Insurance_Logo.svg/2560px-United_India_Insurance_Logo.svg.png" alt="United India Insurance" class="partner-logo">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Tata_AIG_logo.svg/2560px-Tata_AIG_logo.svg.png" alt="Tata AIG" class="partner-logo">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Cholamandalam_MS_Logo.svg/1200px-Cholamandalam_MS_Logo.svg.png" alt="Chola MS" class="partner-logo">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/SBI_General_Insurance_logo.svg/1200px-SBI_General_Insurance_logo.svg.png" alt="SBI General Insurance" class="partner-logo">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Liberty_General_Insurance_logo.svg/1200px-Liberty_General_Insurance_logo.svg.png" alt="Liberty General Insurance" class="partner-logo">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/National_Insurance_Company_logo.svg/1200px-National_Insurance_Company_logo.svg.png" alt="National Insurance" class="partner-logo">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Shriram_General_Insurance_Logo.svg/1200px-Shriram_General_Insurance_Logo.svg.png" alt="Shriram General Insurance" class="partner-logo">
-            </div>
-        </div>
-    </section>
-
-    <!-- Advisor Section -->
-    <section class="advisor" id="contact">
-        <div class="container advisor-container">
-            <div class="advisor-image animate-on-scroll">
-                <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1061&q=80" alt="Insurance Advisor">
-            </div>
-            <div class="advisor-info animate-on-scroll">
-                <h2>Manish Kumar</h2>
-                <p>Insurance Advisor with over 10 years of experience in commercial vehicle insurance. I specialize in finding the perfect coverage for your business needs at the most competitive rates.</p>
-                <p>Let me help you navigate the complex world of commercial vehicle insurance and find the best solution for your fleet.</p>
-                <div class="advisor-contact">
-                    <div class="contact-item">
-                        <i class="fas fa-phone-alt"></i>
-                        <span>8797443442</span>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <span>manish.kumar@motorshield.com</span>
-                    </div>
-                </div>
-                <button class="cta-button" style="margin-top: 1.5rem;">Contact Me</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Quote Form -->
-    <section class="features">
-        <div class="container">
-            <div class="main-heading">
-                <h2>Get a Free Quote</h2>
-            </div>
-            <form class="quote-form animate-on-scroll">
-                <div class="form-group">
-                    <label for="name">Full Name</label>
-                    <input type="text" id="name" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="vehicle-type">Vehicle Type</label>
-                    <select id="vehicle-type" class="form-control" required>
-                        <option value="">Select Vehicle Type</option>
-                        <option value="truck">Truck</option>
-                        <option value="pickup">Pickup</option>
-                        <option value="tanker">Tanker</option>
-                        <option value="bus">Bus</option>
-                        <option value="other">Other Commercial Vehicle</option>
-                    </select>
-                </div>
-                <button type="submit" class="form-submit">Get Quote Now</button>
-            </form>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <h2 class="animate-on-scroll">Ready to Protect Your Commercial Vehicles?</h2>
-            <p class="animate-on-scroll">Get comprehensive coverage at unbeatable prices. Our experts are standing by to help you find the perfect insurance solution for your business needs.</p>
-            <button class="cta-button animate-on-scroll" style="font-size: 1.2rem; padding: 1.2rem 2.5rem;">Call Now: 8797443442</button>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-container">
-                <div class="footer-column">
-                    <h3>MotorShield</h3>
-                    <p>Your trusted partner for all commercial vehicle insurance needs. We provide the best coverage at the most competitive rates.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-                <div class="footer-column">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#insurance">Insurance Types</a></li>
-                        <li><a href="#partners">Our Partners</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Insurance Types</h3>
-                    <ul>
-                        <li><a href="#">Truck Insurance</a></li>
-                        <li><a href="#">Pickup Insurance</a></li>
-                        <li><a href="#">Tanker Insurance</a></li>
-                        <li><a href="#">Bus Insurance</a></li>
-                        <li><a href="#">Fleet Insurance</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Contact Us</h3>
-                    <ul>
-                        <li><i class="fas fa-map-marker-alt"></i> 123 Insurance Plaza, Mumbai</li>
-                        <li><i class="fas fa-phone-alt"></i> 8797443442</li>
-                        <li><i class="fas fa-envelope"></i> info@motorshield.com</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>&copy; 2023 MotorShield Commercial Vehicle Insurance. All Rights Reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        // Animation on scroll functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const animateElements = document.querySelectorAll('.animate-on-scroll');
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, {
-                threshold: 0.1
-            });
-            
-            animateElements.forEach(element => {
-                observer.observe(element);
-            });
-            
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    if (targetId === '#') return;
-                    
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 80,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-        });
-    </script>
-</body>
-</html>
+        
+        .team-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .team-member {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--box-shadow-hover);
+        }
+        
+        .member-image {
+            height: 350px;
+            overflow: hidden;
+        }
+        
+        .member-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cov
