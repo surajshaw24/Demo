@@ -16,11 +16,14 @@
         }
 
         :root {
-            --primary: #FF7F00;
+            --primary: #D62828;
+            --primary-light: #Ff4B4B;
+            --primary-dark: #B31919;
             --secondary: #FFD166;
             --accent: #06D6A0;
             --dark: #1A1A2E;
             --light: #F8F9FA;
+            --gray: #6c757d;
         }
 
         body {
@@ -36,7 +39,7 @@
             left: 0;
             width: 100%;
             padding: 15px 100px;
-            background: rgba(255, 127, 0, 0.95);
+            background: rgba(214, 40, 40, 0.95);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -169,6 +172,15 @@
             background: #fff;
             color: var(--primary);
             transform: translateY(-5px);
+        }
+
+        .btn-whatsapp {
+            background: #25D366;
+        }
+
+        .btn-whatsapp:hover {
+            background: #128C7E;
+            color: #fff;
         }
 
         /* Section Styling */
@@ -398,6 +410,96 @@
             transform: translateY(-5px);
         }
 
+        /* Video Section */
+        .video-section {
+            background: #f9f9f9;
+            text-align: center;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .video-placeholder {
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            background: var(--dark);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .video-placeholder i {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 5em;
+            color: #fff;
+            opacity: 0.8;
+            transition: 0.3s;
+        }
+
+        .video-placeholder:hover i {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        /* Instagram Reels Section */
+        .reels-section {
+            text-align: center;
+        }
+
+        .reels-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .reel-item {
+            width: 300px;
+            height: 500px;
+            background: var(--dark);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        .reel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.5s;
+        }
+
+        .reel-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .reel-item i {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3em;
+            color: #fff;
+            opacity: 0.8;
+            transition: 0.3s;
+        }
+
+        .reel-item:hover i {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
         /* Testimonials */
         .testimonials-container {
             display: flex;
@@ -460,9 +562,89 @@
             color: #777;
         }
 
+        /* Payment Methods Section */
+        .payment-methods {
+            background: #f9f9f9;
+            text-align: center;
+        }
+
+        .payment-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .payment-method {
+            width: 200px;
+            padding: 30px 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: 0.3s;
+        }
+
+        .payment-method:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .payment-method i {
+            font-size: 3em;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .payment-method h3 {
+            font-size: 1.2em;
+            color: var(--dark);
+        }
+
+        .payment-info {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .payment-info h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .payment-info p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            background: #f5f5f5;
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 5em;
+            color: var(--primary);
+            border-radius: 10px;
+        }
+
+        .upi-id {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-weight: 500;
+            font-size: 1.2em;
+        }
+
         /* Contact Section */
         .contact {
-            background: #f9f9f9;
+            background: #fff;
         }
 
         .contact-container {
@@ -507,7 +689,7 @@
         .contact-form {
             flex: 1;
             min-width: 300px;
-            background: #fff;
+            background: #f9f9f9;
             padding: 40px;
             border-radius: 10px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
@@ -721,24 +903,12 @@
             margin-bottom: 20px;
         }
 
-        .qr-code {
-            width: 200px;
-            height: 200px;
-            background: #f5f5f5;
-            margin: 0 auto 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 5em;
-            color: var(--primary);
-        }
-
-        .upi-id {
+        .payment-instruction {
             background: #f9f9f9;
             padding: 15px;
             border-radius: 5px;
             margin-bottom: 20px;
-            font-weight: 500;
+            font-size: 0.9em;
         }
 
         /* Animations */
@@ -877,13 +1047,18 @@
             .footer-container {
                 flex-direction: column;
             }
+            
+            .reel-item {
+                width: 100%;
+                max-width: 300px;
+            }
         }
     </style>
 </head>
 <body>
     <!-- Header & Navigation -->
     <header>
-        <a href="#" class="logo">
+        <a href="logo" class="logo">
             <span>Wow Idli</span>
         </a>
         <div class="menu-toggle"></div>
@@ -901,15 +1076,16 @@
     <!-- Hero Section with Slideshow -->
     <section class="hero" id="home">
         <div class="slideshow">
-            <img src="https://as2.ftcdn.net/v2/jpg/13/70/31/97/1000_F_1370319751_30vutah3DyfuUt1iuI63B5qCvhZQVNLV.jpg" class="active" alt="Idli">
+            <img src="https://as2.ftcdn.net/v2/jpg/13/69/48/41/1000_F_1369484114_OFRNxbRMRpxW0lIJz9U0ZzbnHXuWm4qh.jpg" class="active" alt="Idli">
             <img src="https://as1.ftcdn.net/v2/jpg/09/57/19/90/1000_F_957199052_otFnbFX3dqdRDKmmz35J32yOn4zGDHX6.jpg" alt="Idli with chutney">
-            <img src="https://as2.ftcdn.net/v2/jpg/10/59/76/01/1000_F_1059760153_SpMDxAA1Oju2HMHz7Kwq2GdsVwrTzMEC.webp" alt="South Indian food">
+            <img src="https://as2.ftcdn.net/v2/jpg/15/79/63/29/1000_F_1579632904_fL2dvLvceMR63XYiBjClwlJuoaLmXSfv.jpg" alt="South Indian food">
         </div>
         <div class="hero-content">
             <h2>1 Crore Challenge Journey</h2>
             <p>Turning a ₹3000 Idli Startup into a ₹1 Crore Business</p>
             <p>Join our journey as we transform a simple Idli business on a bike into a 1 crore empire in just 1 year!</p>
             <a href="#" class="btn order-btn">Order Now</a>
+            <a href="https://wa.me/919876543210" class="btn btn-whatsapp">Order via WhatsApp</a>
         </div>
     </section>
 
@@ -925,7 +1101,7 @@
                 <a href="#" class="btn">1 Crore Challenge Journey</a>
             </div>
             <div class="about-image">
-                <img src="pic1.png">
+                <img src="pic1.png" alt="Idli making process">
             </div>
         </div>
     </section>
@@ -958,7 +1134,7 @@
         <div class="packages-container">
             <div class="package-box">
                 <div class="package-img">
-                    <img src="https://as2.ftcdn.net/v2/jpg/08/94/38/93/1000_F_894389314_WYXHntpjeqOFQe40f9udSZqxbCZyobjE.jpg" alt="Single Plate">
+                    <img src="https://as1.ftcdn.net/v2/jpg/11/30/30/46/1000_F_1130304668_Bp5yO111Le5N7zNXCPfrqdhPUUsZiF7y.webp" alt="Single Plate">
                 </div>
                 <div class="package-content">
                     <h3>Single Plate</h3>
@@ -969,7 +1145,7 @@
             </div>
             <div class="package-box">
                 <div class="package-img">
-                    <img src="https://as2.ftcdn.net/v2/jpg/15/10/56/15/1000_F_1510561583_KmrmvXF0f0SxJUmENXRf17MGmcs06vRZ.jpg" alt="Birthday Package">
+                    <img src="https://as1.ftcdn.net/v2/jpg/12/77/54/86/1000_F_1277548697_sXoDIamsjwfSvLLMt6Dhmer0Vpp7RMPf.webp" alt="Birthday Package">
                 </div>
                 <div class="package-content">
                     <h3>Birthday Package</h3>
@@ -980,7 +1156,7 @@
             </div>
             <div class="package-box">
                 <div class="package-img">
-                    <img src="https://as2.ftcdn.net/v2/jpg/12/77/54/87/1000_F_1277548741_JhrpaIlyVNhSwzOqX61OoXyVZyQoZtsG.webp" alt="Party Package">
+                    <img src="https://as2.ftcdn.net/v2/jpg/14/20/42/77/1000_F_1420427705_BPHa8VJoAhNgwiblxcHrYBSwRMicvZa1.jpg" alt="Party Package">
                 </div>
                 <div class="package-content">
                     <h3>Party Package</h3>
@@ -988,6 +1164,39 @@
                     <div class="package-price">₹999</div>
                     <a href="#" class="btn order-btn">Order Now</a>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Payment Methods Section -->
+    <section class="payment-methods">
+        <h2 class="section-title">Payment Methods</h2>
+        <div class="payment-container">
+            <div class="payment-method">
+                <i class="fas fa-qrcode"></i>
+                <h3>UPI QR Code</h3>
+            </div>
+            <div class="payment-method">
+                <i class="fas fa-mobile-alt"></i>
+                <h3>UPI Transfer</h3>
+            </div>
+            <div class="payment-method">
+                <i class="fas fa-money-bill-wave"></i>
+                <h3>Cash on Delivery</h3>
+            </div>
+        </div>
+        <div class="payment-info">
+            <h3>We accept multiple payment methods for your convenience</h3>
+            <p>Our UPI ID: <strong>wowidli@upi</strong></p>
+            <p>Send payment to this UPI ID and share screenshot on WhatsApp for confirmation</p>
+            
+            <div class="qr-code">
+                <i class="fas fa-qrcode"></i>
+            </div>
+            <p>Scan this QR code with any UPI app to make payment</p>
+            
+            <div class="payment-instruction">
+                <p><i class="fas fa-info-circle"></i> After payment, share screenshot on WhatsApp for confirmation</p>
             </div>
         </div>
     </section>
@@ -1006,6 +1215,35 @@
         </div>
     </section>
 
+    <!-- Video Section -->
+    <section class="video-section">
+        <h2 class="section-title">Watch Our YouTube Journey</h2>
+        <div class="video-container">
+            <div class="video-placeholder">
+                <i class="fas fa-play-circle"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Instagram Reels Section -->
+    <section class="reels-section">
+        <h2 class="section-title">Our Instagram Reels</h2>
+        <div class="reels-container">
+            <div class="reel-item">
+                <img src="https://www.instagram.com/wow_idli_/?utm_source=ig_embed&ig_rid=896b3915-cbe1-45fb-b138-0cc1b87c0cd7" alt="Instagram Reel">
+                <i class="fab fa-instagram"></i>
+            </div>
+            <div class="reel-item">
+                <img src="https://www.instagram.com/wow_idli_/?utm_source=ig_embed&ig_rid=ca62a043-aed6-456f-ba7f-b5d9b6f78603" alt="Instagram Reel">
+                <i class="fab fa-instagram"></i>
+            </div>
+            <div class="reel-item">
+                <img src="https://www.instagram.com/_uncutreality/?utm_source=ig_embed&ig_rid=ea3d52ab-8c84-49d2-bfa0-0c9bec4cc072" alt="Instagram Reel">
+                <i class="fab fa-instagram"></i>
+            </div>
+        </div>
+    </section>
+
     <!-- Testimonials Section -->
     <section class="testimonials">
         <h2 class="section-title">What Our Customers Say</h2>
@@ -1015,9 +1253,9 @@
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.</p>
                 </div>
                 <div class="testimonial-user">
-                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="John Doe">
+                    <img src="#" alt="Kishan">
                     <div class="user-info">
-                        <h4>John Doe</h4>
+                        <h4>Kishan</h4>
                         <p>Regular Customer</p>
                     </div>
                 </div>
@@ -1027,9 +1265,9 @@
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.</p>
                 </div>
                 <div class="testimonial-user">
-                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Jane Doe">
+                    <img src="#" alt="Suraj">
                     <div class="user-info">
-                        <h4>Jane Doe</h4>
+                        <h4>Suraj</h4>
                         <p>Food Blogger</p>
                     </div>
                 </div>
@@ -1039,7 +1277,7 @@
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.</p>
                 </div>
                 <div class="testimonial-user">
-                    <img src="https://randomuser.me/api/portraits/men/62.jpg" alt="Robert Smith">
+                    <img src="#" alt="Robert Smith">
                     <div class="user-info">
                         <h4>Robert Smith</h4>
                         <p>Local Business Owner</p>
@@ -1082,7 +1320,7 @@
                     </div>
                 </div>
                 <div class="map" style="width: 100%; height: 300px; background: #ddd; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin-top: 20px;">
-                    <p><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d29217.263980822303!2d86.76508392845355!3d23.74174456922929!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f6dd834a66b9e9%3A0xd4e0c38020aa3342!2sChirkunda%2C%20Jharkhand!5e0!3m2!1sen!2sin!4v1756382103575!5m2!1sen!2sin" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <p><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d29217.263980822303!2d86.76508392845355!3d23.74174456922929!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f6dd834a66b9e9%3A0xd4e0c38020aa3342!2sChirkunda%2C%20Jharkhand!5e0!3m2!1sen!2sin!4v1756385996284!5m2!1sen!2sin" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></p>
                 </div>
             </div>
             <div class="contact-form">
@@ -1154,7 +1392,7 @@
             </div>
         </div>
         <div class="copyright">
-            <p>&copy; 2023 Wow Idli. Developed by URS_SurajShaw</p>
+            <p>&copy; 2025 Wow Idli. Developed by URS_SurajShaw</p>
         </div>
     </footer>
 
@@ -1173,6 +1411,9 @@
             </div>
             <div class="upi-id">UPI ID: wowidli@upi</div>
             <p>Or send payment to: +91 9876543210</p>
+            <div class="payment-instruction">
+                <p><i class="fas fa-info-circle"></i> After payment, share screenshot on WhatsApp for confirmation</p>
+            </div>
         </div>
     </div>
 
@@ -1263,6 +1504,22 @@
                 if (this.value === '') {
                     this.parentNode.classList.remove('focused');
                 }
+            });
+        });
+
+        // Video play functionality
+        const videoPlaceholder = document.querySelector('.video-placeholder');
+        
+        videoPlaceholder.addEventListener('click', function() {
+            this.innerHTML = '<iframe width="100%" height="100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute; top:0; left:0;"></iframe>';
+        });
+
+        // Instagram reels functionality
+        const reelItems = document.querySelectorAll('.reel-item');
+        
+        reelItems.forEach(item => {
+            item.addEventListener('click', function() {
+                alert('Instagram reel would open in a new tab. In a real implementation, this would link to your Instagram reel.');
             });
         });
     </script>
