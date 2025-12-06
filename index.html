@@ -1,1493 +1,522 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OMGKart - Fashion Jo Dil Jeet Le!</title>
-    <meta name="description" content="OMGKart - Trendy and affordable fashion for everyone. Shop the latest styles for girls and boys with nationwide delivery.">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <style>
-        /* CSS Variables for Consistency */
-        :root {
-            --primary: #e91e63;
-            --primary-dark: #c2185b;
-            --secondary: #9c27b0;
-            --dark: #333;
-            --light: #f8f9fa;
-            --gray: #6c757d;
-            --gray-light: #e9ecef;
-            --success: #28a745;
-            --warning: #ffc107;
-            --danger: #dc3545;
-            --shadow: 0 4px 6px rgba(0,0,0,0.1);
-            --shadow-lg: 0 10px 20px rgba(0,0,0,0.15);
-            --transition: all 0.3s ease;
-            --border-radius: 8px;
-        }
-        
-        /* Reset and Base Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        html {
-            scroll-behavior: smooth;
-        }
-        
-        body {
-            background-color: #f5f5f5;
-            color: var(--dark);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-        
-        /* Loading Spinner */
-        .loader {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        /* Button Styles */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 12px 24px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-        }
-        
-        .btn:active {
-            transform: translateY(0);
-        }
-        
-        .btn-secondary {
-            background: var(--secondary);
-        }
-        
-        .btn-outline {
-            background: transparent;
-            border: 2px solid var(--primary);
-            color: var(--primary);
-        }
-        
-        .btn-outline:hover {
-            background: var(--primary);
-            color: white;
-        }
-        
-        /* Notification System */
-        .notification {
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            padding: 15px 20px;
-            border-radius: var(--border-radius);
-            color: white;
-            z-index: 10000;
-            box-shadow: var(--shadow-lg);
-            transform: translateX(150%);
-            transition: transform 0.3s ease;
-            max-width: 300px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .notification.show {
-            transform: translateX(0);
-        }
-        
-        .notification.success {
-            background: var(--success);
-        }
-        
-        .notification.error {
-            background: var(--danger);
-        }
-        
-        .notification.info {
-            background: var(--secondary);
-        }
-        
-        /* Header Styles */
-        header {
-            background: white;
-            box-shadow: var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-        
-        .top-header {
-            background: var(--dark);
-            color: white;
-            padding: 8px 0;
-            font-size: 14px;
-        }
-        
-        .top-header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .main-header {
-            padding: 15px 0;
-        }
-        
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--primary);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-        }
-        
-        .logo span {
-            color: var(--secondary);
-        }
-        
-        .search-bar {
-            flex: 1;
-            max-width: 600px;
-            margin: 0 20px;
-            position: relative;
-        }
-        
-        .search-bar input {
-            width: 100%;
-            padding: 12px 20px;
-            border: 2px solid var(--gray-light);
-            border-radius: 30px;
-            font-size: 16px;
-            outline: none;
-            transition: var(--transition);
-        }
-        
-        .search-bar input:focus {
-            border-color: var(--primary);
-        }
-        
-        .search-bar button {
-            position: absolute;
-            right: 5px;
-            top: 5px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 30px;
-            padding: 7px 20px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .search-bar button:hover {
-            background: var(--primary-dark);
-        }
-        
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        
-        .header-action {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            color: var(--dark);
-            font-size: 12px;
-            position: relative;
-            transition: var(--transition);
-        }
-        
-        .header-action:hover {
-            color: var(--primary);
-        }
-        
-        .header-action i {
-            font-size: 20px;
-            margin-bottom: 5px;
-        }
-        
-        .cart-count {
-            background: var(--primary);
-            color: white;
-            border-radius: 50%;
-            width: 18px;
-            height: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-            position: absolute;
-            top: -5px;
-            right: -5px;
-        }
-        
-        .cart-wrapper {
-            position: relative;
-        }
-        
-        /* Navigation */
-        nav {
-            background: var(--dark);
-            position: relative;
-        }
-        
-        .nav-links {
-            display: flex;
-            list-style: none;
-        }
-        
-        .nav-links li {
-            position: relative;
-        }
-        
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            padding: 15px 20px;
-            display: block;
-            transition: var(--transition);
-        }
-        
-        .nav-links a:hover {
-            background: rgba(255,255,255,0.1);
-        }
-        
-        .dropdown {
-            position: absolute;
-            background: white;
-            box-shadow: var(--shadow-lg);
-            min-width: 200px;
-            display: none;
-            z-index: 100;
-            border-radius: var(--border-radius);
-            overflow: hidden;
-        }
-        
-        .dropdown li a {
-            color: var(--dark);
-            padding: 12px 20px;
-        }
-        
-        .dropdown li a:hover {
-            background: var(--gray-light);
-        }
-        
-        .nav-links li:hover .dropdown {
-            display: block;
-        }
-        
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-            padding: 10px;
-        }
-        
-        /* Hero Slider */
-        .hero-slider {
-            position: relative;
-            height: 500px;
-            overflow: hidden;
-            margin-bottom: 40px;
-        }
-        
-        .slide {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            transition: opacity 1s ease;
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            align-items: center;
-        }
-        
-        .slide.active {
-            opacity: 1;
-        }
-        
-        .slide-content {
-            max-width: 500px;
-            background: rgba(255,255,255,0.9);
-            padding: 30px;
-            margin-left: 10%;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            animation: fadeInUp 1s ease;
-        }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .slide-content h2 {
-            font-size: 36px;
-            margin-bottom: 15px;
-            color: var(--primary);
-        }
-        
-        .slide-content p {
-            margin-bottom: 20px;
-            font-size: 18px;
-        }
-        
-        .slider-dots {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 10px;
-        }
-        
-        .dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.5);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .dot.active {
-            background: white;
-            transform: scale(1.2);
-        }
-        
-        /* Categories Section */
-        .categories {
-            padding: 50px 0;
-        }
-        
-        .section-title {
-            text-align: center;
-            margin-bottom: 30px;
-            position: relative;
-            font-size: 32px;
-        }
-        
-        .section-title:after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background: var(--primary);
-        }
-        
-        .category-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-        }
-        
-        .category-card {
-            position: relative;
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            height: 250px;
-        }
-        
-        .category-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-        }
-        
-        .category-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: var(--transition);
-        }
-        
-        .category-card:hover img {
-            transform: scale(1.05);
-        }
-        
-        .category-card h3 {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(0,0,0,0.7);
-            color: white;
-            padding: 15px;
-            text-align: center;
-            margin: 0;
-        }
-        
-        /* Products Section */
-        .products {
-            padding: 50px 0;
-            background: white;
-        }
-        
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 25px;
-        }
-        
-        .product-card {
-            background: white;
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            position: relative;
-        }
-        
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-        }
-        
-        .product-img {
-            height: 250px;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .product-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: var(--transition);
-        }
-        
-        .product-card:hover .product-img img {
-            transform: scale(1.1);
-        }
-        
-        .product-badge {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: var(--primary);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 600;
-            z-index: 2;
-        }
-        
-        .product-actions {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            opacity: 0;
-            transition: var(--transition);
-            z-index: 2;
-        }
-        
-        .product-card:hover .product-actions {
-            opacity: 1;
-        }
-        
-        .product-action {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            background: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-        }
-        
-        .product-action:hover {
-            background: var(--primary);
-            color: white;
-            transform: scale(1.1);
-        }
-        
-        .product-info {
-            padding: 15px;
-        }
-        
-        .product-title {
-            font-size: 16px;
-            margin-bottom: 8px;
-            font-weight: 600;
-            height: 40px;
-            overflow: hidden;
-        }
-        
-        .product-price {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-        
-        .current-price {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--primary);
-        }
-        
-        .original-price {
-            font-size: 14px;
-            color: var(--gray);
-            text-decoration: line-through;
-        }
-        
-        .discount {
-            color: var(--success);
-            font-size: 14px;
-            font-weight: 600;
-        }
-        
-        .product-rating {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            margin-bottom: 10px;
-        }
-        
-        .stars {
-            color: var(--warning);
-        }
-        
-        .rating-count {
-            font-size: 12px;
-            color: var(--gray);
-        }
-        
-        .add-to-cart {
-            width: 100%;
-            padding: 10px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .add-to-cart:hover {
-            background: var(--primary-dark);
-        }
-        
-        .add-to-cart:active {
-            transform: scale(0.98);
-        }
-        
-        /* USP Section */
-        .usp {
-            padding: 50px 0;
-            background: var(--light);
-        }
-        
-        .usp-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-        }
-        
-        .usp-card {
-            text-align: center;
-            padding: 30px 20px;
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-        }
-        
-        .usp-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-        }
-        
-        .usp-icon {
-            font-size: 40px;
-            color: var(--primary);
-            margin-bottom: 15px;
-        }
-        
-        .usp-card h3 {
-            margin-bottom: 10px;
-        }
-        
-        /* WhatsApp Float Button */
-        .whatsapp-float {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            width: 60px;
-            height: 60px;
-            background: #25D366;
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            box-shadow: var(--shadow-lg);
-            z-index: 1000;
-            transition: var(--transition);
-            animation: pulse 2s infinite;
-        }
-        
-        .whatsapp-float:hover {
-            transform: scale(1.1);
-            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.5);
-        }
-        
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
-            }
-            70% {
-                box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
-            }
-        }
-        
-        /* Cart Fly Animation */
-        .fly-item {
-            position: fixed;
-            width: 40px;
-            height: 40px;
-            background: var(--primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            z-index: 10000;
-            pointer-events: none;
-            transition: all 0.8s cubic-bezier(0.215, 0.61, 0.355, 1);
-        }
-        
-        /* Footer */
-        footer {
-            background: var(--dark);
-            color: white;
-            padding: 50px 0 0;
-        }
-        
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-        
-        .footer-column h3 {
-            font-size: 18px;
-            margin-bottom: 20px;
-            position: relative;
-            padding-bottom: 10px;
-        }
-        
-        .footer-column h3:after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 40px;
-            height: 2px;
-            background: var(--primary);
-        }
-        
-        .footer-links {
-            list-style: none;
-        }
-        
-        .footer-links li {
-            margin-bottom: 10px;
-        }
-        
-        .footer-links a {
-            color: #bbb;
-            text-decoration: none;
-            transition: var(--transition);
-        }
-        
-        .footer-links a:hover {
-            color: white;
-            padding-left: 5px;
-        }
-        
-        .social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 15px;
-        }
-        
-        .social-links a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            color: white;
-            transition: var(--transition);
-        }
-        
-        .social-links a:hover {
-            background: var(--primary);
-            transform: translateY(-3px);
-        }
-        
-        .newsletter input {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            margin-bottom: 10px;
-        }
-        
-        .copyright {
-            text-align: center;
-            padding: 20px 0;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            font-size: 14px;
-            color: #bbb;
-        }
-        
-        /* Responsive Styles */
-        @media (max-width: 992px) {
-            .category-grid,
-            .product-grid,
-            .usp-grid,
-            .footer-content {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .search-bar {
-                max-width: 400px;
-            }
-            
-            .hero-slider {
-                height: 400px;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .header-content {
-                flex-wrap: wrap;
-            }
-            
-            .logo {
-                order: 1;
-            }
-            
-            .search-bar {
-                order: 3;
-                margin: 15px 0 0;
-                max-width: 100%;
-            }
-            
-            .header-actions {
-                order: 2;
-            }
-            
-            .mobile-menu-btn {
-                display: block;
-            }
-            
-            .nav-links {
-                display: none;
-                flex-direction: column;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background: var(--dark);
-                z-index: 100;
-            }
-            
-            .nav-links.active {
-                display: flex;
-            }
-            
-            .dropdown {
-                position: static;
-                display: none;
-                background: rgba(0,0,0,0.2);
-            }
-            
-            .nav-links li:hover .dropdown {
-                display: block;
-            }
-            
-            .hero-slider {
-                height: 350px;
-            }
-            
-            .slide-content {
-                margin: 0 auto;
-                text-align: center;
-                padding: 20px;
-            }
-            
-            .slide-content h2 {
-                font-size: 28px;
-            }
-        }
-        
-        @media (max-width: 576px) {
-            .category-grid,
-            .product-grid,
-            .usp-grid,
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .hero-slider {
-                height: 300px;
-            }
-            
-            .slide-content h2 {
-                font-size: 24px;
-            }
-            
-            .slide-content p {
-                font-size: 16px;
-            }
-            
-            .section-title {
-                font-size: 28px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ultimate Tools Hub – All-in-One Solution</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* =============== BASE =============== */
+    :root {
+      --primary: #4F46E5;
+      --primary-dark: #3730A3;
+      --primary-light: #6366F1;
+      --secondary: #10B981;
+      --accent: #F59E0B;
+      --danger: #EF4444;
+      --dark: #111827;
+      --darker: #0F172A;
+      --dark-light: #1E293B;
+      --light: #F3F4F6;
+      --lighter: #F9FAFB;
+      --gray: #6B7280;
+      --menu-bg: rgba(17, 24, 39, 0.98);
+      --menu-text: #FFFFFF;
+      --menu-hover: rgba(79, 70, 229, 0.2);
+      --glass-bg: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      --radius-sm: 0.25rem;
+      --radius: 0.5rem;
+      --radius-lg: 0.75rem;
+      --radius-xl: 1rem;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--dark);
+      color: var(--light);
+      line-height: 1.6;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    /* =============== UTILITY =============== */
+    .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+    .section { padding: 5rem 0; }
+    .section-title {
+      position: relative;
+      margin-bottom: 3rem;
+      text-align: center;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      border-radius: 2px;
+    }
+    .text-gradient {
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .glass-effect {
+      background: var(--glass-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+    }
+
+    /* =============== BUTTONS =============== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius);
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      border: none;
+    }
+    .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+    .btn-secondary { background: transparent; color: var(--primary); border: 1px solid var(--primary); }
+    .btn-secondary:hover { background: rgba(79,70,229,0.1); transform: translateY(-2px); }
+    .btn-accent { background: linear-gradient(135deg, var(--accent), #F97316); color: white; }
+    .btn-accent:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+
+    /* =============== HEADER =============== */
+    .header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: var(--menu-bg);
+      backdrop-filter: blur(10px);
+      padding: 1rem 0;
+      z-index: 1000;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .header.hidden { transform: translateY(-100%); }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 1.5rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--light);
+    }
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: var(--radius);
+      display: grid;
+      place-items: center;
+      color: white;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--light);
+      font-weight: 500;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius);
+      transition: var(--transition);
+    }
+    .nav-link:hover { color: var(--primary); }
+
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      flex-direction: column;
+      justify-content: space-around;
+    }
+    .menu-toggle span {
+      display: block;
+      height: 2px;
+      width: 25px;
+      background: white;
+      transition: 0.3s;
+    }
+    .menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .menu-toggle.active span:nth-child(2) { opacity: 0; }
+    .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+    /* =============== HERO =============== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      background: linear-gradient(135deg, var(--darker), var(--dark));
+      padding-top: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-content {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .hero-title {
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.1;
+    }
+    .hero-subtitle {
+      font-size: 1.25rem;
+      color: var(--gray);
+      margin-bottom: 2rem;
+    }
+    .hero-buttons { display: flex; gap: 1rem; justify-content: center; }
+
+    /* =============== TOOLS GRID =============== */
+    .categories {
+      background: var(--dark);
+    }
+    .categories-tabs {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+    .category-tab {
+      padding: 0.75rem 1.5rem;
+      background: var(--dark-light);
+      border-radius: var(--radius);
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .category-tab.active, .category-tab:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .tool-card {
+      background: var(--dark-light);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--glass-border);
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .tool-card.hidden {
+      opacity: 0;
+      transform: translateY(20px);
+      pointer-events: none;
+    }
+    .tool-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .tool-icon {
+      width: 50px;
+      height: 50px;
+      background: rgba(79, 70, 229, 0.1);
+      border-radius: var(--radius);
+      display: grid;
+      place-items: center;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+    .premium-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.25rem 0.75rem;
+      background: linear-gradient(135deg, #FCD34D, #F59E0B);
+      color: #000;
+      border-radius: 1rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    /* =============== FOOTER & OTHER =============== */
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 50px;
+      height: 50px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 1.25rem;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+      z-index: 999;
+    }
+    .back-to-top.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* =============== RESPONSIVE =============== */
+    @media (max-width: 768px) {
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100vh;
+        background: var(--menu-bg);
+        backdrop-filter: blur(15px);
+        flex-direction: column;
+        padding: 6rem 2rem 2rem;
+        transition: right 0.5s ease;
+        z-index: 2000;
+      }
+      .nav-links.active {
+        right: 0;
+      }
+      .menu-toggle { display: flex; }
+      .hero-buttons { flex-direction: column; align-items: center; }
+      .btn { width: 100%; max-width: 300px; }
+      .categories-tabs { flex-direction: column; align-items: stretch; }
+      .category-tab { text-align: center; }
+    }
+
+    @media (prefers-reduced-motion) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- Notification System -->
-    <div class="notification success">
-        <i class="fas fa-check-circle"></i> <span>Product added to cart successfully!</span>
+  <!-- Header -->
+  <header class="header" id="header">
+    <div class="header-container">
+      <a href="#" class="logo">
+        <div class="logo-icon"><i class="fas fa-tools"></i></div>
+        <span>UltimateTools</span>
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a href="#home" class="nav-link"><i class="fas fa-home"></i> Home</a>
+        <a href="#features" class="nav-link"><i class="fas fa-star"></i> Features</a>
+        <a href="#tools" class="nav-link"><i class="fas fa-tools"></i> Tools</a>
+        <a href="#pricing" class="nav-link"><i class="fas fa-tag"></i> Pricing</a>
+        <a href="#faq" class="nav-link"><i class="fas fa-question-circle"></i> FAQ</a>
+        <a href="#contact" class="nav-link"><i class="fas fa-envelope"></i> Contact</a>
+      </nav>
+      <div>
+        <button class="btn btn-secondary"><i class="fas fa-sign-in-alt"></i> Login</button>
+        <button class="btn btn-primary"><i class="fas fa-user-plus"></i> Sign Up</button>
+      </div>
+      <button class="menu-toggle" id="menuToggle">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-    
-    <!-- WhatsApp Float Button -->
-    <a href="https://wa.me/918651744312?text=Hi%20OMGKart,%20I%20need%20help%20with..." class="whatsapp-float" target="_blank" aria-label="Contact us on WhatsApp">
-        <i class="fab fa-whatsapp"></i>
-    </a>
+  </header>
 
-    <!-- Top Header -->
-    <div class="top-header">
-        <div class="container">
-            <div>Free Shipping on Orders Above ₹499!</div>
-            <div>
-                <a href="#" style="color: white; margin-right: 15px;">Help</a>
-                <a href="#" style="color: white;">Track Order</a>
-            </div>
-        </div>
+  <!-- Hero -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <h1 class="hero-title">All Your Essential Tools in One Place</h1>
+      <p class="hero-subtitle">Access 100+ powerful tools to boost your productivity, enhance your content, and simplify your workflow. No downloads, no hassle.</p>
+      <div class="hero-buttons">
+        <button class="btn btn-primary"><i class="fas fa-rocket"></i> Get Started Free</button>
+        <button class="btn btn-secondary"><i class="fas fa-play-circle"></i> Watch Demo</button>
+      </div>
     </div>
+  </section>
 
-    <!-- Main Header -->
-    <header>
-        <div class="main-header">
-            <div class="container">
-                <div class="header-content">
-                    <a href="#" class="logo">OMG<span>Kart</span></a>
-                    
-                    <div class="search-bar">
-                        <input type="text" placeholder="Search for products, brands and more...">
-                        <button aria-label="Search"><i class="fas fa-search"></i></button>
-                    </div>
-                    
-                    <div class="header-actions">
-                        <a href="#" class="header-action">
-                            <i class="far fa-user"></i>
-                            <span>Account</span>
-                        </a>
-                        
-                        <a href="#" class="header-action">
-                            <i class="far fa-heart"></i>
-                            <span>Wishlist</span>
-                        </a>
-                        
-                        <div class="cart-wrapper">
-                            <a href="#" class="header-action">
-                                <i class="fas fa-shopping-cart"></i>
-                                <span>Cart</span>
-                            </a>
-                            <span class="cart-count">0</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <!-- Tools -->
+  <section class="section categories" id="tools">
+    <div class="container">
+      <h2 class="section-title">Explore Our <span class="text-gradient">Powerful Tools</span></h2>
+      <div class="categories-tabs" id="toolTabs">
+        <div class="category-tab active" data-category="all">All Tools</div>
+        <div class="category-tab" data-category="image">Image Tools</div>
+        <div class="category-tab" data-category="video">Video Tools</div>
+        <div class="category-tab" data-category="document">Document Tools</div>
+        <div class="category-tab" data-category="developer">Developer Tools</div>
+        <div class="category-tab" data-category="ai">AI Tools</div>
+        <div class="category-tab" data-category="other">Other Tools</div>
+      </div>
+      <div class="tools-grid" id="toolsGrid">
+        <!-- Example Tool -->
+        <div class="tool-card" data-category="image">
+          <div class="tool-icon"><i class="fas fa-image"></i></div>
+          <h3 class="tool-title">Background Remover</h3>
+          <p class="tool-description">Remove backgrounds from images automatically with AI-powered precision.</p>
+          <button class="btn btn-primary btn-sm">Use Tool</button>
         </div>
-        
-        <!-- Navigation -->
-        <nav>
-            <div class="container">
-                <button class="mobile-menu-btn" aria-label="Toggle menu">
-                    <i class="fas fa-bars"></i>
-                </button>
-                
-                <ul class="nav-links">
-                    <li><a href="#">Home</a></li>
-                    <li>
-                        <a href="#">Girls' Fashion <i class="fas fa-chevron-down"></i></a>
-                        <ul class="dropdown">
-                            <li><a href="#">Dresses</a></li>
-                            <li><a href="#">Tops & Tees</a></li>
-                            <li><a href="#">Jeans & Trousers</a></li>
-                            <li><a href="#">Ethnic Wear</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#">Boys' Fashion <i class="fas fa-chevron-down"></i></a>
-                        <ul class="dropdown">
-                            <li><a href="#">Shirts</a></li>
-                            <li><a href="#">T-Shirts</a></li>
-                            <li><a href="#">Jeans</a></li>
-                            <li><a href="#">Ethnic Wear</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#">New Arrivals</a></li>
-                    <li><a href="#">Best Sellers</a></li>
-                    <li><a href="#">Sale</a></li>
-                </ul>
-            </div>
-        </nav>
-    </header>
+        <div class="tool-card" data-category="ai" data-premium="true">
+          <div class="tool-icon"><i class="fas fa-brain"></i></div>
+          <h3 class="tool-title">AI Image Generator</h3>
+          <p class="tool-description">Create stunning images from text prompts with AI.</p>
+          <button class="btn btn-primary btn-sm">Use Tool</button>
+          <div class="premium-badge"><i class="fas fa-crown"></i> PRO</div>
+        </div>
+        <div class="tool-card" data-category="developer">
+          <div class="tool-icon"><i class="fas fa-code"></i></div>
+          <h3 class="tool-title">Code Beautifier</h3>
+          <p class="tool-description">Format and beautify your code with multiple language support.</p>
+          <button class="btn btn-primary btn-sm">Use Tool</button>
+        </div>
+        <!-- Add more as needed -->
+      </div>
+    </div>
+  </section>
 
-    <!-- Hero Slider -->
-    <section class="hero-slider">
-        <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');">
-            <div class="slide-content">
-                <h2>Summer Collection 2023</h2>
-                <p>Discover the latest trends in fashion for girls and boys</p>
-                <a href="#" class="btn">Shop Now</a>
-            </div>
-        </div>
-        
-        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');">
-            <div class="slide-content">
-                <h2>Ethnic Wear Special</h2>
-                <p>Traditional outfits with a modern twist for festive occasions</p>
-                <a href="#" class="btn">Explore Ethnic</a>
-            </div>
-        </div>
-        
-        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1505022610482-70eec2ad1f52?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');">
-            <div class="slide-content">
-                <h2>Back to School</h2>
-                <p>Comfortable and stylish outfits for everyday wear</p>
-                <a href="#" class="btn">Shop Casual</a>
-            </div>
-        </div>
-        
-        <div class="slider-dots">
-            <div class="dot active"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-        </div>
-    </section>
+  <!-- Back to Top -->
+  <div class="back-to-top" id="backToTop"><i class="fas fa-arrow-up"></i></div>
 
-    <!-- Categories Section -->
-    <section class="categories">
-        <div class="container">
-            <h2 class="section-title">Shop By Category</h2>
-            
-            <div class="category-grid">
-                <div class="category-card">
-                    <img src="https://images.unsplash.com/photo-1519457431-44ccd64a579b?ixlib=rb-1.2.1&auto=format&fit=crop&w=675&q=80" alt="Girls Fashion">
-                    <h3>Girls' Fashion</h3>
-                </div>
-                
-                <div class="category-card">
-                    <img src="https://images.unsplash.com/photo-1505022610482-70eec2ad1f52?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Boys Fashion">
-                    <h3>Boys' Fashion</h3>
-                </div>
-                
-                <div class="category-card">
-                    <img src="https://images.unsplash.com/photo-1581044777550-4cfa60707c03?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Ethnic Wear">
-                    <h3>Ethnic Wear</h3>
-                </div>
-                
-                <div class="category-card">
-                    <img src="https://images.unsplash.com/photo-1558769132-cb25c5d1c7c3?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Casual Wear">
-                    <h3>Casual & Daily Wear</h3>
-                </div>
-            </div>
-        </div>
-    </section>
+  <!-- Footer -->
+  <footer class="footer" id="contact">
+    <div class="container">
+      <p>&copy; 2025 UltimateTools. All rights reserved.</p>
+    </div>
+  </footer>
 
-    <!-- New Arrivals Section -->
-    <section class="products">
-        <div class="container">
-            <h2 class="section-title">New Arrivals</h2>
-            
-            <div class="product-grid">
-                <!-- Product 1 -->
-                <div class="product-card">
-                    <div class="product-img">
-                        <img src="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Floral Dress">
-                        <span class="product-badge">New</span>
-                        <div class="product-actions">
-                            <button class="product-action" aria-label="Add to wishlist"><i class="far fa-heart"></i></button>
-                            <button class="product-action" aria-label="Quick view"><i class="fas fa-eye"></i></button>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-title">Floral Print Summer Dress</h3>
-                        <div class="product-price">
-                            <span class="current-price">₹899</span>
-                            <span class="original-price">₹1299</span>
-                            <span class="discount">30% off</span>
-                        </div>
-                        <div class="product-rating">
-                            <div class="stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                            </div>
-                            <span class="rating-count">(128)</span>
-                        </div>
-                        <button class="add-to-cart" data-id="1" data-name="Floral Print Summer Dress" data-price="899" data-image="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80">
-                            Add to Cart
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Product 2 -->
-                <div class="product-card">
-                    <div class="product-img">
-                        <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Denim Jacket">
-                        <span class="product-badge">Trending</span>
-                        <div class="product-actions">
-                            <button class="product-action" aria-label="Add to wishlist"><i class="far fa-heart"></i></button>
-                            <button class="product-action" aria-label="Quick view"><i class="fas fa-eye"></i></button>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-title">Boy's Denim Jacket</h3>
-                        <div class="product-price">
-                            <span class="current-price">₹1299</span>
-                            <span class="original-price">₹1799</span>
-                            <span class="discount">28% off</span>
-                        </div>
-                        <div class="product-rating">
-                            <div class="stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="far fa-star"></i>
-                            </div>
-                            <span class="rating-count">(95)</span>
-                        </div>
-                        <button class="add-to-cart" data-id="2" data-name="Boy's Denim Jacket" data-price="1299" data-image="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80">
-                            Add to Cart
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Product 3 -->
-                <div class="product-card">
-                    <div class="product-img">
-                        <img src="https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Traditional Kurta">
-                        <span class="product-badge">Bestseller</span>
-                        <div class="product-actions">
-                            <button class="product-action" aria-label="Add to wishlist"><i class="far fa-heart"></i></button>
-                            <button class="product-action" aria-label="Quick view"><i class="fas fa-eye"></i></button>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-title">Girl's Traditional Kurta Set</h3>
-                        <div class="product-price">
-                            <span class="current-price">₹1499</span>
-                            <span class="original-price">₹1999</span>
-                            <span class="discount">25% off</span>
-                        </div>
-                        <div class="product-rating">
-                            <div class="stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                            <span class="rating-count">(210)</span>
-                        </div>
-                        <button class="add-to-cart" data-id="3" data-name="Girl's Traditional Kurta Set" data-price="1499" data-image="https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80">
-                            Add to Cart
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Product 4 -->
-                <div class="product-card">
-                    <div class="product-img">
-                        <img src="https://images.unsplash.com/photo-1505022610482-70eec2ad1f52?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Casual T-Shirt">
-                        <div class="product-actions">
-                            <button class="product-action" aria-label="Add to wishlist"><i class="far fa-heart"></i></button>
-                            <button class="product-action" aria-label="Quick view"><i class="fas fa-eye"></i></button>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-title">Boy's Casual T-Shirt Pack</h3>
-                        <div class="product-price">
-                            <span class="current-price">₹799</span>
-                            <span class="original-price">₹1199</span>
-                            <span class="discount">33% off</span>
-                        </div>
-                        <div class="product-rating">
-                            <div class="stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                            </div>
-                            <span class="rating-count">(156)</span>
-                        </div>
-                        <button class="add-to-cart" data-id="4" data-name="Boy's Casual T-Shirt Pack" data-price="799" data-image="https://images.unsplash.com/photo-1505022610482-70eec2ad1f52?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80">
-                            Add to Cart
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <div style="text-align: center; margin-top: 30px;">
-                <a href="#" class="btn btn-secondary">View All Products</a>
-            </div>
-        </div>
-    </section>
+  <script>
+    // DOM Ready
+    document.addEventListener('DOMContentLoaded', () => {
+      // Mobile Menu
+      const menuToggle = document.getElementById('menuToggle');
+      const navLinks = document.getElementById('navLinks');
+      menuToggle?.addEventListener('click', () => {
+        menuToggle.classList.toggle('active');
+        navLinks.classList.toggle('active');
+      });
 
-    <!-- USP Section -->
-    <section class="usp">
-        <div class="container">
-            <h2 class="section-title">Why Choose OMGKart?</h2>
-            
-            <div class="usp-grid">
-                <div class="usp-card">
-                    <div class="usp-icon">
-                        <i class="fas fa-tag"></i>
-                    </div>
-                    <h3>Trendy & Affordable</h3>
-                    <p>Get the latest styles without breaking the bank. We bring you fashion that's both trendy and pocket-friendly.</p>
-                </div>
-                
-                <div class="usp-card">
-                    <div class="usp-icon">
-                        <i class="fas fa-heart"></i>
-                    </div>
-                    <h3>Perfect Fit & Comfort</h3>
-                    <p>Crafted from high-quality fabrics for all-day comfort. Our clothes are designed to fit perfectly and feel great.</p>
-                </div>
-                
-                <div class="usp-card">
-                    <div class="usp-icon">
-                        <i class="fas fa-shipping-fast"></i>
-                    </div>
-                    <h3>Nationwide Delivery</h3>
-                    <p>From Jharkhand to your doorstep, all over India. We deliver to every corner of the country with care.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>Quick Links</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Shop</a></li>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Contact</a></li>
-                        <li><a href="#">Blog</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Customer Service</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Shipping Info</a></li>
-                        <li><a href="#">Returns & Exchanges</a></li>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Size Guide</a></li>
-                        <li><a href="#">Track Order</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Stay Connected</h3>
-                    <p>Follow us on social media for the latest updates and offers.</p>
-                    <div class="social-links">
-                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                        <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
-                    </div>
-                    
-                    <div class="newsletter" style="margin-top: 20px;">
-                        <h4>Newsletter</h4>
-                        <p>Get the latest fashion updates & offers!</p>
-                        <input type="email" placeholder="Your email address">
-                        <button class="btn" style="width: 100%;">Subscribe</button>
-                    </div>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Contact Us</h3>
-                    <ul class="footer-links">
-                        <li><i class="fas fa-user"></i> Founder: Suraj Shaw</li>
-                        <li><i class="fas fa-phone"></i> <a href="tel:+918651744312">+91 86517 44312</a></li>
-                        <li><i class="fas fa-envelope"></i> <a href="mailto:contact@omgkart.in">contact@omgkart.in</a></li>
-                        <li><i class="fas fa-map-marker-alt"></i> Dhanbad, Jharkhand</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="copyright">
-                <p>&copy; 2024 OMGKart Cloths. All Rights Reserved. | <a href="#" style="color: #bbb;">Privacy Policy</a> | <a href="#" style="color: #bbb;">Terms of Service</a></p>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        // Mobile Menu Toggle
-        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
-            document.querySelector('.nav-links').classList.toggle('active');
-        });
-        
-        // Hero Slider
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
-        const dots = document.querySelectorAll('.dot');
-        
-        function showSlide(n) {
-            slides.forEach(slide => slide.classList.remove('active'));
-            dots.forEach(dot => dot.classList.remove('active'));
-            
-            currentSlide = (n + slides.length) % slides.length;
-            
-            slides[currentSlide].classList.add('active');
-            dots[currentSlide].classList.add('active');
+      navLinks?.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+          menuToggle.classList.remove('active');
+          navLinks.classList.remove('active');
         }
-        
-        // Auto slide change
-        setInterval(() => {
-            showSlide(currentSlide + 1);
-        }, 5000);
-        
-        // Dot click events
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                showSlide(index);
-            });
+      });
+
+      // Smooth Scroll
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+          }
         });
-        
-        // Notification System
-        function showNotification(message, type = 'success') {
-            const notification = document.querySelector('.notification');
-            notification.querySelector('span').textContent = message;
-            notification.className = `notification ${type}`;
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
+      });
+
+      // Hide header on scroll
+      let lastScrollY = window.scrollY;
+      const header = document.getElementById('header');
+      const handleScroll = () => {
+        const currentScrollY = window.scrollY;
+        if (currentScrollY > lastScrollY && currentScrollY > 100) {
+          header?.classList.add('hidden');
+        } else {
+          header?.classList.remove('hidden');
         }
-        
-        // Cart Management
-        let cartCount = 0;
-        const cartCountElement = document.querySelector('.cart-count');
-        
-        // Add to Cart with Animation
-        const addToCartButtons = document.querySelectorAll('.add-to-cart');
-        
-        addToCartButtons.forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const productId = this.getAttribute('data-id');
-                const productName = this.getAttribute('data-name');
-                const productPrice = this.getAttribute('data-price');
-                const productImage = this.getAttribute('data-image');
-                
-                // Show loading state
-                const originalText = this.innerHTML;
-                this.innerHTML = '<div class="loader"></div>';
-                this.disabled = true;
-                
-                // Simulate API call delay
-                setTimeout(() => {
-                    // Add to cart logic
-                    cartCount++;
-                    cartCountElement.textContent = cartCount;
-                    
-                    // Show success notification
-                    showNotification(`${productName} added to cart!`, 'success');
-                    
-                    // Create flying item animation
-                    createFlyItem(this, productImage);
-                    
-                    // Reset button state
-                    this.innerHTML = originalText;
-                    this.disabled = false;
-                }, 800);
-            });
-        });
-        
-        // Create flying item animation
-        function createFlyItem(button, imageUrl) {
-            const buttonRect = button.getBoundingClientRect();
-            const cartRect = document.querySelector('.cart-wrapper').getBoundingClientRect();
-            
-            const flyItem = document.createElement('div');
-            flyItem.className = 'fly-item';
-            flyItem.innerHTML = '<i class="fas fa-shopping-bag"></i>';
-            flyItem.style.backgroundImage = `url(${imageUrl})`;
-            flyItem.style.backgroundSize = 'cover';
-            flyItem.style.left = `${buttonRect.left + buttonRect.width/2}px`;
-            flyItem.style.top = `${buttonRect.top}px`;
-            
-            document.body.appendChild(flyItem);
-            
-            // Animate to cart
-            setTimeout(() => {
-                flyItem.style.left = `${cartRect.left + cartRect.width/2}px`;
-                flyItem.style.top = `${cartRect.top + cartRect.height/2}px`;
-                flyItem.style.transform = 'scale(0.2)';
-                flyItem.style.opacity = '0.5';
-            }, 10);
-            
-            // Remove element after animation
-            setTimeout(() => {
-                document.body.removeChild(flyItem);
-            }, 800);
+        lastScrollY = currentScrollY;
+
+        // Back to top
+        const backToTop = document.getElementById('backToTop');
+        if (backToTop) {
+          backToTop.classList.toggle('active', currentScrollY > 300);
         }
-        
-        // Search functionality
-        const searchInput = document.querySelector('.search-bar input');
-        const searchButton = document.querySelector('.search-bar button');
-        
-        searchButton.addEventListener('click', function() {
-            performSearch();
-        });
-        
-        searchInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                performSearch();
-            }
-        });
-        
-        function performSearch() {
-            const query = searchInput.value.trim();
-            if (query) {
-                showNotification(`Searching for: ${query}`, 'info');
-                // In a real implementation, this would redirect to search results
-                // window.location.href = `/search?q=${encodeURIComponent(query)}`;
-            }
-        }
-        
-        // Newsletter subscription
-        const newsletterBtn = document.querySelector('.newsletter .btn');
-        newsletterBtn.addEventListener('click', function() {
-            const emailInput = this.parentElement.querySelector('input');
-            const email = emailInput.value.trim();
-            
-            if (email && validateEmail(email)) {
-                showNotification('Thank you for subscribing!', 'success');
-                emailInput.value = '';
+      };
+      window.addEventListener('scroll', () => requestAnimationFrame(handleScroll));
+
+      // Back to top click
+      document.getElementById('backToTop')?.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      // Tool Filtering
+      const tabs = document.querySelectorAll('.category-tab');
+      const cards = document.querySelectorAll('.tool-card');
+      const toolsGrid = document.getElementById('toolsGrid');
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          const category = tab.dataset.category;
+          tabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+
+          cards.forEach(card => {
+            const matches = category === 'all' || card.dataset.category === category;
+            card.classList.remove('visible', 'hidden');
+            void card.offsetWidth; // Trigger reflow
+            if (matches) {
+              card.classList.add('visible');
             } else {
-                showNotification('Please enter a valid email address', 'error');
+              card.classList.add('hidden');
             }
+          });
         });
-        
-        // Email validation
-        function validateEmail(email) {
-            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return re.test(email);
-        }
-        
-        // Initialize page with some products in cart for demo
-        window.addEventListener('load', function() {
-            // Simulate page load delay
-            setTimeout(() => {
-                cartCount = 2;
-                cartCountElement.textContent = cartCount;
-            }, 1000);
-        });
-    </script>
+      });
+
+      // Disable dev tools (client-side only)
+      document.addEventListener('contextmenu', e => e.preventDefault());
+      document.addEventListener('keydown', e => {
+        if (
+          e.key === 'F12' ||
+          (e.ctrlKey && e.shiftKey && e.key === 'I') ||
+          (e.ctrlKey && e.key === 'u')
+        ) e.preventDefault();
+      });
+    });
+  </script>
 </body>
 </html>
+
