@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shri Narayan Logistics - Date-based Fleet Management</title>
+    <title>Shri Narayan Logistics - Fleet Management</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <script src="https://apis.google.com/js/api.js"></script>
@@ -136,43 +136,10 @@
             opacity: 0.8;
         }
         
-        /* Date Filter */
-        .date-filter {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 10px 0;
-            flex-wrap: wrap;
-        }
-        
-        .filter-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .filter-label {
-            font-size: 14px;
-            font-weight: 600;
-        }
-        
-        .date-input {
-            padding: 8px 12px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 5px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-size: 14px;
-        }
-        
-        .date-input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
-        
         /* Main Container */
         .container {
             display: flex;
-            min-height: calc(100vh - 160px);
+            min-height: calc(100vh - 120px);
         }
         
         /* Sidebar */
@@ -252,17 +219,6 @@
             font-size: 18px;
             color: var(--primary);
             margin-bottom: 5px;
-        }
-        
-        .vehicle-date {
-            font-size: 13px;
-            color: var(--accent);
-            font-weight: 600;
-            margin-bottom: 8px;
-            background: rgba(255, 107, 53, 0.1);
-            padding: 3px 8px;
-            border-radius: 4px;
-            display: inline-block;
         }
         
         .vehicle-driver {
@@ -526,31 +482,6 @@
             color: var(--dark);
         }
         
-        .date-time-input {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            margin-top: 5px;
-        }
-        
-        .date-time-input input {
-            padding: 6px 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-            width: 100%;
-        }
-        
-        .date-time-input button {
-            padding: 6px 12px;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-        
         .pod-upload {
             display: flex;
             align-items: center;
@@ -727,11 +658,6 @@
                 width: 100%;
                 justify-content: space-between;
             }
-            
-            .date-filter {
-                flex-direction: column;
-                align-items: flex-start;
-            }
         }
         
         /* Toast Notification */
@@ -778,25 +704,6 @@
         .btn-gdrive:hover {
             background-color: #3367d6;
         }
-        
-        /* Calendar Icon */
-        .date-picker-wrapper {
-            position: relative;
-            display: inline-block;
-        }
-        
-        .date-picker-wrapper i {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--gray);
-            pointer-events: none;
-        }
-        
-        .date-picker {
-            padding-right: 35px;
-        }
     </style>
 </head>
 <body>
@@ -809,7 +716,7 @@
                 </div>
                 <div>
                     <div class="company-name">SHRI NARAYAN LOGISTICS</div>
-                    <div class="company-tagline">Date-based Fleet Management & Tracking</div>
+                    <div class="company-tagline">Trusted Fleet Management & Tracking</div>
                 </div>
             </div>
             
@@ -826,32 +733,6 @@
                     <i class="fas fa-file-excel"></i> Export Excel
                 </button>
             </div>
-        </div>
-        
-        <!-- Date Filter -->
-        <div class="date-filter">
-            <div class="filter-group">
-                <span class="filter-label">Filter by Date:</span>
-                <input type="date" id="filterDate" class="date-input">
-            </div>
-            
-            <div class="filter-group">
-                <span class="filter-label">From:</span>
-                <input type="date" id="dateFrom" class="date-input" placeholder="Start Date">
-            </div>
-            
-            <div class="filter-group">
-                <span class="filter-label">To:</span>
-                <input type="date" id="dateTo" class="date-input" placeholder="End Date">
-            </div>
-            
-            <button class="btn btn-outline" id="applyFilterBtn">
-                <i class="fas fa-filter"></i> Apply Filter
-            </button>
-            
-            <button class="btn btn-outline" id="clearFilterBtn">
-                <i class="fas fa-times"></i> Clear Filter
-            </button>
         </div>
     </header>
     
@@ -887,12 +768,6 @@
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span>Calendar View</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
                         <i class="fas fa-chart-bar"></i>
                         <span>Analytics</span>
                     </a>
@@ -915,8 +790,8 @@
         <div class="main-content">
             <div class="page-header">
                 <div>
-                    <h1 class="page-title">Date-based Trip Management</h1>
-                    <p class="page-subtitle">Monitor and manage logistics operations with date tracking</p>
+                    <h1 class="page-title">Trip Management Dashboard</h1>
+                    <p class="page-subtitle">Monitor and manage all your logistics operations in real-time</p>
                 </div>
                 <button class="btn btn-primary" id="addTripBtn">
                     <i class="fas fa-plus"></i> Add New Trip
@@ -926,7 +801,7 @@
             <!-- Dashboard Cards -->
             <div class="dashboard-cards">
                 <div class="dashboard-card">
-                    <div class="card-title">Active Trips Today</div>
+                    <div class="card-title">Active Trips</div>
                     <div class="card-value" id="activeTripsCount">8</div>
                     <div class="card-detail">
                         <i class="fas fa-truck" style="color: var(--primary);"></i>
@@ -967,7 +842,6 @@
                 <h2 class="section-title">
                     <i class="fas fa-info-circle"></i>
                     Trip Details - <span id="selectedVehicle">MH12AB1234</span>
-                    <span style="font-size: 16px; color: var(--accent); margin-left: 10px;" id="tripDateDisplay"></span>
                 </h2>
                 
                 <div class="trip-info-grid">
@@ -1003,16 +877,6 @@
                     
                     <div class="info-item">
                         <div class="info-icon">
-                            <i class="fas fa-calendar-alt"></i>
-                        </div>
-                        <div class="info-content">
-                            <h4>Trip Date</h4>
-                            <p id="tripDate">15 Nov 2023</p>
-                        </div>
-                    </div>
-                    
-                    <div class="info-item">
-                        <div class="info-icon">
                             <i class="fas fa-clock"></i>
                         </div>
                         <div class="info-content">
@@ -1026,7 +890,7 @@
                 <div class="location-timeline">
                     <h3 class="section-title">
                         <i class="fas fa-route"></i>
-                        Route & Stops Timeline (Date-wise)
+                        Route & Stops Timeline
                     </h3>
                     
                     <div id="locationTimeline">
@@ -1045,9 +909,6 @@
                     <button class="btn-action btn-refresh" id="refreshDataBtn">
                         <i class="fas fa-redo"></i> Refresh Data
                     </button>
-                    <button class="btn-action" id="addStopBtn" style="background-color: var(--accent); color: white;">
-                        <i class="fas fa-map-marker-alt"></i> Add Stop
-                    </button>
                 </div>
             </div>
         </div>
@@ -1057,7 +918,7 @@
     <div class="modal" id="addTripModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Add New Trip (Date-based)</h3>
+                <h3 class="modal-title">Add New Trip</h3>
                 <button class="close-modal" id="closeModalBtn">&times;</button>
             </div>
             
@@ -1078,14 +939,6 @@
                 </div>
                 
                 <div class="form-group">
-                    <label class="form-label" for="newTripDate">Trip Date</label>
-                    <div class="date-picker-wrapper">
-                        <input type="date" class="form-control date-picker" id="newTripDate" required>
-                        <i class="fas fa-calendar-alt"></i>
-                    </div>
-                </div>
-                
-                <div class="form-group">
                     <label class="form-label" for="newDepartureTime">Departure Time</label>
                     <input type="time" class="form-control" id="newDepartureTime" required>
                 </div>
@@ -1095,50 +948,8 @@
                     <input type="text" class="form-control" id="newDestination" placeholder="Mumbai Warehouse" required>
                 </div>
                 
-                <div class="form-group">
-                    <label class="form-label" for="newExpectedDate">Expected Delivery Date</label>
-                    <div class="date-picker-wrapper">
-                        <input type="date" class="form-control date-picker" id="newExpectedDate" required>
-                        <i class="fas fa-calendar-alt"></i>
-                    </div>
-                </div>
-                
                 <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px;">
                     <i class="fas fa-plus"></i> Create Trip
-                </button>
-            </form>
-        </div>
-    </div>
-    
-    <!-- Add Stop Modal -->
-    <div class="modal" id="addStopModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Add New Stop</h3>
-                <button class="close-modal" id="closeStopModalBtn">&times;</button>
-            </div>
-            
-            <form id="stopForm">
-                <div class="form-group">
-                    <label class="form-label" for="newStopName">Stop Name/Location</label>
-                    <input type="text" class="form-control" id="newStopName" placeholder="Jaipur Warehouse" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label" for="newStopDate">Stop Date</label>
-                    <div class="date-picker-wrapper">
-                        <input type="date" class="form-control date-picker" id="newStopDate" required>
-                        <i class="fas fa-calendar-alt"></i>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label" for="newStopETA">ETA (Estimated Time)</label>
-                    <input type="time" class="form-control" id="newStopETA" required>
-                </div>
-                
-                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px;">
-                    <i class="fas fa-map-marker-alt"></i> Add Stop
                 </button>
             </form>
         </div>
@@ -1152,12 +963,12 @@
     
     <!-- Footer -->
     <footer>
-        <p>© 2023 Shri Narayan Logistics. All rights reserved. | Date-based Fleet Management System v2.2</p>
+        <p>© 2023 Shri Narayan Logistics. All rights reserved. | Fleet Management System v2.1</p>
         <p>Auto-save enabled | Last backup: <span id="footerLastSync">Just now</span></p>
     </footer>
 
     <script>
-        // Sample Data with Date Information
+        // Sample Data
         const sampleVehicles = [
             {
                 id: 1,
@@ -1165,68 +976,46 @@
                 driver: "Rajesh Kumar",
                 contact: "+91 98765 43210",
                 departure: "06:30 AM",
-                tripDate: "2023-11-15",
-                expectedDate: "2023-11-17",
                 status: "ontime",
                 locations: [
                     {
                         name: "Delhi Warehouse",
-                        date: "2023-11-15",
                         eta: "07:30 AM",
                         inTime: "07:25 AM",
-                        inDate: "2023-11-15",
                         outTime: "07:45 AM",
-                        outDate: "2023-11-15",
                         pod: "Uploaded",
-                        podDate: "2023-11-15",
                         status: "completed"
                     },
                     {
                         name: "Agra Checkpoint",
-                        date: "2023-11-15",
                         eta: "10:15 AM",
                         inTime: "10:10 AM",
-                        inDate: "2023-11-15",
                         outTime: "10:20 AM",
-                        outDate: "2023-11-15",
                         pod: "Not Required",
-                        podDate: "",
                         status: "completed"
                     },
                     {
                         name: "Gwalior Stop",
-                        date: "2023-11-16",
                         eta: "01:30 PM",
                         inTime: "01:45 PM",
-                        inDate: "2023-11-16",
                         outTime: "02:00 PM",
-                        outDate: "2023-11-16",
                         pod: "Pending",
-                        podDate: "",
                         status: "current"
                     },
                     {
                         name: "Jhansi Hub",
-                        date: "2023-11-16",
                         eta: "04:00 PM",
                         inTime: "",
-                        inDate: "",
                         outTime: "",
-                        outDate: "",
                         pod: "Pending",
-                        podDate: "",
                         status: "pending"
                     },
                     {
                         name: "Bhopal Destination",
-                        date: "2023-11-17",
                         eta: "07:00 PM",
                         inTime: "",
-                        inDate: "",
                         outTime: "",
-                        outDate: "",
                         pod: "Pending",
-                        podDate: "",
                         status: "pending"
                     }
                 ]
@@ -1237,44 +1026,30 @@
                 driver: "Amit Sharma",
                 contact: "+91 87654 32109",
                 departure: "05:00 AM",
-                tripDate: "2023-11-14",
-                expectedDate: "2023-11-16",
                 status: "delayed",
                 locations: [
                     {
                         name: "Surat Warehouse",
-                        date: "2023-11-14",
                         eta: "06:00 AM",
                         inTime: "06:05 AM",
-                        inDate: "2023-11-14",
                         outTime: "06:25 AM",
-                        outDate: "2023-11-14",
                         pod: "Uploaded",
-                        podDate: "2023-11-14",
                         status: "completed"
                     },
                     {
                         name: "Vadodara Stop",
-                        date: "2023-11-14",
                         eta: "08:30 AM",
                         inTime: "08:45 AM",
-                        inDate: "2023-11-14",
                         outTime: "09:00 AM",
-                        outDate: "2023-11-14",
                         pod: "Uploaded",
-                        podDate: "2023-11-14",
                         status: "completed"
                     },
                     {
                         name: "Ahmedabad Hub",
-                        date: "2023-11-15",
                         eta: "11:30 AM",
                         inTime: "",
-                        inDate: "",
                         outTime: "",
-                        outDate: "",
                         pod: "Pending",
-                        podDate: "",
                         status: "current"
                     }
                 ]
@@ -1285,32 +1060,22 @@
                 driver: "Vikram Singh",
                 contact: "+91 76543 21098",
                 departure: "08:00 AM",
-                tripDate: "2023-11-16",
-                expectedDate: "2023-11-18",
                 status: "ontime",
                 locations: [
                     {
                         name: "Jaipur Depot",
-                        date: "2023-11-16",
                         eta: "09:00 AM",
                         inTime: "08:55 AM",
-                        inDate: "2023-11-16",
                         outTime: "09:15 AM",
-                        outDate: "2023-11-16",
                         pod: "Uploaded",
-                        podDate: "2023-11-16",
                         status: "completed"
                     },
                     {
                         name: "Kota Checkpoint",
-                        date: "2023-11-17",
                         eta: "12:30 PM",
                         inTime: "",
-                        inDate: "",
                         outTime: "",
-                        outDate: "",
                         pod: "Pending",
-                        podDate: "",
                         status: "current"
                     }
                 ]
@@ -1321,77 +1086,33 @@
                 driver: "Suresh Patel",
                 contact: "+91 65432 10987",
                 departure: "07:15 AM",
-                tripDate: "2023-11-13",
-                expectedDate: "2023-11-15",
                 status: "stopped",
                 locations: [
                     {
                         name: "Noida Warehouse",
-                        date: "2023-11-13",
                         eta: "08:00 AM",
                         inTime: "08:05 AM",
-                        inDate: "2023-11-13",
                         outTime: "08:30 AM",
-                        outDate: "2023-11-13",
                         pod: "Uploaded",
-                        podDate: "2023-11-13",
                         status: "completed"
                     },
                     {
                         name: "Meerut Stop",
-                        date: "2023-11-14",
                         eta: "10:00 AM",
                         inTime: "",
-                        inDate: "",
                         outTime: "",
-                        outDate: "",
                         pod: "Pending",
-                        podDate: "",
                         status: "pending"
                     }
                 ]
             }
         ];
 
-        // Helper function to format date
-        function formatDate(dateString) {
-            if (!dateString) return "--";
-            const date = new Date(dateString);
-            return date.toLocaleDateString('en-IN', {
-                day: 'numeric',
-                month: 'short',
-                year: 'numeric'
-            });
-        }
-
-        // Helper function to format date for display
-        function formatDateForDisplay(dateString) {
-            if (!dateString) return "";
-            const date = new Date(dateString);
-            return date.toLocaleDateString('en-IN', {
-                weekday: 'short',
-                day: 'numeric',
-                month: 'short',
-                year: 'numeric'
-            });
-        }
-
-        // Helper function to format date for input fields
-        function formatDateForInput(dateString) {
-            if (!dateString) return "";
-            const date = new Date(dateString);
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const day = String(date.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
-        }
-
         // Application State
         let currentVehicleId = 1;
         let tripsData = JSON.parse(JSON.stringify(sampleVehicles)); // Deep copy
         let autoSaveInterval;
         let lastSaveTime = new Date();
-        let currentFilter = null;
         
         // DOM Elements
         const vehicleList = document.getElementById('vehicleList');
@@ -1403,36 +1124,17 @@
         const toast = document.getElementById('toast');
         const toastMessage = document.getElementById('toastMessage');
         const addTripModal = document.getElementById('addTripModal');
-        const addStopModal = document.getElementById('addStopModal');
         const addTripBtn = document.getElementById('addTripBtn');
-        const addStopBtn = document.getElementById('addStopBtn');
         const closeModalBtn = document.getElementById('closeModalBtn');
-        const closeStopModalBtn = document.getElementById('closeStopModalBtn');
         const tripForm = document.getElementById('tripForm');
-        const stopForm = document.getElementById('stopForm');
         const saveDataBtn = document.getElementById('saveDataBtn');
         const exportExcelBtn = document.getElementById('exportExcelBtn');
         const exportTripBtn = document.getElementById('exportTripBtn');
         const refreshDataBtn = document.getElementById('refreshDataBtn');
         const googleDriveBtn = document.getElementById('googleDriveBtn');
-        const filterDate = document.getElementById('filterDate');
-        const dateFrom = document.getElementById('dateFrom');
-        const dateTo = document.getElementById('dateTo');
-        const applyFilterBtn = document.getElementById('applyFilterBtn');
-        const clearFilterBtn = document.getElementById('clearFilterBtn');
         
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
-            // Set default dates in filter
-            const today = new Date();
-            const yesterday = new Date(today);
-            yesterday.setDate(yesterday.getDate() - 1);
-            const tomorrow = new Date(today);
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            
-            dateFrom.value = formatDateForInput(yesterday);
-            dateTo.value = formatDateForInput(tomorrow);
-            
             initApp();
             startAutoSave();
             setupEventListeners();
@@ -1447,27 +1149,7 @@
         function renderVehicleList() {
             vehicleList.innerHTML = '';
             
-            let filteredVehicles = tripsData;
-            
-            // Apply date filter if set
-            if (currentFilter) {
-                filteredVehicles = tripsData.filter(vehicle => {
-                    const tripDate = new Date(vehicle.tripDate);
-                    return tripDate >= currentFilter.from && tripDate <= currentFilter.to;
-                });
-            }
-            
-            if (filteredVehicles.length === 0) {
-                vehicleList.innerHTML = `
-                    <div style="text-align: center; padding: 20px; color: var(--gray);">
-                        <i class="fas fa-truck" style="font-size: 40px; margin-bottom: 10px;"></i>
-                        <p>No trips found for selected date range</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            filteredVehicles.forEach(vehicle => {
+            tripsData.forEach(vehicle => {
                 const vehicleCard = document.createElement('div');
                 vehicleCard.className = `vehicle-card ${vehicle.id === currentVehicleId ? 'active' : ''}`;
                 vehicleCard.dataset.id = vehicle.id;
@@ -1478,7 +1160,6 @@
                 
                 vehicleCard.innerHTML = `
                     <div class="vehicle-number">${vehicle.number}</div>
-                    <div class="vehicle-date">📅 ${formatDate(vehicle.tripDate)}</div>
                     <div class="vehicle-driver">👨‍✈️ ${vehicle.driver}</div>
                     <div class="vehicle-driver">📞 ${vehicle.contact}</div>
                     <div class="vehicle-status ${statusClass}">${statusText}</div>
@@ -1507,8 +1188,6 @@
             document.getElementById('driverName').textContent = vehicle.driver;
             document.getElementById('driverContact').textContent = vehicle.contact;
             document.getElementById('departureTime').textContent = vehicle.departure;
-            document.getElementById('tripDate').textContent = formatDateForDisplay(vehicle.tripDate);
-            document.getElementById('tripDateDisplay').textContent = `(${formatDateForDisplay(vehicle.tripDate)})`;
             
             // Render location timeline
             locationTimeline.innerHTML = '';
@@ -1532,10 +1211,7 @@
                     </div>
                     <div class="timeline-content">
                         <div class="location-header">
-                            <div>
-                                <div class="location-name">${location.name}</div>
-                                <div class="detail-label">📅 ${formatDate(location.date)}</div>
-                            </div>
+                            <div class="location-name">${location.name}</div>
                             <div class="location-status status-${location.status === 'completed' ? 'ontime' : location.status === 'current' ? 'delayed' : 'stopped'}">
                                 ${location.status === 'completed' ? 'Completed' : location.status === 'current' ? 'In Progress' : 'Pending'}
                             </div>
@@ -1546,26 +1222,17 @@
                                 <div class="detail-value">${location.eta}</div>
                             </div>
                             <div class="detail-item">
-                                <div class="detail-label">IN Date & Time</div>
-                                <div class="date-time-input">
-                                    <input type="date" value="${location.inDate || ''}" class="in-date" data-vehicle="${vehicleId}" data-location="${index}">
-                                    <input type="time" value="${location.inTime || ''}" class="in-time" data-vehicle="${vehicleId}" data-location="${index}">
-                                    <button class="btn-update-in">Update</button>
-                                </div>
+                                <div class="detail-label">IN Time</div>
+                                <div class="detail-value">${location.inTime || '--:--'}</div>
                             </div>
                             <div class="detail-item">
-                                <div class="detail-label">OUT Date & Time</div>
-                                <div class="date-time-input">
-                                    <input type="date" value="${location.outDate || ''}" class="out-date" data-vehicle="${vehicleId}" data-location="${index}">
-                                    <input type="time" value="${location.outTime || ''}" class="out-time" data-vehicle="${vehicleId}" data-location="${index}">
-                                    <button class="btn-update-out">Update</button>
-                                </div>
+                                <div class="detail-label">OUT Time</div>
+                                <div class="detail-value">${location.outTime || '--:--'}</div>
                             </div>
                             <div class="detail-item">
                                 <div class="detail-label">POD</div>
                                 <div class="pod-upload">
                                     ${podButton}
-                                    ${location.podDate ? `<div class="detail-label">on ${formatDate(location.podDate)}</div>` : ''}
                                 </div>
                             </div>
                         </div>
@@ -1573,29 +1240,6 @@
                 `;
                 
                 locationTimeline.appendChild(timelineItem);
-            });
-            
-            // Add event listeners to update buttons
-            document.querySelectorAll('.btn-update-in').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const vehicleId = parseInt(this.dataset.vehicle);
-                    const locationIndex = parseInt(this.dataset.location);
-                    const inDateInput = this.parentElement.querySelector('.in-date');
-                    const inTimeInput = this.parentElement.querySelector('.in-time');
-                    
-                    updateLocationTime(vehicleId, locationIndex, 'in', inDateInput.value, inTimeInput.value);
-                });
-            });
-            
-            document.querySelectorAll('.btn-update-out').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const vehicleId = parseInt(this.dataset.vehicle);
-                    const locationIndex = parseInt(this.dataset.location);
-                    const outDateInput = this.parentElement.querySelector('.out-date');
-                    const outTimeInput = this.parentElement.querySelector('.out-time');
-                    
-                    updateLocationTime(vehicleId, locationIndex, 'out', outDateInput.value, outTimeInput.value);
-                });
             });
             
             // Add event listeners to POD upload buttons
@@ -1608,94 +1252,16 @@
             });
         }
         
-        function updateLocationTime(vehicleId, locationIndex, type, dateValue, timeValue) {
-            const vehicle = tripsData.find(v => v.id === vehicleId);
-            if (!vehicle || !vehicle.locations[locationIndex]) return;
-            
-            if (type === 'in') {
-                vehicle.locations[locationIndex].inDate = dateValue;
-                vehicle.locations[locationIndex].inTime = timeValue;
-                
-                // If IN time is set and OUT time is not, mark as current
-                if (dateValue && timeValue && !vehicle.locations[locationIndex].outDate) {
-                    vehicle.locations[locationIndex].status = 'current';
-                }
-                
-                showToast('IN time updated successfully!');
-            } else if (type === 'out') {
-                vehicle.locations[locationIndex].outDate = dateValue;
-                vehicle.locations[locationIndex].outTime = timeValue;
-                
-                // If OUT time is set, mark as completed
-                if (dateValue && timeValue) {
-                    vehicle.locations[locationIndex].status = 'completed';
-                    
-                    // Mark next location as current if exists
-                    if (locationIndex + 1 < vehicle.locations.length) {
-                        vehicle.locations[locationIndex + 1].status = 'current';
-                    }
-                }
-                
-                showToast('OUT time updated successfully!');
-            }
-            
-            renderTripDetails(currentVehicleId);
-            renderVehicleList();
-            updateDashboardCounts();
-            saveData();
-        }
-        
         function updateDashboardCounts() {
-            const today = formatDateForInput(new Date());
+            // Update dashboard counts based on data
+            document.getElementById('activeTripsCount').textContent = tripsData.length;
             
-            // Count active trips for today
-            const activeTripsToday = tripsData.filter(vehicle => {
-                return vehicle.tripDate === today && 
-                       vehicle.locations.some(loc => loc.status === 'current' || loc.status === 'pending');
-            }).length;
+            const deliveredCount = tripsData.reduce((count, vehicle) => {
+                const completedStops = vehicle.locations.filter(loc => loc.status === 'completed').length;
+                return count + completedStops;
+            }, 0);
+            document.getElementById('deliveredCount').textContent = deliveredCount;
             
-            document.getElementById('activeTripsCount').textContent = activeTripsToday;
-            
-            // Count deliveries for today
-            let deliveredToday = 0;
-            tripsData.forEach(vehicle => {
-                vehicle.locations.forEach(location => {
-                    if (location.outDate === today && location.outTime) {
-                        deliveredToday++;
-                    }
-                });
-            });
-            
-            document.getElementById('deliveredCount').textContent = deliveredToday;
-            
-            // Calculate average delay (simplified)
-            let totalDelay = 0;
-            let count = 0;
-            
-            tripsData.forEach(vehicle => {
-                vehicle.locations.forEach(location => {
-                    if (location.inTime && location.eta) {
-                        const etaTime = location.eta.replace(' AM', '').replace(' PM', '');
-                        const inTime = location.inTime.replace(' AM', '').replace(' PM', '');
-                        
-                        // Simple delay calculation (in minutes)
-                        const etaParts = etaTime.split(':');
-                        const inParts = inTime.split(':');
-                        
-                        const etaMinutes = parseInt(etaParts[0]) * 60 + parseInt(etaParts[1]);
-                        const inMinutes = parseInt(inParts[0]) * 60 + parseInt(inParts[1]);
-                        
-                        const delay = Math.max(0, inMinutes - etaMinutes);
-                        totalDelay += delay;
-                        count++;
-                    }
-                });
-            });
-            
-            const avgDelay = count > 0 ? Math.round(totalDelay / count) : 0;
-            document.getElementById('avgDelay').textContent = avgDelay;
-            
-            // Count pending PODs
             const pendingPODs = tripsData.reduce((count, vehicle) => {
                 const pending = vehicle.locations.filter(loc => loc.pod === 'Pending').length;
                 return count + pending;
@@ -1706,40 +1272,17 @@
         function setupEventListeners() {
             // Modal controls
             addTripBtn.addEventListener('click', () => {
-                // Set default date to today
-                document.getElementById('newTripDate').value = formatDateForInput(new Date());
-                document.getElementById('newExpectedDate').value = formatDateForInput(new Date(new Date().setDate(new Date().getDate() + 2)));
-                
                 addTripModal.style.display = 'flex';
-            });
-            
-            addStopBtn.addEventListener('click', () => {
-                const vehicle = tripsData.find(v => v.id === currentVehicleId);
-                if (vehicle) {
-                    // Set default date to tomorrow
-                    const tomorrow = new Date();
-                    tomorrow.setDate(tomorrow.getDate() + 1);
-                    document.getElementById('newStopDate').value = formatDateForInput(tomorrow);
-                    
-                    addStopModal.style.display = 'flex';
-                }
             });
             
             closeModalBtn.addEventListener('click', () => {
                 addTripModal.style.display = 'none';
             });
             
-            closeStopModalBtn.addEventListener('click', () => {
-                addStopModal.style.display = 'none';
-            });
-            
             // Close modal when clicking outside
             window.addEventListener('click', (e) => {
                 if (e.target === addTripModal) {
                     addTripModal.style.display = 'none';
-                }
-                if (e.target === addStopModal) {
-                    addStopModal.style.display = 'none';
                 }
             });
             
@@ -1750,10 +1293,8 @@
                 const newVehicleNo = document.getElementById('newVehicleNo').value;
                 const newDriverName = document.getElementById('newDriverName').value;
                 const newDriverContact = document.getElementById('newDriverContact').value;
-                const newTripDate = document.getElementById('newTripDate').value;
                 const newDepartureTime = document.getElementById('newDepartureTime').value;
                 const newDestination = document.getElementById('newDestination').value;
-                const newExpectedDate = document.getElementById('newExpectedDate').value;
                 
                 // Format time
                 const time = new Date(`1970-01-01T${newDepartureTime}`);
@@ -1770,27 +1311,21 @@
                     driver: newDriverName,
                     contact: newDriverContact,
                     departure: formattedTime,
-                    tripDate: newTripDate,
-                    expectedDate: newExpectedDate,
                     status: "ontime",
                     locations: [
                         {
                             name: newDestination,
-                            date: newExpectedDate,
-                            eta: "09:00 AM",
+                            eta: "Calculating...",
                             inTime: "",
-                            inDate: "",
                             outTime: "",
-                            outDate: "",
                             pod: "Pending",
-                            podDate: "",
                             status: "pending"
                         }
                     ]
                 };
                 
                 tripsData.push(newTrip);
-                showToast(`New trip added for vehicle ${newVehicleNo} on ${formatDate(newTripDate)}`);
+                showToast(`New trip added for vehicle ${newVehicleNo}`);
                 
                 // Reset form and close modal
                 tripForm.reset();
@@ -1802,52 +1337,6 @@
                 
                 // Auto-save
                 saveData();
-            });
-            
-            // Stop form submission
-            stopForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                
-                const newStopName = document.getElementById('newStopName').value;
-                const newStopDate = document.getElementById('newStopDate').value;
-                const newStopETA = document.getElementById('newStopETA').value;
-                
-                const vehicle = tripsData.find(v => v.id === currentVehicleId);
-                if (vehicle) {
-                    // Format ETA time
-                    const time = new Date(`1970-01-01T${newStopETA}`);
-                    const formattedETA = time.toLocaleTimeString('en-US', { 
-                        hour: '2-digit', 
-                        minute: '2-digit',
-                        hour12: true 
-                    });
-                    
-                    vehicle.locations.push({
-                        name: newStopName,
-                        date: newStopDate,
-                        eta: formattedETA,
-                        inTime: "",
-                        inDate: "",
-                        outTime: "",
-                        outDate: "",
-                        pod: "Pending",
-                        podDate: "",
-                        status: "pending"
-                    });
-                    
-                    showToast(`New stop added: ${newStopName} on ${formatDate(newStopDate)}`);
-                    
-                    // Reset form and close modal
-                    stopForm.reset();
-                    addStopModal.style.display = 'none';
-                    
-                    // Refresh UI
-                    renderTripDetails(currentVehicleId);
-                    updateDashboardCounts();
-                    
-                    // Auto-save
-                    saveData();
-                }
             });
             
             // Save data button
@@ -1869,48 +1358,6 @@
             
             // Google Drive backup button
             googleDriveBtn.addEventListener('click', backupToGoogleDrive);
-            
-            // Date filter buttons
-            applyFilterBtn.addEventListener('click', applyDateFilter);
-            clearFilterBtn.addEventListener('click', clearDateFilter);
-        }
-        
-        function applyDateFilter() {
-            const fromDate = dateFrom.value ? new Date(dateFrom.value) : null;
-            const toDate = dateTo.value ? new Date(dateTo.value) : null;
-            
-            if (fromDate && toDate) {
-                currentFilter = {
-                    from: fromDate,
-                    to: toDate
-                };
-                
-                showToast(`Filter applied: ${formatDate(dateFrom.value)} to ${formatDate(dateTo.value)}`);
-                renderVehicleList();
-                
-                // If current vehicle is not in filtered list, select the first one
-                const filteredVehicles = tripsData.filter(vehicle => {
-                    const tripDate = new Date(vehicle.tripDate);
-                    return tripDate >= fromDate && tripDate <= toDate;
-                });
-                
-                if (filteredVehicles.length > 0 && !filteredVehicles.some(v => v.id === currentVehicleId)) {
-                    currentVehicleId = filteredVehicles[0].id;
-                    renderTripDetails(currentVehicleId);
-                }
-            } else {
-                showToast('Please select both start and end dates', 'warning');
-            }
-        }
-        
-        function clearDateFilter() {
-            currentFilter = null;
-            dateFrom.value = '';
-            dateTo.value = '';
-            filterDate.value = '';
-            
-            showToast('Date filter cleared');
-            renderVehicleList();
         }
         
         function startAutoSave() {
@@ -1960,29 +1407,25 @@
             
             // Add headers
             excelData.push([
-                'Trip Date', 'Vehicle No.', 'Driver', 'Driver Contact', 'Departure Time',
-                'Location', 'Location Date', 'ETA', 'IN Date', 'IN Time', 'OUT Date', 'OUT Time', 'POD Status', 'POD Date', 'Status'
+                'Vehicle No.', 'Driver', 'Driver Contact', 'Departure Time',
+                'Location', 'ETA', 'IN Time', 'OUT Time', 'POD Status', 'Trip Status'
             ]);
             
             // Add data rows
             tripsData.forEach(vehicle => {
                 vehicle.locations.forEach(location => {
                     excelData.push([
-                        formatDate(vehicle.tripDate),
                         vehicle.number,
                         vehicle.driver,
                         vehicle.contact,
                         vehicle.departure,
                         location.name,
-                        formatDate(location.date),
                         location.eta,
-                        formatDate(location.inDate),
                         location.inTime || '',
-                        formatDate(location.outDate),
                         location.outTime || '',
                         location.pod,
-                        formatDate(location.podDate),
-                        location.status === 'completed' ? 'Completed' : location.status === 'current' ? 'In Progress' : 'Pending'
+                        vehicle.status === 'ontime' ? 'On Time' : 
+                        vehicle.status === 'delayed' ? 'Delayed' : 'Stopped'
                     ]);
                 });
             });
@@ -1995,7 +1438,7 @@
             XLSX.utils.book_append_sheet(wb, ws, 'Logistics Data');
             
             // Generate Excel file
-            const fileName = `Shri_Narayan_Logistics_Datewise_${formatDateForFile(new Date())}.xlsx`;
+            const fileName = `Shri_Narayan_Logistics_${formatDateForFile(new Date())}.xlsx`;
             XLSX.writeFile(wb, fileName);
             
             showToast(`All data exported to ${fileName}`);
@@ -2010,27 +1453,22 @@
             
             // Add headers
             excelData.push([
-                'Trip Date', 'Vehicle No.', 'Driver', 'Driver Contact', 'Departure Time',
-                'Location', 'Location Date', 'ETA', 'IN Date', 'IN Time', 'OUT Date', 'OUT Time', 'POD Status', 'POD Date'
+                'Vehicle No.', 'Driver', 'Driver Contact', 'Departure Time',
+                'Location', 'ETA', 'IN Time', 'OUT Time', 'POD Status'
             ]);
             
             // Add data rows
             vehicle.locations.forEach(location => {
                 excelData.push([
-                    formatDate(vehicle.tripDate),
                     vehicle.number,
                     vehicle.driver,
                     vehicle.contact,
                     vehicle.departure,
                     location.name,
-                    formatDate(location.date),
                     location.eta,
-                    formatDate(location.inDate),
                     location.inTime || '',
-                    formatDate(location.outDate),
                     location.outTime || '',
-                    location.pod,
-                    formatDate(location.podDate)
+                    location.pod
                 ]);
             });
             
@@ -2060,14 +1498,13 @@
         
         function uploadPOD(vehicleId, locationIndex) {
             // Simulate file upload
-            showToast('Opening file upload dialog...', 'warning');
+            showToast('Opening file upload dialog...');
             
             // In a real app, this would open a file picker
             setTimeout(() => {
                 const vehicle = tripsData.find(v => v.id === vehicleId);
                 if (vehicle && vehicle.locations[locationIndex]) {
                     vehicle.locations[locationIndex].pod = 'Uploaded';
-                    vehicle.locations[locationIndex].podDate = formatDateForInput(new Date());
                     renderTripDetails(currentVehicleId);
                     updateDashboardCounts();
                     showToast('POD uploaded successfully!');
