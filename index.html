@@ -3,13 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shri Narayan Logistics - Management System</title>
+    <title>Shri Narayan Logistics - Secure Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
+        /* Login Page Styles */
+        .login-container {
+            display: flex;
+            height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .login-left {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-right {
+            flex: 1;
+            background: white;
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .logo-large {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .logo-large i {
+            font-size: 3rem;
+            color: #ff6b35;
+        }
+
+        .logo-text h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .logo-text p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .features-list {
+            margin-top: 3rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .feature-item i {
+            color: #ff6b35;
+            font-size: 1.2rem;
+        }
+
+        .login-form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .login-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-subtitle {
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .password-input {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .forgot-password {
+            display: block;
+            text-align: center;
+            margin-top: 1rem;
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Main App Styles (Initially Hidden) */
+        .main-app {
+            display: none;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Dashboard Styles (Same as before, but initially hidden) */
         :root {
             --primary: #1e40af;
             --primary-light: #3b82f6;
@@ -596,6 +769,19 @@
                 font-size: 1.5rem;
                 cursor: pointer;
             }
+
+            /* Login responsive */
+            .login-container {
+                flex-direction: column;
+            }
+            
+            .login-left {
+                display: none;
+            }
+            
+            .login-right {
+                padding: 2rem;
+            }
         }
 
         @media (max-width: 768px) {
@@ -620,750 +806,1103 @@
                 justify-content: flex-start;
             }
         }
+
+        /* Loading Overlay */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Logout Button */
+        .logout-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <button class="menu-toggle" id="menuToggle">
-            <i class="fas fa-bars"></i>
-        </button>
-        
-        <div class="logo">
-            <div class="logo-icon">
+    <!-- Login Page -->
+    <div class="login-container" id="loginPage">
+        <div class="login-left">
+            <div class="logo-large">
                 <i class="fas fa-truck-moving"></i>
+                <div class="logo-text">
+                    <h1>Shri Narayan Logistics</h1>
+                    <p>Secure Logistics Portal</p>
+                </div>
             </div>
-            <div class="logo-text">
-                <h1>Shri Narayan Logistics</h1>
-                <p>Management System</p>
+            
+            <div class="features-list">
+                <div class="feature-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Military-Grade Security</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Real-time Fleet Tracking</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Advanced Analytics</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-file-invoice"></i>
+                    <span>Automated Documentation</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>Mobile-Friendly Interface</span>
+                </div>
+            </div>
+            
+            <div style="margin-top: 3rem; font-size: 0.9rem; opacity: 0.8;">
+                <p>© 2024 Shri Narayan Logistics. All rights reserved.</p>
+                <p>Version 3.1.2 | Last updated: January 2024</p>
             </div>
         </div>
         
-        <div class="header-controls">
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="globalSearch" placeholder="Search vehicles, trips, drivers...">
-            </div>
-            
-            <div class="sync-status" id="syncStatus">
-                <i class="fas fa-sync-alt"></i>
-                <span>Auto-save: <span id="syncStatusText">Active</span></span>
-            </div>
-            
-            <div class="user-menu" id="userMenu">
-                <div class="user-avatar">AD</div>
-                <span>Admin</span>
-                <i class="fas fa-chevron-down"></i>
-            </div>
-        </div>
-    </header>
-
-    <!-- Main Container -->
-    <div class="container">
-        <!-- Sidebar -->
-        <nav class="sidebar" id="sidebar">
-            <div class="sidebar-section">
-                <h3 class="sidebar-title">Main Navigation</h3>
-                <ul class="nav-menu">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link active" data-page="dashboard">
-                            <i class="fas fa-tachometer-alt"></i>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" data-page="vehicles">
-                            <i class="fas fa-truck"></i>
-                            <span>Vehicle Management</span>
-                            <span class="badge" id="vehiclesBadge">0</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" data-page="drivers">
-                            <i class="fas fa-user-tie"></i>
-                            <span>Driver Management</span>
-                            <span class="badge" id="driversBadge">0</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" data-page="trips">
-                            <i class="fas fa-route"></i>
-                            <span>Trip Management</span>
-                            <span class="badge" id="tripsBadge">0</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" data-page="pods">
-                            <i class="fas fa-file-invoice"></i>
-                            <span>POD Management</span>
-                            <span class="badge" id="podsBadge">0</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            
-            <div class="sidebar-section">
-                <h3 class="sidebar-title">Reports & Tools</h3>
-                <ul class="nav-menu">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" data-page="reports">
-                            <i class="fas fa-chart-bar"></i>
-                            <span>Analytics</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" id="exportDataBtn">
-                            <i class="fas fa-file-excel"></i>
-                            <span>Export Data</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" id="backupBtn">
-                            <i class="fas fa-database"></i>
-                            <span>Backup Data</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            
-            <div class="sidebar-section">
-                <h3 class="sidebar-title">Active Trips</h3>
-                <div id="activeTripsList">
-                    <!-- Active trips will be loaded here -->
-                    <div style="padding: 1rem; color: var(--gray); font-size: 0.9rem;">
-                        <i class="fas fa-info-circle"></i> No active trips
-                    </div>
-                </div>
-            </div>
-        </nav>
-
-        <!-- Main Content -->
-        <main class="main-content" id="mainContent">
-            <!-- Dashboard Page -->
-            <div class="page-content" id="dashboardPage">
-                <div class="page-header">
-                    <div class="page-title">
-                        <h2>Dashboard Overview</h2>
-                        <p>Welcome back! Here's your logistics overview</p>
-                    </div>
-                    <div class="action-buttons">
-                        <button class="btn btn-primary" id="quickAddTrip">
-                            <i class="fas fa-plus"></i> Quick Add Trip
-                        </button>
-                        <button class="btn btn-success" id="sendDailyReport">
-                            <i class="fas fa-paper-plane"></i> Send Report
-                        </button>
-                        <button class="btn btn-warning" id="refreshData">
-                            <i class="fas fa-sync-alt"></i> Refresh
-                        </button>
-                    </div>
-                </div>
+        <div class="login-right">
+            <div class="login-form">
+                <h2 class="login-title">Secure Login</h2>
+                <p class="login-subtitle">Access your logistics management dashboard</p>
                 
-                <!-- Stats Grid -->
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-header">
-                            <div>
-                                <div class="stat-value" id="totalVehicles">0</div>
-                                <div class="stat-label">Total Vehicles</div>
-                            </div>
-                            <div class="stat-icon">
-                                <i class="fas fa-truck"></i>
-                            </div>
-                        </div>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="loginEmail" placeholder="admin@company.com" required>
                     </div>
                     
-                    <div class="stat-card">
-                        <div class="stat-header">
-                            <div>
-                                <div class="stat-value" id="activeTripsCount">0</div>
-                                <div class="stat-label">Active Trips</div>
-                            </div>
-                            <div class="stat-icon">
-                                <i class="fas fa-route"></i>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-header">
-                            <div>
-                                <div class="stat-value" id="totalDrivers">0</div>
-                                <div class="stat-label">Total Drivers</div>
-                            </div>
-                            <div class="stat-icon">
-                                <i class="fas fa-user-tie"></i>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-header">
-                            <div>
-                                <div class="stat-value" id="pendingPODs">0</div>
-                                <div class="stat-label">Pending PODs</div>
-                            </div>
-                            <div class="stat-icon">
-                                <i class="fas fa-file-invoice"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Recent Activities -->
-                <div class="data-card">
-                    <div class="card-header">
-                        <h3 class="card-title">Recent Activities</h3>
-                        <div class="table-tools">
-                            <button class="btn btn-sm" id="clearActivities">
-                                <i class="fas fa-trash"></i> Clear
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <div class="password-input">
+                            <input type="password" class="form-control" id="loginPassword" placeholder="••••••••" required>
+                            <button type="button" class="toggle-password" id="togglePassword">
+                                <i class="fas fa-eye"></i>
                             </button>
                         </div>
                     </div>
-                    <div class="table-responsive">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Time</th>
-                                    <th>Activity</th>
-                                    <th>Details</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody id="activitiesTable">
-                                <!-- Activities will be loaded here -->
-                                <tr>
-                                    <td colspan="4" style="text-align: center; padding: 2rem; color: var(--gray);">
-                                        <i class="fas fa-info-circle"></i> No activities yet
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    
+                    <div class="remember-me">
+                        <input type="checkbox" id="rememberMe">
+                        <label for="rememberMe">Remember me for 30 days</label>
                     </div>
+                    
+                    <button type="submit" class="login-btn">
+                        <i class="fas fa-sign-in-alt"></i> Sign In
+                    </button>
+                    
+                    <a href="#" class="forgot-password" id="forgotPassword">
+                        Forgot Password?
+                    </a>
+                </form>
+                
+                <div style="margin-top: 2rem; text-align: center; color: #666; font-size: 0.9rem;">
+                    <p>Need help? Contact support: support@shrinarayanlogistics.com</p>
+                    <p style="margin-top: 0.5rem;">Or call: +91-9876543210</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application (Initially Hidden) -->
+    <div class="main-app" id="mainApp">
+        <!-- Header -->
+        <header class="header">
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-truck-moving"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>Shri Narayan Logistics</h1>
+                    <p>Fleet Management Dashboard</p>
                 </div>
             </div>
             
-            <!-- Vehicle Management Page -->
-            <div class="page-content" id="vehiclesPage" style="display: none;">
-                <div class="page-header">
-                    <div class="page-title">
-                        <h2>Vehicle Management</h2>
-                        <p>Add, edit, and manage all vehicles</p>
-                    </div>
-                    <div class="action-buttons">
-                        <button class="btn btn-primary" id="addVehicleBtn">
-                            <i class="fas fa-plus"></i> Add Vehicle
-                        </button>
-                        <button class="btn btn-success" id="exportVehiclesBtn">
-                            <i class="fas fa-file-excel"></i> Export
-                        </button>
-                        <button class="btn btn-info" id="bulkUploadBtn">
-                            <i class="fas fa-upload"></i> Bulk Upload
-                        </button>
-                    </div>
+            <div class="header-controls">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="globalSearch" placeholder="Search vehicles, trips, drivers...">
                 </div>
                 
-                <div class="data-card">
-                    <div class="card-header">
-                        <h3 class="card-title">All Vehicles</h3>
-                        <div class="table-tools">
-                            <input type="text" class="form-control" placeholder="Search vehicles..." id="vehicleSearch" style="width: 200px;">
-                            <select class="form-control" id="vehicleStatusFilter" style="width: 150px;">
-                                <option value="">All Status</option>
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
-                                <option value="maintenance">Maintenance</option>
-                            </select>
+                <div class="sync-status" id="syncStatus">
+                    <i class="fas fa-sync-alt"></i>
+                    <span>Auto-save: <span id="syncStatusText">Active</span></span>
+                </div>
+                
+                <div class="user-menu" id="userMenu">
+                    <div class="user-avatar" id="userAvatar">AD</div>
+                    <span id="userName">Loading...</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Container -->
+        <div class="container">
+            <!-- Sidebar -->
+            <nav class="sidebar" id="sidebar">
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Main Navigation</h3>
+                    <ul class="nav-menu">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link active" data-page="dashboard">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-page="vehicles">
+                                <i class="fas fa-truck"></i>
+                                <span>Vehicle Management</span>
+                                <span class="badge" id="vehiclesBadge">0</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-page="drivers">
+                                <i class="fas fa-user-tie"></i>
+                                <span>Driver Management</span>
+                                <span class="badge" id="driversBadge">0</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-page="trips">
+                                <i class="fas fa-route"></i>
+                                <span>Trip Management</span>
+                                <span class="badge" id="tripsBadge">0</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-page="pods">
+                                <i class="fas fa-file-invoice"></i>
+                                <span>POD Management</span>
+                                <span class="badge" id="podsBadge">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Reports & Tools</h3>
+                    <ul class="nav-menu">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-page="reports">
+                                <i class="fas fa-chart-bar"></i>
+                                <span>Analytics</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" id="exportDataBtn">
+                                <i class="fas fa-file-excel"></i>
+                                <span>Export Data</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" id="backupBtn">
+                                <i class="fas fa-database"></i>
+                                <span>Backup Data</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Active Trips</h3>
+                    <div id="activeTripsList">
+                        <div style="padding: 1rem; color: var(--gray); font-size: 0.9rem;">
+                            <i class="fas fa-info-circle"></i> No active trips
                         </div>
                     </div>
-                    <div class="table-responsive">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Vehicle No.</th>
-                                    <th>Type</th>
-                                    <th>Model</th>
-                                    <th>Capacity</th>
-                                    <th>Driver</th>
-                                    <th>Status</th>
-                                    <th>Last Service</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="vehiclesTable">
-                                <!-- Vehicles will be loaded here -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Driver Management Page -->
-            <div class="page-content" id="driversPage" style="display: none;">
-                <div class="page-header">
-                    <div class="page-title">
-                        <h2>Driver Management</h2>
-                        <p>Manage drivers and their details</p>
-                    </div>
-                    <div class="action-buttons">
-                        <button class="btn btn-primary" id="addDriverBtn">
-                            <i class="fas fa-plus"></i> Add Driver
-                        </button>
-                        <button class="btn btn-success" id="exportDriversBtn">
-                            <i class="fas fa-file-excel"></i> Export
-                        </button>
-                        <button class="btn btn-warning" id="sendWhatsAppAll">
-                            <i class="fab fa-whatsapp"></i> Message All
-                        </button>
-                    </div>
                 </div>
                 
-                <div class="data-card">
-                    <div class="card-header">
-                        <h3 class="card-title">All Drivers</h3>
-                        <div class="table-tools">
-                            <input type="text" class="form-control" placeholder="Search drivers..." id="driverSearch" style="width: 200px;">
-                            <select class="form-control" id="driverStatusFilter" style="width: 150px;">
-                                <option value="">All Status</option>
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
-                                <option value="on_leave">On Leave</option>
-                            </select>
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Quick Actions</h3>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <button class="btn btn-sm" onclick="showAddTripModal()" style="text-align: left; justify-content: flex-start;">
+                            <i class="fas fa-plus"></i> Quick Trip
+                        </button>
+                        <button class="btn btn-sm" onclick="showAddVehicleModal()" style="text-align: left; justify-content: flex-start;">
+                            <i class="fas fa-truck"></i> Add Vehicle
+                        </button>
+                        <button class="btn btn-sm" id="sendReportBtn" style="text-align: left; justify-content: flex-start;">
+                            <i class="fas fa-paper-plane"></i> Send Report
+                        </button>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="main-content" id="mainContent">
+                <!-- Dashboard Page -->
+                <div class="page-content" id="dashboardPage">
+                    <div class="page-header">
+                        <div class="page-title">
+                            <h2>Dashboard Overview</h2>
+                            <p>Welcome back, <span id="dashboardUserName">Admin</span>! Here's your logistics overview</p>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn btn-primary" id="quickAddTrip">
+                                <i class="fas fa-plus"></i> Quick Add Trip
+                            </button>
+                            <button class="btn btn-success" id="sendDailyReport">
+                                <i class="fas fa-paper-plane"></i> Send Report
+                            </button>
+                            <button class="btn btn-warning" id="refreshData">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
                         </div>
                     </div>
-                    <div class="table-responsive">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Driver ID</th>
-                                    <th>Name</th>
-                                    <th>License No.</th>
-                                    <th>Phone</th>
-                                    <th>Experience</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="driversTable">
-                                <!-- Drivers will be loaded here -->
-                            </tbody>
-                        </table>
+                    
+                    <!-- Stats Grid -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div>
+                                    <div class="stat-value" id="totalVehicles">0</div>
+                                    <div class="stat-label">Total Vehicles</div>
+                                </div>
+                                <div class="stat-icon">
+                                    <i class="fas fa-truck"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div>
+                                    <div class="stat-value" id="activeTripsCount">0</div>
+                                    <div class="stat-label">Active Trips</div>
+                                </div>
+                                <div class="stat-icon">
+                                    <i class="fas fa-route"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div>
+                                    <div class="stat-value" id="totalDrivers">0</div>
+                                    <div class="stat-label">Total Drivers</div>
+                                </div>
+                                <div class="stat-icon">
+                                    <i class="fas fa-user-tie"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div>
+                                    <div class="stat-value" id="pendingPODs">0</div>
+                                    <div class="stat-label">Pending PODs</div>
+                                </div>
+                                <div class="stat-icon">
+                                    <i class="fas fa-file-invoice"></i>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            
-            <!-- Trip Management Page -->
-            <div class="page-content" id="tripsPage" style="display: none;">
-                <div class="page-header">
-                    <div class="page-title">
-                        <h2>Trip Management</h2>
-                        <p>Plan and track all trips</p>
-                    </div>
-                    <div class="action-buttons">
-                        <button class="btn btn-primary" id="addTripBtn">
-                            <i class="fas fa-plus"></i> Add Trip
-                        </button>
-                        <button class="btn btn-success" id="exportTripsBtn">
-                            <i class="fas fa-file-excel"></i> Export
-                        </button>
-                        <button class="btn btn-info" id="trackAllBtn">
-                            <i class="fas fa-map-marker-alt"></i> Track All
-                        </button>
+                    
+                    <!-- Recent Activities -->
+                    <div class="data-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Recent Activities</h3>
+                            <div class="table-tools">
+                                <button class="btn btn-sm" id="clearActivities">
+                                    <i class="fas fa-trash"></i> Clear
+                                </button>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>Activity</th>
+                                        <th>Details</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="activitiesTable">
+                                    <!-- Activities will be loaded here -->
+                                    <tr>
+                                        <td colspan="4" style="text-align: center; padding: 2rem; color: var(--gray);">
+                                            <i class="fas fa-info-circle"></i> No activities yet
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="data-card">
-                    <div class="card-header">
-                        <h3 class="card-title">All Trips</h3>
-                        <div class="table-tools">
-                            <input type="text" class="form-control" placeholder="Search trips..." id="tripSearch" style="width: 200px;">
-                            <select class="form-control" id="tripStatusFilter" style="width: 150px;">
-                                <option value="">All Status</option>
+                <!-- Vehicle Management Page -->
+                <div class="page-content" id="vehiclesPage" style="display: none;">
+                    <div class="page-header">
+                        <div class="page-title">
+                            <h2>Vehicle Management</h2>
+                            <p>Add, edit, and manage all vehicles</p>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn btn-primary" id="addVehicleBtn">
+                                <i class="fas fa-plus"></i> Add Vehicle
+                            </button>
+                            <button class="btn btn-success" id="exportVehiclesBtn">
+                                <i class="fas fa-file-excel"></i> Export
+                            </button>
+                            <button class="btn btn-info" id="bulkUploadBtn">
+                                <i class="fas fa-upload"></i> Bulk Upload
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="data-card">
+                        <div class="card-header">
+                            <h3 class="card-title">All Vehicles</h3>
+                            <div class="table-tools">
+                                <input type="text" class="form-control" placeholder="Search vehicles..." id="vehicleSearch" style="width: 200px;">
+                                <select class="form-control" id="vehicleStatusFilter" style="width: 150px;">
+                                    <option value="">All Status</option>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                    <option value="maintenance">Maintenance</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Vehicle No.</th>
+                                        <th>Type</th>
+                                        <th>Model</th>
+                                        <th>Capacity</th>
+                                        <th>Driver</th>
+                                        <th>Status</th>
+                                        <th>Last Service</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="vehiclesTable">
+                                    <!-- Vehicles will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Driver Management Page -->
+                <div class="page-content" id="driversPage" style="display: none;">
+                    <div class="page-header">
+                        <div class="page-title">
+                            <h2>Driver Management</h2>
+                            <p>Manage drivers and their details</p>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn btn-primary" id="addDriverBtn">
+                                <i class="fas fa-plus"></i> Add Driver
+                            </button>
+                            <button class="btn btn-success" id="exportDriversBtn">
+                                <i class="fas fa-file-excel"></i> Export
+                            </button>
+                            <button class="btn btn-warning" id="sendWhatsAppAll">
+                                <i class="fab fa-whatsapp"></i> Message All
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="data-card">
+                        <div class="card-header">
+                            <h3 class="card-title">All Drivers</h3>
+                            <div class="table-tools">
+                                <input type="text" class="form-control" placeholder="Search drivers..." id="driverSearch" style="width: 200px;">
+                                <select class="form-control" id="driverStatusFilter" style="width: 150px;">
+                                    <option value="">All Status</option>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                    <option value="on_leave">On Leave</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Driver ID</th>
+                                        <th>Name</th>
+                                        <th>License No.</th>
+                                        <th>Phone</th>
+                                        <th>Experience</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="driversTable">
+                                    <!-- Drivers will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Trip Management Page -->
+                <div class="page-content" id="tripsPage" style="display: none;">
+                    <div class="page-header">
+                        <div class="page-title">
+                            <h2>Trip Management</h2>
+                            <p>Plan and track all trips</p>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn btn-primary" id="addTripBtn">
+                                <i class="fas fa-plus"></i> Add Trip
+                            </button>
+                            <button class="btn btn-success" id="exportTripsBtn">
+                                <i class="fas fa-file-excel"></i> Export
+                            </button>
+                            <button class="btn btn-info" id="trackAllBtn">
+                                <i class="fas fa-map-marker-alt"></i> Track All
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="data-card">
+                        <div class="card-header">
+                            <h3 class="card-title">All Trips</h3>
+                            <div class="table-tools">
+                                <input type="text" class="form-control" placeholder="Search trips..." id="tripSearch" style="width: 200px;">
+                                <select class="form-control" id="tripStatusFilter" style="width: 150px;">
+                                    <option value="">All Status</option>
+                                    <option value="planned">Planned</option>
+                                    <option value="ongoing">Ongoing</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="delayed">Delayed</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Trip ID</th>
+                                        <th>Vehicle</th>
+                                        <th>Driver</th>
+                                        <th>Route</th>
+                                        <th>Start Date</th>
+                                        <th>ETA</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tripsTable">
+                                    <!-- Trips will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- POD Management Page -->
+                <div class="page-content" id="podsPage" style="display: none;">
+                    <div class="page-header">
+                        <div class="page-title">
+                            <h2>POD Management</h2>
+                            <p>Manage Proof of Delivery documents</p>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn btn-primary" id="uploadPODBtn">
+                                <i class="fas fa-upload"></i> Upload POD
+                            </button>
+                            <button class="btn btn-success" id="exportPODsBtn">
+                                <i class="fas fa-file-excel"></i> Export
+                            </button>
+                            <button class="btn btn-warning" id="verifyAllPODs">
+                                <i class="fas fa-check-double"></i> Verify All
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="data-card">
+                        <div class="card-header">
+                            <h3 class="card-title">All PODs</h3>
+                            <div class="table-tools">
+                                <input type="text" class="form-control" placeholder="Search PODs..." id="podSearch" style="width: 200px;">
+                                <select class="form-control" id="podStatusFilter" style="width: 150px;">
+                                    <option value="">All Status</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="verified">Verified</option>
+                                    <option value="rejected">Rejected</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>POD ID</th>
+                                        <th>Trip ID</th>
+                                        <th>Vehicle</th>
+                                        <th>Customer</th>
+                                        <th>Delivery Date</th>
+                                        <th>Status</th>
+                                        <th>Document</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="podsTable">
+                                    <!-- PODs will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Modals -->
+        <!-- Add Vehicle Modal -->
+        <div class="modal" id="vehicleModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="vehicleModalTitle">Add New Vehicle</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="vehicleForm">
+                        <input type="hidden" id="vehicleId">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Vehicle Number *</label>
+                                <input type="text" class="form-control" id="vehicleNumber" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Vehicle Type *</label>
+                                <select class="form-control" id="vehicleType" required>
+                                    <option value="">Select Type</option>
+                                    <option value="truck">Truck</option>
+                                    <option value="trailer">Trailer</option>
+                                    <option value="container">Container</option>
+                                    <option value="mini_truck">Mini Truck</option>
+                                    <option value="tempo">Tempo</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Make *</label>
+                                <input type="text" class="form-control" id="vehicleMake" required placeholder="e.g., Tata, Ashok Leyland">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Model *</label>
+                                <input type="text" class="form-control" id="vehicleModel" required placeholder="e.g., 1613, 3718">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Year *</label>
+                                <input type="number" class="form-control" id="vehicleYear" min="2000" max="2024" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Capacity (tons) *</label>
+                                <input type="number" class="form-control" id="vehicleCapacity" step="0.1" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Fuel Type *</label>
+                                <select class="form-control" id="vehicleFuelType" required>
+                                    <option value="diesel">Diesel</option>
+                                    <option value="petrol">Petrol</option>
+                                    <option value="cng">CNG</option>
+                                    <option value="electric">Electric</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Status *</label>
+                                <select class="form-control" id="vehicleStatus" required>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                    <option value="maintenance">Maintenance</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Assigned Driver</label>
+                            <select class="form-control" id="vehicleDriver">
+                                <option value="">Select Driver</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Insurance Details</label>
+                            <textarea class="form-control" id="vehicleInsurance" rows="3" placeholder="Insurance company, policy number, expiry date..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Last Service Date</label>
+                            <input type="date" class="form-control" id="vehicleLastService">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Notes</label>
+                            <textarea class="form-control" id="vehicleNotes" rows="2" placeholder="Any additional notes..."></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" id="cancelVehicle">Cancel</button>
+                    <button class="btn btn-primary" id="saveVehicle">Save Vehicle</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Driver Modal -->
+        <div class="modal" id="driverModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="driverModalTitle">Add New Driver</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="driverForm">
+                        <input type="hidden" id="driverId">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Full Name *</label>
+                                <input type="text" class="form-control" id="driverName" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Phone Number *</label>
+                                <input type="tel" class="form-control" id="driverPhone" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">License Number *</label>
+                                <input type="text" class="form-control" id="driverLicense" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">License Expiry *</label>
+                                <input type="date" class="form-control" id="driverLicenseExpiry" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Experience (years) *</label>
+                                <input type="number" class="form-control" id="driverExperience" min="0" max="50" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Status *</label>
+                                <select class="form-control" id="driverStatus" required>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                    <option value="on_leave">On Leave</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Address</label>
+                            <textarea class="form-control" id="driverAddress" rows="2"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Emergency Contact</label>
+                            <input type="text" class="form-control" id="driverEmergencyContact">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Assigned Vehicle</label>
+                            <select class="form-control" id="driverVehicle">
+                                <option value="">Select Vehicle</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Notes</label>
+                            <textarea class="form-control" id="driverNotes" rows="2"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" id="cancelDriver">Cancel</button>
+                    <button class="btn btn-primary" id="saveDriver">Save Driver</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Trip Modal -->
+        <div class="modal" id="tripModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="tripModalTitle">Add New Trip</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="tripForm">
+                        <input type="hidden" id="tripId">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Select Vehicle *</label>
+                                <select class="form-control" id="tripVehicle" required>
+                                    <option value="">Select Vehicle</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Select Driver *</label>
+                                <select class="form-control" id="tripDriver" required>
+                                    <option value="">Select Driver</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">From Location *</label>
+                                <input type="text" class="form-control" id="tripFrom" required placeholder="e.g., Delhi Warehouse">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">To Location *</label>
+                                <input type="text" class="form-control" id="tripTo" required placeholder="e.g., Mumbai Depot">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Start Date & Time *</label>
+                                <input type="datetime-local" class="form-control" id="tripStartDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Estimated Arrival *</label>
+                                <input type="datetime-local" class="form-control" id="tripEndDate" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Distance (km) *</label>
+                                <input type="number" class="form-control" id="tripDistance" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Estimated Fuel (liters)</label>
+                                <input type="number" class="form-control" id="tripFuel">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Customer Name *</label>
+                            <input type="text" class="form-control" id="tripCustomer" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Cargo Details</label>
+                            <textarea class="form-control" id="tripCargo" rows="3" placeholder="Type of goods, weight, special handling instructions..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Status *</label>
+                            <select class="form-control" id="tripStatus" required>
                                 <option value="planned">Planned</option>
                                 <option value="ongoing">Ongoing</option>
                                 <option value="completed">Completed</option>
                                 <option value="delayed">Delayed</option>
                             </select>
                         </div>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Trip ID</th>
-                                    <th>Vehicle</th>
-                                    <th>Driver</th>
-                                    <th>Route</th>
-                                    <th>Start Date</th>
-                                    <th>ETA</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tripsTable">
-                                <!-- Trips will be loaded here -->
-                            </tbody>
-                        </table>
-                    </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Special Instructions</label>
+                            <textarea class="form-control" id="tripInstructions" rows="2"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" id="cancelTrip">Cancel</button>
+                    <button class="btn btn-primary" id="saveTrip">Save Trip</button>
                 </div>
             </div>
-            
-            <!-- POD Management Page -->
-            <div class="page-content" id="podsPage" style="display: none;">
-                <div class="page-header">
-                    <div class="page-title">
-                        <h2>POD Management</h2>
-                        <p>Manage Proof of Delivery documents</p>
-                    </div>
-                    <div class="action-buttons">
-                        <button class="btn btn-primary" id="uploadPODBtn">
-                            <i class="fas fa-upload"></i> Upload POD
-                        </button>
-                        <button class="btn btn-success" id="exportPODsBtn">
-                            <i class="fas fa-file-excel"></i> Export
-                        </button>
-                        <button class="btn btn-warning" id="verifyAllPODs">
-                            <i class="fas fa-check-double"></i> Verify All
-                        </button>
-                    </div>
+        </div>
+
+        <!-- View Details Modal -->
+        <div class="modal" id="detailsModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="detailsModalTitle">Details</h3>
+                    <button class="modal-close">&times;</button>
                 </div>
-                
-                <div class="data-card">
-                    <div class="card-header">
-                        <h3 class="card-title">All PODs</h3>
-                        <div class="table-tools">
-                            <input type="text" class="form-control" placeholder="Search PODs..." id="podSearch" style="width: 200px;">
-                            <select class="form-control" id="podStatusFilter" style="width: 150px;">
-                                <option value="">All Status</option>
-                                <option value="pending">Pending</option>
-                                <option value="verified">Verified</option>
-                                <option value="rejected">Rejected</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>POD ID</th>
-                                    <th>Trip ID</th>
-                                    <th>Vehicle</th>
-                                    <th>Customer</th>
-                                    <th>Delivery Date</th>
-                                    <th>Status</th>
-                                    <th>Document</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="podsTable">
-                                <!-- PODs will be loaded here -->
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="modal-body" id="detailsModalBody">
+                    <!-- Details loaded dynamically -->
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" id="closeDetails">Close</button>
                 </div>
             </div>
-        </main>
-    </div>
-
-    <!-- Modals -->
-    <!-- Add Vehicle Modal -->
-    <div class="modal" id="vehicleModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="vehicleModalTitle">Add New Vehicle</h3>
-                <button class="modal-close">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="vehicleForm">
-                    <input type="hidden" id="vehicleId">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Vehicle Number *</label>
-                            <input type="text" class="form-control" id="vehicleNumber" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Vehicle Type *</label>
-                            <select class="form-control" id="vehicleType" required>
-                                <option value="">Select Type</option>
-                                <option value="truck">Truck</option>
-                                <option value="trailer">Trailer</option>
-                                <option value="container">Container</option>
-                                <option value="mini_truck">Mini Truck</option>
-                                <option value="tempo">Tempo</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Make *</label>
-                            <input type="text" class="form-control" id="vehicleMake" required placeholder="e.g., Tata, Ashok Leyland">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Model *</label>
-                            <input type="text" class="form-control" id="vehicleModel" required placeholder="e.g., 1613, 3718">
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Year *</label>
-                            <input type="number" class="form-control" id="vehicleYear" min="2000" max="2024" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Capacity (tons) *</label>
-                            <input type="number" class="form-control" id="vehicleCapacity" step="0.1" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Fuel Type *</label>
-                            <select class="form-control" id="vehicleFuelType" required>
-                                <option value="diesel">Diesel</option>
-                                <option value="petrol">Petrol</option>
-                                <option value="cng">CNG</option>
-                                <option value="electric">Electric</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Status *</label>
-                            <select class="form-control" id="vehicleStatus" required>
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
-                                <option value="maintenance">Maintenance</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Assigned Driver</label>
-                        <select class="form-control" id="vehicleDriver">
-                            <option value="">Select Driver</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Insurance Details</label>
-                        <textarea class="form-control" id="vehicleInsurance" rows="3" placeholder="Insurance company, policy number, expiry date..."></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Last Service Date</label>
-                        <input type="date" class="form-control" id="vehicleLastService">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Notes</label>
-                        <textarea class="form-control" id="vehicleNotes" rows="2" placeholder="Any additional notes..."></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn" id="cancelVehicle">Cancel</button>
-                <button class="btn btn-primary" id="saveVehicle">Save Vehicle</button>
-            </div>
         </div>
-    </div>
 
-    <!-- Add Driver Modal -->
-    <div class="modal" id="driverModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="driverModalTitle">Add New Driver</h3>
-                <button class="modal-close">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="driverForm">
-                    <input type="hidden" id="driverId">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Full Name *</label>
-                            <input type="text" class="form-control" id="driverName" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Phone Number *</label>
-                            <input type="tel" class="form-control" id="driverPhone" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">License Number *</label>
-                            <input type="text" class="form-control" id="driverLicense" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">License Expiry *</label>
-                            <input type="date" class="form-control" id="driverLicenseExpiry" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Experience (years) *</label>
-                            <input type="number" class="form-control" id="driverExperience" min="0" max="50" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Status *</label>
-                            <select class="form-control" id="driverStatus" required>
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
-                                <option value="on_leave">On Leave</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Address</label>
-                        <textarea class="form-control" id="driverAddress" rows="2"></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Emergency Contact</label>
-                        <input type="text" class="form-control" id="driverEmergencyContact">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Assigned Vehicle</label>
-                        <select class="form-control" id="driverVehicle">
-                            <option value="">Select Vehicle</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Notes</label>
-                        <textarea class="form-control" id="driverNotes" rows="2"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn" id="cancelDriver">Cancel</button>
-                <button class="btn btn-primary" id="saveDriver">Save Driver</button>
-            </div>
-        </div>
-    </div>
+        <!-- Toast Container -->
+        <div class="toast-container" id="toastContainer"></div>
 
-    <!-- Add Trip Modal -->
-    <div class="modal" id="tripModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="tripModalTitle">Add New Trip</h3>
-                <button class="modal-close">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="tripForm">
-                    <input type="hidden" id="tripId">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Select Vehicle *</label>
-                            <select class="form-control" id="tripVehicle" required>
-                                <option value="">Select Vehicle</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Select Driver *</label>
-                            <select class="form-control" id="tripDriver" required>
-                                <option value="">Select Driver</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">From Location *</label>
-                            <input type="text" class="form-control" id="tripFrom" required placeholder="e.g., Delhi Warehouse">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">To Location *</label>
-                            <input type="text" class="form-control" id="tripTo" required placeholder="e.g., Mumbai Depot">
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Start Date & Time *</label>
-                            <input type="datetime-local" class="form-control" id="tripStartDate" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Estimated Arrival *</label>
-                            <input type="datetime-local" class="form-control" id="tripEndDate" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Distance (km) *</label>
-                            <input type="number" class="form-control" id="tripDistance" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Estimated Fuel (liters)</label>
-                            <input type="number" class="form-control" id="tripFuel">
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Customer Name *</label>
-                        <input type="text" class="form-control" id="tripCustomer" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Cargo Details</label>
-                        <textarea class="form-control" id="tripCargo" rows="3" placeholder="Type of goods, weight, special handling instructions..."></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Status *</label>
-                        <select class="form-control" id="tripStatus" required>
-                            <option value="planned">Planned</option>
-                            <option value="ongoing">Ongoing</option>
-                            <option value="completed">Completed</option>
-                            <option value="delayed">Delayed</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Special Instructions</label>
-                        <textarea class="form-control" id="tripInstructions" rows="2"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn" id="cancelTrip">Cancel</button>
-                <button class="btn btn-primary" id="saveTrip">Save Trip</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- View Details Modal -->
-    <div class="modal" id="detailsModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="detailsModalTitle">Details</h3>
-                <button class="modal-close">&times;</button>
-            </div>
-            <div class="modal-body" id="detailsModalBody">
-                <!-- Details loaded dynamically -->
-            </div>
-            <div class="modal-footer">
-                <button class="btn" id="closeDetails">Close</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Toast Container -->
-    <div class="toast-container" id="toastContainer"></div>
-
-    <!-- Loading Overlay -->
-    <div class="modal" id="loadingModal">
-        <div class="modal-content" style="background: transparent; box-shadow: none; max-width: 200px;">
-            <div style="text-align: center; color: white;">
-                <div style="width: 50px; height: 50px; border: 5px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto;"></div>
-                <p style="margin-top: 1rem;">Loading...</p>
+        <!-- Loading Overlay -->
+        <div class="modal" id="loadingModal">
+            <div class="modal-content" style="background: transparent; box-shadow: none; max-width: 200px;">
+                <div style="text-align: center; color: white;">
+                    <div class="loading-spinner"></div>
+                    <p style="margin-top: 1rem;">Loading...</p>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
+        // User Management System
+        const UserSystem = {
+            currentUser: null,
+            users: [],
+            
+            init: function() {
+                this.loadUsers();
+                this.checkAutoLogin();
+                this.setupEventListeners();
+            },
+            
+            loadUsers: function() {
+                const savedUsers = localStorage.getItem('logisticsUsers');
+                if (savedUsers) {
+                    this.users = JSON.parse(savedUsers);
+                } else {
+                    // Create default admin user
+                    this.users = [
+                        {
+                            id: 1,
+                            email: 'admin@shrinarayan.com',
+                            password: 'Admin@123',
+                            name: 'System Administrator',
+                            role: 'admin',
+                            avatar: 'AD',
+                            lastLogin: null,
+                            rememberMe: false
+                        },
+                        {
+                            id: 2,
+                            email: 'manager@shrinarayan.com',
+                            password: 'Manager@123',
+                            name: 'Operations Manager',
+                            role: 'manager',
+                            avatar: 'OM',
+                            lastLogin: null,
+                            rememberMe: false
+                        }
+                    ];
+                    this.saveUsers();
+                }
+            },
+            
+            saveUsers: function() {
+                localStorage.setItem('logisticsUsers', JSON.stringify(this.users));
+            },
+            
+            checkAutoLogin: function() {
+                const rememberMe = localStorage.getItem('rememberMe');
+                if (rememberMe === 'true') {
+                    const savedEmail = localStorage.getItem('userEmail');
+                    const user = this.users.find(u => u.email === savedEmail);
+                    if (user) {
+                        this.login(user.email, localStorage.getItem('userPassword'), true);
+                    }
+                }
+            },
+            
+            login: function(email, password, rememberMe = false) {
+                // Show loading
+                showLoading();
+                
+                setTimeout(() => {
+                    const user = this.users.find(u => 
+                        u.email.toLowerCase() === email.toLowerCase() && 
+                        u.password === password
+                    );
+                    
+                    if (user) {
+                        this.currentUser = user;
+                        user.lastLogin = new Date().toISOString();
+                        
+                        if (rememberMe) {
+                            localStorage.setItem('rememberMe', 'true');
+                            localStorage.setItem('userEmail', email);
+                            localStorage.setItem('userPassword', password);
+                        } else {
+                            localStorage.removeItem('rememberMe');
+                            localStorage.removeItem('userEmail');
+                            localStorage.removeItem('userPassword');
+                        }
+                        
+                        this.saveUsers();
+                        this.showMainApp();
+                        hideLoading();
+                        showToast(`Welcome back, ${user.name}!`, 'success');
+                        
+                        // Log activity
+                        LogisticsApp.data.activities.push({
+                            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                            action: 'User Login',
+                            details: `${user.name} logged in`,
+                            status: 'info'
+                        });
+                        saveAppData();
+                        
+                    } else {
+                        hideLoading();
+                        showToast('Invalid email or password', 'error');
+                    }
+                }, 1000);
+            },
+            
+            logout: function() {
+                showLoading();
+                
+                setTimeout(() => {
+                    // Log activity
+                    if (this.currentUser) {
+                        LogisticsApp.data.activities.push({
+                            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                            action: 'User Logout',
+                            details: `${this.currentUser.name} logged out`,
+                            status: 'info'
+                        });
+                        saveAppData();
+                    }
+                    
+                    this.currentUser = null;
+                    this.showLoginPage();
+                    hideLoading();
+                    showToast('Logged out successfully', 'success');
+                }, 500);
+            },
+            
+            showLoginPage: function() {
+                document.getElementById('loginPage').style.display = 'flex';
+                document.getElementById('mainApp').style.display = 'none';
+                document.getElementById('loginForm').reset();
+            },
+            
+            showMainApp: function() {
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+                
+                // Update user info
+                if (this.currentUser) {
+                    document.getElementById('userName').textContent = this.currentUser.name;
+                    document.getElementById('userAvatar').textContent = this.currentUser.avatar;
+                    document.getElementById('dashboardUserName').textContent = this.currentUser.name.split(' ')[0];
+                }
+                
+                // Initialize main app
+                initMainApp();
+            },
+            
+            setupEventListeners: function() {
+                // Login form
+                document.getElementById('loginForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const email = document.getElementById('loginEmail').value;
+                    const password = document.getElementById('loginPassword').value;
+                    const rememberMe = document.getElementById('rememberMe').checked;
+                    
+                    this.login(email, password, rememberMe);
+                });
+                
+                // Toggle password visibility
+                document.getElementById('togglePassword').addEventListener('click', function() {
+                    const passwordInput = document.getElementById('loginPassword');
+                    const type = passwordInput.type === 'password' ? 'text' : 'password';
+                    passwordInput.type = type;
+                    this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+                });
+                
+                // Forgot password
+                document.getElementById('forgotPassword').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    Swal.fire({
+                        title: 'Reset Password',
+                        html: `
+                            <div style="text-align: left;">
+                                <p>Enter your email address to reset your password:</p>
+                                <input type="email" id="resetEmail" class="form-control" placeholder="admin@company.com" style="margin-top: 1rem;">
+                            </div>
+                        `,
+                        showCancelButton: true,
+                        confirmButtonText: 'Send Reset Link',
+                        cancelButtonText: 'Cancel',
+                        preConfirm: () => {
+                            const email = document.getElementById('resetEmail').value;
+                            if (!email) {
+                                Swal.showValidationMessage('Please enter your email address');
+                                return false;
+                            }
+                            return email;
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            showToast(`Password reset link sent to ${result.value}`, 'success');
+                        }
+                    });
+                });
+                
+                // Logout button
+                document.getElementById('logoutBtn').addEventListener('click', () => {
+                    this.logout();
+                });
+            }
+        };
+
         // Main Application
         const LogisticsApp = {
             data: {
@@ -1381,15 +1920,10 @@
             currentPage: 'dashboard'
         };
 
-        // Initialize Application
-        document.addEventListener('DOMContentLoaded', function() {
-            initApp();
-            loadData();
-            setupEventListeners();
-            updateDashboard();
-        });
+        // Initialize User System
+        UserSystem.init();
 
-        function initApp() {
+        function initMainApp() {
             // Load from localStorage
             const saved = localStorage.getItem('logisticsData');
             if (saved) {
@@ -1409,11 +1943,110 @@
             if (!LogisticsApp.data.pods) LogisticsApp.data.pods = [];
             if (!LogisticsApp.data.activities) LogisticsApp.data.activities = [];
             
+            // Load sample data if empty
+            if (LogisticsApp.data.vehicles.length === 0) {
+                loadSampleData();
+            }
+            
             // Start auto-save
-            setInterval(saveData, 30000); // Every 30 seconds
+            setInterval(saveAppData, 30000); // Every 30 seconds
+            
+            // Update all views
+            updateAllViews();
+            setupMainEventListeners();
         }
 
-        function saveData() {
+        function loadSampleData() {
+            LogisticsApp.data.vehicles = [
+                {
+                    id: 1,
+                    number: 'MH12AB1234',
+                    type: 'truck',
+                    make: 'Tata',
+                    model: '1613',
+                    year: 2022,
+                    capacity: 7.5,
+                    fuelType: 'diesel',
+                    driver: 'Rajesh Kumar',
+                    status: 'active',
+                    lastService: '2024-01-15',
+                    insurance: 'ICICI Lombard, Policy: 12345, Exp: 2024-12-31'
+                },
+                {
+                    id: 2,
+                    number: 'GJ05CD5678',
+                    type: 'trailer',
+                    make: 'Ashok Leyland',
+                    model: '3718',
+                    year: 2021,
+                    capacity: 20,
+                    fuelType: 'diesel',
+                    driver: 'Amit Sharma',
+                    status: 'active',
+                    lastService: '2024-01-10',
+                    insurance: 'HDFC Ergo, Policy: 67890, Exp: 2024-11-30'
+                }
+            ];
+            
+            LogisticsApp.data.drivers = [
+                {
+                    id: 1,
+                    name: 'Rajesh Kumar',
+                    phone: '+91 9876543210',
+                    license: 'DL042019003456',
+                    licenseExpiry: '2025-03-15',
+                    experience: 8,
+                    status: 'active',
+                    address: 'Delhi, India',
+                    emergencyContact: '+91 9876543211'
+                },
+                {
+                    id: 2,
+                    name: 'Amit Sharma',
+                    phone: '+91 8765432109',
+                    license: 'GJ052017001234',
+                    licenseExpiry: '2024-12-31',
+                    experience: 6,
+                    status: 'active',
+                    address: 'Ahmedabad, Gujarat',
+                    emergencyContact: '+91 8765432110'
+                }
+            ];
+            
+            LogisticsApp.data.trips = [
+                {
+                    id: 1,
+                    vehicle: 'MH12AB1234',
+                    driver: 'Rajesh Kumar',
+                    from: 'Delhi',
+                    to: 'Mumbai',
+                    startDate: '2024-01-25T06:30',
+                    endDate: '2024-01-27T18:00',
+                    distance: 1400,
+                    fuel: 350,
+                    customer: 'Reliance Industries',
+                    cargo: 'Electronics, 5 tons',
+                    status: 'ongoing',
+                    instructions: 'Handle with care'
+                }
+            ];
+            
+            LogisticsApp.data.pods = [
+                {
+                    id: 1,
+                    tripId: 1,
+                    vehicle: 'MH12AB1234',
+                    customer: 'Reliance Industries',
+                    deliveryDate: '2024-01-27',
+                    status: 'pending',
+                    document: ''
+                }
+            ];
+            
+            saveAppData();
+        }
+
+        function saveAppData() {
             try {
                 localStorage.setItem('logisticsData', JSON.stringify(LogisticsApp));
                 updateSyncStatus();
@@ -1426,106 +2059,6 @@
             const now = new Date();
             const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             document.getElementById('syncStatusText').textContent = `Synced ${timeStr}`;
-        }
-
-        function loadData() {
-            // Load sample data if empty
-            if (LogisticsApp.data.vehicles.length === 0) {
-                LogisticsApp.data.vehicles = [
-                    {
-                        id: 1,
-                        number: 'MH12AB1234',
-                        type: 'truck',
-                        make: 'Tata',
-                        model: '1613',
-                        year: 2022,
-                        capacity: 7.5,
-                        fuelType: 'diesel',
-                        driver: 'Rajesh Kumar',
-                        status: 'active',
-                        lastService: '2024-01-15',
-                        insurance: 'ICICI Lombard, Policy: 12345, Exp: 2024-12-31'
-                    },
-                    {
-                        id: 2,
-                        number: 'GJ05CD5678',
-                        type: 'trailer',
-                        make: 'Ashok Leyland',
-                        model: '3718',
-                        year: 2021,
-                        capacity: 20,
-                        fuelType: 'diesel',
-                        driver: 'Amit Sharma',
-                        status: 'active',
-                        lastService: '2024-01-10',
-                        insurance: 'HDFC Ergo, Policy: 67890, Exp: 2024-11-30'
-                    }
-                ];
-            }
-            
-            if (LogisticsApp.data.drivers.length === 0) {
-                LogisticsApp.data.drivers = [
-                    {
-                        id: 1,
-                        name: 'Rajesh Kumar',
-                        phone: '+91 9876543210',
-                        license: 'DL042019003456',
-                        licenseExpiry: '2025-03-15',
-                        experience: 8,
-                        status: 'active',
-                        address: 'Delhi, India',
-                        emergencyContact: '+91 9876543211'
-                    },
-                    {
-                        id: 2,
-                        name: 'Amit Sharma',
-                        phone: '+91 8765432109',
-                        license: 'GJ052017001234',
-                        licenseExpiry: '2024-12-31',
-                        experience: 6,
-                        status: 'active',
-                        address: 'Ahmedabad, Gujarat',
-                        emergencyContact: '+91 8765432110'
-                    }
-                ];
-            }
-            
-            if (LogisticsApp.data.trips.length === 0) {
-                LogisticsApp.data.trips = [
-                    {
-                        id: 1,
-                        vehicle: 'MH12AB1234',
-                        driver: 'Rajesh Kumar',
-                        from: 'Delhi',
-                        to: 'Mumbai',
-                        startDate: '2024-01-25T06:30',
-                        endDate: '2024-01-27T18:00',
-                        distance: 1400,
-                        fuel: 350,
-                        customer: 'Reliance Industries',
-                        cargo: 'Electronics, 5 tons',
-                        status: 'ongoing',
-                        instructions: 'Handle with care'
-                    }
-                ];
-            }
-            
-            if (LogisticsApp.data.pods.length === 0) {
-                LogisticsApp.data.pods = [
-                    {
-                        id: 1,
-                        tripId: 1,
-                        vehicle: 'MH12AB1234',
-                        customer: 'Reliance Industries',
-                        deliveryDate: '2024-01-27',
-                        status: 'pending',
-                        document: ''
-                    }
-                ];
-            }
-            
-            // Update all views
-            updateAllViews();
         }
 
         function updateAllViews() {
@@ -1620,6 +2153,7 @@
             }
             
             updateActivities();
+            saveAppData();
         }
 
         function renderVehiclesTable() {
@@ -1910,6 +2444,14 @@
             }, 3000);
         }
 
+        function showLoading() {
+            document.getElementById('loadingModal').classList.add('show');
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingModal').classList.remove('show');
+        }
+
         // CRUD Operations
         function saveVehicle() {
             const id = document.getElementById('vehicleId').value;
@@ -1949,7 +2491,7 @@
             
             hideModal('vehicleModal');
             updateAllViews();
-            saveData();
+            saveAppData();
         }
 
         function saveDriver() {
@@ -1986,7 +2528,7 @@
             
             hideModal('driverModal');
             updateAllViews();
-            saveData();
+            saveAppData();
         }
 
         function saveTrip() {
@@ -2045,7 +2587,7 @@
             
             hideModal('tripModal');
             updateAllViews();
-            saveData();
+            saveAppData();
         }
 
         function viewItem(type, id) {
@@ -2236,7 +2778,7 @@
                     }
                     
                     updateAllViews();
-                    saveData();
+                    saveAppData();
                     showToast(`${type.charAt(0).toUpperCase() + type.slice(1)} deleted successfully`, 'success');
                 }
             });
@@ -2249,7 +2791,7 @@
                 pod.document = `POD_${podId}.pdf`;
                 addActivity('POD Verified', `Verified POD for trip ${pod.tripId}`, 'success');
                 updateAllViews();
-                saveData();
+                saveAppData();
                 showToast('POD verified successfully', 'success');
             }
         }
@@ -2352,7 +2894,7 @@
             LogisticsApp.currentPage = pageId;
         }
 
-        function setupEventListeners() {
+        function setupMainEventListeners() {
             // Menu Toggle
             document.getElementById('menuToggle').addEventListener('click', () => {
                 document.getElementById('sidebar').classList.toggle('show');
@@ -2541,9 +3083,6 @@
                 // Implement search functionality here
             });
         }
-
-        // Initialize
-        initApp();
     </script>
 </body>
 </html>
