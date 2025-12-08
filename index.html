@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shri Narayan Logistics - Advanced Management System</title>
+    <title>Shri Narayan Logistics - Complete Management System</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <script src="https://apis.google.com/js/api.js"></script>
@@ -315,6 +315,31 @@
             justify-content: center;
         }
         
+        /* Auto-save indicator */
+        .save-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 6px 12px;
+            border-radius: 15px;
+        }
+        
+        .save-indicator .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #25D366;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+        
         /* Main Container */
         .main-container {
             display: flex;
@@ -370,6 +395,7 @@
             text-decoration: none;
             transition: all 0.3s;
             position: relative;
+            cursor: pointer;
         }
         
         .nav-link:hover {
@@ -644,6 +670,11 @@
             color: var(--warning);
         }
         
+        .status-maintenance {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--danger);
+        }
+        
         .action-buttons {
             display: flex;
             gap: 8px;
@@ -659,6 +690,11 @@
             display: inline-flex;
             align-items: center;
             gap: 5px;
+            transition: all 0.3s;
+        }
+        
+        .btn-sm:hover {
+            transform: translateY(-2px);
         }
         
         .btn-view {
@@ -674,6 +710,11 @@
         .btn-delete {
             background-color: rgba(220, 53, 69, 0.1);
             color: var(--danger);
+        }
+        
+        .btn-verify {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success);
         }
         
         /* Modal */
@@ -813,6 +854,11 @@
         .whatsapp-option:hover {
             background-color: #e9ecef;
             border-color: #25D366;
+        }
+        
+        .whatsapp-option.active {
+            border-color: #25D366;
+            background-color: rgba(37, 211, 102, 0.1);
         }
         
         .whatsapp-option i {
@@ -1149,6 +1195,7 @@
             display: flex;
             border-bottom: 1px solid #eee;
             margin-bottom: 25px;
+            overflow-x: auto;
         }
         
         .settings-tab {
@@ -1158,6 +1205,7 @@
             color: var(--gray);
             border-bottom: 3px solid transparent;
             transition: all 0.3s;
+            white-space: nowrap;
         }
         
         .settings-tab.active {
@@ -1171,6 +1219,11 @@
         
         .settings-section {
             margin-bottom: 30px;
+            display: none;
+        }
+        
+        .settings-section.active {
+            display: block;
         }
         
         .settings-title {
@@ -1225,6 +1278,83 @@
         
         input:checked + .toggle-slider:before {
             transform: translateX(30px);
+        }
+        
+        /* Vehicle Details Modal */
+        .vehicle-details {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .detail-row {
+            display: flex;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: var(--dark);
+            width: 150px;
+        }
+        
+        .detail-value {
+            color: var(--gray);
+            flex: 1;
+        }
+        
+        /* Confirm Delete Modal */
+        .confirm-modal .modal-content {
+            max-width: 400px;
+            text-align: center;
+        }
+        
+        .confirm-icon {
+            font-size: 48px;
+            color: var(--danger);
+            margin-bottom: 20px;
+        }
+        
+        .confirm-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+        
+        /* Edit Trip Form */
+        .trip-form-container {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        
+        /* Auto-save message */
+        .auto-save-message {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background-color: var(--success);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            display: none;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
+        }
+        
+        .auto-save-message.show {
+            display: flex;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(-100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
     </style>
 </head>
@@ -1288,6 +1418,11 @@
             </div>
             
             <div class="header-right">
+                <div class="save-indicator" id="saveIndicator">
+                    <div class="dot"></div>
+                    <span>Auto-save: Active</span>
+                </div>
+                
                 <div class="user-info" id="userInfo">
                     <div class="user-avatar">
                         <i class="fas fa-user"></i>
@@ -1314,6 +1449,12 @@
                 </div>
             </div>
         </header>
+        
+        <!-- Auto-save Message -->
+        <div class="auto-save-message" id="autoSaveMessage">
+            <i class="fas fa-check-circle"></i>
+            <span>Data saved successfully!</span>
+        </div>
         
         <!-- Notification Panel -->
         <div class="notification-panel" id="notificationPanel">
@@ -1400,6 +1541,12 @@
                             <span class="nav-text">Backup to Drive</span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" id="quickAddVehicle">
+                            <i class="fas fa-truck-loading"></i>
+                            <span class="nav-text">Add Vehicle</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
             
@@ -1431,7 +1578,7 @@
                                     <i class="fas fa-truck"></i>
                                 </div>
                             </div>
-                            <div class="card-value" id="activeVehicles">24</div>
+                            <div class="card-value" id="activeVehicles">8</div>
                             <div class="card-trend trend-up">
                                 <i class="fas fa-arrow-up"></i>
                                 <span>12% from last month</span>
@@ -1445,7 +1592,7 @@
                                     <i class="fas fa-route"></i>
                                 </div>
                             </div>
-                            <div class="card-value" id="tripsToday">156</div>
+                            <div class="card-value" id="tripsToday">24</div>
                             <div class="card-trend trend-up">
                                 <i class="fas fa-arrow-up"></i>
                                 <span>8% from yesterday</span>
@@ -1459,7 +1606,7 @@
                                     <i class="fas fa-check-circle"></i>
                                 </div>
                             </div>
-                            <div class="card-value" id="deliveriesCompleted">1,234</div>
+                            <div class="card-value" id="deliveriesCompleted">156</div>
                             <div class="card-trend trend-up">
                                 <i class="fas fa-arrow-up"></i>
                                 <span>15% from last week</span>
@@ -1473,7 +1620,7 @@
                                     <i class="fas fa-file-signature"></i>
                                 </div>
                             </div>
-                            <div class="card-value" id="pendingPODs">42</div>
+                            <div class="card-value" id="pendingPODs">12</div>
                             <div class="card-trend trend-down">
                                 <i class="fas fa-arrow-down"></i>
                                 <span>5% from yesterday</span>
@@ -1486,7 +1633,7 @@
                         <div class="chart-card">
                             <div class="chart-header">
                                 <h3 class="chart-title">Monthly Trip Analysis</h3>
-                                <select class="form-control" style="width: auto;">
+                                <select class="form-control" style="width: auto;" id="chartPeriod">
                                     <option>Last 6 Months</option>
                                     <option>Last Year</option>
                                     <option>Last 3 Years</option>
@@ -1507,7 +1654,7 @@
                     <div class="fleet-table-container">
                         <div class="table-header">
                             <h3>Recent Activity</h3>
-                            <button class="btn-action btn-primary">
+                            <button class="btn-action btn-primary" id="addActivityBtn">
                                 <i class="fas fa-plus"></i> Add Activity
                             </button>
                         </div>
@@ -1520,6 +1667,7 @@
                                     <th>Activity</th>
                                     <th>Location</th>
                                     <th>Status</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="recentActivityTable">
@@ -1558,6 +1706,9 @@
                                 </button>
                                 <button class="btn-sm btn-view" id="filterAll">
                                     <i class="fas fa-list"></i> All
+                                </button>
+                                <button class="btn-sm btn-view" id="filterMaintenance">
+                                    <i class="fas fa-wrench"></i> Maintenance
                                 </button>
                             </div>
                         </div>
@@ -1630,10 +1781,10 @@
                         <div class="chart-header">
                             <h3 class="chart-title">Route Visualization</h3>
                             <div class="action-buttons">
-                                <button class="btn-sm btn-view">
+                                <button class="btn-sm btn-view" id="satelliteView">
                                     <i class="fas fa-satellite"></i> Satellite
                                 </button>
-                                <button class="btn-sm btn-view">
+                                <button class="btn-sm btn-view" id="roadView">
                                     <i class="fas fa-road"></i> Road
                                 </button>
                             </div>
@@ -1702,7 +1853,7 @@
                                     <i class="fas fa-file-alt"></i>
                                 </div>
                             </div>
-                            <div class="card-value" id="totalPODs">1,845</div>
+                            <div class="card-value" id="totalPODs">245</div>
                             <div class="card-trend trend-up">
                                 <i class="fas fa-arrow-up"></i>
                                 <span>23 this week</span>
@@ -1716,7 +1867,7 @@
                                     <i class="fas fa-clock"></i>
                                 </div>
                             </div>
-                            <div class="card-value" id="pendingVerification">42</div>
+                            <div class="card-value" id="pendingVerification">12</div>
                             <div class="card-trend trend-down">
                                 <i class="fas fa-arrow-down"></i>
                                 <span>5 from yesterday</span>
@@ -1730,7 +1881,7 @@
                                     <i class="fas fa-check-circle"></i>
                                 </div>
                             </div>
-                            <div class="card-value" id="verifiedPODs">1,756</div>
+                            <div class="card-value" id="verifiedPODs">225</div>
                             <div class="card-trend trend-up">
                                 <i class="fas fa-arrow-up"></i>
                                 <span>47 this week</span>
@@ -1744,7 +1895,7 @@
                                     <i class="fas fa-times-circle"></i>
                                 </div>
                             </div>
-                            <div class="card-value" id="rejectedPODs">47</div>
+                            <div class="card-value" id="rejectedPODs">8</div>
                             <div class="card-trend trend-down">
                                 <i class="fas fa-arrow-down"></i>
                                 <span>2 from yesterday</span>
@@ -1815,7 +1966,7 @@
                                 </button>
                             </div>
                             <div class="action-buttons">
-                                <button class="btn-sm btn-view" id="viewMonth">
+                                <button class="btn-sm btn-view active" id="viewMonth">
                                     Month
                                 </button>
                                 <button class="btn-sm btn-view" id="viewWeek">
@@ -2007,7 +2158,7 @@
                                     <div class="form-group">
                                         <label class="form-label">Time Zone</label>
                                         <select class="form-control" id="timeZone">
-                                            <option value="IST">India Standard Time (IST)</option>
+                                            <option value="IST" selected>India Standard Time (IST)</option>
                                             <option value="UTC">UTC</option>
                                             <option value="EST">Eastern Standard Time</option>
                                         </select>
@@ -2018,7 +2169,7 @@
                                     <div class="form-group">
                                         <label class="form-label">Date Format</label>
                                         <select class="form-control" id="dateFormat">
-                                            <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+                                            <option value="DD/MM/YYYY" selected>DD/MM/YYYY</option>
                                             <option value="MM/DD/YYYY">MM/DD/YYYY</option>
                                             <option value="YYYY-MM-DD">YYYY-MM-DD</option>
                                         </select>
@@ -2027,7 +2178,7 @@
                                     <div class="form-group">
                                         <label class="form-label">Currency</label>
                                         <select class="form-control" id="currency">
-                                            <option value="INR">Indian Rupee (₹)</option>
+                                            <option value="INR" selected>Indian Rupee (₹)</option>
                                             <option value="USD">US Dollar ($)</option>
                                             <option value="EUR">Euro (€)</option>
                                         </select>
@@ -2238,7 +2389,7 @@
             <div class="form-group">
                 <label class="form-label">Select Report Type</label>
                 <div class="whatsapp-options">
-                    <div class="whatsapp-option" data-report="daily">
+                    <div class="whatsapp-option active" data-report="daily">
                         <i class="fas fa-calendar-day"></i>
                         <h4>Daily Report</h4>
                         <p>Summary of today's activities</p>
@@ -2345,8 +2496,298 @@
                     </select>
                 </div>
                 
+                <div class="form-group">
+                    <label class="form-label">Current Status</label>
+                    <select class="form-control" id="vehicleStatus" required>
+                        <option value="active">Active</option>
+                        <option value="maintenance">Maintenance</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+                
                 <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px;">
                     <i class="fas fa-plus"></i> Add Vehicle
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Edit Vehicle Modal -->
+    <div class="modal" id="editVehicleModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Vehicle</h3>
+                <button class="close-modal" id="closeEditVehicleModal">&times;</button>
+            </div>
+            
+            <form id="editVehicleForm">
+                <input type="hidden" id="editVehicleId">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Vehicle Number</label>
+                        <input type="text" class="form-control" id="editVehicleNumber" placeholder="MH12AB1234" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Vehicle Type</label>
+                        <select class="form-control" id="editVehicleType" required>
+                            <option value="">Select Type</option>
+                            <option value="truck">Truck</option>
+                            <option value="container">Container</option>
+                            <option value="trailer">Trailer</option>
+                            <option value="mini_truck">Mini Truck</option>
+                            <option value="tempo">Tempo</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Capacity (in tons)</label>
+                        <input type="number" class="form-control" id="editVehicleCapacity" placeholder="10" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Fuel Type</label>
+                        <select class="form-control" id="editFuelType" required>
+                            <option value="diesel">Diesel</option>
+                            <option value="petrol">Petrol</option>
+                            <option value="cng">CNG</option>
+                            <option value="electric">Electric</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Registration Date</label>
+                        <input type="date" class="form-control" id="editRegistrationDate" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Insurance Expiry</label>
+                        <input type="date" class="form-control" id="editInsuranceExpiry" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Assigned Driver</label>
+                    <select class="form-control" id="editAssignedDriver">
+                        <option value="">Not Assigned</option>
+                        <!-- Drivers will be populated here -->
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Current Status</label>
+                    <select class="form-control" id="editVehicleStatus" required>
+                        <option value="active">Active</option>
+                        <option value="maintenance">Maintenance</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Current Location</label>
+                    <input type="text" class="form-control" id="editVehicleLocation" placeholder="Mumbai Highway">
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px;">
+                    <i class="fas fa-save"></i> Update Vehicle
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- View Vehicle Modal -->
+    <div class="modal" id="viewVehicleModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Vehicle Details</h3>
+                <button class="close-modal" id="closeViewVehicleModal">&times;</button>
+            </div>
+            
+            <div class="vehicle-details">
+                <div class="detail-row">
+                    <div class="detail-label">Vehicle Number:</div>
+                    <div class="detail-value" id="viewVehicleNumber">MH12AB1234</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Vehicle Type:</div>
+                    <div class="detail-value" id="viewVehicleType">Truck</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Capacity:</div>
+                    <div class="detail-value" id="viewVehicleCapacity">10 tons</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Fuel Type:</div>
+                    <div class="detail-value" id="viewFuelType">Diesel</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Assigned Driver:</div>
+                    <div class="detail-value" id="viewAssignedDriver">Rajesh Kumar</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Driver Contact:</div>
+                    <div class="detail-value" id="viewDriverContact">+91 98765 43210</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Current Location:</div>
+                    <div class="detail-value" id="viewVehicleLocation">Mumbai Highway</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Status:</div>
+                    <div class="detail-value">
+                        <span class="status-badge status-active" id="viewVehicleStatus">Active</span>
+                    </div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Registration Date:</div>
+                    <div class="detail-value" id="viewRegistrationDate">2022-01-15</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Insurance Expiry:</div>
+                    <div class="detail-value" id="viewInsuranceExpiry">2024-01-14</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Last Updated:</div>
+                    <div class="detail-value" id="viewLastUpdated">2023-11-15 10:30</div>
+                </div>
+            </div>
+            
+            <div class="action-buttons" style="justify-content: center; margin-top: 20px;">
+                <button class="btn-action btn-primary" id="editFromViewBtn">
+                    <i class="fas fa-edit"></i> Edit Vehicle
+                </button>
+                <button class="btn-action btn-danger" id="deleteFromViewBtn">
+                    <i class="fas fa-trash"></i> Delete Vehicle
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Confirm Delete Modal -->
+    <div class="modal confirm-modal" id="confirmDeleteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Confirm Delete</h3>
+                <button class="close-modal" id="closeConfirmModal">&times;</button>
+            </div>
+            
+            <div class="confirm-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            
+            <h4 style="text-align: center; margin-bottom: 15px;" id="deleteConfirmTitle">Are you sure you want to delete this vehicle?</h4>
+            <p style="text-align: center; color: var(--gray);" id="deleteConfirmMessage">This action cannot be undone. All data associated with this vehicle will be permanently deleted.</p>
+            
+            <div class="confirm-buttons">
+                <button class="btn-action btn-danger" id="confirmDeleteBtn">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+                <button class="btn-action btn-primary" id="cancelDeleteBtn">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add Trip Modal -->
+    <div class="modal" id="addTripModal">
+        <div class="modal-content trip-form-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Add New Trip</h3>
+                <button class="close-modal" id="closeTripModal">&times;</button>
+            </div>
+            
+            <form id="tripForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Vehicle</label>
+                        <select class="form-control" id="tripVehicle" required>
+                            <option value="">Select Vehicle</option>
+                            <!-- Vehicles will be populated here -->
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Driver</label>
+                        <select class="form-control" id="tripDriver" required>
+                            <option value="">Select Driver</option>
+                            <!-- Drivers will be populated here -->
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Start Point</label>
+                        <input type="text" class="form-control" id="tripStart" placeholder="Mumbai Warehouse" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Destination</label>
+                        <input type="text" class="form-control" id="tripDestination" placeholder="Delhi Distribution Center" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Departure Date & Time</label>
+                        <input type="datetime-local" class="form-control" id="tripDeparture" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Expected Arrival</label>
+                        <input type="datetime-local" class="form-control" id="tripArrival" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Total Distance (km)</label>
+                        <input type="number" class="form-control" id="tripDistance" placeholder="1400" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Estimated Fuel Cost (₹)</label>
+                        <input type="number" class="form-control" id="tripFuelCost" placeholder="25000" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Additional Stops (comma separated)</label>
+                    <input type="text" class="form-control" id="tripStops" placeholder="Pune, Nashik, Nagpur">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Trip Status</label>
+                    <select class="form-control" id="tripStatus" required>
+                        <option value="planned">Planned</option>
+                        <option value="in_progress">In Progress</option>
+                        <option value="completed">Completed</option>
+                        <option value="delayed">Delayed</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Notes</label>
+                    <textarea class="form-control" id="tripNotes" rows="3" placeholder="Any additional notes about this trip"></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px;">
+                    <i class="fas fa-plus"></i> Create Trip
                 </button>
             </form>
         </div>
@@ -2360,6 +2801,8 @@
             currentPage: 'dashboard',
             notifications: [],
             searchResults: [],
+            autoSaveTimer: null,
+            lastSaveTime: null,
             data: {
                 vehicles: [],
                 drivers: [],
@@ -2367,7 +2810,8 @@
                 pods: [],
                 routes: [],
                 events: [],
-                users: []
+                users: [],
+                activities: []
             },
             settings: {
                 autoSave: true,
@@ -2378,7 +2822,10 @@
                     whatsapp: true,
                     push: true
                 }
-            }
+            },
+            currentEditingId: null,
+            deleteItemType: null,
+            deleteItemId: null
         };
 
         // Demo Data
@@ -2394,7 +2841,9 @@
                     status: "active",
                     lastUpdated: "2023-11-15 10:30",
                     capacity: "10 tons",
-                    fuel: "Diesel"
+                    fuel: "Diesel",
+                    registrationDate: "2022-01-15",
+                    insuranceExpiry: "2024-01-14"
                 },
                 {
                     id: 2,
@@ -2406,7 +2855,9 @@
                     status: "active",
                     lastUpdated: "2023-11-15 09:45",
                     capacity: "20 tons",
-                    fuel: "Diesel"
+                    fuel: "Diesel",
+                    registrationDate: "2021-03-20",
+                    insuranceExpiry: "2023-12-31"
                 },
                 {
                     id: 3,
@@ -2418,7 +2869,9 @@
                     status: "maintenance",
                     lastUpdated: "2023-11-14 16:20",
                     capacity: "25 tons",
-                    fuel: "Diesel"
+                    fuel: "Diesel",
+                    registrationDate: "2020-11-10",
+                    insuranceExpiry: "2023-11-30"
                 },
                 {
                     id: 4,
@@ -2430,7 +2883,9 @@
                     status: "active",
                     lastUpdated: "2023-11-15 11:15",
                     capacity: "5 tons",
-                    fuel: "CNG"
+                    fuel: "CNG",
+                    registrationDate: "2023-01-05",
+                    insuranceExpiry: "2024-06-30"
                 }
             ],
             drivers: [
@@ -2481,7 +2936,9 @@
                     stops: 3,
                     distance: "1400 km",
                     eta: "2023-11-16 18:00",
-                    status: "in_progress"
+                    status: "in_progress",
+                    departure: "2023-11-15 06:30",
+                    fuelCost: "₹25,000"
                 },
                 {
                     id: 2,
@@ -2492,7 +2949,9 @@
                     stops: 2,
                     distance: "250 km",
                     eta: "2023-11-15 15:30",
-                    status: "completed"
+                    status: "completed",
+                    departure: "2023-11-15 05:00",
+                    fuelCost: "₹4,500"
                 }
             ],
             pods: [
@@ -2515,6 +2974,44 @@
                     uploadDate: "2023-11-15 10:20",
                     status: "pending",
                     document: "POD_5678.pdf"
+                }
+            ],
+            activities: [
+                {
+                    id: 1,
+                    time: "10:30 AM",
+                    vehicle: "MH12AB1234",
+                    driver: "Rajesh Kumar",
+                    activity: "Departure from Mumbai",
+                    location: "Mumbai Warehouse",
+                    status: "in_progress"
+                },
+                {
+                    id: 2,
+                    time: "09:45 AM",
+                    vehicle: "GJ05CD5678",
+                    driver: "Amit Sharma",
+                    activity: "Arrival at Delhi",
+                    location: "Delhi Distribution Center",
+                    status: "completed"
+                },
+                {
+                    id: 3,
+                    time: "Yesterday, 4:20 PM",
+                    vehicle: "RJ14EF9012",
+                    driver: "Vikram Singh",
+                    activity: "Maintenance Started",
+                    location: "Jaipur Service Center",
+                    status: "maintenance"
+                },
+                {
+                    id: 4,
+                    time: "Yesterday, 2:15 PM",
+                    vehicle: "DL08GH3456",
+                    driver: "Suresh Patel",
+                    activity: "POD Uploaded",
+                    location: "Noida Warehouse",
+                    status: "completed"
                 }
             ],
             notifications: [
@@ -2568,6 +3065,9 @@
         const toastMessage = document.getElementById('toastMessage');
         const userInfo = document.getElementById('userInfo');
         const userName = document.getElementById('userName');
+        const saveIndicator = document.getElementById('saveIndicator');
+        const autoSaveMessage = document.getElementById('autoSaveMessage');
+        const footerSyncTime = document.getElementById('footerSyncTime');
 
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
@@ -2576,6 +3076,7 @@
             initializeCharts();
             loadDemoData();
             updateNotificationBadge();
+            startAutoSave();
         });
 
         function checkLoginStatus() {
@@ -2602,6 +3103,9 @@
             appContainer.style.display = 'block';
             userName.textContent = AppState.currentUser?.name || 'Admin User';
             showPage('dashboard');
+            
+            // Load saved data if exists
+            loadSavedData();
         }
 
         function setupEventListeners() {
@@ -2670,8 +3174,7 @@
             // Quick actions
             document.getElementById('quickAddTrip').addEventListener('click', function(e) {
                 e.preventDefault();
-                showToast('Opening trip creation form...');
-                // In a real app, this would open the trip creation modal
+                openAddTripModal();
             });
 
             document.getElementById('quickReport').addEventListener('click', function(e) {
@@ -2684,10 +3187,15 @@
                 backupToDrive();
             });
 
+            document.getElementById('quickAddVehicle').addEventListener('click', function(e) {
+                e.preventDefault();
+                openAddVehicleModal();
+            });
+
             // Search functionality
             searchBox.addEventListener('input', function() {
                 const query = this.value.toLowerCase();
-                if (query.length > 2) {
+                if (query.length > 1) {
                     performSearch(query);
                 } else {
                     searchResults.classList.remove('active');
@@ -2695,7 +3203,7 @@
             });
 
             searchBox.addEventListener('focus', function() {
-                if (this.value.length > 2) {
+                if (this.value.length > 1) {
                     searchResults.classList.add('active');
                 }
             });
@@ -2719,9 +3227,9 @@
             document.querySelectorAll('.whatsapp-option').forEach(option => {
                 option.addEventListener('click', function() {
                     document.querySelectorAll('.whatsapp-option').forEach(o => {
-                        o.style.borderColor = 'transparent';
+                        o.classList.remove('active');
                     });
-                    this.style.borderColor = '#25D366';
+                    this.classList.add('active');
                     updateWhatsappMessage(this.dataset.report);
                 });
             });
@@ -2779,6 +3287,8 @@
             autoSaveInterval.addEventListener('input', function() {
                 intervalValue.textContent = this.value + ' minutes';
                 AppState.settings.autoSaveInterval = parseInt(this.value);
+                saveSettings();
+                restartAutoSave();
             });
 
             // Save settings
@@ -2787,8 +3297,165 @@
                 showToast('Settings saved successfully!');
             });
 
+            // Reset settings
+            document.getElementById('resetSettingsBtn').addEventListener('click', function() {
+                if (confirm('Are you sure you want to reset all settings to default?')) {
+                    resetSettings();
+                    showToast('Settings reset to default values.');
+                }
+            });
+
+            // Manual backup
+            document.getElementById('manualBackupBtn').addEventListener('click', function() {
+                backupToDrive();
+            });
+
+            // Connect Google Drive
+            document.getElementById('connectDriveBtn').addEventListener('click', function() {
+                showToast('Connecting to Google Drive...', 'warning');
+                setTimeout(() => {
+                    showToast('Successfully connected to Google Drive!', 'success');
+                }, 1500);
+            });
+
             // Initialize modals
             initializeModals();
+
+            // Dashboard refresh
+            document.getElementById('refreshDashboard').addEventListener('click', function() {
+                loadDashboardData();
+                showToast('Dashboard refreshed!');
+            });
+
+            // Dashboard export
+            document.getElementById('exportDashboard').addEventListener('click', function() {
+                exportDashboardData();
+            });
+
+            // Add activity
+            document.getElementById('addActivityBtn').addEventListener('click', function() {
+                showToast('Opening activity creation form...');
+                // In real app, open modal for adding activity
+            });
+
+            // Fleet management buttons
+            document.getElementById('addVehicleBtn').addEventListener('click', function() {
+                openAddVehicleModal();
+            });
+
+            document.getElementById('addDriverBtn').addEventListener('click', function() {
+                showToast('Opening driver creation form...');
+                // In real app, open modal for adding driver
+            });
+
+            document.getElementById('assignDriverBtn').addEventListener('click', function() {
+                showToast('Opening driver assignment form...');
+                // In real app, open modal for assigning driver
+            });
+
+            // Route planning buttons
+            document.getElementById('planRouteBtn').addEventListener('click', function() {
+                openAddTripModal();
+            });
+
+            document.getElementById('optimizeRoutesBtn').addEventListener('click', function() {
+                showToast('Optimizing all routes...', 'warning');
+                setTimeout(() => {
+                    showToast('Routes optimized successfully! Total distance reduced by 12%.', 'success');
+                }, 2000);
+            });
+
+            // POD management buttons
+            document.getElementById('uploadPODBtn').addEventListener('click', function() {
+                showToast('Opening POD upload form...');
+                // In real app, open modal for uploading POD
+            });
+
+            document.getElementById('verifyAllPODBtn').addEventListener('click', function() {
+                if (confirm('Are you sure you want to verify all pending PODs?')) {
+                    showToast('Verifying all PODs...', 'warning');
+                    setTimeout(() => {
+                        showToast('All PODs verified successfully!', 'success');
+                    }, 1500);
+                }
+            });
+
+            // Calendar buttons
+            document.getElementById('addEventBtn').addEventListener('click', function() {
+                showToast('Opening event creation form...');
+                // In real app, open modal for adding event
+            });
+
+            // Analytics buttons
+            document.getElementById('generateReportBtn').addEventListener('click', function() {
+                generateReport();
+            });
+
+            // User management
+            document.getElementById('addUserBtn').addEventListener('click', function() {
+                showToast('Opening user creation form...');
+                // In real app, open modal for adding user
+            });
+
+            // Fleet filters
+            document.getElementById('filterActive').addEventListener('click', function() {
+                filterFleetTable('active');
+            });
+
+            document.getElementById('filterAll').addEventListener('click', function() {
+                filterFleetTable('all');
+            });
+
+            document.getElementById('filterMaintenance').addEventListener('click', function() {
+                filterFleetTable('maintenance');
+            });
+
+            // POD filter
+            document.getElementById('podFilter').addEventListener('change', function() {
+                filterPODTable(this.value);
+            });
+
+            // Calendar navigation
+            document.getElementById('prevMonth').addEventListener('click', function() {
+                navigateCalendar(-1);
+            });
+
+            document.getElementById('nextMonth').addEventListener('click', function() {
+                navigateCalendar(1);
+            });
+
+            // Calendar view buttons
+            document.getElementById('viewMonth').addEventListener('click', function() {
+                setCalendarView('month');
+            });
+
+            document.getElementById('viewWeek').addEventListener('click', function() {
+                setCalendarView('week');
+            });
+
+            document.getElementById('viewDay').addEventListener('click', function() {
+                setCalendarView('day');
+            });
+
+            // Close all modals when clicking outside
+            document.addEventListener('click', function(e) {
+                const modals = document.querySelectorAll('.modal');
+                modals.forEach(modal => {
+                    if (e.target === modal) {
+                        modal.style.display = 'none';
+                    }
+                });
+            });
+
+            // Close modals with ESC key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    const modals = document.querySelectorAll('.modal');
+                    modals.forEach(modal => {
+                        modal.style.display = 'none';
+                    });
+                }
+            });
         }
 
         function showPage(page) {
@@ -2828,42 +3495,58 @@
         }
 
         function loadDashboardData() {
+            // Update dashboard cards
+            const activeVehicles = AppState.data.vehicles.filter(v => v.status === 'active').length;
+            const tripsToday = AppState.data.trips.filter(t => {
+                const today = new Date().toISOString().split('T')[0];
+                return t.departure && t.departure.includes(today);
+            }).length;
+            const deliveriesCompleted = AppState.data.pods.filter(p => p.status === 'verified').length;
+            const pendingPODs = AppState.data.pods.filter(p => p.status === 'pending').length;
+            
+            document.getElementById('activeVehicles').textContent = activeVehicles;
+            document.getElementById('tripsToday').textContent = tripsToday;
+            document.getElementById('deliveriesCompleted').textContent = deliveriesCompleted;
+            document.getElementById('pendingPODs').textContent = pendingPODs;
+            
             // Update recent activity table
             const table = document.getElementById('recentActivityTable');
-            table.innerHTML = `
-                <tr>
-                    <td>10:30 AM</td>
-                    <td>MH12AB1234</td>
-                    <td>Rajesh Kumar</td>
-                    <td>Departure from Mumbai</td>
-                    <td>Mumbai Warehouse</td>
-                    <td><span class="status-badge status-active">In Progress</span></td>
-                </tr>
-                <tr>
-                    <td>09:45 AM</td>
-                    <td>GJ05CD5678</td>
-                    <td>Amit Sharma</td>
-                    <td>Arrival at Delhi</td>
-                    <td>Delhi Distribution Center</td>
-                    <td><span class="status-badge status-active">Completed</span></td>
-                </tr>
-                <tr>
-                    <td>Yesterday, 4:20 PM</td>
-                    <td>RJ14EF9012</td>
-                    <td>Vikram Singh</td>
-                    <td>Maintenance Started</td>
-                    <td>Jaipur Service Center</td>
-                    <td><span class="status-badge status-inactive">Maintenance</span></td>
-                </tr>
-                <tr>
-                    <td>Yesterday, 2:15 PM</td>
-                    <td>DL08GH3456</td>
-                    <td>Suresh Patel</td>
-                    <td>POD Uploaded</td>
-                    <td>Noida Warehouse</td>
-                    <td><span class="status-badge status-active">Completed</span></td>
-                </tr>
-            `;
+            let tableHTML = '';
+            
+            AppState.data.activities.forEach(activity => {
+                const statusClass = activity.status === 'completed' ? 'status-active' : 
+                                  activity.status === 'in_progress' ? 'status-delayed' : 
+                                  'status-maintenance';
+                const statusText = activity.status === 'completed' ? 'Completed' : 
+                                 activity.status === 'in_progress' ? 'In Progress' : 
+                                 'Maintenance';
+                
+                tableHTML += `
+                    <tr>
+                        <td>${activity.time}</td>
+                        <td>${activity.vehicle}</td>
+                        <td>${activity.driver}</td>
+                        <td>${activity.activity}</td>
+                        <td>${activity.location}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-sm btn-view" onclick="viewActivity(${activity.id})">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-sm btn-edit" onclick="editActivity(${activity.id})">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-sm btn-delete" onclick="deleteActivity(${activity.id})">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            table.innerHTML = tableHTML;
         }
 
         function loadFleetData() {
@@ -2873,9 +3556,9 @@
             
             AppState.data.vehicles.forEach(vehicle => {
                 const statusClass = vehicle.status === 'active' ? 'status-active' : 
-                                  vehicle.status === 'maintenance' ? 'status-inactive' : 'status-delayed';
+                                  vehicle.status === 'maintenance' ? 'status-maintenance' : 'status-inactive';
                 const statusText = vehicle.status === 'active' ? 'Active' : 
-                                 vehicle.status === 'maintenance' ? 'Maintenance' : 'Delayed';
+                                 vehicle.status === 'maintenance' ? 'Maintenance' : 'Inactive';
                 
                 fleetHTML += `
                     <tr>
@@ -2930,6 +3613,9 @@
                                 <button class="btn-sm btn-edit" onclick="editDriver(${driver.id})">
                                     <i class="fas fa-edit"></i>
                                 </button>
+                                <button class="btn-sm btn-delete" onclick="deleteDriver(${driver.id})">
+                                    <i class="fas fa-trash"></i>
+                                </button>
                             </div>
                         </td>
                     </tr>
@@ -2937,6 +3623,27 @@
             });
             
             driversTable.innerHTML = driversHTML;
+        }
+
+        function filterFleetTable(status) {
+            const rows = document.querySelectorAll('#fleetTable tr');
+            rows.forEach(row => {
+                if (status === 'all') {
+                    row.style.display = '';
+                } else {
+                    const statusBadge = row.querySelector('.status-badge');
+                    if (statusBadge) {
+                        const rowStatus = statusBadge.textContent.toLowerCase();
+                        if (rowStatus.includes(status)) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    }
+                }
+            });
+            
+            showToast(`Showing ${status === 'all' ? 'all' : status} vehicles`);
         }
 
         function loadRouteData() {
@@ -2968,6 +3675,9 @@
                                 <button class="btn-sm btn-edit" onclick="editRoute(${trip.id})">
                                     <i class="fas fa-edit"></i>
                                 </button>
+                                <button class="btn-sm btn-delete" onclick="deleteRoute(${trip.id})">
+                                    <i class="fas fa-trash"></i>
+                                </button>
                             </div>
                         </td>
                     </tr>
@@ -2978,11 +3688,30 @@
         }
 
         function loadPODData() {
+            // Update POD stats
+            const totalPODs = AppState.data.pods.length;
+            const pendingVerification = AppState.data.pods.filter(p => p.status === 'pending').length;
+            const verifiedPODs = AppState.data.pods.filter(p => p.status === 'verified').length;
+            const rejectedPODs = AppState.data.pods.filter(p => p.status === 'rejected').length;
+            
+            document.getElementById('totalPODs').textContent = totalPODs;
+            document.getElementById('pendingVerification').textContent = pendingVerification;
+            document.getElementById('verifiedPODs').textContent = verifiedPODs;
+            document.getElementById('rejectedPODs').textContent = rejectedPODs || 0;
+            
             // Update POD table
+            filterPODTable('all');
+        }
+
+        function filterPODTable(status) {
             const podTable = document.getElementById('podTable');
             let podHTML = '';
             
-            AppState.data.pods.forEach(pod => {
+            const filteredPODs = status === 'all' ? 
+                AppState.data.pods : 
+                AppState.data.pods.filter(pod => pod.status === status);
+            
+            filteredPODs.forEach(pod => {
                 const statusClass = pod.status === 'verified' ? 'status-active' : 
                                   pod.status === 'pending' ? 'status-delayed' : 'status-inactive';
                 const statusText = pod.status === 'verified' ? 'Verified' : 
@@ -3003,8 +3732,14 @@
                                 <button class="btn-sm btn-view" onclick="viewPOD(${pod.id})">
                                     <i class="fas fa-eye"></i>
                                 </button>
-                                <button class="btn-sm btn-edit" onclick="verifyPOD(${pod.id})">
+                                <button class="btn-sm btn-verify" onclick="verifyPOD(${pod.id})">
                                     <i class="fas fa-check"></i>
+                                </button>
+                                <button class="btn-sm btn-edit" onclick="editPOD(${pod.id})">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-sm btn-delete" onclick="deletePOD(${pod.id})">
+                                    <i class="fas fa-trash"></i>
                                 </button>
                             </div>
                         </td>
@@ -3013,18 +3748,23 @@
             });
             
             podTable.innerHTML = podHTML;
+            
+            if (filteredPODs.length === 0) {
+                podTable.innerHTML = `
+                    <tr>
+                        <td colspan="9" style="text-align: center; padding: 30px; color: var(--gray);">
+                            <i class="fas fa-file-alt" style="font-size: 32px; margin-bottom: 10px;"></i>
+                            <p>No PODs found for selected filter</p>
+                        </td>
+                    </tr>
+                `;
+            }
         }
 
         function loadCalendarData() {
             // Generate calendar for current month
             const currentDate = new Date();
-            const currentMonth = document.getElementById('currentMonth');
-            currentMonth.textContent = currentDate.toLocaleDateString('en-US', { 
-                month: 'long', 
-                year: 'numeric' 
-            });
-            
-            generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+            updateCalendar(currentDate);
             
             // Update upcoming events
             const eventsTable = document.getElementById('upcomingEventsTable');
@@ -3068,45 +3808,31 @@
             `;
         }
 
-        function loadAnalyticsData() {
-            // Analytics data is loaded with charts
+        function updateCalendar(date) {
+            const currentMonth = document.getElementById('currentMonth');
+            currentMonth.textContent = date.toLocaleDateString('en-US', { 
+                month: 'long', 
+                year: 'numeric' 
+            });
+            
+            generateCalendar(date.getFullYear(), date.getMonth());
         }
 
-        function loadSettingsData() {
-            // Load users table
-            const usersTable = document.getElementById('usersTable');
-            usersTable.innerHTML = `
-                <tr>
-                    <td>USR001</td>
-                    <td>Admin User</td>
-                    <td>admin@shrinarayanlogistics.com</td>
-                    <td>Administrator</td>
-                    <td><span class="status-badge status-active">Active</span></td>
-                    <td>2023-11-15 10:30</td>
-                    <td>
-                        <div class="action-buttons">
-                            <button class="btn-sm btn-edit">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>USR002</td>
-                    <td>Fleet Manager</td>
-                    <td>fleet@shrinarayanlogistics.com</td>
-                    <td>Manager</td>
-                    <td><span class="status-badge status-active">Active</span></td>
-                    <td>2023-11-14 15:45</td>
-                    <td>
-                        <div class="action-buttons">
-                            <button class="btn-sm btn-edit">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            `;
+        function navigateCalendar(direction) {
+            const currentMonth = document.getElementById('currentMonth');
+            const currentDate = new Date(currentMonth.textContent + ' 1');
+            currentDate.setMonth(currentDate.getMonth() + direction);
+            updateCalendar(currentDate);
+        }
+
+        function setCalendarView(view) {
+            // Update active button
+            document.querySelectorAll('#calendarPage .btn-sm').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById('view' + view.charAt(0).toUpperCase() + view.slice(1)).classList.add('active');
+            
+            showToast(`Switched to ${view} view`);
         }
 
         function generateCalendar(year, month) {
@@ -3155,43 +3881,154 @@
             const events = [
                 { date: '2023-11-15', title: 'Vehicle Maintenance' },
                 { date: '2023-11-18', title: 'Driver Training' },
-                { date: '2023-11-20', title: 'Monthly Review' }
+                { date: '2023-11-20', title: 'Monthly Review' },
+                { date: '2023-11-25', title: 'Delivery to Delhi' }
             ];
             
             const dateStr = date.toISOString().split('T')[0];
             return events.filter(event => event.date === dateStr);
         }
 
+        function loadAnalyticsData() {
+            // Analytics data is loaded with charts
+        }
+
+        function loadSettingsData() {
+            // Load users table
+            const usersTable = document.getElementById('usersTable');
+            usersTable.innerHTML = `
+                <tr>
+                    <td>USR001</td>
+                    <td>Admin User</td>
+                    <td>admin@shrinarayanlogistics.com</td>
+                    <td>Administrator</td>
+                    <td><span class="status-badge status-active">Active</span></td>
+                    <td>2023-11-15 10:30</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-sm btn-edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-sm btn-delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>USR002</td>
+                    <td>Fleet Manager</td>
+                    <td>fleet@shrinarayanlogistics.com</td>
+                    <td>Manager</td>
+                    <td><span class="status-badge status-active">Active</span></td>
+                    <td>2023-11-14 15:45</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-sm btn-edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-sm btn-delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+            
+            // Load backup time
+            const lastBackup = localStorage.getItem('snl_lastBackup');
+            if (lastBackup) {
+                document.getElementById('lastBackupTime').textContent = new Date(lastBackup).toLocaleString();
+            }
+        }
+
         function performSearch(query) {
-            // Mock search results
-            const results = [
-                { type: 'Vehicle', title: 'Vehicle MH12AB1234', desc: 'Truck - Active - Rajesh Kumar' },
-                { type: 'Driver', title: 'Driver Rajesh Kumar', desc: 'Contact: +91 98765 43210' },
-                { type: 'Trip', title: 'Trip to Delhi', desc: 'Vehicle: MH12AB1234 - In Progress' },
-                { type: 'Location', title: 'Mumbai Warehouse', desc: 'Last delivery: 2023-11-15' }
-            ].filter(item => 
-                item.title.toLowerCase().includes(query) || 
-                item.desc.toLowerCase().includes(query)
-            );
+            // Search across all data
+            const results = [];
+            
+            // Search vehicles
+            AppState.data.vehicles.forEach(vehicle => {
+                if (vehicle.number.toLowerCase().includes(query) || 
+                    vehicle.driver.toLowerCase().includes(query) ||
+                    vehicle.location.toLowerCase().includes(query)) {
+                    results.push({
+                        type: 'Vehicle',
+                        title: `Vehicle ${vehicle.number}`,
+                        desc: `${vehicle.type} - ${vehicle.driver} - ${vehicle.location}`,
+                        id: vehicle.id,
+                        action: () => viewVehicle(vehicle.id)
+                    });
+                }
+            });
+            
+            // Search drivers
+            AppState.data.drivers.forEach(driver => {
+                if (driver.name.toLowerCase().includes(query) || 
+                    driver.contact.includes(query)) {
+                    results.push({
+                        type: 'Driver',
+                        title: `Driver ${driver.name}`,
+                        desc: `${driver.contact} - ${driver.experience}`,
+                        id: driver.id,
+                        action: () => viewDriver(driver.id)
+                    });
+                }
+            });
+            
+            // Search trips
+            AppState.data.trips.forEach(trip => {
+                if (trip.vehicle.toLowerCase().includes(query) || 
+                    trip.driver.toLowerCase().includes(query) ||
+                    trip.start.toLowerCase().includes(query) ||
+                    trip.destination.toLowerCase().includes(query)) {
+                    results.push({
+                        type: 'Trip',
+                        title: `Trip to ${trip.destination}`,
+                        desc: `${trip.vehicle} - ${trip.driver} - ${trip.status}`,
+                        id: trip.id,
+                        action: () => viewRoute(trip.id)
+                    });
+                }
+            });
             
             AppState.searchResults = results;
             displaySearchResults();
         }
 
         function displaySearchResults() {
+            const searchResults = document.getElementById('searchResults');
+            
             if (AppState.searchResults.length === 0) {
                 searchResults.innerHTML = '<div class="search-result-item">No results found</div>';
             } else {
                 let resultsHTML = '';
                 AppState.searchResults.forEach(result => {
                     resultsHTML += `
-                        <div class="search-result-item">
+                        <div class="search-result-item" data-id="${result.id}" data-type="${result.type}">
                             <div class="search-result-title">${result.title}</div>
-                            <div class="search-result-desc">${result.desc}</div>
+                            <div class="search-result-desc">${result.type} • ${result.desc}</div>
                         </div>
                     `;
                 });
                 searchResults.innerHTML = resultsHTML;
+                
+                // Add click event to search results
+                document.querySelectorAll('.search-result-item').forEach(item => {
+                    item.addEventListener('click', function() {
+                        const id = parseInt(this.dataset.id);
+                        const type = this.dataset.type;
+                        
+                        // Execute the corresponding action
+                        const result = AppState.searchResults.find(r => r.id === id && r.type === type);
+                        if (result && result.action) {
+                            result.action();
+                        }
+                        
+                        // Close search results
+                        searchResults.classList.remove('active');
+                        searchBox.value = '';
+                    });
+                });
             }
             searchResults.classList.add('active');
         }
@@ -3216,6 +4053,7 @@
             });
             updateNotificationBadge();
             updateNotificationList();
+            showToast('All notifications marked as read');
         }
 
         function updateNotificationList() {
@@ -3245,32 +4083,39 @@
                 case 'daily':
                     message = `📊 *Daily Logistics Report*\n\n` +
                              `*Date:* ${new Date().toLocaleDateString()}\n` +
-                             `*Active Vehicles:* 24\n` +
-                             `*Trips Today:* 156\n` +
-                             `*Deliveries Completed:* 1,234\n` +
-                             `*Pending PODs:* 42\n\n` +
+                             `*Active Vehicles:* ${AppState.data.vehicles.filter(v => v.status === 'active').length}\n` +
+                             `*Trips Today:* ${AppState.data.trips.length}\n` +
+                             `*Deliveries Completed:* ${AppState.data.pods.filter(p => p.status === 'verified').length}\n` +
+                             `*Pending PODs:* ${AppState.data.pods.filter(p => p.status === 'pending').length}\n\n` +
                              `*Top Performer:* Rajesh Kumar (MH12AB1234)\n` +
                              `*On-Time Delivery Rate:* 94.2%\n\n` +
                              `_Report generated by Shri Narayan Logistics System_`;
                     break;
                 case 'vehicle':
-                    message = `🚚 *Vehicle Status Report*\n\n` +
-                             `*MH12AB1234:* Active - Mumbai Highway\n` +
-                             `*GJ05CD5678:* Active - Delhi Warehouse\n` +
-                             `*RJ14EF9012:* Maintenance - Jaipur Depot\n` +
-                             `*DL08GH3456:* Active - Noida\n\n` +
-                             `_Last updated: ${new Date().toLocaleTimeString()}_`;
+                    const activeVehicles = AppState.data.vehicles.filter(v => v.status === 'active');
+                    message = `🚚 *Vehicle Status Report*\n\n`;
+                    activeVehicles.forEach(vehicle => {
+                        message += `*${vehicle.number}:* ${vehicle.status} - ${vehicle.location}\n`;
+                    });
+                    message += `\n_Last updated: ${new Date().toLocaleTimeString()}_`;
                     break;
                 case 'delivery':
-                    message = `📦 *Delivery Update*\n\n` +
-                             `*Delivery #4567:* In Transit\n` +
-                             `*Vehicle:* MH12AB1234\n` +
-                             `*Driver:* Rajesh Kumar\n` +
-                             `*ETA:* Today, 6:00 PM\n` +
-                             `*Current Location:* Mumbai-Pune Highway\n\n` +
-                             `*Next Stop:* Pune Warehouse\n` +
-                             `*Distance Remaining:* 150 km\n\n` +
-                             `_Track live: https://shrinarayan.com/track/4567_`;
+                    const activeTrip = AppState.data.trips.find(t => t.status === 'in_progress');
+                    if (activeTrip) {
+                        message = `📦 *Delivery Update*\n\n` +
+                                 `*Delivery #${activeTrip.id}:* In Transit\n` +
+                                 `*Vehicle:* ${activeTrip.vehicle}\n` +
+                                 `*Driver:* ${activeTrip.driver}\n` +
+                                 `*ETA:* ${activeTrip.eta}\n` +
+                                 `*Current Location:* ${AppState.data.vehicles.find(v => v.number === activeTrip.vehicle)?.location || 'Unknown'}\n\n` +
+                                 `*Next Stop:* ${activeTrip.destination}\n` +
+                                 `*Distance Remaining:* ${activeTrip.distance}\n\n` +
+                                 `_Track live: https://shrinarayan.com/track/${activeTrip.id}_`;
+                    } else {
+                        message = `📦 *Delivery Update*\n\n` +
+                                 `No active deliveries at the moment.\n` +
+                                 `All deliveries have been completed for today.`;
+                    }
                     break;
                 case 'emergency':
                     message = `⚠️ *EMERGENCY ALERT*\n\n` +
@@ -3300,10 +4145,10 @@
                     ['Generated on:', new Date().toLocaleString(), '', ''],
                     ['', '', '', ''],
                     ['Category', 'Count', 'Change', 'Status'],
-                    ['Active Vehicles', '24', '+12%', 'Good'],
-                    ['Trips Today', '156', '+8%', 'Good'],
-                    ['Deliveries Completed', '1,234', '+15%', 'Excellent'],
-                    ['Pending PODs', '42', '-5%', 'Improving'],
+                    ['Active Vehicles', AppState.data.vehicles.filter(v => v.status === 'active').length, '+12%', 'Good'],
+                    ['Trips Today', AppState.data.trips.length, '+8%', 'Good'],
+                    ['Deliveries Completed', AppState.data.pods.filter(p => p.status === 'verified').length, '+15%', 'Excellent'],
+                    ['Pending PODs', AppState.data.pods.filter(p => p.status === 'pending').length, '-5%', 'Improving'],
                     ['On-Time Delivery Rate', '94.2%', '+2.1%', 'Excellent'],
                     ['Vehicle Utilization', '78.5%', '-3.2%', 'Needs Attention'],
                     ['Fuel Efficiency', '8.7 km/l', '+0.3 km/l', 'Good'],
@@ -3323,13 +4168,19 @@
                 hideLoading();
                 showToast('Backup completed successfully! Data saved to Google Drive.');
                 
-                // Simulate backup
+                // Save backup timestamp
+                localStorage.setItem('snl_lastBackup', new Date().toISOString());
+                document.getElementById('lastBackupTime').textContent = new Date().toLocaleString();
+                
+                // Create backup data
                 const backupData = {
                     timestamp: new Date().toISOString(),
                     data: AppState.data,
-                    settings: AppState.settings
+                    settings: AppState.settings,
+                    user: AppState.currentUser
                 };
                 
+                // Create downloadable file
                 const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
@@ -3346,30 +4197,118 @@
             // Save settings to localStorage
             localStorage.setItem('snl_settings', JSON.stringify(AppState.settings));
             
-            // Update auto-save interval
-            if (AppState.settings.autoSave) {
-                clearInterval(window.autoSaveTimer);
-                window.autoSaveTimer = setInterval(() => {
-                    if (AppState.settings.autoSave) {
-                        autoSave();
-                    }
-                }, AppState.settings.autoSaveInterval * 60000);
+            // Update UI
+            showAutoSaveMessage('Settings saved successfully!');
+        }
+
+        function resetSettings() {
+            AppState.settings = {
+                autoSave: true,
+                autoSaveInterval: 5,
+                notifications: {
+                    email: true,
+                    sms: false,
+                    whatsapp: true,
+                    push: true
+                }
+            };
+            
+            // Update UI
+            document.getElementById('autoSaveInterval').value = 5;
+            document.getElementById('intervalValue').textContent = '5 minutes';
+            document.getElementById('emailNotifications').checked = true;
+            document.getElementById('smsNotifications').checked = false;
+            document.getElementById('whatsappNotifications').checked = true;
+            document.getElementById('pushNotifications').checked = true;
+            
+            saveSettings();
+            restartAutoSave();
+        }
+
+        function startAutoSave() {
+            // Clear existing timer
+            if (AppState.autoSaveTimer) {
+                clearInterval(AppState.autoSaveTimer);
             }
+            
+            // Start new timer
+            AppState.autoSaveTimer = setInterval(() => {
+                if (AppState.settings.autoSave) {
+                    autoSave();
+                }
+            }, AppState.settings.autoSaveInterval * 60000);
+            
+            // Initial save
+            autoSave();
+        }
+
+        function restartAutoSave() {
+            startAutoSave();
+            showToast('Auto-save interval updated');
         }
 
         function autoSave() {
-            const backupData = {
+            // Save all data to localStorage
+            const saveData = {
                 timestamp: new Date().toISOString(),
                 data: AppState.data,
                 settings: AppState.settings
             };
             
-            localStorage.setItem('snl_autosave', JSON.stringify(backupData));
+            localStorage.setItem('snl_data', JSON.stringify(saveData));
             
-            // Update footer
-            const now = new Date();
-            document.getElementById('footerSyncTime').textContent = 
-                now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            // Update last save time
+            AppState.lastSaveTime = new Date();
+            const timeStr = AppState.lastSaveTime.toLocaleTimeString([], { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            
+            footerSyncTime.textContent = timeStr;
+            
+            // Show auto-save message
+            showAutoSaveMessage('Data auto-saved successfully');
+        }
+
+        function loadSavedData() {
+            const savedData = localStorage.getItem('snl_data');
+            if (savedData) {
+                try {
+                    const parsedData = JSON.parse(savedData);
+                    if (parsedData.data) {
+                        // Merge saved data with demo data
+                        AppState.data = { ...AppState.data, ...parsedData.data };
+                        showToast('Saved data loaded successfully');
+                    }
+                    if (parsedData.settings) {
+                        AppState.settings = parsedData.settings;
+                        
+                        // Update UI
+                        document.getElementById('autoSaveInterval').value = AppState.settings.autoSaveInterval;
+                        document.getElementById('intervalValue').textContent = AppState.settings.autoSaveInterval + ' minutes';
+                    }
+                    
+                    if (parsedData.timestamp) {
+                        const saveTime = new Date(parsedData.timestamp);
+                        footerSyncTime.textContent = saveTime.toLocaleTimeString([], { 
+                            hour: '2-digit', 
+                            minute: '2-digit'
+                        });
+                    }
+                } catch (e) {
+                    console.error('Error loading saved data:', e);
+                }
+            }
+        }
+
+        function showAutoSaveMessage(message) {
+            autoSaveMessage.querySelector('span').textContent = message;
+            autoSaveMessage.classList.add('show');
+            
+            setTimeout(() => {
+                autoSaveMessage.classList.remove('show');
+            }, 3000);
         }
 
         function showLoading() {
@@ -3398,12 +4337,627 @@
         }
 
         function loadDemoData() {
+            // Load demo data if no saved data exists
             AppState.data.vehicles = demoData.vehicles;
             AppState.data.drivers = demoData.drivers;
             AppState.data.trips = demoData.trips;
             AppState.data.pods = demoData.pods;
+            AppState.data.activities = demoData.activities;
             AppState.notifications = demoData.notifications;
             updateNotificationList();
+        }
+
+        function initializeModals() {
+            // Add Vehicle Modal
+            const addVehicleBtn = document.getElementById('addVehicleBtn');
+            const addVehicleModal = document.getElementById('addVehicleModal');
+            const closeVehicleModal = document.getElementById('closeVehicleModal');
+            const vehicleForm = document.getElementById('vehicleForm');
+            
+            if (addVehicleBtn && addVehicleModal) {
+                addVehicleBtn.addEventListener('click', () => {
+                    // Set default dates
+                    const today = new Date();
+                    const nextYear = new Date(today);
+                    nextYear.setFullYear(nextYear.getFullYear() + 1);
+                    
+                    document.getElementById('registrationDate').valueAsDate = today;
+                    document.getElementById('insuranceExpiry').valueAsDate = nextYear;
+                    
+                    // Populate drivers dropdown
+                    const driverSelect = document.getElementById('assignedDriver');
+                    driverSelect.innerHTML = '<option value="">Not Assigned</option>';
+                    AppState.data.drivers.forEach(driver => {
+                        if (driver.status === 'active') {
+                            const option = document.createElement('option');
+                            option.value = driver.id;
+                            option.textContent = `${driver.name} (${driver.contact})`;
+                            driverSelect.appendChild(option);
+                        }
+                    });
+                    
+                    addVehicleModal.style.display = 'flex';
+                });
+                
+                closeVehicleModal.addEventListener('click', () => {
+                    addVehicleModal.style.display = 'none';
+                });
+                
+                vehicleForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const newVehicle = {
+                        id: AppState.data.vehicles.length + 1,
+                        number: document.getElementById('vehicleNumber').value,
+                        type: document.getElementById('vehicleType').value,
+                        capacity: document.getElementById('vehicleCapacity').value + ' tons',
+                        fuel: document.getElementById('fuelType').value,
+                        registrationDate: document.getElementById('registrationDate').value,
+                        insuranceExpiry: document.getElementById('insuranceExpiry').value,
+                        status: document.getElementById('vehicleStatus').value,
+                        driver: '',
+                        contact: '',
+                        location: 'Not assigned',
+                        lastUpdated: new Date().toLocaleString('en-IN', { 
+                            year: 'numeric', 
+                            month: '2-digit', 
+                            day: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        })
+                    };
+                    
+                    // Assign driver if selected
+                    const driverId = document.getElementById('assignedDriver').value;
+                    if (driverId) {
+                        const driver = AppState.data.drivers.find(d => d.id == driverId);
+                        if (driver) {
+                            newVehicle.driver = driver.name;
+                            newVehicle.contact = driver.contact;
+                        }
+                    }
+                    
+                    AppState.data.vehicles.push(newVehicle);
+                    addVehicleModal.style.display = 'none';
+                    vehicleForm.reset();
+                    
+                    showToast(`Vehicle ${newVehicle.number} added successfully!`);
+                    loadFleetData();
+                    loadDashboardData();
+                    autoSave();
+                });
+            }
+            
+            // Edit Vehicle Modal
+            const editVehicleModal = document.getElementById('editVehicleModal');
+            const closeEditVehicleModal = document.getElementById('closeEditVehicleModal');
+            const editVehicleForm = document.getElementById('editVehicleForm');
+            
+            if (editVehicleModal) {
+                closeEditVehicleModal.addEventListener('click', () => {
+                    editVehicleModal.style.display = 'none';
+                });
+                
+                editVehicleForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const vehicleId = parseInt(document.getElementById('editVehicleId').value);
+                    const vehicleIndex = AppState.data.vehicles.findIndex(v => v.id === vehicleId);
+                    
+                    if (vehicleIndex !== -1) {
+                        const updatedVehicle = {
+                            ...AppState.data.vehicles[vehicleIndex],
+                            number: document.getElementById('editVehicleNumber').value,
+                            type: document.getElementById('editVehicleType').value,
+                            capacity: document.getElementById('editVehicleCapacity').value + ' tons',
+                            fuel: document.getElementById('editFuelType').value,
+                            registrationDate: document.getElementById('editRegistrationDate').value,
+                            insuranceExpiry: document.getElementById('editInsuranceExpiry').value,
+                            status: document.getElementById('editVehicleStatus').value,
+                            location: document.getElementById('editVehicleLocation').value,
+                            lastUpdated: new Date().toLocaleString('en-IN', { 
+                                year: 'numeric', 
+                                month: '2-digit', 
+                                day: '2-digit',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            })
+                        };
+                        
+                        // Assign driver if selected
+                        const driverId = document.getElementById('editAssignedDriver').value;
+                        if (driverId) {
+                            const driver = AppState.data.drivers.find(d => d.id == driverId);
+                            if (driver) {
+                                updatedVehicle.driver = driver.name;
+                                updatedVehicle.contact = driver.contact;
+                            }
+                        } else {
+                            updatedVehicle.driver = '';
+                            updatedVehicle.contact = '';
+                        }
+                        
+                        AppState.data.vehicles[vehicleIndex] = updatedVehicle;
+                        editVehicleModal.style.display = 'none';
+                        
+                        showToast(`Vehicle ${updatedVehicle.number} updated successfully!`);
+                        loadFleetData();
+                        loadDashboardData();
+                        autoSave();
+                    }
+                });
+            }
+            
+            // View Vehicle Modal
+            const viewVehicleModal = document.getElementById('viewVehicleModal');
+            const closeViewVehicleModal = document.getElementById('closeViewVehicleModal');
+            
+            if (viewVehicleModal) {
+                closeViewVehicleModal.addEventListener('click', () => {
+                    viewVehicleModal.style.display = 'none';
+                });
+                
+                // Edit from view button
+                document.getElementById('editFromViewBtn').addEventListener('click', function() {
+                    viewVehicleModal.style.display = 'none';
+                    editVehicle(AppState.currentEditingId);
+                });
+                
+                // Delete from view button
+                document.getElementById('deleteFromViewBtn').addEventListener('click', function() {
+                    viewVehicleModal.style.display = 'none';
+                    confirmDelete('vehicle', AppState.currentEditingId);
+                });
+            }
+            
+            // Confirm Delete Modal
+            const confirmDeleteModal = document.getElementById('confirmDeleteModal');
+            const closeConfirmModal = document.getElementById('closeConfirmModal');
+            const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+            const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+            
+            if (confirmDeleteModal) {
+                closeConfirmModal.addEventListener('click', () => {
+                    confirmDeleteModal.style.display = 'none';
+                });
+                
+                cancelDeleteBtn.addEventListener('click', () => {
+                    confirmDeleteModal.style.display = 'none';
+                });
+                
+                confirmDeleteBtn.addEventListener('click', function() {
+                    if (AppState.deleteItemType && AppState.deleteItemId !== null) {
+                        deleteItem(AppState.deleteItemType, AppState.deleteItemId);
+                        confirmDeleteModal.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Add Trip Modal
+            const addTripModal = document.getElementById('addTripModal');
+            const closeTripModal = document.getElementById('closeTripModal');
+            const tripForm = document.getElementById('tripForm');
+            
+            if (addTripModal) {
+                closeTripModal.addEventListener('click', () => {
+                    addTripModal.style.display = 'none';
+                });
+                
+                tripForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const vehicleNumber = document.getElementById('tripVehicle').value;
+                    const driverName = document.getElementById('tripDriver').value;
+                    const vehicle = AppState.data.vehicles.find(v => v.number === vehicleNumber);
+                    const driver = AppState.data.drivers.find(d => d.name === driverName);
+                    
+                    const newTrip = {
+                        id: AppState.data.trips.length + 1,
+                        vehicle: vehicleNumber,
+                        driver: driverName,
+                        start: document.getElementById('tripStart').value,
+                        destination: document.getElementById('tripDestination').value,
+                        stops: document.getElementById('tripStops').value ? 
+                               document.getElementById('tripStops').value.split(',').length : 0,
+                        distance: document.getElementById('tripDistance').value + ' km',
+                        eta: document.getElementById('tripArrival').value,
+                        status: document.getElementById('tripStatus').value,
+                        departure: document.getElementById('tripDeparture').value,
+                        fuelCost: '₹' + document.getElementById('tripFuelCost').value
+                    };
+                    
+                    AppState.data.trips.push(newTrip);
+                    
+                    // Add activity
+                    const newActivity = {
+                        id: AppState.data.activities.length + 1,
+                        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                        vehicle: vehicleNumber,
+                        driver: driverName,
+                        activity: `New trip to ${newTrip.destination}`,
+                        location: newTrip.start,
+                        status: 'in_progress'
+                    };
+                    
+                    AppState.data.activities.unshift(newActivity);
+                    
+                    addTripModal.style.display = 'none';
+                    tripForm.reset();
+                    
+                    showToast(`New trip to ${newTrip.destination} created successfully!`);
+                    loadRouteData();
+                    loadDashboardData();
+                    autoSave();
+                });
+            }
+        }
+
+        function openAddVehicleModal() {
+            const addVehicleModal = document.getElementById('addVehicleModal');
+            if (addVehicleModal) {
+                // Set default dates
+                const today = new Date();
+                const nextYear = new Date(today);
+                nextYear.setFullYear(nextYear.getFullYear() + 1);
+                
+                document.getElementById('registrationDate').valueAsDate = today;
+                document.getElementById('insuranceExpiry').valueAsDate = nextYear;
+                
+                // Populate drivers dropdown
+                const driverSelect = document.getElementById('assignedDriver');
+                driverSelect.innerHTML = '<option value="">Not Assigned</option>';
+                AppState.data.drivers.forEach(driver => {
+                    if (driver.status === 'active') {
+                        const option = document.createElement('option');
+                        option.value = driver.id;
+                        option.textContent = `${driver.name} (${driver.contact})`;
+                        driverSelect.appendChild(option);
+                    }
+                });
+                
+                addVehicleModal.style.display = 'flex';
+            }
+        }
+
+        function openAddTripModal() {
+            const addTripModal = document.getElementById('addTripModal');
+            if (addTripModal) {
+                // Populate vehicles dropdown
+                const vehicleSelect = document.getElementById('tripVehicle');
+                vehicleSelect.innerHTML = '<option value="">Select Vehicle</option>';
+                AppState.data.vehicles.forEach(vehicle => {
+                    if (vehicle.status === 'active') {
+                        const option = document.createElement('option');
+                        option.value = vehicle.number;
+                        option.textContent = `${vehicle.number} (${vehicle.driver})`;
+                        vehicleSelect.appendChild(option);
+                    }
+                });
+                
+                // Populate drivers dropdown
+                const driverSelect = document.getElementById('tripDriver');
+                driverSelect.innerHTML = '<option value="">Select Driver</option>';
+                AppState.data.drivers.forEach(driver => {
+                    if (driver.status === 'active') {
+                        const option = document.createElement('option');
+                        option.value = driver.name;
+                        option.textContent = `${driver.name} (${driver.contact})`;
+                        driverSelect.appendChild(option);
+                    }
+                });
+                
+                // Set default dates
+                const now = new Date();
+                const tomorrow = new Date(now);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                
+                document.getElementById('tripDeparture').value = formatDateTimeLocal(now);
+                document.getElementById('tripArrival').value = formatDateTimeLocal(tomorrow);
+                
+                addTripModal.style.display = 'flex';
+            }
+        }
+
+        function formatDateTimeLocal(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            
+            return `${year}-${month}-${day}T${hours}:${minutes}`;
+        }
+
+        // Vehicle Functions
+        window.viewVehicle = function(id) {
+            const vehicle = AppState.data.vehicles.find(v => v.id === id);
+            if (vehicle) {
+                AppState.currentEditingId = id;
+                
+                // Populate view modal
+                document.getElementById('viewVehicleNumber').textContent = vehicle.number;
+                document.getElementById('viewVehicleType').textContent = vehicle.type;
+                document.getElementById('viewVehicleCapacity').textContent = vehicle.capacity;
+                document.getElementById('viewFuelType').textContent = vehicle.fuel;
+                document.getElementById('viewAssignedDriver').textContent = vehicle.driver || 'Not assigned';
+                document.getElementById('viewDriverContact').textContent = vehicle.contact || 'N/A';
+                document.getElementById('viewVehicleLocation').textContent = vehicle.location;
+                document.getElementById('viewRegistrationDate').textContent = vehicle.registrationDate;
+                document.getElementById('viewInsuranceExpiry').textContent = vehicle.insuranceExpiry;
+                document.getElementById('viewLastUpdated').textContent = vehicle.lastUpdated;
+                
+                // Update status badge
+                const statusBadge = document.getElementById('viewVehicleStatus');
+                statusBadge.textContent = vehicle.status === 'active' ? 'Active' : 
+                                         vehicle.status === 'maintenance' ? 'Maintenance' : 'Inactive';
+                statusBadge.className = 'status-badge ' + 
+                    (vehicle.status === 'active' ? 'status-active' : 
+                     vehicle.status === 'maintenance' ? 'status-maintenance' : 'status-inactive');
+                
+                // Show modal
+                document.getElementById('viewVehicleModal').style.display = 'flex';
+            }
+        };
+
+        window.editVehicle = function(id) {
+            const vehicle = AppState.data.vehicles.find(v => v.id === id);
+            if (vehicle) {
+                AppState.currentEditingId = id;
+                
+                // Populate edit form
+                document.getElementById('editVehicleId').value = vehicle.id;
+                document.getElementById('editVehicleNumber').value = vehicle.number;
+                document.getElementById('editVehicleType').value = vehicle.type;
+                document.getElementById('editVehicleCapacity').value = vehicle.capacity.replace(' tons', '');
+                document.getElementById('editFuelType').value = vehicle.fuel;
+                document.getElementById('editRegistrationDate').value = vehicle.registrationDate;
+                document.getElementById('editInsuranceExpiry').value = vehicle.insuranceExpiry;
+                document.getElementById('editVehicleStatus').value = vehicle.status;
+                document.getElementById('editVehicleLocation').value = vehicle.location;
+                
+                // Populate drivers dropdown
+                const driverSelect = document.getElementById('editAssignedDriver');
+                driverSelect.innerHTML = '<option value="">Not Assigned</option>';
+                AppState.data.drivers.forEach(driver => {
+                    const option = document.createElement('option');
+                    option.value = driver.id;
+                    option.textContent = `${driver.name} (${driver.contact})`;
+                    if (driver.name === vehicle.driver) {
+                        option.selected = true;
+                    }
+                    driverSelect.appendChild(option);
+                });
+                
+                // Show modal
+                document.getElementById('editVehicleModal').style.display = 'flex';
+            }
+        };
+
+        window.deleteVehicle = function(id) {
+            confirmDelete('vehicle', id);
+        };
+
+        // Driver Functions
+        window.viewDriver = function(id) {
+            const driver = AppState.data.drivers.find(d => d.id === id);
+            if (driver) {
+                showToast(`Viewing driver: ${driver.name}`);
+                // In real app, open driver details modal
+            }
+        };
+
+        window.editDriver = function(id) {
+            const driver = AppState.data.drivers.find(d => d.id === id);
+            if (driver) {
+                showToast(`Editing driver: ${driver.name}`);
+                // In real app, open driver edit modal
+            }
+        };
+
+        window.deleteDriver = function(id) {
+            confirmDelete('driver', id);
+        };
+
+        // Route Functions
+        window.viewRoute = function(id) {
+            const trip = AppState.data.trips.find(t => t.id === id);
+            if (trip) {
+                showToast(`Viewing trip to ${trip.destination}`);
+                // In real app, open trip details modal
+            }
+        };
+
+        window.editRoute = function(id) {
+            const trip = AppState.data.trips.find(t => t.id === id);
+            if (trip) {
+                showToast(`Editing trip to ${trip.destination}`);
+                // In real app, open trip edit modal
+            }
+        };
+
+        window.deleteRoute = function(id) {
+            confirmDelete('trip', id);
+        };
+
+        // POD Functions
+        window.viewPOD = function(id) {
+            const pod = AppState.data.pods.find(p => p.id === id);
+            if (pod) {
+                showToast(`Viewing POD for ${pod.customer}`);
+                // In real app, open POD details modal
+            }
+        };
+
+        window.verifyPOD = function(id) {
+            const podIndex = AppState.data.pods.findIndex(p => p.id === id);
+            if (podIndex !== -1) {
+                AppState.data.pods[podIndex].status = 'verified';
+                showToast('POD verified successfully!');
+                loadPODData();
+                loadDashboardData();
+                autoSave();
+            }
+        };
+
+        window.editPOD = function(id) {
+            const pod = AppState.data.pods.find(p => p.id === id);
+            if (pod) {
+                showToast(`Editing POD for ${pod.customer}`);
+                // In real app, open POD edit modal
+            }
+        };
+
+        window.deletePOD = function(id) {
+            confirmDelete('pod', id);
+        };
+
+        // Activity Functions
+        window.viewActivity = function(id) {
+            const activity = AppState.data.activities.find(a => a.id === id);
+            if (activity) {
+                showToast(`Viewing activity: ${activity.activity}`);
+                // In real app, open activity details modal
+            }
+        };
+
+        window.editActivity = function(id) {
+            const activity = AppState.data.activities.find(a => a.id === id);
+            if (activity) {
+                showToast(`Editing activity: ${activity.activity}`);
+                // In real app, open activity edit modal
+            }
+        };
+
+        window.deleteActivity = function(id) {
+            confirmDelete('activity', id);
+        };
+
+        // Delete Functions
+        function confirmDelete(type, id) {
+            AppState.deleteItemType = type;
+            AppState.deleteItemId = id;
+            
+            let title = '';
+            let message = '';
+            
+            switch(type) {
+                case 'vehicle':
+                    const vehicle = AppState.data.vehicles.find(v => v.id === id);
+                    title = `Delete Vehicle ${vehicle?.number}`;
+                    message = `Are you sure you want to delete vehicle ${vehicle?.number}? This action cannot be undone.`;
+                    break;
+                case 'driver':
+                    const driver = AppState.data.drivers.find(d => d.id === id);
+                    title = `Delete Driver ${driver?.name}`;
+                    message = `Are you sure you want to delete driver ${driver?.name}? This action cannot be undone.`;
+                    break;
+                case 'trip':
+                    const trip = AppState.data.trips.find(t => t.id === id);
+                    title = `Delete Trip to ${trip?.destination}`;
+                    message = `Are you sure you want to delete the trip to ${trip?.destination}? This action cannot be undone.`;
+                    break;
+                case 'pod':
+                    const pod = AppState.data.pods.find(p => p.id === id);
+                    title = `Delete POD for ${pod?.customer}`;
+                    message = `Are you sure you want to delete the POD for ${pod?.customer}? This action cannot be undone.`;
+                    break;
+                case 'activity':
+                    const activity = AppState.data.activities.find(a => a.id === id);
+                    title = `Delete Activity`;
+                    message = `Are you sure you want to delete the activity "${activity?.activity}"? This action cannot be undone.`;
+                    break;
+            }
+            
+            document.getElementById('deleteConfirmTitle').textContent = title;
+            document.getElementById('deleteConfirmMessage').textContent = message;
+            document.getElementById('confirmDeleteModal').style.display = 'flex';
+        }
+
+        function deleteItem(type, id) {
+            let itemName = '';
+            
+            switch(type) {
+                case 'vehicle':
+                    const vehicleIndex = AppState.data.vehicles.findIndex(v => v.id === id);
+                    if (vehicleIndex !== -1) {
+                        itemName = AppState.data.vehicles[vehicleIndex].number;
+                        AppState.data.vehicles.splice(vehicleIndex, 1);
+                    }
+                    break;
+                case 'driver':
+                    const driverIndex = AppState.data.drivers.findIndex(d => d.id === id);
+                    if (driverIndex !== -1) {
+                        itemName = AppState.data.drivers[driverIndex].name;
+                        AppState.data.drivers.splice(driverIndex, 1);
+                    }
+                    break;
+                case 'trip':
+                    const tripIndex = AppState.data.trips.findIndex(t => t.id === id);
+                    if (tripIndex !== -1) {
+                        itemName = AppState.data.trips[tripIndex].destination;
+                        AppState.data.trips.splice(tripIndex, 1);
+                    }
+                    break;
+                case 'pod':
+                    const podIndex = AppState.data.pods.findIndex(p => p.id === id);
+                    if (podIndex !== -1) {
+                        itemName = AppState.data.pods[podIndex].customer;
+                        AppState.data.pods.splice(podIndex, 1);
+                    }
+                    break;
+                case 'activity':
+                    const activityIndex = AppState.data.activities.findIndex(a => a.id === id);
+                    if (activityIndex !== -1) {
+                        itemName = AppState.data.activities[activityIndex].activity;
+                        AppState.data.activities.splice(activityIndex, 1);
+                    }
+                    break;
+            }
+            
+            showToast(`${type.charAt(0).toUpperCase() + type.slice(1)} "${itemName}" deleted successfully!`);
+            
+            // Refresh relevant data
+            switch(type) {
+                case 'vehicle':
+                    loadFleetData();
+                    loadDashboardData();
+                    break;
+                case 'driver':
+                    loadFleetData();
+                    break;
+                case 'trip':
+                    loadRouteData();
+                    break;
+                case 'pod':
+                    loadPODData();
+                    loadDashboardData();
+                    break;
+                case 'activity':
+                    loadDashboardData();
+                    break;
+            }
+            
+            autoSave();
+        }
+
+        function exportDashboardData() {
+            const reportData = [
+                ['Shri Narayan Logistics - Dashboard Export', '', '', ''],
+                ['Exported on:', new Date().toLocaleString(), '', ''],
+                ['', '', '', ''],
+                ['Metric', 'Value', 'Trend', 'Status'],
+                ['Active Vehicles', document.getElementById('activeVehicles').textContent, '+12%', 'Good'],
+                ['Trips Today', document.getElementById('tripsToday').textContent, '+8%', 'Good'],
+                ['Deliveries Completed', document.getElementById('deliveriesCompleted').textContent, '+15%', 'Excellent'],
+                ['Pending PODs', document.getElementById('pendingPODs').textContent, '-5%', 'Improving']
+            ];
+            
+            const ws = XLSX.utils.aoa_to_sheet(reportData);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Dashboard Data');
+            XLSX.writeFile(wb, `Dashboard_Export_${new Date().toISOString().slice(0,10)}.xlsx`);
+            
+            showToast('Dashboard data exported successfully!');
         }
 
         function initializeCharts() {
@@ -3415,7 +4969,7 @@
                     labels: ['Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov'],
                     datasets: [{
                         label: 'Trips Completed',
-                        data: [120, 135, 148, 165, 180, 156],
+                        data: [120, 135, 148, 165, 180, AppState.data.trips.length * 30],
                         borderColor: '#1e3c72',
                         backgroundColor: 'rgba(30, 60, 114, 0.1)',
                         fill: true,
@@ -3434,12 +4988,16 @@
 
             // Vehicle Status Chart
             const vehicleCtx = document.getElementById('vehicleStatusChart').getContext('2d');
+            const activeCount = AppState.data.vehicles.filter(v => v.status === 'active').length;
+            const maintenanceCount = AppState.data.vehicles.filter(v => v.status === 'maintenance').length;
+            const inactiveCount = AppState.data.vehicles.filter(v => v.status === 'inactive').length;
+            
             new Chart(vehicleCtx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Active', 'Maintenance', 'Idle'],
+                    labels: ['Active', 'Maintenance', 'Inactive'],
                     datasets: [{
-                        data: [24, 3, 5],
+                        data: [activeCount, maintenanceCount, inactiveCount],
                         backgroundColor: ['#28a745', '#ffc107', '#6c757d']
                     }]
                 }
@@ -3516,76 +5074,36 @@
                     ]
                 }
             });
-        }
 
-        function initializeModals() {
-            // Add Vehicle Modal
-            const addVehicleBtn = document.getElementById('addVehicleBtn');
-            const addVehicleModal = document.getElementById('addVehicleModal');
-            const closeVehicleModal = document.getElementById('closeVehicleModal');
-            
-            if (addVehicleBtn && addVehicleModal) {
-                addVehicleBtn.addEventListener('click', () => {
-                    addVehicleModal.style.display = 'flex';
-                });
-                
-                closeVehicleModal.addEventListener('click', () => {
-                    addVehicleModal.style.display = 'none';
-                });
-                
-                window.addEventListener('click', (e) => {
-                    if (e.target === addVehicleModal) {
-                        addVehicleModal.style.display = 'none';
+            // Route Efficiency Chart
+            const routeCtx = document.getElementById('routeEfficiencyChart').getContext('2d');
+            new Chart(routeCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Route 1', 'Route 2', 'Route 3', 'Route 4', 'Route 5'],
+                    datasets: [{
+                        label: 'Efficiency Score',
+                        data: [85, 92, 78, 88, 95],
+                        backgroundColor: [
+                            'rgba(30, 60, 114, 0.7)',
+                            'rgba(42, 82, 152, 0.7)',
+                            'rgba(255, 107, 53, 0.7)',
+                            'rgba(40, 167, 69, 0.7)',
+                            'rgba(108, 117, 125, 0.7)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
                     }
-                });
-            }
+                }
+            });
         }
-
-        // Global functions for button actions
-        window.viewVehicle = function(id) {
-            showToast(`Viewing vehicle details for ID: ${id}`);
-        };
-
-        window.editVehicle = function(id) {
-            showToast(`Editing vehicle with ID: ${id}`);
-        };
-
-        window.deleteVehicle = function(id) {
-            if (confirm('Are you sure you want to delete this vehicle?')) {
-                showToast('Vehicle deleted successfully!');
-            }
-        };
-
-        window.viewDriver = function(id) {
-            showToast(`Viewing driver details for ID: ${id}`);
-        };
-
-        window.editDriver = function(id) {
-            showToast(`Editing driver with ID: ${id}`);
-        };
-
-        window.viewRoute = function(id) {
-            showToast(`Viewing route details for ID: ${id}`);
-        };
-
-        window.editRoute = function(id) {
-            showToast(`Editing route with ID: ${id}`);
-        };
-
-        window.viewPOD = function(id) {
-            showToast(`Viewing POD details for ID: ${id}`);
-        };
-
-        window.verifyPOD = function(id) {
-            showToast(`POD verified successfully for ID: ${id}`);
-        };
-
-        // Start auto-save timer
-        window.autoSaveTimer = setInterval(() => {
-            if (AppState.settings.autoSave) {
-                autoSave();
-            }
-        }, AppState.settings.autoSaveInterval * 60000);
     </script>
 </body>
 </html>
