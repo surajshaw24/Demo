@@ -1,522 +1,531 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ultimate Tools Hub – All-in-One Solution</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
-  <style>
-    /* =============== BASE =============== */
-    :root {
-      --primary: #4F46E5;
-      --primary-dark: #3730A3;
-      --primary-light: #6366F1;
-      --secondary: #10B981;
-      --accent: #F59E0B;
-      --danger: #EF4444;
-      --dark: #111827;
-      --darker: #0F172A;
-      --dark-light: #1E293B;
-      --light: #F3F4F6;
-      --lighter: #F9FAFB;
-      --gray: #6B7280;
-      --menu-bg: rgba(17, 24, 39, 0.98);
-      --menu-text: #FFFFFF;
-      --menu-hover: rgba(79, 70, 229, 0.2);
-      --glass-bg: rgba(255, 255, 255, 0.05);
-      --glass-border: rgba(255, 255, 255, 0.1);
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      --radius-sm: 0.25rem;
-      --radius: 0.5rem;
-      --radius-lg: 0.75rem;
-      --radius-xl: 1rem;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Poppins', sans-serif;
-      background-color: var(--dark);
-      color: var(--light);
-      line-height: 1.6;
-      overflow-x: hidden;
-      scroll-behavior: smooth;
-    }
-
-    /* =============== UTILITY =============== */
-    .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
-    .section { padding: 5rem 0; }
-    .section-title {
-      position: relative;
-      margin-bottom: 3rem;
-      text-align: center;
-      font-family: 'Montserrat', sans-serif;
-    }
-    .section-title::after {
-      content: '';
-      position: absolute;
-      bottom: -1rem;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 80px;
-      height: 4px;
-      background: linear-gradient(to right, var(--primary), var(--secondary));
-      border-radius: 2px;
-    }
-    .text-gradient {
-      background: linear-gradient(to right, var(--primary), var(--secondary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .glass-effect {
-      background: var(--glass-bg);
-      backdrop-filter: blur(10px);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius);
-    }
-
-    /* =============== BUTTONS =============== */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      padding: 0.75rem 1.5rem;
-      border-radius: var(--radius);
-      font-weight: 600;
-      cursor: pointer;
-      transition: var(--transition);
-      position: relative;
-      overflow: hidden;
-      border: none;
-    }
-    .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
-    .btn-secondary { background: transparent; color: var(--primary); border: 1px solid var(--primary); }
-    .btn-secondary:hover { background: rgba(79,70,229,0.1); transform: translateY(-2px); }
-    .btn-accent { background: linear-gradient(135deg, var(--accent), #F97316); color: white; }
-    .btn-accent:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
-
-    /* =============== HEADER =============== */
-    .header {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      background: var(--menu-bg);
-      backdrop-filter: blur(10px);
-      padding: 1rem 0;
-      z-index: 1000;
-      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-      transition: transform 0.3s ease, opacity 0.3s ease;
-    }
-    .header.hidden { transform: translateY(-100%); }
-
-    .header-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 1.5rem;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      font-weight: 700;
-      font-size: 1.5rem;
-      color: var(--light);
-    }
-    .logo-icon {
-      width: 40px;
-      height: 40px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      border-radius: var(--radius);
-      display: grid;
-      place-items: center;
-      color: white;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 1.5rem;
-      list-style: none;
-    }
-    .nav-link {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--light);
-      font-weight: 500;
-      padding: 0.75rem 1rem;
-      border-radius: var(--radius);
-      transition: var(--transition);
-    }
-    .nav-link:hover { color: var(--primary); }
-
-    .menu-toggle {
-      display: none;
-      background: none;
-      border: none;
-      cursor: pointer;
-      width: 40px;
-      height: 40px;
-      flex-direction: column;
-      justify-content: space-around;
-    }
-    .menu-toggle span {
-      display: block;
-      height: 2px;
-      width: 25px;
-      background: white;
-      transition: 0.3s;
-    }
-    .menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
-    .menu-toggle.active span:nth-child(2) { opacity: 0; }
-    .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
-
-    /* =============== HERO =============== */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      background: linear-gradient(135deg, var(--darker), var(--dark));
-      padding-top: 80px;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-content {
-      text-align: center;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 2rem;
-    }
-    .hero-title {
-      font-size: 3.5rem;
-      margin-bottom: 1.5rem;
-      background: linear-gradient(to right, var(--primary), var(--secondary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      line-height: 1.1;
-    }
-    .hero-subtitle {
-      font-size: 1.25rem;
-      color: var(--gray);
-      margin-bottom: 2rem;
-    }
-    .hero-buttons { display: flex; gap: 1rem; justify-content: center; }
-
-    /* =============== TOOLS GRID =============== */
-    .categories {
-      background: var(--dark);
-    }
-    .categories-tabs {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 2rem;
-    }
-    .category-tab {
-      padding: 0.75rem 1.5rem;
-      background: var(--dark-light);
-      border-radius: var(--radius);
-      font-weight: 500;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-    .category-tab.active, .category-tab:hover {
-      background: var(--primary);
-      color: white;
-    }
-
-    .tools-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .tool-card {
-      background: var(--dark-light);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      transition: var(--transition);
-      position: relative;
-      overflow: hidden;
-      border: 1px solid var(--glass-border);
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .tool-card.hidden {
-      opacity: 0;
-      transform: translateY(20px);
-      pointer-events: none;
-    }
-    .tool-card.visible {
-      opacity: 1;
-      transform: translateY(0);
-      transition: opacity 0.4s ease, transform 0.4s ease;
-    }
-    .tool-icon {
-      width: 50px;
-      height: 50px;
-      background: rgba(79, 70, 229, 0.1);
-      border-radius: var(--radius);
-      display: grid;
-      place-items: center;
-      color: var(--primary);
-      margin-bottom: 1rem;
-    }
-    .premium-badge {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-      padding: 0.25rem 0.75rem;
-      background: linear-gradient(135deg, #FCD34D, #F59E0B);
-      color: #000;
-      border-radius: 1rem;
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-
-    /* =============== FOOTER & OTHER =============== */
-    .back-to-top {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      width: 50px;
-      height: 50px;
-      background: var(--primary);
-      color: white;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      font-size: 1.25rem;
-      cursor: pointer;
-      opacity: 0;
-      visibility: hidden;
-      transition: var(--transition);
-      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
-      z-index: 999;
-    }
-    .back-to-top.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    /* =============== RESPONSIVE =============== */
-    @media (max-width: 768px) {
-      .nav-links {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        width: 280px;
-        height: 100vh;
-        background: var(--menu-bg);
-        backdrop-filter: blur(15px);
-        flex-direction: column;
-        padding: 6rem 2rem 2rem;
-        transition: right 0.5s ease;
-        z-index: 2000;
-      }
-      .nav-links.active {
-        right: 0;
-      }
-      .menu-toggle { display: flex; }
-      .hero-buttons { flex-direction: column; align-items: center; }
-      .btn { width: 100%; max-width: 300px; }
-      .categories-tabs { flex-direction: column; align-items: stretch; }
-      .category-tab { text-align: center; }
-    }
-
-    @media (prefers-reduced-motion) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shri Narayan Logistics - Secure Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            background-image: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+        }
+        
+        .login-container {
+            display: flex;
+            width: 900px;
+            height: 550px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .left-panel {
+            flex: 1;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .left-panel::before {
+            content: "";
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            top: -80px;
+            left: -80px;
+        }
+        
+        .left-panel::after {
+            content: "";
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            bottom: -60px;
+            right: -60px;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            background-color: rgba(255, 255, 255, 0.1);
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 28px;
+        }
+        
+        .company-name {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .company-tagline {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+        
+        .features {
+            margin-top: 40px;
+        }
+        
+        .feature {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .feature-icon {
+            background-color: rgba(255, 255, 255, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+        
+        .feature-text h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .feature-text p {
+            font-size: 13px;
+            opacity: 0.8;
+        }
+        
+        .right-panel {
+            flex: 1;
+            background-color: white;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .login-header {
+            margin-bottom: 40px;
+        }
+        
+        .login-header h2 {
+            color: #2a5298;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .login-header p {
+            color: #666;
+            font-size: 15px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            color: #333;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .input-with-icon i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: #2a5298;
+            box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+            outline: none;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #777;
+            cursor: pointer;
+        }
+        
+        .forgot-password {
+            text-align: right;
+            margin-bottom: 25px;
+        }
+        
+        .forgot-password a {
+            color: #2a5298;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+        
+        .forgot-password a:hover {
+            color: #1e3c72;
+            text-decoration: underline;
+        }
+        
+        .btn-login {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-login:hover {
+            background: linear-gradient(135deg, #172b54 0%, #1e3c72 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(30, 60, 114, 0.2);
+        }
+        
+        .login-footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #777;
+            font-size: 14px;
+        }
+        
+        .login-footer a {
+            color: #2a5298;
+            text-decoration: none;
+        }
+        
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .security-notice {
+            display: flex;
+            align-items: center;
+            background-color: #f8f9fa;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-top: 25px;
+            font-size: 13px;
+            color: #555;
+        }
+        
+        .security-notice i {
+            color: #2a5298;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+        
+        @media (max-width: 950px) {
+            .login-container {
+                width: 95%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .login-container {
+                flex-direction: column;
+                height: auto;
+                width: 100%;
+                max-width: 500px;
+            }
+            
+            .left-panel, .right-panel {
+                padding: 40px 30px;
+            }
+            
+            .left-panel {
+                order: 2;
+            }
+            
+            .right-panel {
+                order: 1;
+            }
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .input-error {
+            border-color: #e74c3c;
+        }
+    </style>
 </head>
 <body>
-  <!-- Header -->
-  <header class="header" id="header">
-    <div class="header-container">
-      <a href="#" class="logo">
-        <div class="logo-icon"><i class="fas fa-tools"></i></div>
-        <span>UltimateTools</span>
-      </a>
-      <nav class="nav-links" id="navLinks">
-        <a href="#home" class="nav-link"><i class="fas fa-home"></i> Home</a>
-        <a href="#features" class="nav-link"><i class="fas fa-star"></i> Features</a>
-        <a href="#tools" class="nav-link"><i class="fas fa-tools"></i> Tools</a>
-        <a href="#pricing" class="nav-link"><i class="fas fa-tag"></i> Pricing</a>
-        <a href="#faq" class="nav-link"><i class="fas fa-question-circle"></i> FAQ</a>
-        <a href="#contact" class="nav-link"><i class="fas fa-envelope"></i> Contact</a>
-      </nav>
-      <div>
-        <button class="btn btn-secondary"><i class="fas fa-sign-in-alt"></i> Login</button>
-        <button class="btn btn-primary"><i class="fas fa-user-plus"></i> Sign Up</button>
-      </div>
-      <button class="menu-toggle" id="menuToggle">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </header>
-
-  <!-- Hero -->
-  <section class="hero" id="home">
-    <div class="hero-content">
-      <h1 class="hero-title">All Your Essential Tools in One Place</h1>
-      <p class="hero-subtitle">Access 100+ powerful tools to boost your productivity, enhance your content, and simplify your workflow. No downloads, no hassle.</p>
-      <div class="hero-buttons">
-        <button class="btn btn-primary"><i class="fas fa-rocket"></i> Get Started Free</button>
-        <button class="btn btn-secondary"><i class="fas fa-play-circle"></i> Watch Demo</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Tools -->
-  <section class="section categories" id="tools">
-    <div class="container">
-      <h2 class="section-title">Explore Our <span class="text-gradient">Powerful Tools</span></h2>
-      <div class="categories-tabs" id="toolTabs">
-        <div class="category-tab active" data-category="all">All Tools</div>
-        <div class="category-tab" data-category="image">Image Tools</div>
-        <div class="category-tab" data-category="video">Video Tools</div>
-        <div class="category-tab" data-category="document">Document Tools</div>
-        <div class="category-tab" data-category="developer">Developer Tools</div>
-        <div class="category-tab" data-category="ai">AI Tools</div>
-        <div class="category-tab" data-category="other">Other Tools</div>
-      </div>
-      <div class="tools-grid" id="toolsGrid">
-        <!-- Example Tool -->
-        <div class="tool-card" data-category="image">
-          <div class="tool-icon"><i class="fas fa-image"></i></div>
-          <h3 class="tool-title">Background Remover</h3>
-          <p class="tool-description">Remove backgrounds from images automatically with AI-powered precision.</p>
-          <button class="btn btn-primary btn-sm">Use Tool</button>
+    <div class="login-container">
+        <!-- Left Panel with Company Info -->
+        <div class="left-panel">
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fas fa-shipping-fast"></i>
+                </div>
+                <div>
+                    <div class="company-name">Shri Narayan Logistics</div>
+                    <div class="company-tagline">Secure & Reliable Logistics Solutions</div>
+                </div>
+            </div>
+            
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="feature-text">
+                        <h4>Bank-Level Security</h4>
+                        <p>All data encrypted with 256-bit SSL protection</p>
+                    </div>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-ship"></i>
+                    </div>
+                    <div class="feature-text">
+                        <h4>Global Tracking</h4>
+                        <p>Real-time tracking for shipments worldwide</p>
+                    </div>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="feature-text">
+                        <h4>24/7 Access</h4>
+                        <p>Round-the-clock portal availability</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="tool-card" data-category="ai" data-premium="true">
-          <div class="tool-icon"><i class="fas fa-brain"></i></div>
-          <h3 class="tool-title">AI Image Generator</h3>
-          <p class="tool-description">Create stunning images from text prompts with AI.</p>
-          <button class="btn btn-primary btn-sm">Use Tool</button>
-          <div class="premium-badge"><i class="fas fa-crown"></i> PRO</div>
+        
+        <!-- Right Panel with Login Form -->
+        <div class="right-panel">
+            <div class="login-header">
+                <h2>Secure Logistics Portal</h2>
+                <p>Enter your credentials to access your account</p>
+            </div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" class="form-control" placeholder="admin@company.com" value="admin@company.com" required>
+                    </div>
+                    <div class="error-message" id="emailError">Please enter a valid email address</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" class="form-control" placeholder="••••••••" value="••••••••" required>
+                        <button type="button" class="password-toggle" id="togglePassword">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="error-message" id="passwordError">Password must be at least 8 characters</div>
+                </div>
+                
+                <div class="forgot-password">
+                    <a href="#" id="forgotPassword">Forgot Password?</a>
+                </div>
+                
+                <button type="submit" class="btn-login">Sign In</button>
+            </form>
+            
+            <div class="security-notice">
+                <i class="fas fa-info-circle"></i>
+                <div>This is a secure portal. Ensure you are on the official Shri Narayan Logistics website before entering your credentials.</div>
+            </div>
+            
+            <div class="login-footer">
+                <p>Need help? <a href="#">Contact Support</a> or call +91-XXX-XXXX-XXX</p>
+            </div>
         </div>
-        <div class="tool-card" data-category="developer">
-          <div class="tool-icon"><i class="fas fa-code"></i></div>
-          <h3 class="tool-title">Code Beautifier</h3>
-          <p class="tool-description">Format and beautify your code with multiple language support.</p>
-          <button class="btn btn-primary btn-sm">Use Tool</button>
-        </div>
-        <!-- Add more as needed -->
-      </div>
     </div>
-  </section>
 
-  <!-- Back to Top -->
-  <div class="back-to-top" id="backToTop"><i class="fas fa-arrow-up"></i></div>
-
-  <!-- Footer -->
-  <footer class="footer" id="contact">
-    <div class="container">
-      <p>&copy; 2025 UltimateTools. All rights reserved.</p>
-    </div>
-  </footer>
-
-  <script>
-    // DOM Ready
-    document.addEventListener('DOMContentLoaded', () => {
-      // Mobile Menu
-      const menuToggle = document.getElementById('menuToggle');
-      const navLinks = document.getElementById('navLinks');
-      menuToggle?.addEventListener('click', () => {
-        menuToggle.classList.toggle('active');
-        navLinks.classList.toggle('active');
-      });
-
-      navLinks?.addEventListener('click', () => {
-        if (window.innerWidth <= 768) {
-          menuToggle.classList.remove('active');
-          navLinks.classList.remove('active');
-        }
-      });
-
-      // Smooth Scroll
-      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-          e.preventDefault();
-          const target = document.querySelector(this.getAttribute('href'));
-          if (target) {
-            window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
-          }
-        });
-      });
-
-      // Hide header on scroll
-      let lastScrollY = window.scrollY;
-      const header = document.getElementById('header');
-      const handleScroll = () => {
-        const currentScrollY = window.scrollY;
-        if (currentScrollY > lastScrollY && currentScrollY > 100) {
-          header?.classList.add('hidden');
-        } else {
-          header?.classList.remove('hidden');
-        }
-        lastScrollY = currentScrollY;
-
-        // Back to top
-        const backToTop = document.getElementById('backToTop');
-        if (backToTop) {
-          backToTop.classList.toggle('active', currentScrollY > 300);
-        }
-      };
-      window.addEventListener('scroll', () => requestAnimationFrame(handleScroll));
-
-      // Back to top click
-      document.getElementById('backToTop')?.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-
-      // Tool Filtering
-      const tabs = document.querySelectorAll('.category-tab');
-      const cards = document.querySelectorAll('.tool-card');
-      const toolsGrid = document.getElementById('toolsGrid');
-
-      tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-          const category = tab.dataset.category;
-          tabs.forEach(t => t.classList.remove('active'));
-          tab.classList.add('active');
-
-          cards.forEach(card => {
-            const matches = category === 'all' || card.dataset.category === category;
-            card.classList.remove('visible', 'hidden');
-            void card.offsetWidth; // Trigger reflow
-            if (matches) {
-              card.classList.add('visible');
-            } else {
-              card.classList.add('hidden');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const togglePassword = document.getElementById('togglePassword');
+            const forgotPasswordLink = document.getElementById('forgotPassword');
+            const emailError = document.getElementById('emailError');
+            const passwordError = document.getElementById('passwordError');
+            
+            // Toggle password visibility
+            togglePassword.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                
+                // Toggle icon
+                const icon = this.querySelector('i');
+                if (type === 'password') {
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                } else {
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                }
+            });
+            
+            // Form validation
+            function validateEmail(email) {
+                const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(String(email).toLowerCase());
             }
-          });
+            
+            function validatePassword(password) {
+                return password.length >= 8;
+            }
+            
+            // Real-time validation
+            emailInput.addEventListener('input', function() {
+                if (!validateEmail(this.value)) {
+                    emailError.style.display = 'block';
+                    this.classList.add('input-error');
+                } else {
+                    emailError.style.display = 'none';
+                    this.classList.remove('input-error');
+                }
+            });
+            
+            passwordInput.addEventListener('input', function() {
+                if (!validatePassword(this.value) && this.value !== '••••••••') {
+                    passwordError.style.display = 'block';
+                    this.classList.add('input-error');
+                } else {
+                    passwordError.style.display = 'none';
+                    this.classList.remove('input-error');
+                }
+            });
+            
+            // Form submission
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = emailInput.value;
+                const password = passwordInput.value;
+                let isValid = true;
+                
+                // Validate email
+                if (!validateEmail(email)) {
+                    emailError.style.display = 'block';
+                    emailInput.classList.add('input-error');
+                    isValid = false;
+                }
+                
+                // Validate password
+                if (!validatePassword(password) || password === '••••••••') {
+                    passwordError.style.display = 'block';
+                    passwordInput.classList.add('input-error');
+                    isValid = false;
+                }
+                
+                if (isValid) {
+                    // Simulate login process
+                    const loginBtn = document.querySelector('.btn-login');
+                    const originalText = loginBtn.innerHTML;
+                    
+                    loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
+                    loginBtn.disabled = true;
+                    
+                    // Simulate API call delay
+                    setTimeout(function() {
+                        // In a real application, this would be an API call to your backend
+                        if (email === 'admin@company.com' && password === 'SecurePass123') {
+                            alert('Login successful! Redirecting to dashboard...');
+                            // In a real app: window.location.href = '/dashboard.html';
+                        } else {
+                            alert('Invalid credentials. Please try again.');
+                            passwordInput.value = '';
+                            passwordInput.focus();
+                        }
+                        
+                        loginBtn.innerHTML = originalText;
+                        loginBtn.disabled = false;
+                    }, 1500);
+                }
+            });
+            
+            // Forgot password functionality
+            forgotPasswordLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                const email = emailInput.value;
+                
+                if (validateEmail(email)) {
+                    alert(`Password reset instructions have been sent to ${email}`);
+                } else {
+                    alert('Please enter a valid email address to reset your password');
+                    emailInput.focus();
+                }
+            });
+            
+            // Initialize with default values
+            emailInput.dispatchEvent(new Event('input'));
+            passwordInput.dispatchEvent(new Event('input'));
         });
-      });
-
-      // Disable dev tools (client-side only)
-      document.addEventListener('contextmenu', e => e.preventDefault());
-      document.addEventListener('keydown', e => {
-        if (
-          e.key === 'F12' ||
-          (e.ctrlKey && e.shiftKey && e.key === 'I') ||
-          (e.ctrlKey && e.key === 'u')
-        ) e.preventDefault();
-      });
-    });
-  </script>
+    </script>
 </body>
 </html>
-
