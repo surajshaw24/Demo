@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shri Narayan Logistics - Fleet Management</title>
+    <title>Shri Narayan Logistics - Complete Management System</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
     <style>
         * {
@@ -32,6 +32,151 @@
             background-color: #f0f2f5;
             color: var(--dark);
             min-height: 100vh;
+            transition: all 0.3s;
+        }
+        
+        /* Login Page Styles */
+        .login-page {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            padding: 20px;
+        }
+        
+        .login-container {
+            background-color: white;
+            width: 100%;
+            max-width: 450px;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        
+        .login-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .logo-icon {
+            font-size: 40px;
+        }
+        
+        .company-name {
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        .company-tagline {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .login-form {
+            padding: 40px 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .input-with-icon i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(30, 60, 114, 0.1);
+            outline: none;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+        }
+        
+        .btn-login {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .btn-login:hover {
+            background: linear-gradient(135deg, #172b54 0%, #1e3c72 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(30, 60, 114, 0.2);
+        }
+        
+        .login-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        .error-message {
+            color: var(--danger);
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .input-error {
+            border-color: var(--danger);
+        }
+        
+        /* Dashboard Styles (Initially Hidden) */
+        .dashboard-page {
+            display: none;
         }
         
         /* Header Styles */
@@ -52,31 +197,36 @@
             margin-bottom: 10px;
         }
         
-        .logo-container {
+        .user-info {
             display: flex;
             align-items: center;
             gap: 15px;
         }
         
-        .logo-icon {
-            font-size: 32px;
-            color: white;
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
         }
         
-        .company-name {
-            font-size: 24px;
-            font-weight: 700;
+        .user-name {
+            font-weight: 600;
         }
         
-        .company-tagline {
-            font-size: 14px;
+        .user-role {
+            font-size: 12px;
             opacity: 0.9;
         }
         
-        .user-controls {
+        .header-controls {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
         }
         
         .btn {
@@ -109,6 +259,15 @@
         
         .btn-outline:hover {
             background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .btn-logout {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .btn-logout:hover {
+            background-color: rgba(255, 255, 255, 0.2);
         }
         
         .sync-status {
@@ -202,6 +361,7 @@
             border-left: 4px solid var(--primary);
             transition: all 0.3s;
             cursor: pointer;
+            position: relative;
         }
         
         .vehicle-card:hover {
@@ -212,6 +372,47 @@
         .vehicle-card.active {
             background-color: rgba(30, 60, 114, 0.1);
             border-left-color: var(--accent);
+        }
+        
+        .vehicle-actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 8px;
+        }
+        
+        .action-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .edit-btn {
+            background-color: rgba(255, 193, 7, 0.2);
+            color: var(--warning);
+        }
+        
+        .delete-btn {
+            background-color: rgba(220, 53, 69, 0.2);
+            color: var(--danger);
+        }
+        
+        .edit-btn:hover {
+            background-color: var(--warning);
+            color: white;
+        }
+        
+        .delete-btn:hover {
+            background-color: var(--danger);
+            color: white;
         }
         
         .vehicle-number {
@@ -437,6 +638,15 @@
             border-radius: 10px;
             padding: 20px;
             margin-left: 20px;
+            position: relative;
+        }
+        
+        .location-actions {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            gap: 8px;
         }
         
         .location-header {
@@ -536,6 +746,47 @@
             color: white;
         }
         
+        .btn-add {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        /* Analytics Section */
+        .analytics-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+        
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .chart-card {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .chart-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        
         /* Modal */
         .modal {
             display: none;
@@ -548,15 +799,18 @@
             z-index: 2000;
             justify-content: center;
             align-items: center;
+            padding: 20px;
         }
         
         .modal-content {
             background-color: white;
             width: 90%;
-            max-width: 500px;
+            max-width: 600px;
             border-radius: 10px;
             padding: 30px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-height: 90vh;
+            overflow-y: auto;
         }
         
         .modal-header {
@@ -578,86 +832,6 @@
             font-size: 24px;
             cursor: pointer;
             color: var(--gray);
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--dark);
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 16px;
-            transition: all 0.3s;
-        }
-        
-        .form-control:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(30, 60, 114, 0.1);
-            outline: none;
-        }
-        
-        /* Footer */
-        footer {
-            background-color: var(--dark);
-            color: white;
-            padding: 20px 30px;
-            text-align: center;
-            font-size: 14px;
-        }
-        
-        /* Responsive */
-        @media (max-width: 992px) {
-            .container {
-                flex-direction: column;
-            }
-            
-            .sidebar {
-                width: 100%;
-                order: 2;
-            }
-            
-            .vehicle-list {
-                display: flex;
-                overflow-x: auto;
-                gap: 15px;
-                padding-bottom: 10px;
-            }
-            
-            .vehicle-card {
-                min-width: 250px;
-                margin-bottom: 0;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .dashboard-cards {
-                grid-template-columns: 1fr;
-            }
-            
-            .trip-info-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .header-top {
-                flex-direction: column;
-                gap: 15px;
-                align-items: flex-start;
-            }
-            
-            .user-controls {
-                width: 100%;
-                justify-content: space-between;
-            }
         }
         
         /* Toast Notification */
@@ -692,234 +866,418 @@
             background-color: var(--warning);
         }
         
-        /* Google Drive Button */
-        .btn-gdrive {
-            background-color: #4285F4;
+        /* Footer */
+        footer {
+            background-color: var(--dark);
             color: white;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            padding: 20px 30px;
+            text-align: center;
+            font-size: 14px;
         }
         
-        .btn-gdrive:hover {
-            background-color: #3367d6;
+        /* Responsive */
+        @media (max-width: 992px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                order: 2;
+            }
+            
+            .vehicle-list {
+                display: flex;
+                overflow-x: auto;
+                gap: 15px;
+                padding-bottom: 10px;
+            }
+            
+            .vehicle-card {
+                min-width: 250px;
+                margin-bottom: 0;
+            }
+            
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .trip-info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-top {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .header-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .timeline-details {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="header-top">
-            <div class="logo-container">
-                <div class="logo-icon">
-                    <i class="fas fa-shipping-fast"></i>
-                </div>
-                <div>
-                    <div class="company-name">SHRI NARAYAN LOGISTICS</div>
-                    <div class="company-tagline">Trusted Fleet Management & Tracking</div>
-                </div>
-            </div>
-            
-            <div class="user-controls">
-                <div class="sync-status">
-                    <i class="fas fa-sync-alt sync-icon" id="syncIcon"></i>
-                    <span>Auto-save: <span id="syncStatus">Active</span></span>
-                </div>
-                <div class="last-sync" id="lastSync">Last sync: Just now</div>
-                <button class="btn btn-outline" id="googleDriveBtn">
-                    <i class="fab fa-google-drive"></i> Backup to Drive
-                </button>
-                <button class="btn btn-primary" id="exportExcelBtn">
-                    <i class="fas fa-file-excel"></i> Export Excel
-                </button>
-            </div>
-        </div>
-    </header>
-    
-    <!-- Main Container -->
-    <div class="container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="nav-title">Main Menu</div>
-            <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="#" class="nav-link active">
-                        <i class="fas fa-tachometer-alt"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-truck"></i>
-                        <span>Fleet Management</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-route"></i>
-                        <span>Route Planning</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-file-invoice"></i>
-                        <span>POD Management</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-chart-bar"></i>
-                        <span>Analytics</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-cog"></i>
-                        <span>Settings</span>
-                    </a>
-                </li>
-            </ul>
-            
-            <div class="nav-title">Active Vehicles</div>
-            <div class="vehicle-list" id="vehicleList">
-                <!-- Vehicles will be loaded here by JavaScript -->
-            </div>
-        </div>
-        
-        <!-- Main Content -->
-        <div class="main-content">
-            <div class="page-header">
-                <div>
-                    <h1 class="page-title">Trip Management Dashboard</h1>
-                    <p class="page-subtitle">Monitor and manage all your logistics operations in real-time</p>
-                </div>
-                <button class="btn btn-primary" id="addTripBtn">
-                    <i class="fas fa-plus"></i> Add New Trip
-                </button>
-            </div>
-            
-            <!-- Dashboard Cards -->
-            <div class="dashboard-cards">
-                <div class="dashboard-card">
-                    <div class="card-title">Active Trips</div>
-                    <div class="card-value" id="activeTripsCount">8</div>
-                    <div class="card-detail">
-                        <i class="fas fa-truck" style="color: var(--primary);"></i>
-                        <span>On-road vehicles</span>
+    <!-- Login Page -->
+    <div class="login-page" id="loginPage">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="logo-container">
+                    <div class="logo-icon">
+                        <i class="fas fa-shipping-fast"></i>
                     </div>
-                </div>
-                
-                <div class="dashboard-card">
-                    <div class="card-title">Delivered Today</div>
-                    <div class="card-value" id="deliveredCount">14</div>
-                    <div class="card-detail">
-                        <i class="fas fa-check-circle" style="color: var(--success);"></i>
-                        <span>Successful deliveries</span>
-                    </div>
-                </div>
-                
-                <div class="dashboard-card">
-                    <div class="card-title">Avg. Delay</div>
-                    <div class="card-value" id="avgDelay">32<span style="font-size: 18px;">min</span></div>
-                    <div class="card-detail">
-                        <i class="fas fa-clock" style="color: var(--warning);"></i>
-                        <span>Across all trips</span>
-                    </div>
-                </div>
-                
-                <div class="dashboard-card">
-                    <div class="card-title">POD Pending</div>
-                    <div class="card-value" id="podPending">5</div>
-                    <div class="card-detail">
-                        <i class="fas fa-file-signature" style="color: var(--danger);"></i>
-                        <span>Proof of delivery</span>
+                    <div>
+                        <div class="company-name">SHRI NARAYAN LOGISTICS</div>
+                        <div class="company-tagline">Secure Logistics Management System</div>
                     </div>
                 </div>
             </div>
             
-            <!-- Trip Details -->
-            <div class="trip-details">
-                <h2 class="section-title">
-                    <i class="fas fa-info-circle"></i>
-                    Trip Details - <span id="selectedVehicle">MH12AB1234</span>
-                </h2>
-                
-                <div class="trip-info-grid">
-                    <div class="info-item">
-                        <div class="info-icon">
-                            <i class="fas fa-truck"></i>
+            <div class="login-form">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email Address</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="email" class="form-control" placeholder="admin@shrinarayanlogistics.com" required>
                         </div>
-                        <div class="info-content">
-                            <h4>Vehicle No.</h4>
-                            <p id="vehicleNo">MH12AB1234</p>
-                        </div>
+                        <div class="error-message" id="emailError">Please enter a valid email address</div>
                     </div>
                     
-                    <div class="info-item">
-                        <div class="info-icon">
-                            <i class="fas fa-user"></i>
+                    <div class="form-group">
+                        <label class="form-label" for="password">Password</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+                            <button type="button" class="password-toggle" id="togglePassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
                         </div>
-                        <div class="info-content">
-                            <h4>Driver</h4>
-                            <p id="driverName">Rajesh Kumar</p>
-                        </div>
+                        <div class="error-message" id="passwordError">Password must be at least 8 characters</div>
                     </div>
                     
-                    <div class="info-item">
-                        <div class="info-icon">
-                            <i class="fas fa-phone"></i>
-                        </div>
-                        <div class="info-content">
-                            <h4>Driver Contact</h4>
-                            <p id="driverContact">+91 98765 43210</p>
-                        </div>
-                    </div>
-                    
-                    <div class="info-item">
-                        <div class="info-icon">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <div class="info-content">
-                            <h4>Departure Time</h4>
-                            <p id="departureTime">06:30 AM</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Location Timeline -->
-                <div class="location-timeline">
-                    <h3 class="section-title">
-                        <i class="fas fa-route"></i>
-                        Route & Stops Timeline
-                    </h3>
-                    
-                    <div id="locationTimeline">
-                        <!-- Timeline items will be loaded here by JavaScript -->
-                    </div>
-                </div>
-                
-                <!-- Action Buttons -->
-                <div class="action-buttons">
-                    <button class="btn-action btn-save" id="saveDataBtn">
-                        <i class="fas fa-save"></i> Save Changes
+                    <button type="submit" class="btn-login">
+                        <i class="fas fa-sign-in-alt"></i> Sign In
                     </button>
-                    <button class="btn-action btn-export" id="exportTripBtn">
-                        <i class="fas fa-download"></i> Export Trip Data
-                    </button>
-                    <button class="btn-action btn-refresh" id="refreshDataBtn">
-                        <i class="fas fa-redo"></i> Refresh Data
-                    </button>
+                </form>
+                
+                <div class="login-footer">
+                    <p>Default credentials: admin@shrinarayanlogistics.com / Admin@123</p>
                 </div>
             </div>
         </div>
     </div>
     
+    <!-- Dashboard Page (Initially Hidden) -->
+    <div class="dashboard-page" id="dashboardPage">
+        <!-- Header -->
+        <header>
+            <div class="header-top">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div>
+                        <div class="user-name" id="userName">Admin User</div>
+                        <div class="user-role" id="userRole">Administrator</div>
+                    </div>
+                </div>
+                
+                <div class="header-controls">
+                    <div class="sync-status">
+                        <i class="fas fa-sync-alt sync-icon" id="syncIcon"></i>
+                        <span>Auto-save: <span id="syncStatus">Active</span></span>
+                    </div>
+                    <div class="last-sync" id="lastSync">Last sync: Just now</div>
+                    <button class="btn btn-primary" id="exportExcelBtn">
+                        <i class="fas fa-file-excel"></i> Export Excel
+                    </button>
+                    <button class="btn btn-logout" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Main Container -->
+        <div class="container">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="nav-title">Main Menu</div>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" data-page="dashboard">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-page="fleet">
+                            <i class="fas fa-truck"></i>
+                            <span>Fleet Management</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-page="analytics">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Analytics</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-page="reports">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Reports</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-page="settings">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="nav-title">Active Vehicles</div>
+                <div class="vehicle-list" id="vehicleList">
+                    <!-- Vehicles will be loaded here by JavaScript -->
+                </div>
+                
+                <button class="btn btn-add" id="addVehicleBtn" style="width: 100%; margin-top: 15px;">
+                    <i class="fas fa-plus"></i> Add New Vehicle
+                </button>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Dashboard Content -->
+                <div id="dashboardContent" class="page-content">
+                    <div class="page-header">
+                        <div>
+                            <h1 class="page-title">Trip Management Dashboard</h1>
+                            <p class="page-subtitle">Monitor and manage all your logistics operations in real-time</p>
+                        </div>
+                        <button class="btn btn-primary" id="addTripBtn">
+                            <i class="fas fa-plus"></i> Add New Trip
+                        </button>
+                    </div>
+                    
+                    <!-- Dashboard Cards -->
+                    <div class="dashboard-cards">
+                        <div class="dashboard-card">
+                            <div class="card-title">Active Trips</div>
+                            <div class="card-value" id="activeTripsCount">8</div>
+                            <div class="card-detail">
+                                <i class="fas fa-truck" style="color: var(--primary);"></i>
+                                <span>On-road vehicles</span>
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-card">
+                            <div class="card-title">Delivered Today</div>
+                            <div class="card-value" id="deliveredCount">14</div>
+                            <div class="card-detail">
+                                <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                                <span>Successful deliveries</span>
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-card">
+                            <div class="card-title">Avg. Delay</div>
+                            <div class="card-value" id="avgDelay">32<span style="font-size: 18px;">min</span></div>
+                            <div class="card-detail">
+                                <i class="fas fa-clock" style="color: var(--warning);"></i>
+                                <span>Across all trips</span>
+                            </div>
+                        </div>
+                        
+                        <div class="dashboard-card">
+                            <div class="card-title">POD Pending</div>
+                            <div class="card-value" id="podPending">5</div>
+                            <div class="card-detail">
+                                <i class="fas fa-file-signature" style="color: var(--danger);"></i>
+                                <span>Proof of delivery</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Trip Details -->
+                    <div class="trip-details">
+                        <h2 class="section-title">
+                            <i class="fas fa-info-circle"></i>
+                            Trip Details - <span id="selectedVehicle">MH12AB1234</span>
+                        </h2>
+                        
+                        <div class="trip-info-grid">
+                            <div class="info-item">
+                                <div class="info-icon">
+                                    <i class="fas fa-truck"></i>
+                                </div>
+                                <div class="info-content">
+                                    <h4>Vehicle No.</h4>
+                                    <p id="vehicleNo">MH12AB1234</p>
+                                </div>
+                            </div>
+                            
+                            <div class="info-item">
+                                <div class="info-icon">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="info-content">
+                                    <h4>Driver</h4>
+                                    <p id="driverName">Rajesh Kumar</p>
+                                </div>
+                            </div>
+                            
+                            <div class="info-item">
+                                <div class="info-icon">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <div class="info-content">
+                                    <h4>Driver Contact</h4>
+                                    <p id="driverContact">+91 98765 43210</p>
+                                </div>
+                            </div>
+                            
+                            <div class="info-item">
+                                <div class="info-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="info-content">
+                                    <h4>Departure Time</h4>
+                                    <p id="departureTime">06:30 AM</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Location Timeline -->
+                        <div class="location-timeline">
+                            <h3 class="section-title">
+                                <i class="fas fa-route"></i>
+                                Route & Stops Timeline
+                            </h3>
+                            
+                            <div id="locationTimeline">
+                                <!-- Timeline items will be loaded here by JavaScript -->
+                            </div>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="action-buttons">
+                            <button class="btn-action btn-save" id="saveDataBtn">
+                                <i class="fas fa-save"></i> Save Changes
+                            </button>
+                            <button class="btn-action btn-export" id="exportTripBtn">
+                                <i class="fas fa-download"></i> Export Trip Data
+                            </button>
+                            <button class="btn-action btn-refresh" id="refreshDataBtn">
+                                <i class="fas fa-redo"></i> Refresh Data
+                            </button>
+                            <button class="btn-action btn-add" id="addLocationBtn">
+                                <i class="fas fa-map-marker-alt"></i> Add Stop
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Analytics Content -->
+                <div id="analyticsContent" class="page-content" style="display: none;">
+                    <div class="page-header">
+                        <div>
+                            <h1 class="page-title">Data Analytics</h1>
+                            <p class="page-subtitle">Insights and performance metrics for your logistics operations</p>
+                        </div>
+                    </div>
+                    
+                    <div class="analytics-section">
+                        <h2 class="section-title">
+                            <i class="fas fa-chart-line"></i>
+                            Performance Analytics
+                        </h2>
+                        
+                        <div class="charts-container">
+                            <div class="chart-card">
+                                <div class="chart-title">Trip Status Distribution</div>
+                                <div class="chart-container">
+                                    <canvas id="tripStatusChart"></canvas>
+                                </div>
+                            </div>
+                            
+                            <div class="chart-card">
+                                <div class="chart-title">Monthly Deliveries</div>
+                                <div class="chart-container">
+                                    <canvas id="monthlyDeliveriesChart"></canvas>
+                                </div>
+                            </div>
+                            
+                            <div class="chart-card">
+                                <div class="chart-title">Vehicle Utilization</div>
+                                <div class="chart-container">
+                                    <canvas id="vehicleUtilizationChart"></canvas>
+                                </div>
+                            </div>
+                            
+                            <div class="chart-card">
+                                <div class="chart-title">Delay Analysis</div>
+                                <div class="chart-container">
+                                    <canvas id="delayAnalysisChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Fleet Management Content -->
+                <div id="fleetContent" class="page-content" style="display: none;">
+                    <div class="page-header">
+                        <div>
+                            <h1 class="page-title">Fleet Management</h1>
+                            <p class="page-subtitle">Manage your vehicle fleet and driver assignments</p>
+                        </div>
+                        <button class="btn btn-primary" id="manageFleetBtn">
+                            <i class="fas fa-plus"></i> Add Vehicle
+                        </button>
+                    </div>
+                    
+                    <div class="trip-details">
+                        <h2 class="section-title">
+                            <i class="fas fa-truck"></i>
+                            Vehicle Fleet
+                        </h2>
+                        
+                        <div id="fleetTable">
+                            <!-- Fleet table will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer>
+            <p>© 2023 Shri Narayan Logistics. All rights reserved. | Fleet Management System v2.1</p>
+            <p>Auto-save enabled | Last backup: <span id="footerLastSync">Just now</span></p>
+        </footer>
+    </div>
+    
+    <!-- Modals -->
     <!-- Add Trip Modal -->
     <div class="modal" id="addTripModal">
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title">Add New Trip</h3>
-                <button class="close-modal" id="closeModalBtn">&times;</button>
+                <button class="close-modal" id="closeTripModalBtn">&times;</button>
             </div>
             
             <form id="tripForm">
@@ -955,17 +1313,177 @@
         </div>
     </div>
     
+    <!-- Add Vehicle Modal -->
+    <div class="modal" id="addVehicleModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add New Vehicle</h3>
+                <button class="close-modal" id="closeVehicleModalBtn">&times;</button>
+            </div>
+            
+            <form id="vehicleForm">
+                <div class="form-group">
+                    <label class="form-label" for="vehicleNumber">Vehicle Number</label>
+                    <input type="text" class="form-control" id="vehicleNumber" placeholder="MH12AB1234" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="vehicleType">Vehicle Type</label>
+                    <select class="form-control" id="vehicleType" required>
+                        <option value="">Select Type</option>
+                        <option value="truck">Truck</option>
+                        <option value="container">Container</option>
+                        <option value="trailer">Trailer</option>
+                        <option value="mini_truck">Mini Truck</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="vehicleCapacity">Capacity (tons)</label>
+                    <input type="number" class="form-control" id="vehicleCapacity" placeholder="10" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="vehicleDriver">Driver Name</label>
+                    <input type="text" class="form-control" id="vehicleDriver" placeholder="Rajesh Kumar" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="vehicleDriverContact">Driver Contact</label>
+                    <input type="tel" class="form-control" id="vehicleDriverContact" placeholder="+91 98765 43210" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="vehicleStatus">Status</label>
+                    <select class="form-control" id="vehicleStatus" required>
+                        <option value="active">Active</option>
+                        <option value="maintenance">Maintenance</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px;">
+                    <i class="fas fa-plus"></i> Add Vehicle
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Add Location Modal -->
+    <div class="modal" id="addLocationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add New Stop</h3>
+                <button class="close-modal" id="closeLocationModalBtn">&times;</button>
+            </div>
+            
+            <form id="locationForm">
+                <div class="form-group">
+                    <label class="form-label" for="locationName">Location Name</label>
+                    <input type="text" class="form-control" id="locationName" placeholder="Delhi Warehouse" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="locationETA">ETA (Estimated Time of Arrival)</label>
+                    <input type="time" class="form-control" id="locationETA" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="locationSequence">Stop Sequence</label>
+                    <input type="number" class="form-control" id="locationSequence" placeholder="1" min="1" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="locationPOD">POD Required?</label>
+                    <select class="form-control" id="locationPOD" required>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px;">
+                    <i class="fas fa-plus"></i> Add Stop
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Edit Vehicle Modal -->
+    <div class="modal" id="editVehicleModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Vehicle</h3>
+                <button class="close-modal" id="closeEditVehicleModalBtn">&times;</button>
+            </div>
+            
+            <form id="editVehicleForm">
+                <input type="hidden" id="editVehicleId">
+                
+                <div class="form-group">
+                    <label class="form-label" for="editVehicleNumber">Vehicle Number</label>
+                    <input type="text" class="form-control" id="editVehicleNumber" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="editVehicleType">Vehicle Type</label>
+                    <select class="form-control" id="editVehicleType" required>
+                        <option value="truck">Truck</option>
+                        <option value="container">Container</option>
+                        <option value="trailer">Trailer</option>
+                        <option value="mini_truck">Mini Truck</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="editVehicleDriver">Driver Name</label>
+                    <input type="text" class="form-control" id="editVehicleDriver" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="editVehicleDriverContact">Driver Contact</label>
+                    <input type="tel" class="form-control" id="editVehicleDriverContact" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="editVehicleStatus">Status</label>
+                    <select class="form-control" id="editVehicleStatus" required>
+                        <option value="active">Active</option>
+                        <option value="maintenance">Maintenance</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px;">
+                    <i class="fas fa-save"></i> Save Changes
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Delete Confirmation Modal -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Confirm Delete</h3>
+                <button class="close-modal" id="closeDeleteModalBtn">&times;</button>
+            </div>
+            
+            <div style="padding: 20px 0;">
+                <p id="deleteMessage">Are you sure you want to delete this item? This action cannot be undone.</p>
+            </div>
+            
+            <div style="display: flex; gap: 15px;">
+                <button class="btn" id="cancelDeleteBtn" style="flex: 1; background-color: #e0e0e0;">Cancel</button>
+                <button class="btn btn-primary" id="confirmDeleteBtn" style="flex: 1; background-color: var(--danger);">Delete</button>
+            </div>
+        </div>
+    </div>
+    
     <!-- Toast Notification -->
     <div class="toast" id="toast">
         <i class="fas fa-check-circle"></i>
         <span id="toastMessage">Data saved successfully!</span>
     </div>
-    
-    <!-- Footer -->
-    <footer>
-        <p>© 2023 Shri Narayan Logistics. All rights reserved. | Fleet Management System v2.1</p>
-        <p>Auto-save enabled | Last backup: <span id="footerLastSync">Just now</span></p>
-    </footer>
 
     <script>
         // Sample Data
@@ -973,12 +1491,16 @@
             {
                 id: 1,
                 number: "MH12AB1234",
+                type: "truck",
+                capacity: "10 tons",
                 driver: "Rajesh Kumar",
                 contact: "+91 98765 43210",
                 departure: "06:30 AM",
-                status: "ontime",
+                status: "active",
+                tripStatus: "ontime",
                 locations: [
                     {
+                        id: 1,
                         name: "Delhi Warehouse",
                         eta: "07:30 AM",
                         inTime: "07:25 AM",
@@ -987,6 +1509,7 @@
                         status: "completed"
                     },
                     {
+                        id: 2,
                         name: "Agra Checkpoint",
                         eta: "10:15 AM",
                         inTime: "10:10 AM",
@@ -995,40 +1518,29 @@
                         status: "completed"
                     },
                     {
+                        id: 3,
                         name: "Gwalior Stop",
                         eta: "01:30 PM",
                         inTime: "01:45 PM",
                         outTime: "02:00 PM",
                         pod: "Pending",
                         status: "current"
-                    },
-                    {
-                        name: "Jhansi Hub",
-                        eta: "04:00 PM",
-                        inTime: "",
-                        outTime: "",
-                        pod: "Pending",
-                        status: "pending"
-                    },
-                    {
-                        name: "Bhopal Destination",
-                        eta: "07:00 PM",
-                        inTime: "",
-                        outTime: "",
-                        pod: "Pending",
-                        status: "pending"
                     }
                 ]
             },
             {
                 id: 2,
                 number: "GJ05CD5678",
+                type: "container",
+                capacity: "20 tons",
                 driver: "Amit Sharma",
                 contact: "+91 87654 32109",
                 departure: "05:00 AM",
-                status: "delayed",
+                status: "active",
+                tripStatus: "delayed",
                 locations: [
                     {
+                        id: 1,
                         name: "Surat Warehouse",
                         eta: "06:00 AM",
                         inTime: "06:05 AM",
@@ -1037,84 +1549,84 @@
                         status: "completed"
                     },
                     {
+                        id: 2,
                         name: "Vadodara Stop",
                         eta: "08:30 AM",
                         inTime: "08:45 AM",
                         outTime: "09:00 AM",
                         pod: "Uploaded",
                         status: "completed"
-                    },
-                    {
-                        name: "Ahmedabad Hub",
-                        eta: "11:30 AM",
-                        inTime: "",
-                        outTime: "",
-                        pod: "Pending",
-                        status: "current"
                     }
                 ]
             },
             {
                 id: 3,
                 number: "RJ14EF9012",
+                type: "trailer",
+                capacity: "15 tons",
                 driver: "Vikram Singh",
                 contact: "+91 76543 21098",
                 departure: "08:00 AM",
-                status: "ontime",
+                status: "active",
+                tripStatus: "ontime",
                 locations: [
                     {
+                        id: 1,
                         name: "Jaipur Depot",
                         eta: "09:00 AM",
                         inTime: "08:55 AM",
                         outTime: "09:15 AM",
                         pod: "Uploaded",
                         status: "completed"
-                    },
-                    {
-                        name: "Kota Checkpoint",
-                        eta: "12:30 PM",
-                        inTime: "",
-                        outTime: "",
-                        pod: "Pending",
-                        status: "current"
                     }
                 ]
             },
             {
                 id: 4,
                 number: "DL08GH3456",
+                type: "mini_truck",
+                capacity: "5 tons",
                 driver: "Suresh Patel",
                 contact: "+91 65432 10987",
                 departure: "07:15 AM",
-                status: "stopped",
+                status: "maintenance",
+                tripStatus: "stopped",
                 locations: [
                     {
+                        id: 1,
                         name: "Noida Warehouse",
                         eta: "08:00 AM",
                         inTime: "08:05 AM",
                         outTime: "08:30 AM",
                         pod: "Uploaded",
                         status: "completed"
-                    },
-                    {
-                        name: "Meerut Stop",
-                        eta: "10:00 AM",
-                        inTime: "",
-                        outTime: "",
-                        pod: "Pending",
-                        status: "pending"
                     }
                 ]
             }
         ];
 
         // Application State
+        let isLoggedIn = false;
+        let currentUser = null;
         let currentVehicleId = 1;
         let tripsData = JSON.parse(JSON.stringify(sampleVehicles)); // Deep copy
         let autoSaveInterval;
         let lastSaveTime = new Date();
+        let itemToDelete = null;
+        let deleteType = null;
         
         // DOM Elements
+        const loginPage = document.getElementById('loginPage');
+        const dashboardPage = document.getElementById('dashboardPage');
+        const loginForm = document.getElementById('loginForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const togglePassword = document.getElementById('togglePassword');
+        const userName = document.getElementById('userName');
+        const userRole = document.getElementById('userRole');
+        const logoutBtn = document.getElementById('logoutBtn');
+        
+        // Dashboard Elements
         const vehicleList = document.getElementById('vehicleList');
         const locationTimeline = document.getElementById('locationTimeline');
         const syncIcon = document.getElementById('syncIcon');
@@ -1125,25 +1637,93 @@
         const toastMessage = document.getElementById('toastMessage');
         const addTripModal = document.getElementById('addTripModal');
         const addTripBtn = document.getElementById('addTripBtn');
-        const closeModalBtn = document.getElementById('closeModalBtn');
+        const closeTripModalBtn = document.getElementById('closeTripModalBtn');
         const tripForm = document.getElementById('tripForm');
         const saveDataBtn = document.getElementById('saveDataBtn');
         const exportExcelBtn = document.getElementById('exportExcelBtn');
         const exportTripBtn = document.getElementById('exportTripBtn');
         const refreshDataBtn = document.getElementById('refreshDataBtn');
-        const googleDriveBtn = document.getElementById('googleDriveBtn');
+        const addLocationBtn = document.getElementById('addLocationBtn');
+        const addVehicleBtn = document.getElementById('addVehicleBtn');
+        const addVehicleModal = document.getElementById('addVehicleModal');
+        const closeVehicleModalBtn = document.getElementById('closeVehicleModalBtn');
+        const vehicleForm = document.getElementById('vehicleForm');
+        const addLocationModal = document.getElementById('addLocationModal');
+        const closeLocationModalBtn = document.getElementById('closeLocationModalBtn');
+        const locationForm = document.getElementById('locationForm');
+        const editVehicleModal = document.getElementById('editVehicleModal');
+        const closeEditVehicleModalBtn = document.getElementById('closeEditVehicleModalBtn');
+        const editVehicleForm = document.getElementById('editVehicleForm');
+        const deleteModal = document.getElementById('deleteModal');
+        const closeDeleteModalBtn = document.getElementById('closeDeleteModalBtn');
+        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        const deleteMessage = document.getElementById('deleteMessage');
+        
+        // Navigation
+        const navLinks = document.querySelectorAll('.nav-link');
+        const pageContents = document.querySelectorAll('.page-content');
         
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
-            initApp();
-            startAutoSave();
+            checkLoginStatus();
             setupEventListeners();
         });
         
-        function initApp() {
+        function checkLoginStatus() {
+            // Check if user is already logged in (from localStorage)
+            const savedUser = localStorage.getItem('shriNarayanUser');
+            const savedData = localStorage.getItem('shriNarayanLogisticsData');
+            
+            if (savedUser) {
+                try {
+                    currentUser = JSON.parse(savedUser);
+                    isLoggedIn = true;
+                    
+                    if (savedData) {
+                        tripsData = JSON.parse(savedData);
+                    }
+                    
+                    showDashboard();
+                } catch (e) {
+                    console.error('Error loading saved data:', e);
+                    showLogin();
+                }
+            } else {
+                showLogin();
+            }
+        }
+        
+        function showLogin() {
+            loginPage.style.display = 'flex';
+            dashboardPage.style.display = 'none';
+            isLoggedIn = false;
+            
+            // Set default credentials for testing
+            emailInput.value = 'admin@shrinarayanlogistics.com';
+            passwordInput.value = 'Admin@123';
+        }
+        
+        function showDashboard() {
+            loginPage.style.display = 'none';
+            dashboardPage.style.display = 'block';
+            isLoggedIn = true;
+            
+            // Set user info
+            userName.textContent = currentUser.name;
+            userRole.textContent = currentUser.role;
+            
+            // Initialize dashboard
+            initDashboard();
+            startAutoSave();
+        }
+        
+        function initDashboard() {
             renderVehicleList();
             renderTripDetails(currentVehicleId);
             updateDashboardCounts();
+            setupCharts();
+            renderFleetTable();
         }
         
         function renderVehicleList() {
@@ -1154,24 +1734,49 @@
                 vehicleCard.className = `vehicle-card ${vehicle.id === currentVehicleId ? 'active' : ''}`;
                 vehicleCard.dataset.id = vehicle.id;
                 
-                const statusClass = `status-${vehicle.status}`;
-                const statusText = vehicle.status === 'ontime' ? 'On Time' : 
-                                 vehicle.status === 'delayed' ? 'Delayed' : 'Stopped';
+                const statusClass = `status-${vehicle.tripStatus}`;
+                const statusText = vehicle.tripStatus === 'ontime' ? 'On Time' : 
+                                 vehicle.tripStatus === 'delayed' ? 'Delayed' : 'Stopped';
                 
                 vehicleCard.innerHTML = `
+                    <div class="vehicle-actions">
+                        <button class="action-btn edit-btn" data-id="${vehicle.id}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete-btn" data-id="${vehicle.id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
                     <div class="vehicle-number">${vehicle.number}</div>
                     <div class="vehicle-driver">👨‍✈️ ${vehicle.driver}</div>
                     <div class="vehicle-driver">📞 ${vehicle.contact}</div>
                     <div class="vehicle-status ${statusClass}">${statusText}</div>
                 `;
                 
-                vehicleCard.addEventListener('click', () => {
-                    currentVehicleId = vehicle.id;
-                    document.querySelectorAll('.vehicle-card').forEach(card => {
-                        card.classList.remove('active');
-                    });
-                    vehicleCard.classList.add('active');
-                    renderTripDetails(vehicle.id);
+                vehicleCard.addEventListener('click', (e) => {
+                    // Don't trigger if clicking on action buttons
+                    if (!e.target.closest('.vehicle-actions')) {
+                        currentVehicleId = vehicle.id;
+                        document.querySelectorAll('.vehicle-card').forEach(card => {
+                            card.classList.remove('active');
+                        });
+                        vehicleCard.classList.add('active');
+                        renderTripDetails(vehicle.id);
+                    }
+                });
+                
+                // Add event listeners to action buttons
+                const editBtn = vehicleCard.querySelector('.edit-btn');
+                const deleteBtn = vehicleCard.querySelector('.delete-btn');
+                
+                editBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openEditVehicleModal(vehicle.id);
+                });
+                
+                deleteBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    confirmDelete(vehicle.id, 'vehicle', `vehicle ${vehicle.number}`);
                 });
                 
                 vehicleList.appendChild(vehicleCard);
@@ -1190,7 +1795,16 @@
             document.getElementById('departureTime').textContent = vehicle.departure;
             
             // Render location timeline
+            renderLocationTimeline(vehicle);
+        }
+        
+        function renderLocationTimeline(vehicle) {
             locationTimeline.innerHTML = '';
+            
+            if (!vehicle.locations || vehicle.locations.length === 0) {
+                locationTimeline.innerHTML = '<p style="text-align: center; color: var(--gray);">No stops added yet. Click "Add Stop" to create a route.</p>';
+                return;
+            }
             
             vehicle.locations.forEach((location, index) => {
                 const timelineItem = document.createElement('div');
@@ -1200,7 +1814,7 @@
                                    location.status === 'current' ? 'current' : '';
                 
                 const podButton = location.pod === 'Pending' ? 
-                    `<button class="btn-upload" data-vehicle="${vehicleId}" data-location="${index}">
+                    `<button class="btn-upload" data-vehicle="${vehicle.id}" data-location="${location.id}">
                         <i class="fas fa-upload"></i> Upload POD
                     </button>` : 
                     `<span class="detail-value">${location.pod}</span>`;
@@ -1210,6 +1824,14 @@
                         ${index + 1}
                     </div>
                     <div class="timeline-content">
+                        <div class="location-actions">
+                            <button class="action-btn edit-btn" data-vehicle="${vehicle.id}" data-location="${location.id}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn delete-btn" data-vehicle="${vehicle.id}" data-location="${location.id}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
                         <div class="location-header">
                             <div class="location-name">${location.name}</div>
                             <div class="location-status status-${location.status === 'completed' ? 'ontime' : location.status === 'current' ? 'delayed' : 'stopped'}">
@@ -1242,19 +1864,41 @@
                 locationTimeline.appendChild(timelineItem);
             });
             
-            // Add event listeners to POD upload buttons
+            // Add event listeners
             document.querySelectorAll('.btn-upload').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const vehicleId = parseInt(this.dataset.vehicle);
-                    const locationIndex = parseInt(this.dataset.location);
-                    uploadPOD(vehicleId, locationIndex);
+                    const locationId = parseInt(this.dataset.location);
+                    uploadPOD(vehicleId, locationId);
+                });
+            });
+            
+            document.querySelectorAll('.timeline-content .edit-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const vehicleId = parseInt(this.dataset.vehicle);
+                    const locationId = parseInt(this.dataset.location);
+                    editLocation(vehicleId, locationId);
+                });
+            });
+            
+            document.querySelectorAll('.timeline-content .delete-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const vehicleId = parseInt(this.dataset.vehicle);
+                    const locationId = parseInt(this.dataset.location);
+                    const vehicle = tripsData.find(v => v.id === vehicleId);
+                    const location = vehicle ? vehicle.locations.find(l => l.id === locationId) : null;
+                    
+                    if (location) {
+                        confirmDelete(locationId, 'location', `stop "${location.name}"`, vehicleId);
+                    }
                 });
             });
         }
         
         function updateDashboardCounts() {
             // Update dashboard counts based on data
-            document.getElementById('activeTripsCount').textContent = tripsData.length;
+            const activeTrips = tripsData.filter(v => v.status === 'active').length;
+            document.getElementById('activeTripsCount').textContent = activeTrips;
             
             const deliveredCount = tripsData.reduce((count, vehicle) => {
                 const completedStops = vehicle.locations.filter(loc => loc.status === 'completed').length;
@@ -1269,20 +1913,282 @@
             document.getElementById('podPending').textContent = pendingPODs;
         }
         
+        function setupCharts() {
+            // Trip Status Chart
+            const tripStatusCtx = document.getElementById('tripStatusChart').getContext('2d');
+            const tripStatusData = {
+                labels: ['On Time', 'Delayed', 'Stopped'],
+                datasets: [{
+                    data: [
+                        tripsData.filter(v => v.tripStatus === 'ontime').length,
+                        tripsData.filter(v => v.tripStatus === 'delayed').length,
+                        tripsData.filter(v => v.tripStatus === 'stopped').length
+                    ],
+                    backgroundColor: [
+                        'rgba(40, 167, 69, 0.7)',
+                        'rgba(255, 193, 7, 0.7)',
+                        'rgba(220, 53, 69, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgb(40, 167, 69)',
+                        'rgb(255, 193, 7)',
+                        'rgb(220, 53, 69)'
+                    ],
+                    borderWidth: 1
+                }]
+            };
+            
+            new Chart(tripStatusCtx, {
+                type: 'doughnut',
+                data: tripStatusData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+            
+            // Monthly Deliveries Chart
+            const monthlyCtx = document.getElementById('monthlyDeliveriesChart').getContext('2d');
+            new Chart(monthlyCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    datasets: [{
+                        label: 'Deliveries',
+                        data: [45, 52, 48, 55, 58, 62, 65, 63, 60, 68, 72, 75],
+                        backgroundColor: 'rgba(30, 60, 114, 0.7)',
+                        borderColor: 'rgb(30, 60, 114)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            // Vehicle Utilization Chart
+            const utilizationCtx = document.getElementById('vehicleUtilizationChart').getContext('2d');
+            new Chart(utilizationCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                    datasets: [{
+                        label: 'Utilization %',
+                        data: [75, 82, 78, 85],
+                        backgroundColor: 'rgba(255, 107, 53, 0.2)',
+                        borderColor: 'rgb(255, 107, 53)',
+                        borderWidth: 2,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+            
+            // Delay Analysis Chart
+            const delayCtx = document.getElementById('delayAnalysisChart').getContext('2d');
+            new Chart(delayCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Weather', 'Traffic', 'Vehicle Issue', 'Loading Delay', 'Documentation', 'Route Change'],
+                    datasets: [{
+                        label: 'Delay Causes',
+                        data: [65, 85, 45, 70, 55, 60],
+                        backgroundColor: 'rgba(108, 117, 125, 0.2)',
+                        borderColor: 'rgb(108, 117, 125)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderFleetTable() {
+            const fleetTable = document.getElementById('fleetTable');
+            fleetTable.innerHTML = '';
+            
+            if (tripsData.length === 0) {
+                fleetTable.innerHTML = '<p style="text-align: center; color: var(--gray); padding: 40px;">No vehicles in fleet. Click "Add Vehicle" to add one.</p>';
+                return;
+            }
+            
+            const table = document.createElement('table');
+            table.style.width = '100%';
+            table.style.borderCollapse = 'collapse';
+            table.style.marginTop = '20px';
+            
+            table.innerHTML = `
+                <thead>
+                    <tr style="background-color: #f8f9fa; border-bottom: 2px solid #eee;">
+                        <th style="padding: 15px; text-align: left;">Vehicle No.</th>
+                        <th style="padding: 15px; text-align: left;">Type</th>
+                        <th style="padding: 15px; text-align: left;">Driver</th>
+                        <th style="padding: 15px; text-align: left;">Contact</th>
+                        <th style="padding: 15px; text-align: left;">Status</th>
+                        <th style="padding: 15px; text-align: left;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${tripsData.map(vehicle => `
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 15px;">${vehicle.number}</td>
+                            <td style="padding: 15px; text-transform: capitalize;">${vehicle.type.replace('_', ' ')}</td>
+                            <td style="padding: 15px;">${vehicle.driver}</td>
+                            <td style="padding: 15px;">${vehicle.contact}</td>
+                            <td style="padding: 15px;">
+                                <span class="vehicle-status status-${vehicle.status === 'active' ? 'ontime' : vehicle.status === 'maintenance' ? 'delayed' : 'stopped'}">
+                                    ${vehicle.status === 'active' ? 'Active' : vehicle.status === 'maintenance' ? 'Maintenance' : 'Inactive'}
+                                </span>
+                            </td>
+                            <td style="padding: 15px;">
+                                <div style="display: flex; gap: 10px;">
+                                    <button class="action-btn edit-btn" data-id="${vehicle.id}">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn delete-btn" data-id="${vehicle.id}">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            `;
+            
+            fleetTable.appendChild(table);
+            
+            // Add event listeners to action buttons
+            fleetTable.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const vehicleId = parseInt(this.dataset.id);
+                    openEditVehicleModal(vehicleId);
+                });
+            });
+            
+            fleetTable.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const vehicleId = parseInt(this.dataset.id);
+                    const vehicle = tripsData.find(v => v.id === vehicleId);
+                    if (vehicle) {
+                        confirmDelete(vehicleId, 'vehicle', `vehicle ${vehicle.number}`);
+                    }
+                });
+            });
+        }
+        
         function setupEventListeners() {
+            // Login Form
+            loginForm.addEventListener('submit', handleLogin);
+            
+            togglePassword.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                
+                // Toggle icon
+                const icon = this.querySelector('i');
+                if (type === 'password') {
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                } else {
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                }
+            });
+            
+            // Logout
+            logoutBtn.addEventListener('click', handleLogout);
+            
+            // Navigation
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const page = this.dataset.page;
+                    
+                    // Update active nav link
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show selected page
+                    pageContents.forEach(content => {
+                        content.style.display = 'none';
+                    });
+                    
+                    document.getElementById(`${page}Content`).style.display = 'block';
+                });
+            });
+            
             // Modal controls
             addTripBtn.addEventListener('click', () => {
                 addTripModal.style.display = 'flex';
             });
             
-            closeModalBtn.addEventListener('click', () => {
+            closeTripModalBtn.addEventListener('click', () => {
                 addTripModal.style.display = 'none';
             });
             
-            // Close modal when clicking outside
+            addVehicleBtn.addEventListener('click', () => {
+                addVehicleModal.style.display = 'flex';
+            });
+            
+            closeVehicleModalBtn.addEventListener('click', () => {
+                addVehicleModal.style.display = 'none';
+            });
+            
+            addLocationBtn.addEventListener('click', () => {
+                addLocationModal.style.display = 'flex';
+            });
+            
+            closeLocationModalBtn.addEventListener('click', () => {
+                addLocationModal.style.display = 'none';
+            });
+            
+            closeEditVehicleModalBtn.addEventListener('click', () => {
+                editVehicleModal.style.display = 'none';
+            });
+            
+            closeDeleteModalBtn.addEventListener('click', () => {
+                deleteModal.style.display = 'none';
+            });
+            
+            cancelDeleteBtn.addEventListener('click', () => {
+                deleteModal.style.display = 'none';
+            });
+            
+            confirmDeleteBtn.addEventListener('click', handleDelete);
+            
+            // Close modals when clicking outside
             window.addEventListener('click', (e) => {
-                if (e.target === addTripModal) {
-                    addTripModal.style.display = 'none';
+                if (e.target.classList.contains('modal')) {
+                    e.target.style.display = 'none';
                 }
             });
             
@@ -1306,14 +2212,18 @@
                 
                 // Create new trip
                 const newTrip = {
-                    id: tripsData.length + 1,
+                    id: tripsData.length > 0 ? Math.max(...tripsData.map(v => v.id)) + 1 : 1,
                     number: newVehicleNo,
+                    type: "truck",
+                    capacity: "10 tons",
                     driver: newDriverName,
                     contact: newDriverContact,
                     departure: formattedTime,
-                    status: "ontime",
+                    status: "active",
+                    tripStatus: "ontime",
                     locations: [
                         {
+                            id: 1,
                             name: newDestination,
                             eta: "Calculating...",
                             inTime: "",
@@ -1334,6 +2244,147 @@
                 // Refresh UI
                 renderVehicleList();
                 updateDashboardCounts();
+                renderFleetTable();
+                
+                // Auto-save
+                saveData();
+            });
+            
+            // Vehicle form submission
+            vehicleForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const vehicleNumber = document.getElementById('vehicleNumber').value;
+                const vehicleType = document.getElementById('vehicleType').value;
+                const vehicleCapacity = document.getElementById('vehicleCapacity').value;
+                const vehicleDriver = document.getElementById('vehicleDriver').value;
+                const vehicleDriverContact = document.getElementById('vehicleDriverContact').value;
+                const vehicleStatus = document.getElementById('vehicleStatus').value;
+                
+                // Create new vehicle
+                const newVehicle = {
+                    id: tripsData.length > 0 ? Math.max(...tripsData.map(v => v.id)) + 1 : 1,
+                    number: vehicleNumber,
+                    type: vehicleType,
+                    capacity: `${vehicleCapacity} tons`,
+                    driver: vehicleDriver,
+                    contact: vehicleDriverContact,
+                    departure: "08:00 AM",
+                    status: vehicleStatus,
+                    tripStatus: vehicleStatus === 'active' ? 'ontime' : 'stopped',
+                    locations: []
+                };
+                
+                tripsData.push(newVehicle);
+                showToast(`New vehicle ${vehicleNumber} added to fleet`);
+                
+                // Reset form and close modal
+                vehicleForm.reset();
+                addVehicleModal.style.display = 'none';
+                
+                // Refresh UI
+                renderVehicleList();
+                updateDashboardCounts();
+                renderFleetTable();
+                
+                // Auto-save
+                saveData();
+            });
+            
+            // Location form submission
+            locationForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const locationName = document.getElementById('locationName').value;
+                const locationETA = document.getElementById('locationETA').value;
+                const locationSequence = parseInt(document.getElementById('locationSequence').value);
+                const locationPOD = document.getElementById('locationPOD').value;
+                
+                const vehicle = tripsData.find(v => v.id === currentVehicleId);
+                if (!vehicle) return;
+                
+                // Format time
+                const time = new Date(`1970-01-01T${locationETA}`);
+                const formattedTime = time.toLocaleTimeString('en-US', { 
+                    hour: '2-digit', 
+                    minute: '2-digit',
+                    hour12: true 
+                });
+                
+                // Create new location
+                const locationId = vehicle.locations.length > 0 ? 
+                    Math.max(...vehicle.locations.map(l => l.id)) + 1 : 1;
+                
+                const newLocation = {
+                    id: locationId,
+                    name: locationName,
+                    eta: formattedTime,
+                    inTime: "",
+                    outTime: "",
+                    pod: locationPOD === 'yes' ? 'Pending' : 'Not Required',
+                    status: "pending"
+                };
+                
+                // Add location at the correct position
+                if (locationSequence <= vehicle.locations.length) {
+                    vehicle.locations.splice(locationSequence - 1, 0, newLocation);
+                } else {
+                    vehicle.locations.push(newLocation);
+                }
+                
+                showToast(`New stop "${locationName}" added to trip`);
+                
+                // Reset form and close modal
+                locationForm.reset();
+                addLocationModal.style.display = 'none';
+                
+                // Refresh UI
+                renderTripDetails(currentVehicleId);
+                updateDashboardCounts();
+                
+                // Auto-save
+                saveData();
+            });
+            
+            // Edit vehicle form submission
+            editVehicleForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const vehicleId = parseInt(document.getElementById('editVehicleId').value);
+                const vehicleNumber = document.getElementById('editVehicleNumber').value;
+                const vehicleType = document.getElementById('editVehicleType').value;
+                const vehicleDriver = document.getElementById('editVehicleDriver').value;
+                const vehicleDriverContact = document.getElementById('editVehicleDriverContact').value;
+                const vehicleStatus = document.getElementById('editVehicleStatus').value;
+                
+                const vehicleIndex = tripsData.findIndex(v => v.id === vehicleId);
+                if (vehicleIndex === -1) return;
+                
+                // Update vehicle
+                tripsData[vehicleIndex].number = vehicleNumber;
+                tripsData[vehicleIndex].type = vehicleType;
+                tripsData[vehicleIndex].driver = vehicleDriver;
+                tripsData[vehicleIndex].contact = vehicleDriverContact;
+                tripsData[vehicleIndex].status = vehicleStatus;
+                
+                if (vehicleStatus === 'active' && tripsData[vehicleIndex].tripStatus === 'stopped') {
+                    tripsData[vehicleIndex].tripStatus = 'ontime';
+                } else if (vehicleStatus !== 'active') {
+                    tripsData[vehicleIndex].tripStatus = 'stopped';
+                }
+                
+                showToast(`Vehicle ${vehicleNumber} updated successfully`);
+                
+                // Close modal
+                editVehicleModal.style.display = 'none';
+                
+                // Refresh UI
+                renderVehicleList();
+                if (currentVehicleId === vehicleId) {
+                    renderTripDetails(vehicleId);
+                }
+                updateDashboardCounts();
+                renderFleetTable();
                 
                 // Auto-save
                 saveData();
@@ -1355,9 +2406,57 @@
                 showToast('Data refreshed from server');
                 updateLastSyncTime();
             });
+        }
+        
+        function handleLogin(e) {
+            e.preventDefault();
             
-            // Google Drive backup button
-            googleDriveBtn.addEventListener('click', backupToGoogleDrive);
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            
+            // Simple validation
+            if (!email || !password) {
+                showToast('Please enter both email and password', 'error');
+                return;
+            }
+            
+            // In a real app, this would be an API call to your backend
+            // For demo purposes, using default credentials
+            const defaultEmail = 'admin@shrinarayanlogistics.com';
+            const defaultPassword = 'Admin@123';
+            
+            if (email === defaultEmail && password === defaultPassword) {
+                currentUser = {
+                    name: 'Admin User',
+                    role: 'Administrator',
+                    email: email
+                };
+                
+                // Save user to localStorage
+                localStorage.setItem('shriNarayanUser', JSON.stringify(currentUser));
+                
+                showToast('Login successful! Redirecting to dashboard...');
+                
+                setTimeout(() => {
+                    showDashboard();
+                }, 1000);
+            } else {
+                showToast('Invalid email or password', 'error');
+            }
+        }
+        
+        function handleLogout() {
+            // Clear auto-save interval
+            if (autoSaveInterval) {
+                clearInterval(autoSaveInterval);
+            }
+            
+            // Clear user data (optional - you might want to keep it for next login)
+            // localStorage.removeItem('shriNarayanUser');
+            
+            isLoggedIn = false;
+            showLogin();
+            showToast('Logged out successfully');
         }
         
         function startAutoSave() {
@@ -1373,7 +2472,7 @@
             syncStatus.textContent = 'Saving...';
             
             setTimeout(() => {
-                // In a real app, this would be an API call to your backend
+                // Save to localStorage
                 const dataStr = JSON.stringify(tripsData);
                 localStorage.setItem('shriNarayanLogisticsData', dataStr);
                 
@@ -1407,27 +2506,47 @@
             
             // Add headers
             excelData.push([
-                'Vehicle No.', 'Driver', 'Driver Contact', 'Departure Time',
-                'Location', 'ETA', 'IN Time', 'OUT Time', 'POD Status', 'Trip Status'
+                'Vehicle No.', 'Type', 'Capacity', 'Driver', 'Driver Contact', 'Departure Time',
+                'Location', 'ETA', 'IN Time', 'OUT Time', 'POD Status', 'Trip Status', 'Vehicle Status'
             ]);
             
             // Add data rows
             tripsData.forEach(vehicle => {
-                vehicle.locations.forEach(location => {
+                if (vehicle.locations.length === 0) {
                     excelData.push([
                         vehicle.number,
+                        vehicle.type,
+                        vehicle.capacity,
                         vehicle.driver,
                         vehicle.contact,
                         vehicle.departure,
-                        location.name,
-                        location.eta,
-                        location.inTime || '',
-                        location.outTime || '',
-                        location.pod,
-                        vehicle.status === 'ontime' ? 'On Time' : 
-                        vehicle.status === 'delayed' ? 'Delayed' : 'Stopped'
+                        'N/A', 'N/A', 'N/A', 'N/A', 'N/A',
+                        vehicle.tripStatus === 'ontime' ? 'On Time' : 
+                        vehicle.tripStatus === 'delayed' ? 'Delayed' : 'Stopped',
+                        vehicle.status === 'active' ? 'Active' : 
+                        vehicle.status === 'maintenance' ? 'Maintenance' : 'Inactive'
                     ]);
-                });
+                } else {
+                    vehicle.locations.forEach(location => {
+                        excelData.push([
+                            vehicle.number,
+                            vehicle.type,
+                            vehicle.capacity,
+                            vehicle.driver,
+                            vehicle.contact,
+                            vehicle.departure,
+                            location.name,
+                            location.eta,
+                            location.inTime || '',
+                            location.outTime || '',
+                            location.pod,
+                            vehicle.tripStatus === 'ontime' ? 'On Time' : 
+                            vehicle.tripStatus === 'delayed' ? 'Delayed' : 'Stopped',
+                            vehicle.status === 'active' ? 'Active' : 
+                            vehicle.status === 'maintenance' ? 'Maintenance' : 'Inactive'
+                        ]);
+                    });
+                }
             });
             
             // Create worksheet
@@ -1496,46 +2615,109 @@
             return `${year}${month}${day}_${hour}${minute}`;
         }
         
-        function uploadPOD(vehicleId, locationIndex) {
+        function uploadPOD(vehicleId, locationId) {
             // Simulate file upload
             showToast('Opening file upload dialog...');
             
-            // In a real app, this would open a file picker
             setTimeout(() => {
                 const vehicle = tripsData.find(v => v.id === vehicleId);
-                if (vehicle && vehicle.locations[locationIndex]) {
-                    vehicle.locations[locationIndex].pod = 'Uploaded';
-                    renderTripDetails(currentVehicleId);
-                    updateDashboardCounts();
-                    showToast('POD uploaded successfully!');
-                    saveData();
+                if (vehicle) {
+                    const location = vehicle.locations.find(l => l.id === locationId);
+                    if (location) {
+                        location.pod = 'Uploaded';
+                        renderTripDetails(currentVehicleId);
+                        updateDashboardCounts();
+                        showToast('POD uploaded successfully!');
+                        saveData();
+                    }
                 }
             }, 1000);
         }
         
-        function backupToGoogleDrive() {
-            // This is a simulation of Google Drive integration
-            // In a real app, you would use the Google Drive API
+        function editLocation(vehicleId, locationId) {
+            const vehicle = tripsData.find(v => v.id === vehicleId);
+            if (!vehicle) return;
             
-            showToast('Connecting to Google Drive...', 'warning');
+            const location = vehicle.locations.find(l => l.id === locationId);
+            if (!location) return;
             
-            setTimeout(() => {
-                // Simulate successful backup
-                const dataStr = JSON.stringify(tripsData);
-                const blob = new Blob([dataStr], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                
-                // Create a temporary link to download the file
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `Shri_Narayan_Logistics_Backup_${formatDateForFile(new Date())}.json`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-                
-                showToast('Backup created and downloaded!', 'success');
-            }, 1500);
+            // For now, just show a simple edit prompt
+            const newName = prompt('Enter new location name:', location.name);
+            if (newName && newName.trim() !== '') {
+                location.name = newName.trim();
+                renderTripDetails(currentVehicleId);
+                showToast('Location updated successfully!');
+                saveData();
+            }
+        }
+        
+        function openEditVehicleModal(vehicleId) {
+            const vehicle = tripsData.find(v => v.id === vehicleId);
+            if (!vehicle) return;
+            
+            document.getElementById('editVehicleId').value = vehicle.id;
+            document.getElementById('editVehicleNumber').value = vehicle.number;
+            document.getElementById('editVehicleType').value = vehicle.type;
+            document.getElementById('editVehicleDriver').value = vehicle.driver;
+            document.getElementById('editVehicleDriverContact').value = vehicle.contact;
+            document.getElementById('editVehicleStatus').value = vehicle.status;
+            
+            editVehicleModal.style.display = 'flex';
+        }
+        
+        function confirmDelete(id, type, name, parentId = null) {
+            itemToDelete = id;
+            deleteType = type;
+            deleteParentId = parentId;
+            
+            deleteMessage.textContent = `Are you sure you want to delete ${name}? This action cannot be undone.`;
+            deleteModal.style.display = 'flex';
+        }
+        
+        function handleDelete() {
+            if (!itemToDelete || !deleteType) return;
+            
+            if (deleteType === 'vehicle') {
+                // Delete vehicle
+                const vehicleIndex = tripsData.findIndex(v => v.id === itemToDelete);
+                if (vehicleIndex !== -1) {
+                    const vehicleName = tripsData[vehicleIndex].number;
+                    tripsData.splice(vehicleIndex, 1);
+                    
+                    // Update current vehicle if it was deleted
+                    if (currentVehicleId === itemToDelete && tripsData.length > 0) {
+                        currentVehicleId = tripsData[0].id;
+                    }
+                    
+                    showToast(`Vehicle ${vehicleName} deleted successfully`);
+                }
+            } else if (deleteType === 'location' && deleteParentId) {
+                // Delete location
+                const vehicle = tripsData.find(v => v.id === deleteParentId);
+                if (vehicle) {
+                    const locationIndex = vehicle.locations.findIndex(l => l.id === itemToDelete);
+                    if (locationIndex !== -1) {
+                        const locationName = vehicle.locations[locationIndex].name;
+                        vehicle.locations.splice(locationIndex, 1);
+                        showToast(`Stop "${locationName}" deleted successfully`);
+                    }
+                }
+            }
+            
+            // Refresh UI
+            renderVehicleList();
+            renderTripDetails(currentVehicleId);
+            updateDashboardCounts();
+            renderFleetTable();
+            
+            // Close modal and save
+            deleteModal.style.display = 'none';
+            saveData();
+            
+            // Reset delete state
+            itemToDelete = null;
+            deleteType = null;
+            deleteParentId = null;
         }
         
         function showToast(message, type = 'success') {
@@ -1557,18 +2739,6 @@
         
         // Initialize last sync time
         updateLastSyncTime();
-        
-        // Check for existing data in localStorage
-        const savedData = localStorage.getItem('shriNarayanLogisticsData');
-        if (savedData) {
-            try {
-                tripsData = JSON.parse(savedData);
-                initApp();
-                showToast('Loaded saved data from local storage', 'success');
-            } catch (e) {
-                console.error('Error loading saved data:', e);
-            }
-        }
     </script>
 </body>
 </html>
