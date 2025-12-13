@@ -1,2670 +1,1543 @@
 <!DOCTYPE html>
 <html lang="en" class="theme-system">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FleetMaster Pro - Enterprise Logistics Management</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
-    
-    <style>
-        :root {
-            --primary: #3b82f6;
-            --secondary: #1e40af;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --dark: #1f2937;
-            --light: #f9fafb;
-        }
-
-        .glass {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .dark .glass {
-            background: rgba(31, 41, 55, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .gradient-text {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .card-hover {
-            transition: all 0.3s ease;
-        }
-
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-
-        .status-badge {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .status-active { background: #d1fae5; color: #065f46; }
-        .status-pending { background: #fef3c7; color: #92400e; }
-        .status-completed { background: #dbeafe; color: #1e40af; }
-        .status-delayed { background: #fee2e2; color: #991b1b; }
-        .status-maintenance { background: #f3e8ff; color: #7c3aed; }
-
-        .vehicle-available { border-left: 4px solid #10b981; }
-        .vehicle-on-trip { border-left: 4px solid #3b82f6; }
-        .vehicle-maintenance { border-left: 4px solid #f59e0b; }
-        .vehicle-offline { border-left: 4px solid #6b7280; }
-
-        .notification-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--danger);
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        .progress-ring {
-            transform: rotate(-90deg);
-        }
-
-        .progress-ring-circle {
-            stroke-dasharray: 283;
-            stroke-dashoffset: 283;
-            transition: stroke-dashoffset 0.5s ease;
-        }
-
-        .map-marker {
-            width: 32px;
-            height: 32px;
-            background: var(--primary);
-            border-radius: 50% 50% 50% 0;
-            transform: rotate(-45deg);
-            position: relative;
-        }
-
-        .map-marker::after {
-            content: '';
-            width: 20px;
-            height: 20px;
-            background: white;
-            border-radius: 50%;
-            position: absolute;
-            top: 6px;
-            left: 6px;
-            transform: rotate(45deg);
-        }
-
-        .slide-in {
-            animation: slideIn 0.3s ease-out;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        .sidebar-collapsed {
-            width: 70px !important;
-        }
-
-        .sidebar-collapsed .nav-text {
-            display: none !important;
-        }
-
-        .sidebar-collapsed .logo-text {
-            display: none !important;
-        }
-
-        .sidebar-collapsed .user-info {
-            display: none !important;
-        }
-
-        .sidebar-collapsed .expand-icon {
-            transform: rotate(180deg);
-        }
-
-        .trip-timeline {
-            position: relative;
-            padding-left: 30px;
-        }
-
-        .trip-timeline::before {
-            content: '';
-            position: absolute;
-            left: 10px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: #e5e7eb;
-        }
-
-        .timeline-dot {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: white;
-            border: 3px solid #3b82f6;
-            position: absolute;
-            left: 2px;
-        }
-
-        .timeline-dot.active {
-            background: #3b82f6;
-            border-color: #3b82f6;
-        }
-
-        .timeline-dot.completed {
-            background: #10b981;
-            border-color: #10b981;
-        }
-
-        .route-path {
-            stroke-dasharray: 5, 5;
-            animation: dash 20s linear infinite;
-        }
-
-        @keyframes dash {
-            to {
-                stroke-dashoffset: 1000;
-            }
-        }
-
-        .stats-card {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stats-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transform: rotate(45deg);
-            animation: shine 3s infinite;
-        }
-
-        @keyframes shine {
-            0% { transform: translateX(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) rotate(45deg); }
-        }
-
-        .blink {
-            animation: blink 1s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        .fleet-card:hover .vehicle-overlay {
-            opacity: 1;
-        }
-
-        .vehicle-overlay {
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .data-table tr {
-            transition: background-color 0.2s ease;
-        }
-
-        .data-table tr:hover {
-            background-color: rgba(59, 130, 246, 0.05);
-        }
-
-        .dark .data-table tr:hover {
-            background-color: rgba(59, 130, 246, 0.1);
-        }
-
-        .modal-backdrop {
-            animation: fadeIn 0.2s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .toast {
-            animation: slideInUp 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
-        }
-
-        @keyframes slideInUp {
-            from {
-                transform: translateY(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes fadeOut {
-            to {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-        }
-
-        .loading-shimmer {
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-
-        .map-container {
-            position: relative;
-            overflow: hidden;
-            border-radius: 12px;
-        }
-
-        .map-controls {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 10;
-        }
-
-        .driver-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        }
-
-        .notification-item:hover {
-            background: rgba(59, 130, 246, 0.1);
-        }
-
-        .tab-active {
-            border-bottom: 2px solid var(--primary);
-            color: var(--primary);
-        }
-
-        .chart-tooltip {
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            padding: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        .dark .chart-tooltip {
-            background: var(--dark);
-            border-color: #4b5563;
-        }
-    </style>
-</head>
-<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-    <!-- Loading Screen -->
-    <div id="loading-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white dark:bg-gray-900">
-        <div class="relative mb-8">
-            <div class="w-24 h-24 rounded-full border-8 border-blue-100 dark:border-blue-900 border-t-blue-500 dark:border-t-blue-400 animate-spin"></div>
-            <div class="absolute inset-0 flex items-center justify-center">
-                <i class="fa-solid fa-truck text-3xl text-blue-500"></i>
-            </div>
-        </div>
-        <h1 class="text-3xl font-bold gradient-text mb-2">FleetMaster Pro</h1>
-        <p class="text-gray-600 dark:text-gray-400" id="loading-text">Initializing system...</p>
-        <div class="w-64 h-2 bg-gray-200 dark:bg-gray-800 rounded-full mt-4 overflow-hidden">
-            <div id="loading-progress" class="h-full bg-blue-500 transition-all duration-300" style="width: 0%"></div>
-        </div>
-    </div>
-
-    <!-- Auth Container -->
-    <div id="auth-container" class="hidden fixed inset-0 z-40 bg-gradient-to-br from-blue-900 via-gray-900 to-gray-950">
-        <div class="absolute inset-0 grid-pattern opacity-10"></div>
-        <div class="container mx-auto px-4 h-full flex items-center justify-center">
-            <div class="w-full max-w-md">
-                <div class="glass rounded-2xl p-8 shadow-2xl">
-                    <div class="text-center mb-8">
-                        <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-500 mb-4">
-                            <i class="fa-solid fa-truck text-3xl text-white"></i>
-                        </div>
-                        <h1 class="text-3xl font-bold gradient-text">FleetMaster Pro</h1>
-                        <p class="text-gray-400 text-sm mt-2">Enterprise Logistics Management</p>
-                    </div>
-                    
-                    <form id="login-form" class="space-y-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
-                            <div class="relative">
-                                <i class="fa-solid fa-envelope absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
-                                <input type="email" id="login-email" class="w-full pl-10 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="admin@company.com" required>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-2">Password</label>
-                            <div class="relative">
-                                <i class="fa-solid fa-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
-                                <input type="password" id="login-password" class="w-full pl-10 pr-12 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="••••••••" required>
-                                <button type="button" onclick="togglePasswordVisibility('login-password')" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-                                    <i class="fa-solid fa-eye"></i>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-center justify-between">
-                            <label class="flex items-center space-x-2">
-                                <input type="checkbox" id="remember-me" class="rounded border-gray-600 bg-gray-800 text-blue-500 focus:ring-blue-500">
-                                <span class="text-sm text-gray-400">Remember me</span>
-                            </label>
-                            <button type="button" onclick="showForgotPassword()" class="text-sm text-blue-400 hover:text-blue-300">Forgot password?</button>
-                        </div>
-                        
-                        <div id="auth-error" class="hidden bg-red-900/30 border border-red-700 rounded-lg p-3 text-sm text-red-300"></div>
-                        
-                        <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3.5 px-4 rounded-lg transition-all duration-300 transform hover:-translate-y-0.5">
-                            <span id="login-btn-text">Sign In</span>
-                            <i class="fa-solid fa-arrow-right ml-2"></i>
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main App Container -->
-    <div id="app-container" class="hidden h-screen flex flex-col">
-        <!-- Top Navigation -->
-        <nav class="glass border-b border-gray-200 dark:border-gray-800 py-3 px-6 flex items-center justify-between">
-            <div class="flex items-center space-x-4">
-                <button onclick="toggleSidebar()" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
-                        <i class="fa-solid fa-truck text-white"></i>
-                    </div>
-                    <div>
-                        <div class="font-bold text-sm">FleetMaster Pro</div>
-                        <div class="text-xs text-gray-500">Enterprise Edition</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex items-center space-x-4">
-                <!-- Quick Actions -->
-                <div class="hidden lg:flex items-center space-x-2">
-                    <button onclick="quickAction('new-trip')" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg">
-                        <i class="fa-solid fa-plus mr-1.5"></i> New Trip
-                    </button>
-                    <button onclick="quickAction('live-tracking')" class="px-3 py-1.5 border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 text-xs font-medium rounded-lg">
-                        <i class="fa-solid fa-map-location-dot mr-1.5"></i> Live Tracking
-                    </button>
-                    <button onclick="quickAction('reports')" class="px-3 py-1.5 border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 text-xs font-medium rounded-lg">
-                        <i class="fa-solid fa-chart-line mr-1.5"></i> Reports
-                    </button>
-                </div>
-
-                <!-- Search -->
-                <div class="relative hidden md:block">
-                    <i class="fa-solid fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
-                    <input type="text" id="global-search" placeholder="Search trips, vehicles, drivers..." class="pl-10 pr-4 py-2 text-sm bg-gray-100 dark:bg-gray-800 border border-transparent hover:border-gray-300 dark:hover:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-64">
-                </div>
-
-                <!-- Notifications -->
-                <div class="relative">
-                    <button onclick="toggleNotifications()" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg relative">
-                        <i class="fa-solid fa-bell"></i>
-                        <span id="notification-count" class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center hidden">0</span>
-                    </button>
-                    <div id="notifications-panel" class="hidden absolute right-0 mt-2 w-96 bg-white dark:bg-gray-800 rounded-lg shadow-2xl border border-gray-200 dark:border-gray-700 z-50">
-                        <div class="p-4 border-b border-gray-200 dark:border-gray-700">
-                            <div class="flex justify-between items-center">
-                                <h3 class="font-bold">Notifications</h3>
-                                <button onclick="markAllAsRead()" class="text-sm text-blue-500 hover:text-blue-400">Mark all read</button>
-                            </div>
-                        </div>
-                        <div class="max-h-96 overflow-y-auto">
-                            <div id="notifications-list" class="p-2">
-                                <!-- Notifications will be loaded here -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Theme Toggle -->
-                <button onclick="toggleTheme()" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
-                    <i id="theme-icon" class="fa-solid fa-moon"></i>
-                </button>
-
-                <!-- User Menu -->
-                <div class="relative">
-                    <button onclick="toggleUserMenu()" class="flex items-center space-x-3 p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
-                            <span id="user-initials" class="text-white font-bold">U</span>
-                        </div>
-                        <div class="hidden md:block text-left">
-                            <div id="user-name" class="text-sm font-medium">Loading...</div>
-                            <div id="user-role" class="text-xs text-gray-500">Role</div>
-                        </div>
-                        <i class="fa-solid fa-chevron-down text-xs text-gray-500"></i>
-                    </button>
-                    <div id="user-menu" class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-2xl border border-gray-200 dark:border-gray-700 z-50">
-                        <div class="p-4 border-b border-gray-200 dark:border-gray-700">
-                            <div id="menu-user-name" class="font-medium">User</div>
-                            <div id="menu-user-email" class="text-sm text-gray-500">email@company.com</div>
-                        </div>
-                        <div class="p-2">
-                            <button onclick="showProfile()" class="w-full text-left px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-sm">
-                                <i class="fa-solid fa-user mr-3 text-gray-500"></i> Profile
-                            </button>
-                            <button onclick="showSettings()" class="w-full text-left px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-sm">
-                                <i class="fa-solid fa-cog mr-3 text-gray-500"></i> Settings
-                            </button>
-                            <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
-                            <button onclick="logout()" class="w-full text-left px-3 py-2 hover:bg-red-50 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg text-sm">
-                                <i class="fa-solid fa-right-from-bracket mr-3"></i> Logout
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </nav>
-
-        <!-- Main Layout -->
-        <div class="flex flex-1 overflow-hidden">
-            <!-- Sidebar -->
-            <aside id="sidebar" class="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col transition-all duration-300">
-                <!-- Sidebar Header -->
-                <div class="p-6 border-b border-gray-200 dark:border-gray-700">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
-                                <i class="fa-solid fa-truck-fast text-white text-xl"></i>
-                            </div>
-                            <div>
-                                <div class="font-bold text-sm">Command Center</div>
-                                <div class="text-xs text-gray-500">v3.2.1</div>
-                            </div>
-                        </div>
-                        <button onclick="toggleSidebarCollapse()" class="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                            <i class="fa-solid fa-chevron-left"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Navigation -->
-                <nav class="flex-1 py-4 overflow-y-auto">
-                    <div class="px-4 space-y-1">
-                        <a href="#" onclick="switchTab('dashboard')" class="nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
-                            <i class="fa-solid fa-gauge-high w-5 text-center"></i>
-                            <span class="nav-text">Dashboard</span>
-                            <span class="badge badge-blue badge-sm ml-auto">Live</span>
-                        </a>
-
-                        <!-- Trip Management -->
-                        <div class="nav-group">
-                            <div class="nav-group-header flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 cursor-pointer">
-                                <i class="fa-solid fa-route w-5 text-center"></i>
-                                <span class="nav-text">Trip Management</span>
-                                <i class="fa-solid fa-chevron-down ml-auto text-xs"></i>
-                            </div>
-                            <div class="nav-group-content pl-10 space-y-1 mt-1">
-                                <a href="#" onclick="switchTab('trips-active')" class="nav-subitem flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-sm text-gray-600 dark:text-gray-400">
-                                    <i class="fa-solid fa-play-circle w-4 text-center"></i>
-                                    <span class="nav-text">Active Trips</span>
-                                    <span id="active-trips-badge" class="badge badge-green badge-sm ml-auto">0</span>
-                                </a>
-                                <a href="#" onclick="switchTab('trips-new')" class="nav-subitem flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-sm text-gray-600 dark:text-gray-400">
-                                    <i class="fa-solid fa-plus-circle w-4 text-center"></i>
-                                    <span class="nav-text">New Trip</span>
-                                </a>
-                                <a href="#" onclick="switchTab('trips-history')" class="nav-subitem flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-sm text-gray-600 dark:text-gray-400">
-                                    <i class="fa-solid fa-history w-4 text-center"></i>
-                                    <span class="nav-text">Trip History</span>
-                                </a>
-                                <a href="#" onclick="switchTab('trips-map')" class="nav-subitem flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-sm text-gray-600 dark:text-gray-400">
-                                    <i class="fa-solid fa-map w-4 text-center"></i>
-                                    <span class="nav-text">Live Map</span>
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- Fleet Management -->
-                        <div class="nav-group">
-                            <div class="nav-group-header flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 cursor-pointer">
-                                <i class="fa-solid fa-truck w-5 text-center"></i>
-                                <span class="nav-text">Fleet Management</span>
-                                <i class="fa-solid fa-chevron-down ml-auto text-xs"></i>
-                            </div>
-                            <div class="nav-group-content pl-10 space-y-1 mt-1">
-                                <a href="#" onclick="switchTab('fleet-overview')" class="nav-subitem flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-sm text-gray-600 dark:text-gray-400">
-                                    <i class="fa-solid fa-truck-plane w-4 text-center"></i>
-                                    <span class="nav-text">Fleet Overview</span>
-                                </a>
-                                <a href="#" onclick="switchTab('fleet-maintenance')" class="nav-subitem flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-sm text-gray-600 dark:text-gray-400">
-                                    <i class="fa-solid fa-screwdriver-wrench w-4 text-center"></i>
-                                    <span class="nav-text">Maintenance</span>
-                                </a>
-                                <a href="#" onclick="switchTab('fleet-drivers')" class="nav-subitem flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-sm text-gray-600 dark:text-gray-400">
-                                    <i class="fa-solid fa-id-card w-4 text-center"></i>
-                                    <span class="nav-text">Drivers</span>
-                                </a>
-                                <a href="#" onclick="switchTab('fleet-tracking')" class="nav-subitem flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-sm text-gray-600 dark:text-gray-400">
-                                    <i class="fa-solid fa-satellite-dish w-4 text-center"></i>
-                                    <span class="nav-text">Live Tracking</span>
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- Analytics & Reports -->
-                        <a href="#" onclick="switchTab('analytics')" class="nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
-                            <i class="fa-solid fa-chart-pie w-5 text-center"></i>
-                            <span class="nav-text">Analytics</span>
-                        </a>
-
-                        <a href="#" onclick="switchTab('reports')" class="nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
-                            <i class="fa-solid fa-file-chart-column w-5 text-center"></i>
-                            <span class="nav-text">Reports</span>
-                        </a>
-
-                        <!-- Administration -->
-                        <div class="nav-group">
-                            <div class="nav-group-header flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 cursor-pointer">
-                                <i class="fa-solid fa-shield-halved w-5 text-center"></i>
-                                <span class="nav-text">Administration</span>
-                                <i class="fa-solid fa-chevron-down ml-auto text-xs"></i>
-                            </div>
-                            <div class="nav-group-content pl-10 space-y-1 mt-1">
-                                <a href="#" onclick="switchTab('admin-users')" class="nav-subitem flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-sm text-gray-600 dark:text-gray-400">
-                                    <i class="fa-solid fa-users w-4 text-center"></i>
-                                    <span class="nav-text">User Management</span>
-                                </a>
-                                <a href="#" onclick="switchTab('admin-roles')" class="nav-subitem flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-sm text-gray-600 dark:text-gray-400">
-                                    <i class="fa-solid fa-user-shield w-4 text-center"></i>
-                                    <span class="nav-text">Roles & Permissions</span>
-                                </a>
-                                <a href="#" onclick="switchTab('admin-audit')" class="nav-subitem flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-sm text-gray-600 dark:text-gray-400">
-                                    <i class="fa-solid fa-clipboard-list w-4 text-center"></i>
-                                    <span class="nav-text">Audit Log</span>
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- Settings -->
-                        <a href="#" onclick="switchTab('settings')" class="nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
-                            <i class="fa-solid fa-sliders w-5 text-center"></i>
-                            <span class="nav-text">Settings</span>
-                        </a>
-                    </div>
-
-                    <!-- Sidebar Footer -->
-                    <div class="mt-8 px-4">
-                        <div class="bg-gradient-to-r from-blue-50 to-transparent dark:from-blue-900/20 rounded-xl p-3">
-                            <div class="text-xs font-medium mb-1">System Status</div>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-2">
-                                    <div class="w-2 h-2 rounded-full bg-green-500"></div>
-                                    <span class="text-xs">All Systems Normal</span>
-                                </div>
-                                <span class="text-xs text-green-600 font-bold">100%</span>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-
-                <!-- User Info -->
-                <div class="p-4 border-t border-gray-200 dark:border-gray-700">
-                    <div class="flex items-center space-x-3">
-                        <div class="relative">
-                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
-                                <span id="sidebar-user-initials" class="text-white font-bold">U</span>
-                            </div>
-                            <div class="w-3 h-3 rounded-full bg-green-500 border-2 border-white dark:border-gray-800 absolute bottom-0 right-0"></div>
-                        </div>
-                        <div class="flex-1 user-info">
-                            <div id="sidebar-user-name" class="font-medium text-sm">Loading...</div>
-                            <div class="text-xs text-gray-500 flex items-center space-x-1">
-                                <div class="w-1.5 h-1.5 rounded-full bg-green-500"></div>
-                                <span>Online</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </aside>
-
-            <!-- Main Content -->
-            <main class="flex-1 overflow-y-auto bg-gray-50/50 dark:bg-gray-900/50 p-6">
-                <div id="content-area">
-                    <!-- Dashboard will be loaded here -->
-                </div>
-            </main>
-        </div>
-
-        <!-- Toast Container -->
-        <div id="toast-container" class="fixed bottom-4 right-4 space-y-2 z-50"></div>
-
-        <!-- Floating Action Button -->
-        <button id="fab" class="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 text-white shadow-2xl flex items-center justify-center hover:scale-110 transition-transform z-40" onclick="quickAction('new-trip')">
-            <i class="fa-solid fa-plus text-xl"></i>
-        </button>
-    </div>
-
-    <!-- Forgot Password Modal -->
-    <div id="forgot-password-modal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 w-full max-w-md">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-bold">Reset Password</h3>
-                <button onclick="closeForgotPassword()" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">Enter your email address to receive a password reset link.</p>
-            <input type="email" id="reset-email" class="w-full px-4 py-3 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg mb-4" placeholder="your.email@company.com">
-            <div id="reset-message" class="mb-4 text-sm"></div>
-            <div class="flex space-x-3">
-                <button onclick="sendPasswordReset()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg font-medium">Send Reset Link</button>
-                <button onclick="closeForgotPassword()" class="flex-1 border border-gray-300 dark:border-gray-600 py-2.5 rounded-lg font-medium">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Profile Modal -->
-    <div id="profile-modal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 w-full max-w-md">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-lg font-bold">Profile Settings</h3>
-                <button onclick="closeProfile()" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            <div class="space-y-4">
-                <div class="flex items-center space-x-4">
-                    <div class="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
-                        <span id="profile-initials" class="text-white text-2xl font-bold">U</span>
-                    </div>
-                    <div class="flex-1">
-                        <div id="profile-name" class="font-medium">Loading...</div>
-                        <div id="profile-email" class="text-sm text-gray-500">email@company.com</div>
-                        <div id="profile-role" class="text-xs text-blue-500">Role</div>
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-2">Display Name</label>
-                    <input type="text" id="profile-display-name" class="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-2">Phone Number</label>
-                    <input type="tel" id="profile-phone" class="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg">
-                </div>
-                <div class="flex space-x-3 pt-4">
-                    <button onclick="updateProfile()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg font-medium">Save Changes</button>
-                    <button onclick="closeProfile()" class="flex-1 border border-gray-300 dark:border-gray-600 py-2.5 rounded-lg font-medium">Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- New Trip Modal -->
-    <div id="new-trip-modal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-lg font-bold">Create New Trip</h3>
-                <button onclick="closeNewTrip()" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            <form id="new-trip-form" class="space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-medium mb-2">Vehicle *</label>
-                        <select id="trip-vehicle" class="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg" required>
-                            <option value="">Select Vehicle</option>
-                            <!-- Vehicles will be loaded dynamically -->
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-2">Driver *</label>
-                        <select id="trip-driver" class="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg" required>
-                            <option value="">Select Driver</option>
-                            <!-- Drivers will be loaded dynamically -->
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-2">Origin *</label>
-                        <input type="text" id="trip-origin" class="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg" placeholder="Starting location" required>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-2">Destination *</label>
-                        <input type="text" id="trip-destination" class="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg" placeholder="Delivery location" required>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-2">Estimated Distance (km)</label>
-                        <input type="number" id="trip-distance" class="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg" min="0" step="0.1">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-2">Estimated Duration (hours)</label>
-                        <input type="number" id="trip-duration" class="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg" min="0" step="0.5">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-2">Cargo Details</label>
-                    <textarea id="trip-cargo" class="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg" rows="3" placeholder="Describe the cargo..."></textarea>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-2">Special Instructions</label>
-                    <textarea id="trip-instructions" class="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg" rows="2" placeholder="Any special requirements..."></textarea>
-                </div>
-                <div class="flex space-x-3 pt-4">
-                    <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg font-medium">Create Trip</button>
-                    <button type="button" onclick="closeNewTrip()" class="flex-1 border border-gray-300 dark:border-gray-600 py-2.5 rounded-lg font-medium">Cancel</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Trip Details Modal -->
-    <div id="trip-details-modal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-lg font-bold">Trip Details</h3>
-                <button onclick="closeTripDetails()" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            <div id="trip-details-content">
-                <!-- Trip details will be loaded here -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Export Modal -->
-    <div id="export-modal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 w-full max-w-md">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-lg font-bold">Export Data</h3>
-                <button onclick="closeExportModal()" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium mb-2">Export Format</label>
-                    <select id="export-format" class="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg">
-                        <option value="excel">Excel (.xlsx)</option>
-                        <option value="pdf">PDF (.pdf)</option>
-                        <option value="csv">CSV (.csv)</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-2">Date Range</label>
-                    <div class="grid grid-cols-2 gap-3">
-                        <input type="date" id="export-start-date" class="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg">
-                        <input type="date" id="export-end-date" class="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-2">Data Type</label>
-                    <select id="export-data-type" class="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg">
-                        <option value="trips">Trips</option>
-                        <option value="vehicles">Vehicles</option>
-                        <option value="drivers">Drivers</option>
-                        <option value="all">All Data</option>
-                    </select>
-                </div>
-                <div class="flex space-x-3 pt-4">
-                    <button onclick="exportData()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg font-medium">Export</button>
-                    <button onclick="closeExportModal()" class="flex-1 border border-gray-300 dark:border-gray-600 py-2.5 rounded-lg font-medium">Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Confirmation Modal -->
-    <div id="confirmation-modal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 w-full max-w-md">
-            <div class="text-center mb-6">
-                <div class="w-16 h-16 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center mx-auto mb-4">
-                    <i class="fa-solid fa-triangle-exclamation text-2xl text-red-600 dark:text-red-400"></i>
-                </div>
-                <h3 id="confirmation-title" class="text-lg font-bold mb-2">Confirm Action</h3>
-                <p id="confirmation-message" class="text-gray-600 dark:text-gray-400"></p>
-            </div>
-            <div class="flex space-x-3">
-                <button id="confirm-action" class="flex-1 bg-red-600 hover:bg-red-700 text-white py-2.5 rounded-lg font-medium">Confirm</button>
-                <button onclick="closeConfirmation()" class="flex-1 border border-gray-300 dark:border-gray-600 py-2.5 rounded-lg font-medium">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Settings Modal -->
-    <div id="settings-modal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-lg font-bold">System Settings</h3>
-                <button onclick="closeSettings()" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            <div class="space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-medium mb-2">Default Theme</label>
-                        <select id="setting-theme" class="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg">
-                            <option value="light">Light</option>
-                            <option value="dark">Dark</option>
-                            <option value="system">System</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-2">Language</label>
-                        <select id="setting-language" class="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg">
-                            <option value="en">English</option>
-                            <option value="hi">Hindi</option>
-                            <option value="es">Spanish</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-2">Time Zone</label>
-                        <select id="setting-timezone" class="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg">
-                            <option value="Asia/Kolkata">India (IST)</option>
-                            <option value="UTC">UTC</option>
-                            <option value="America/New_York">EST</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-2">Date Format</label>
-                        <select id="setting-date-format" class="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg">
-                            <option value="DD/MM/YYYY">DD/MM/YYYY</option>
-                            <option value="MM/DD/YYYY">MM/DD/YYYY</option>
-                            <option value="YYYY-MM-DD">YYYY-MM-DD</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
-                    <h4 class="font-bold mb-4">Notification Settings</h4>
-                    <div class="space-y-3">
-                        <label class="flex items-center space-x-3">
-                            <input type="checkbox" id="setting-notify-trip-updates" class="rounded border-gray-300 text-blue-500">
-                            <span class="text-sm">Trip status updates</span>
-                        </label>
-                        <label class="flex items-center space-x-3">
-                            <input type="checkbox" id="setting-notify-delays" class="rounded border-gray-300 text-blue-500">
-                            <span class="text-sm">Delay alerts</span>
-                        </label>
-                        <label class="flex items-center space-x-3">
-                            <input type="checkbox" id="setting-notify-maintenance" class="rounded border-gray-300 text-blue-500">
-                            <span class="text-sm">Maintenance reminders</span>
-                        </label>
-                        <label class="flex items-center space-x-3">
-                            <input type="checkbox" id="setting-notify-system" class="rounded border-gray-300 text-blue-500">
-                            <span class="text-sm">System notifications</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
-                    <h4 class="font-bold mb-4">Auto-refresh Settings</h4>
-                    <div class="space-y-3">
-                        <div>
-                            <label class="block text-sm font-medium mb-2">Dashboard Refresh (seconds)</label>
-                            <input type="range" id="setting-refresh-interval" min="10" max="300" step="10" class="w-full">
-                            <div class="text-xs text-gray-500 mt-1" id="refresh-value">30 seconds</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flex space-x-3 pt-6">
-                    <button onclick="saveSettings()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg font-medium">Save Settings</button>
-                    <button onclick="resetSettings()" class="flex-1 border border-gray-300 dark:border-gray-600 py-2.5 rounded-lg font-medium">Reset to Default</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // ============================================
-        // APPLICATION CONFIGURATION
-        // ============================================
-        const CONFIG = {
-            firebase: {
-                apiKey: "AIzaSyBrYy8AF0LtQkLD0ZCV4hzhwaDdznb5Q8Q",
-                authDomain: "shreenarayanlogistics-22d08.firebaseapp.com",
-                projectId: "shreenarayanlogistics-22d08",
-                storageBucket: "shreenarayanlogistics-22d08.firebasestorage.app",
-                messagingSenderId: "706107706476",
-                appId: "1:706107706476:web:1e34fa02e4da73b8209c49"
+  <meta charset="UTF-8">
+  <title>SNL Pro | Shri Narayan Logistics - Enterprise Logistics Platform</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="description" content="Advanced enterprise logistics management system with real-time tracking, AI analytics, and fleet optimization">
+  <meta name="theme-color" content="#1e40af">
+  <link rel="manifest" href="/manifest.json">
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
+  
+  <!-- External Libraries -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  
+  <style>
+    /* ===== BASE STYLES ===== */
+    :root {
+      --color-primary-50: #eff6ff;
+      --color-primary-600: #2563eb;
+      --color-primary-700: #1d4ed8;
+      --radius-lg: 0.75rem;
+      --radius-xl: 1rem;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overscroll-behavior: none;
+    }
+
+    /* ===== UTILITY CLASSES ===== */
+    .glass {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .dark .glass {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .text-gradient {
+      background: linear-gradient(135deg, var(--color-primary-600), #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .animate-spin-slow {
+      animation: spin 3s linear infinite;
+    }
+
+    .animate-pulse-subtle {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .animate-slide-up {
+      animation: slideUp 0.3s ease-out;
+    }
+
+    .animate-slide-in {
+      animation: slideIn 0.3s ease-out;
+    }
+
+    .animate-fade-in {
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    .animate-bounce-in {
+      animation: bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(-100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes bounceIn {
+      0% { transform: scale(0.3); opacity: 0; }
+      50% { transform: scale(1.05); }
+      70% { transform: scale(0.9); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -200px 0; }
+      100% { background-position: calc(200px + 100%) 0; }
+    }
+
+    /* ===== COMPONENT STYLES ===== */
+    .card {
+      @apply bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm p-6 transition-all duration-300;
+    }
+
+    .card-hover:hover {
+      @apply shadow-lg border-gray-300 dark:border-gray-700 transform -translate-y-1;
+    }
+
+    .btn {
+      @apply inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+    }
+
+    .btn-primary {
+      @apply bg-primary-600 hover:bg-primary-700 text-white focus:ring-primary-500 dark:focus:ring-offset-gray-900 px-4 py-2.5;
+    }
+
+    .btn-secondary {
+      @apply bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 focus:ring-gray-500 dark:focus:ring-offset-gray-900 px-4 py-2.5;
+    }
+
+    .btn-danger {
+      @apply bg-red-600 hover:bg-red-700 text-white focus:ring-red-500 dark:focus:ring-offset-gray-900 px-4 py-2.5;
+    }
+
+    .btn-success {
+      @apply bg-green-600 hover:bg-green-700 text-white focus:ring-green-500 dark:focus:ring-offset-gray-900 px-4 py-2.5;
+    }
+
+    .form-input {
+      @apply w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all;
+    }
+
+    .badge {
+      @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap;
+    }
+
+    .badge-primary { @apply bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200; }
+    .badge-success { @apply bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200; }
+    .badge-warning { @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200; }
+    .badge-danger { @apply bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200; }
+    .badge-info { @apply bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200; }
+
+    .table-container {
+      @apply overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-800;
+    }
+
+    .table {
+      @apply w-full;
+    }
+
+    .table th {
+      @apply px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800;
+    }
+
+    .table td {
+      @apply px-6 py-4 text-sm text-gray-900 dark:text-gray-100 border-b border-gray-100 dark:border-gray-800;
+    }
+
+    .table tr:hover td {
+      @apply bg-gray-50 dark:bg-gray-800/50;
+    }
+
+    .kpi-card {
+      @apply card card-hover;
+    }
+
+    .kpi-value {
+      @apply text-3xl font-bold text-gray-900 dark:text-white;
+    }
+
+    .kpi-change {
+      @apply text-xs font-medium inline-flex items-center;
+    }
+
+    .modal-overlay {
+      @apply fixed inset-0 bg-black/50 backdrop-blur-sm z-[100];
+    }
+
+    .modal-content {
+      @apply bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-2xl max-w-md w-full mx-4;
+    }
+
+    .toast {
+      @apply fixed bottom-4 left-4 bg-gray-800 text-white text-sm px-4 py-3 rounded-lg shadow-xl z-[1000] transition-transform duration-300 transform translate-y-[150%];
+    }
+
+    .toast.show {
+      @apply translate-y-0;
+    }
+
+    .toast-success { @apply bg-green-600; }
+    .toast-error { @apply bg-red-600; }
+    .toast-warning { @apply bg-yellow-600; }
+    .toast-info { @apply bg-blue-600; }
+
+    /* ===== SCROLLBAR STYLING ===== */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      @apply bg-transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      @apply bg-gray-300 dark:bg-gray-700 rounded-full;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      @apply bg-gray-400 dark:bg-gray-600;
+    }
+
+    /* ===== LOADING STATES ===== */
+    .skeleton {
+      @apply animate-pulse bg-gray-200 dark:bg-gray-800 rounded;
+    }
+
+    .skeleton-text {
+      @apply h-4 skeleton;
+    }
+
+    .skeleton-circle {
+      @apply rounded-full skeleton;
+    }
+
+    /* ===== MAP STYLES ===== */
+    .leaflet-container {
+      @apply rounded-xl;
+      z-index: 1;
+    }
+
+    /* ===== PRINT STYLES ===== */
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; }
+    }
+  </style>
+
+  <!-- Tailwind Configuration -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              200: '#bfdbfe',
+              300: '#93c5fd',
+              400: '#60a5fa',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a',
             },
-            adminEmails: [
-                "shrinarayanlogistic@gmail.com",
-                "itexpress4u.cloud@gmail.com",
-                "admin@shrinarayanlogistics.com"
-            ],
-            defaultSettings: {
-                theme: 'system',
-                language: 'en',
-                timezone: 'Asia/Kolkata',
-                dateFormat: 'DD/MM/YYYY',
-                notifyTripUpdates: true,
-                notifyDelays: true,
-                notifyMaintenance: true,
-                notifySystem: true,
-                refreshInterval: 30
+            secondary: {
+              50: '#f8fafc',
+              100: '#f1f5f9',
+              200: '#e2e8f0',
+              300: '#cbd5e1',
+              400: '#94a3b8',
+              500: '#64748b',
+              600: '#475569',
+              700: '#334155',
+              800: '#1e293b',
+              900: '#0f172a',
             }
-        };
-
-        // ============================================
-        // APPLICATION STATE
-        // ============================================
-        class AppState {
-            constructor() {
-                this.user = null;
-                this.userProfile = null;
-                this.role = 'viewer';
-                this.trips = [];
-                this.vehicles = [];
-                this.drivers = [];
-                this.notifications = [];
-                this.settings = { ...CONFIG.defaultSettings };
-                this.currentTab = 'dashboard';
-                this.dataListeners = [];
-                this.isOnline = navigator.onLine;
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'shimmer': 'shimmer 2s infinite',
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'slide-in': 'slideIn 0.3s ease-out',
+            'slide-up': 'slideUp 0.3s ease-out',
+            'fade-in': 'fadeIn 0.2s ease-out',
+            'bounce-in': 'bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+            'spin-slow': 'spin 3s linear infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-10px)' }
+            },
+            shimmer: {
+              '0%': { backgroundPosition: '-200px 0' },
+              '100%': { backgroundPosition: 'calc(200px + 100%) 0' }
             }
-
-            setUser(user) {
-                this.user = user;
-                if (user) {
-                    this.updateUserProfile();
-                }
-            }
-
-            updateUserProfile() {
-                if (this.user) {
-                    this.userProfile = {
-                        uid: this.user.uid,
-                        email: this.user.email,
-                        displayName: this.user.displayName || this.user.email.split('@')[0],
-                        photoURL: this.user.photoURL,
-                        phone: this.user.phoneNumber || ''
-                    };
-                    
-                    // Determine role
-                    if (CONFIG.adminEmails.includes(this.user.email.toLowerCase())) {
-                        this.role = 'admin';
-                    } else {
-                        this.role = 'manager'; // Default for demo
-                    }
-                    
-                    // Update UI
-                    this.updateUserUI();
-                }
-            }
-
-            updateUserUI() {
-                const initials = (this.userProfile.displayName || 'U')
-                    .split(' ')
-                    .map(n => n[0])
-                    .join('')
-                    .toUpperCase()
-                    .substring(0, 2);
-
-                document.getElementById('user-initials').textContent = initials;
-                document.getElementById('sidebar-user-initials').textContent = initials;
-                document.getElementById('user-name').textContent = this.userProfile.displayName;
-                document.getElementById('sidebar-user-name').textContent = this.userProfile.displayName;
-                document.getElementById('user-role').textContent = this.role.charAt(0).toUpperCase() + this.role.slice(1);
-                document.getElementById('menu-user-name').textContent = this.userProfile.displayName;
-                document.getElementById('menu-user-email').textContent = this.userProfile.email;
-            }
-
-            addNotification(notification) {
-                this.notifications.unshift(notification);
-                if (this.notifications.length > 50) {
-                    this.notifications = this.notifications.slice(0, 50);
-                }
-                this.updateNotificationUI();
-            }
-
-            updateNotificationUI() {
-                const unreadCount = this.notifications.filter(n => !n.read).length;
-                const badge = document.getElementById('notification-count');
-                if (unreadCount > 0) {
-                    badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
-                    badge.classList.remove('hidden');
-                } else {
-                    badge.classList.add('hidden');
-                }
-            }
-
-            markAllNotificationsAsRead() {
-                this.notifications.forEach(n => n.read = true);
-                this.updateNotificationUI();
-            }
+          }
         }
-
-        const state = new AppState();
-
-        // ============================================
-        // FIREBASE INITIALIZATION
-        // ============================================
-        class FirebaseService {
-            constructor() {
-                this.app = null;
-                this.auth = null;
-                this.db = null;
-                this.storage = null;
-                this.initialized = false;
-            }
-
-            async initialize() {
-                try {
-                    this.app = firebase.initializeApp(CONFIG.firebase);
-                    this.auth = firebase.auth();
-                    this.db = firebase.firestore();
-                    this.storage = firebase.storage();
-                    
-                    // Enable offline persistence
-                    await this.db.enablePersistence();
-                    
-                    this.initialized = true;
-                    console.log('Firebase initialized successfully');
-                } catch (error) {
-                    console.error('Firebase initialization failed:', error);
-                    throw error;
-                }
-            }
-
-            // Authentication Methods
-            async login(email, password) {
-                try {
-                    const userCredential = await this.auth.signInWithEmailAndPassword(email, password);
-                    return userCredential;
-                } catch (error) {
-                    throw this.getAuthErrorMessage(error);
-                }
-            }
-
-            async logout() {
-                await this.auth.signOut();
-            }
-
-            async resetPassword(email) {
-                await this.auth.sendPasswordResetEmail(email);
-            }
-
-            async updateProfile(data) {
-                await this.auth.currentUser.updateProfile(data);
-            }
-
-            // Firestore Methods
-            async getCollection(collection, constraints = [], limit = 100) {
-                let query = this.db.collection(collection);
-                
-                constraints.forEach(constraint => {
-                    query = query.where(constraint.field, constraint.op, constraint.value);
-                });
-                
-                query = query.limit(limit);
-                
-                const snapshot = await query.get();
-                return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            }
-
-            async getDocument(collection, id) {
-                const doc = await this.db.collection(collection).doc(id).get();
-                return doc.exists ? { id: doc.id, ...doc.data() } : null;
-            }
-
-            async addDocument(collection, data) {
-                const docRef = await this.db.collection(collection).add({
-                    ...data,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    createdBy: state.user.uid,
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                return docRef.id;
-            }
-
-            async updateDocument(collection, id, data) {
-                await this.db.collection(collection).doc(id).update({
-                    ...data,
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-            }
-
-            async deleteDocument(collection, id) {
-                await this.db.collection(collection).doc(id).delete();
-            }
-
-            // Real-time Listeners
-            onCollectionUpdate(collection, callback, constraints = []) {
-                let query = this.db.collection(collection);
-                
-                constraints.forEach(constraint => {
-                    query = query.where(constraint.field, constraint.op, constraint.value);
-                });
-                
-                return query.onSnapshot(snapshot => {
-                    const docs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                    callback(docs);
-                });
-            }
-
-            getAuthErrorMessage(error) {
-                const messages = {
-                    'auth/invalid-email': 'Invalid email address',
-                    'auth/user-disabled': 'This account has been disabled',
-                    'auth/user-not-found': 'No account found with this email',
-                    'auth/wrong-password': 'Incorrect password',
-                    'auth/too-many-requests': 'Too many attempts. Please try again later',
-                    'auth/network-request-failed': 'Network error. Please check your connection'
-                };
-                return messages[error.code] || error.message;
-            }
-        }
-
-        const firebaseService = new FirebaseService();
-
-        // ============================================
-        // TRIP MANAGEMENT SERVICE
-        // ============================================
-        class TripService {
-            static STATUS = {
-                PENDING: 'pending',
-                ACTIVE: 'active',
-                IN_TRANSIT: 'in_transit',
-                DELAYED: 'delayed',
-                COMPLETED: 'completed',
-                CANCELLED: 'cancelled'
-            };
-
-            static async createTrip(tripData) {
-                const tripId = await firebaseService.addDocument('trips', {
-                    ...tripData,
-                    status: this.STATUS.PENDING,
-                    tripNumber: await this.generateTripNumber(),
-                    assignedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    currentStatus: 'Trip created'
-                });
-
-                // Create audit log
-                await firebaseService.addDocument('audit_logs', {
-                    action: 'TRIP_CREATED',
-                    entityId: tripId,
-                    entityType: 'trip',
-                    performedBy: state.user.uid,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    details: `Trip ${tripData.tripNumber} created`
-                });
-
-                return tripId;
-            }
-
-            static async updateTripStatus(tripId, status, notes = '') {
-                const updates = {
-                    status,
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    statusNotes: notes
-                };
-
-                if (status === this.STATUS.ACTIVE) {
-                    updates.startedAt = firebase.firestore.FieldValue.serverTimestamp();
-                } else if (status === this.STATUS.COMPLETED) {
-                    updates.completedAt = firebase.firestore.FieldValue.serverTimestamp();
-                }
-
-                await firebaseService.updateDocument('trips', tripId, updates);
-
-                // Create status update log
-                await firebaseService.addDocument('trip_status_updates', {
-                    tripId,
-                    status,
-                    notes,
-                    updatedBy: state.user.uid,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                });
-            }
-
-            static async generateTripNumber() {
-                const today = new Date();
-                const year = today.getFullYear().toString().slice(-2);
-                const month = (today.getMonth() + 1).toString().padStart(2, '0');
-                const day = today.getDate().toString().padStart(2, '0');
-                
-                // Get count of trips today
-                const startOfDay = new Date(today.setHours(0, 0, 0, 0));
-                const tripsToday = await firebaseService.getCollection('trips', [
-                    { field: 'createdAt', op: '>=', value: startOfDay }
-                ], 1);
-                
-                const count = tripsToday.length + 1;
-                return `TRP${year}${month}${day}${count.toString().padStart(4, '0')}`;
-            }
-
-            static async getActiveTrips() {
-                return firebaseService.getCollection('trips', [
-                    { field: 'status', op: 'in', value: [this.STATUS.ACTIVE, this.STATUS.IN_TRANSIT, this.STATUS.PENDING] }
-                ]);
-            }
-
-            static async getTripMetrics(startDate, endDate) {
-                const trips = await firebaseService.getCollection('trips', [
-                    { field: 'createdAt', op: '>=', value: startDate },
-                    { field: 'createdAt', op: '<=', value: endDate }
-                ]);
-
-                const metrics = {
-                    total: trips.length,
-                    byStatus: {},
-                    averageDuration: 0,
-                    onTimeRate: 0,
-                    totalDistance: 0
-                };
-
-                let totalDuration = 0;
-                let onTimeCount = 0;
-
-                trips.forEach(trip => {
-                    metrics.byStatus[trip.status] = (metrics.byStatus[trip.status] || 0) + 1;
-                    
-                    if (trip.distance) metrics.totalDistance += trip.distance;
-                    if (trip.actualDuration) totalDuration += trip.actualDuration;
-                    if (trip.onTime) onTimeCount++;
-                });
-
-                if (trips.length > 0) {
-                    metrics.averageDuration = totalDuration / trips.length;
-                    metrics.onTimeRate = (onTimeCount / trips.length) * 100;
-                }
-
-                return metrics;
-            }
-        }
-
-        // ============================================
-        // FLEET MANAGEMENT SERVICE
-        // ============================================
-        class FleetService {
-            static VEHICLE_STATUS = {
-                AVAILABLE: 'available',
-                ON_TRIP: 'on_trip',
-                MAINTENANCE: 'maintenance',
-                OFFLINE: 'offline'
-            };
-
-            static async registerVehicle(vehicleData) {
-                const vehicleId = await firebaseService.addDocument('vehicles', {
-                    ...vehicleData,
-                    status: this.VEHICLE_STATUS.AVAILABLE,
-                    registrationDate: new Date().toISOString(),
-                    currentOdometer: 0,
-                    lastServiceDate: null,
-                    nextServiceDate: this.calculateNextServiceDate()
-                });
-
-                return vehicleId;
-            }
-
-            static async updateVehicleStatus(vehicleId, status, notes = '') {
-                await firebaseService.updateDocument('vehicles', vehicleId, {
-                    status,
-                    statusUpdatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    statusNotes: notes
-                });
-
-                // Log status change
-                await firebaseService.addDocument('vehicle_status_logs', {
-                    vehicleId,
-                    status,
-                    notes,
-                    updatedBy: state.user.uid,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                });
-            }
-
-            static async scheduleMaintenance(vehicleId, maintenanceData) {
-                const maintenanceId = await firebaseService.addDocument('maintenance_schedules', {
-                    vehicleId,
-                    ...maintenanceData,
-                    status: 'scheduled',
-                    scheduledBy: state.user.uid,
-                    scheduledAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-
-                // Update vehicle next service date
-                await firebaseService.updateDocument('vehicles', vehicleId, {
-                    nextServiceDate: maintenanceData.serviceDate,
-                    maintenanceDue: true
-                });
-
-                return maintenanceId;
-            }
-
-            static calculateNextServiceDate(months = 6) {
-                const date = new Date();
-                date.setMonth(date.getMonth() + months);
-                return date.toISOString();
-            }
-
-            static async getVehicleMetrics() {
-                const vehicles = await firebaseService.getCollection('vehicles');
-                
-                const metrics = {
-                    total: vehicles.length,
-                    byStatus: {},
-                    byType: {},
-                    utilizationRate: 0,
-                    averageAge: 0
-                };
-
-                let totalAge = 0;
-                let activeCount = 0;
-
-                vehicles.forEach(vehicle => {
-                    metrics.byStatus[vehicle.status] = (metrics.byStatus[vehicle.status] || 0) + 1;
-                    metrics.byType[vehicle.type] = (metrics.byType[vehicle.type] || 0) + 1;
-                    
-                    if (vehicle.status === this.VEHICLE_STATUS.ON_TRIP) {
-                        activeCount++;
-                    }
-                    
-                    if (vehicle.registrationDate) {
-                        const age = new Date().getFullYear() - new Date(vehicle.registrationDate).getFullYear();
-                        totalAge += age;
-                    }
-                });
-
-                if (vehicles.length > 0) {
-                    metrics.utilizationRate = (activeCount / vehicles.length) * 100;
-                    metrics.averageAge = totalAge / vehicles.length;
-                }
-
-                return metrics;
-            }
-        }
-
-        // ============================================
-        // UI MANAGER
-        // ============================================
-        class UIManager {
-            static currentView = null;
-            static charts = new Map();
-
-            static async switchTab(tabName) {
-                state.currentTab = tabName;
-                
-                // Update navigation
-                document.querySelectorAll('.nav-item, .nav-subitem').forEach(item => {
-                    item.classList.remove('bg-blue-50', 'dark:bg-blue-900/30', 'text-blue-700', 'dark:text-blue-300');
-                });
-                
-                const activeItem = document.querySelector(`[onclick*="${tabName}"]`);
-                if (activeItem) {
-                    activeItem.classList.add('bg-blue-50', 'dark:bg-blue-900/30', 'text-blue-700', 'dark:text-blue-300');
-                }
-
-                // Load content
-                await this.loadView(tabName);
-            }
-
-            static async loadView(viewName) {
-                const contentArea = document.getElementById('content-area');
-                contentArea.innerHTML = '<div class="flex items-center justify-center h-64"><div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div></div>';
-
-                try {
-                    let html = '';
-                    
-                    switch (viewName) {
-                        case 'dashboard':
-                            html = await this.renderDashboard();
-                            break;
-                        case 'trips-active':
-                            html = await this.renderActiveTrips();
-                            break;
-                        case 'trips-new':
-                            html = await this.renderNewTripForm();
-                            break;
-                        case 'trips-history':
-                            html = await this.renderTripHistory();
-                            break;
-                        case 'trips-map':
-                            html = await this.renderLiveMap();
-                            break;
-                        case 'fleet-overview':
-                            html = await this.renderFleetOverview();
-                            break;
-                        case 'fleet-maintenance':
-                            html = await this.renderMaintenance();
-                            break;
-                        case 'fleet-drivers':
-                            html = await this.renderDrivers();
-                            break;
-                        case 'fleet-tracking':
-                            html = await this.renderLiveTracking();
-                            break;
-                        case 'analytics':
-                            html = await this.renderAnalytics();
-                            break;
-                        case 'reports':
-                            html = await this.renderReports();
-                            break;
-                        case 'admin-users':
-                            html = await this.renderUserManagement();
-                            break;
-                        case 'admin-roles':
-                            html = await this.renderRoles();
-                            break;
-                        case 'admin-audit':
-                            html = await this.renderAuditLog();
-                            break;
-                        case 'settings':
-                            html = await this.renderSettings();
-                            break;
-                        default:
-                            html = await this.renderDashboard();
-                    }
-
-                    contentArea.innerHTML = html;
-                    
-                    // Initialize view-specific components
-                    await this.initializeView(viewName);
-                    
-                } catch (error) {
-                    console.error('Error loading view:', error);
-                    contentArea.innerHTML = `
-                        <div class="flex flex-col items-center justify-center h-64">
-                            <i class="fa-solid fa-triangle-exclamation text-4xl text-red-500 mb-4"></i>
-                            <p class="text-gray-600 dark:text-gray-400">Failed to load view</p>
-                            <button onclick="UIManager.switchTab('${viewName}')" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Retry</button>
-                        </div>
-                    `;
-                }
-            }
-
-            static async renderDashboard() {
-                const [tripMetrics, fleetMetrics, activeTrips] = await Promise.all([
-                    TripService.getTripMetrics(
-                        new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
-                        new Date()
-                    ),
-                    FleetService.getVehicleMetrics(),
-                    TripService.getActiveTrips()
-                ]);
-
-                return `
-                    <div class="space-y-6">
-                        <!-- Header -->
-                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                            <div>
-                                <h1 class="text-2xl font-bold">Executive Dashboard</h1>
-                                <p class="text-gray-600 dark:text-gray-400">Real-time overview of logistics operations</p>
-                            </div>
-                            <div class="flex items-center space-x-3">
-                                <div class="relative">
-                                    <i class="fa-solid fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
-                                    <input type="text" placeholder="Search..." class="pl-10 pr-4 py-2 text-sm bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-64">
-                                </div>
-                                <button onclick="refreshDashboard()" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
-                                    <i class="fa-solid fa-rotate"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- KPI Cards -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm card-hover">
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <div class="text-sm text-gray-500 mb-1">Active Trips</div>
-                                        <div class="text-3xl font-bold text-blue-600 dark:text-blue-400">${activeTrips.length}</div>
-                                        <div class="text-xs text-green-600 mt-1">
-                                            <i class="fa-solid fa-arrow-up mr-1"></i>12% from yesterday
-                                        </div>
-                                    </div>
-                                    <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-                                        <i class="fa-solid fa-truck-fast text-blue-600 dark:text-blue-400 text-xl"></i>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm card-hover">
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <div class="text-sm text-gray-500 mb-1">Fleet Utilization</div>
-                                        <div class="text-3xl font-bold text-green-600 dark:text-green-400">${fleetMetrics.utilizationRate.toFixed(1)}%</div>
-                                        <div class="text-xs text-green-600 mt-1">
-                                            <i class="fa-solid fa-arrow-up mr-1"></i>5% improvement
-                                        </div>
-                                    </div>
-                                    <div class="w-12 h-12 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                                        <i class="fa-solid fa-truck text-green-600 dark:text-green-400 text-xl"></i>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm card-hover">
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <div class="text-sm text-gray-500 mb-1">On-time Delivery</div>
-                                        <div class="text-3xl font-bold text-purple-600 dark:text-purple-400">${tripMetrics.onTimeRate.toFixed(1)}%</div>
-                                        <div class="text-xs text-red-600 mt-1">
-                                            <i class="fa-solid fa-arrow-down mr-1"></i>2% decrease
-                                        </div>
-                                    </div>
-                                    <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
-                                        <i class="fa-solid fa-clock text-purple-600 dark:text-purple-400 text-xl"></i>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm card-hover">
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <div class="text-sm text-gray-500 mb-1">Revenue Today</div>
-                                        <div class="text-3xl font-bold text-yellow-600 dark:text-yellow-400">₹${(activeTrips.length * 5000).toLocaleString()}</div>
-                                        <div class="text-xs text-green-600 mt-1">
-                                            <i class="fa-solid fa-arrow-up mr-1"></i>8% from target
-                                        </div>
-                                    </div>
-                                    <div class="w-12 h-12 rounded-xl bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center">
-                                        <i class="fa-solid fa-indian-rupee-sign text-yellow-600 dark:text-yellow-400 text-xl"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Charts Row -->
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
-                                <div class="flex items-center justify-between mb-4">
-                                    <h3 class="font-bold">Trip Volume Trend</h3>
-                                    <select class="text-sm bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1">
-                                        <option>Last 7 days</option>
-                                        <option>Last 30 days</option>
-                                        <option>Last quarter</option>
-                                    </select>
-                                </div>
-                                <div class="h-64">
-                                    <canvas id="tripVolumeChart"></canvas>
-                                </div>
-                            </div>
-
-                            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
-                                <div class="flex items-center justify-between mb-4">
-                                    <h3 class="font-bold">Delivery Status</h3>
-                                    <div class="text-sm text-gray-500">Real-time</div>
-                                </div>
-                                <div class="h-64">
-                                    <canvas id="deliveryStatusChart"></canvas>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Recent Trips & Alerts -->
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                            <div class="lg:col-span-2">
-                                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
-                                    <div class="flex items-center justify-between mb-4">
-                                        <h3 class="font-bold">Recent Trips</h3>
-                                        <button onclick="UIManager.switchTab('trips-active')" class="text-sm text-blue-500 hover:text-blue-400">View All</button>
-                                    </div>
-                                    <div class="overflow-x-auto">
-                                        <table class="w-full">
-                                            <thead>
-                                                <tr class="border-b border-gray-200 dark:border-gray-700">
-                                                    <th class="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">Trip ID</th>
-                                                    <th class="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">Vehicle</th>
-                                                    <th class="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">Driver</th>
-                                                    <th class="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">Status</th>
-                                                    <th class="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">Progress</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="recent-trips-body">
-                                                ${activeTrips.slice(0, 5).map(trip => `
-                                                    <tr class="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-750">
-                                                        <td class="py-3 px-4 text-sm">${trip.tripNumber || trip.id}</td>
-                                                        <td class="py-3 px-4 text-sm">${trip.vehicleNumber || 'N/A'}</td>
-                                                        <td class="py-3 px-4 text-sm">${trip.driverName || 'N/A'}</td>
-                                                        <td class="py-3 px-4">
-                                                            <span class="status-badge status-${trip.status}">${trip.status}</span>
-                                                        </td>
-                                                        <td class="py-3 px-4">
-                                                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                                                                <div class="bg-blue-500 h-2 rounded-full" style="width: ${Math.random() * 100}%"></div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                `).join('')}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
-                                <div class="flex items-center justify-between mb-4">
-                                    <h3 class="font-bold">Recent Alerts</h3>
-                                    <span class="badge badge-red badge-sm">${Math.min(activeTrips.filter(t => t.status === 'delayed').length, 99)}+</span>
-                                </div>
-                                <div class="space-y-3">
-                                    ${activeTrips.filter(t => t.status === 'delayed').slice(0, 3).map(trip => `
-                                        <div class="alert alert-warning p-3 rounded-lg">
-                                            <div class="flex items-start space-x-3">
-                                                <i class="fa-solid fa-triangle-exclamation text-yellow-500 mt-0.5"></i>
-                                                <div class="flex-1">
-                                                    <div class="font-medium">${trip.vehicleNumber || 'Vehicle'} delayed</div>
-                                                    <div class="text-xs text-gray-600 dark:text-gray-400">30 minutes behind schedule</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    `).join('')}
-                                    
-                                    <div class="alert alert-info p-3 rounded-lg">
-                                        <div class="flex items-start space-x-3">
-                                            <i class="fa-solid fa-info-circle text-blue-500 mt-0.5"></i>
-                                            <div class="flex-1">
-                                                <div class="font-medium">Maintenance due for HR26DK8337</div>
-                                                <div class="text-xs text-gray-600 dark:text-gray-400">Next service in 500 km</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-
-            static async renderActiveTrips() {
-                const trips = await TripService.getActiveTrips();
-                
-                return `
-                    <div class="space-y-6">
-                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                            <div>
-                                <h1 class="text-2xl font-bold">Active Trips</h1>
-                                <p class="text-gray-600 dark:text-gray-400">Monitor and manage ongoing trips</p>
-                            </div>
-                            <div class="flex space-x-3">
-                                <button onclick="showNewTripModal()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg">
-                                    <i class="fa-solid fa-plus mr-2"></i> New Trip
-                                </button>
-                                <button onclick="showExportModal()" class="px-4 py-2 border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 font-medium rounded-lg">
-                                    <i class="fa-solid fa-download mr-2"></i> Export
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Filters -->
-                        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
-                            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                                <div>
-                                    <label class="block text-sm font-medium mb-2">Vehicle</label>
-                                    <select class="w-full px-3 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg">
-                                        <option value="">All Vehicles</option>
-                                        <!-- Options will be loaded dynamically -->
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium mb-2">Driver</label>
-                                    <select class="w-full px-3 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg">
-                                        <option value="">All Drivers</option>
-                                        <!-- Options will be loaded dynamically -->
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium mb-2">Status</label>
-                                    <select class="w-full px-3 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg">
-                                        <option value="">All Status</option>
-                                        <option value="active">Active</option>
-                                        <option value="pending">Pending</option>
-                                        <option value="delayed">Delayed</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium mb-2">Date Range</label>
-                                    <input type="date" class="w-full px-3 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Trips Table -->
-                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
-                            <div class="overflow-x-auto">
-                                <table class="w-full">
-                                    <thead>
-                                        <tr class="border-b border-gray-200 dark:border-gray-700">
-                                            <th class="text-left py-3 px-6 text-sm font-medium text-gray-500 dark:text-gray-400">Trip ID</th>
-                                            <th class="text-left py-3 px-6 text-sm font-medium text-gray-500 dark:text-gray-400">Vehicle</th>
-                                            <th class="text-left py-3 px-6 text-sm font-medium text-gray-500 dark:text-gray-400">Driver</th>
-                                            <th class="text-left py-3 px-6 text-sm font-medium text-gray-500 dark:text-gray-400">Route</th>
-                                            <th class="text-left py-3 px-6 text-sm font-medium text-gray-500 dark:text-gray-400">Status</th>
-                                            <th class="text-left py-3 px-6 text-sm font-medium text-gray-500 dark:text-gray-400">Progress</th>
-                                            <th class="text-left py-3 px-6 text-sm font-medium text-gray-500 dark:text-gray-400">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        ${trips.map(trip => `
-                                            <tr class="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-750">
-                                                <td class="py-4 px-6 text-sm font-medium">${trip.tripNumber || trip.id}</td>
-                                                <td class="py-4 px-6 text-sm">${trip.vehicleNumber || 'N/A'}</td>
-                                                <td class="py-4 px-6 text-sm">${trip.driverName || 'N/A'}</td>
-                                                <td class="py-4 px-6 text-sm">${trip.origin} → ${trip.destination}</td>
-                                                <td class="py-4 px-6">
-                                                    <span class="status-badge status-${trip.status}">${trip.status}</span>
-                                                </td>
-                                                <td class="py-4 px-6">
-                                                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                                                        <div class="bg-blue-500 h-2 rounded-full" style="width: ${Math.random() * 100}%"></div>
-                                                    </div>
-                                                </td>
-                                                <td class="py-4 px-6">
-                                                    <div class="flex space-x-2">
-                                                        <button onclick="viewTripDetails('${trip.id}')" class="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg" title="View Details">
-                                                            <i class="fa-solid fa-eye text-gray-600 dark:text-gray-400"></i>
-                                                        </button>
-                                                        <button onclick="updateTripStatus('${trip.id}', 'active')" class="p-1.5 hover:bg-green-100 dark:hover:bg-green-900/30 rounded-lg" title="Start Trip">
-                                                            <i class="fa-solid fa-play text-green-600"></i>
-                                                        </button>
-                                                        <button onclick="updateTripStatus('${trip.id}', 'completed')" class="p-1.5 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded-lg" title="Complete Trip">
-                                                            <i class="fa-solid fa-check text-blue-600"></i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        `).join('')}
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700">
-                                <div class="flex items-center justify-between">
-                                    <div class="text-sm text-gray-600 dark:text-gray-400">
-                                        Showing <span class="font-medium">${trips.length}</span> trips
-                                    </div>
-                                    <div class="flex space-x-2">
-                                        <button class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg text-sm hover:bg-gray-100 dark:hover:bg-gray-700">Previous</button>
-                                        <button class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg text-sm hover:bg-gray-100 dark:hover:bg-gray-700">Next</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-
-            static async initializeView(viewName) {
-                switch (viewName) {
-                    case 'dashboard':
-                        await this.initializeDashboardCharts();
-                        break;
-                    case 'trips-active':
-                        await this.initializeTripFilters();
-                        break;
-                    // Add more view initializations as needed
-                }
-            }
-
-            static async initializeDashboardCharts() {
-                // Trip Volume Chart
-                const tripVolumeCtx = document.getElementById('tripVolumeChart');
-                if (tripVolumeCtx) {
-                    new Chart(tripVolumeCtx.getContext('2d'), {
-                        type: 'line',
-                        data: {
-                            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                            datasets: [{
-                                label: 'Trips',
-                                data: [12, 19, 15, 25, 22, 30, 28],
-                                borderColor: '#3b82f6',
-                                backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                                tension: 0.4,
-                                fill: true
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    display: false
-                                }
-                            },
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    grid: {
-                                        color: 'rgba(0, 0, 0, 0.05)'
-                                    }
-                                },
-                                x: {
-                                    grid: {
-                                        display: false
-                                    }
-                                }
-                            }
-                        }
-                    });
-                }
-
-                // Delivery Status Chart
-                const deliveryStatusCtx = document.getElementById('deliveryStatusChart');
-                if (deliveryStatusCtx) {
-                    new Chart(deliveryStatusCtx.getContext('2d'), {
-                        type: 'doughnut',
-                        data: {
-                            labels: ['On Time', 'Delayed', 'Early', 'Pending'],
-                            datasets: [{
-                                data: [65, 15, 10, 10],
-                                backgroundColor: [
-                                    '#10b981',
-                                    '#ef4444',
-                                    '#3b82f6',
-                                    '#f59e0b'
-                                ],
-                                borderWidth: 0
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            cutout: '70%',
-                            plugins: {
-                                legend: {
-                                    position: 'bottom'
-                                }
-                            }
-                        }
-                    });
-                }
-            }
-        }
-
-        // ============================================
-        // UTILITY FUNCTIONS
-        // ============================================
-        class Utilities {
-            static formatDate(date, format = 'DD/MM/YYYY') {
-                const d = new Date(date);
-                const day = d.getDate().toString().padStart(2, '0');
-                const month = (d.getMonth() + 1).toString().padStart(2, '0');
-                const year = d.getFullYear();
-                const hours = d.getHours().toString().padStart(2, '0');
-                const minutes = d.getMinutes().toString().padStart(2, '0');
-
-                switch (format) {
-                    case 'DD/MM/YYYY':
-                        return `${day}/${month}/${year}`;
-                    case 'MM/DD/YYYY':
-                        return `${month}/${day}/${year}`;
-                    case 'YYYY-MM-DD':
-                        return `${year}-${month}-${day}`;
-                    case 'DD/MM/YYYY HH:mm':
-                        return `${day}/${month}/${year} ${hours}:${minutes}`;
-                    default:
-                        return d.toLocaleDateString();
-                }
-            }
-
-            static formatCurrency(amount, currency = 'INR') {
-                return new Intl.NumberFormat('en-IN', {
-                    style: 'currency',
-                    currency: currency
-                }).format(amount);
-            }
-
-            static generateId() {
-                return Date.now().toString(36) + Math.random().toString(36).substr(2);
-            }
-
-            static showToast(message, type = 'info', duration = 3000) {
-                const container = document.getElementById('toast-container');
-                const toast = document.createElement('div');
-                toast.className = `toast bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-4 min-w-80`;
-                
-                const icons = {
-                    success: 'fa-circle-check text-green-500',
-                    error: 'fa-circle-exclamation text-red-500',
-                    warning: 'fa-triangle-exclamation text-yellow-500',
-                    info: 'fa-circle-info text-blue-500'
-                };
-
-                toast.innerHTML = `
-                    <div class="flex items-start space-x-3">
-                        <i class="fa-solid ${icons[type]} text-lg mt-0.5"></i>
-                        <div class="flex-1">
-                            <div class="text-sm font-medium">${message}</div>
-                        </div>
-                        <button onclick="this.parentElement.parentElement.remove()" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
-                            <i class="fa-solid fa-xmark"></i>
-                        </button>
-                    </div>
-                `;
-
-                container.appendChild(toast);
-
-                setTimeout(() => {
-                    if (toast.parentElement) {
-                        toast.remove();
-                    }
-                }, duration);
-            }
-
-            static showConfirmation(title, message, onConfirm) {
-                document.getElementById('confirmation-title').textContent = title;
-                document.getElementById('confirmation-message').textContent = message;
-                document.getElementById('confirm-action').onclick = onConfirm;
-                document.getElementById('confirmation-modal').classList.remove('hidden');
-            }
-
-            static async exportToExcel(data, filename) {
-                const ws = XLSX.utils.json_to_sheet(data);
-                const wb = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-                XLSX.writeFile(wb, `${filename}.xlsx`);
-            }
-
-            static async exportToPDF(data, filename) {
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF();
-                
-                doc.text('Export Report', 20, 20);
-                
-                const columns = Object.keys(data[0] || {});
-                const rows = data.map(item => columns.map(col => item[col]));
-                
-                doc.autoTable({
-                    head: [columns],
-                    body: rows,
-                    startY: 30
-                });
-                
-                doc.save(`${filename}.pdf`);
-            }
-        }
-
-        // ============================================
-        // EVENT HANDLERS
-        // ============================================
-        async function handleLogin(e) {
-            e.preventDefault();
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen" data-theme="light">
+
+<!-- ===== LOADING SCREEN ===== -->
+<div id="loading-screen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-950 transition-opacity duration-500">
+  <div class="relative mb-8">
+    <div class="w-24 h-24 rounded-full border-4 border-primary-200 dark:border-primary-800 border-t-primary-600 dark:border-t-primary-400 animate-spin"></div>
+    <div class="absolute inset-0 flex items-center justify-center">
+      <div class="w-16 h-16 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center">
+        <i class="fa-solid fa-truck-fast text-3xl text-primary-600 dark:text-primary-400 animate-float"></i>
+      </div>
+    </div>
+  </div>
+  <div class="text-center space-y-3">
+    <h2 class="text-2xl font-bold text-gradient">SNL Logistics Pro</h2>
+    <p class="text-gray-600 dark:text-gray-400 text-sm" id="loading-message">Initializing enterprise system...</p>
+    <div class="w-80 h-1.5 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
+      <div id="loading-progress" class="h-full bg-gradient-to-r from-primary-500 via-purple-500 to-primary-500 transition-all duration-300" style="width: 0%"></div>
+    </div>
+    <div class="text-xs text-gray-500 dark:text-gray-400 mt-2">
+      <span id="loading-module">Loading core modules...</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ERROR BOUNDARY ===== -->
+<div id="error-boundary" class="hidden fixed inset-0 z-[9998] bg-red-50/80 dark:bg-red-900/20 backdrop-blur-sm flex items-center justify-center p-4">
+  <div class="max-w-md w-full bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-2xl border border-red-200 dark:border-red-800 animate-bounce-in">
+    <div class="flex items-center gap-3 mb-4">
+      <div class="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900 flex items-center justify-center">
+        <i class="fa-solid fa-triangle-exclamation text-red-600 dark:text-red-400 text-xl"></i>
+      </div>
+      <div>
+        <h3 class="font-bold text-lg text-red-900 dark:text-red-300">System Error</h3>
+        <p class="text-sm text-red-700 dark:text-red-400">Critical error detected</p>
+      </div>
+    </div>
+    <div class="bg-red-50 dark:bg-red-900/30 rounded-lg p-3 mb-4">
+      <p id="error-message" class="text-gray-700 dark:text-gray-300 text-sm font-mono"></p>
+    </div>
+    <div class="flex gap-3">
+      <button onclick="App.recoverFromError()" class="flex-1 bg-red-600 hover:bg-red-700 text-white px-4 py-3 rounded-lg font-medium transition-colors">
+        <i class="fa-solid fa-heart-circle-check mr-2"></i>Recover
+      </button>
+      <button onclick="location.reload()" class="flex-1 border border-gray-300 dark:border-gray-700 px-4 py-3 rounded-lg font-medium transition-colors">
+        <i class="fa-solid fa-rotate-right mr-2"></i>Reload
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== AUTH SCREEN ===== -->
+<div id="auth-screen" class="hidden fixed inset-0 z-50 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+  <div class="absolute inset-0 overflow-hidden">
+    <div class="absolute -top-40 -right-40 w-80 h-80 bg-primary-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse-slow"></div>
+    <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse-slow delay-1000"></div>
+  </div>
+  
+  <div class="container mx-auto px-4 h-full flex items-center justify-center relative">
+    <div class="w-full max-w-md animate-slide-up">
+      <div class="glass rounded-3xl p-8 shadow-2xl border border-white/10">
+        <!-- Logo & Brand -->
+        <div class="text-center mb-8">
+          <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-primary-500 to-purple-500 mb-4 shadow-lg animate-float">
+            <i class="fa-solid fa-truck-fast text-3xl text-white"></i>
+          </div>
+          <h1 class="text-3xl font-bold text-gradient">SNL Logistics Pro</h1>
+          <p class="text-gray-400 text-sm mt-2">Enterprise Management System v4.0</p>
+        </div>
+        
+        <!-- Login Form -->
+        <form id="login-form" class="space-y-6">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <i class="fa-solid fa-envelope text-gray-500"></i>
+                </div>
+                <input type="email" id="login-email" 
+                       class="form-input pl-10"
+                       placeholder="admin@company.com"
+                       required
+                       autocomplete="username">
+              </div>
+            </div>
             
-            const email = document.getElementById('login-email').value.trim();
-            const password = document.getElementById('login-password').value;
-            const errorDiv = document.getElementById('auth-error');
-            const loginBtn = document.getElementById('login-btn-text');
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <i class="fa-solid fa-lock text-gray-500"></i>
+                </div>
+                <input type="password" id="login-password" 
+                       class="form-input pl-10 pr-10"
+                       placeholder="••••••••"
+                       required
+                       autocomplete="current-password">
+                <button type="button" onclick="Auth.togglePassword('login-password')" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                  <i class="fa-solid fa-eye text-gray-500 hover:text-gray-300"></i>
+                </button>
+              </div>
+            </div>
             
-            if (!email || !password) {
-                errorDiv.textContent = 'Please enter email and password';
-                errorDiv.classList.remove('hidden');
-                return;
-            }
+            <div class="flex items-center justify-between">
+              <label class="flex items-center space-x-2 cursor-pointer">
+                <input type="checkbox" id="remember-me" class="w-4 h-4 rounded border-gray-600 bg-gray-800 text-primary-500 focus:ring-primary-500">
+                <span class="text-sm text-gray-400">Remember me</span>
+              </label>
+              <button type="button" onclick="Auth.showResetModal()" class="text-sm text-primary-400 hover:text-primary-300 transition-colors">
+                Forgot password?
+              </button>
+            </div>
+          </div>
+          
+          <div id="auth-error" class="hidden bg-red-900/30 border border-red-700 rounded-lg p-3 text-sm text-red-300"></div>
+          
+          <button type="submit" id="login-btn" class="btn btn-primary w-full py-3">
+            <span id="login-btn-text">Sign In to Dashboard</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
-            try {
-                loginBtn.textContent = 'Signing in...';
-                const userCredential = await firebaseService.login(email, password);
-                state.setUser(userCredential.user);
-                
-                // Load user settings
-                await loadUserSettings();
-                
-                // Show success message
-                Utilities.showToast('Login successful!', 'success');
-                
-            } catch (error) {
-                errorDiv.textContent = error;
-                errorDiv.classList.remove('hidden');
-                loginBtn.textContent = 'Sign In';
-            }
+<!-- ===== MAIN APP CONTAINER ===== -->
+<div id="app-container" class="hidden h-screen flex flex-col">
+  <!-- Top Navigation -->
+  <header class="glass border-b border-gray-200 dark:border-gray-800 py-3 px-6 flex items-center justify-between shrink-0">
+    <!-- Left: Menu & Brand -->
+    <div class="flex items-center gap-4">
+      <button onclick="UI.toggleSidebar()" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors" aria-label="Toggle sidebar">
+        <i class="fa-solid fa-bars text-lg"></i>
+      </button>
+      
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-purple-500 flex items-center justify-center shadow-lg">
+          <i class="fa-solid fa-truck text-white"></i>
+        </div>
+        <div>
+          <div class="font-bold text-sm">SNL Logistics Pro</div>
+          <div class="text-xs text-gray-500 dark:text-gray-400">Enterprise Edition</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Center: Quick Actions -->
+    <div class="hidden lg:flex items-center gap-4">
+      <div class="flex items-center gap-2">
+        <span class="text-xs text-gray-500 dark:text-gray-400">Live Status:</span>
+        <div class="flex items-center gap-1">
+          <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+          <span class="text-xs font-medium text-green-600 dark:text-green-400">All Systems Normal</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Right: User & Controls -->
+    <div class="flex items-center gap-3">
+      <!-- Search -->
+      <div class="hidden md:block relative">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <i class="fa-solid fa-search text-gray-500 text-sm"></i>
+        </div>
+        <input type="text" 
+               id="global-search" 
+               placeholder="Search trips, vehicles, drivers..."
+               class="form-input pl-10 w-48 lg:w-64">
+      </div>
+      
+      <!-- Notifications -->
+      <div class="relative">
+        <button onclick="UI.toggleNotifications()" 
+                class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors relative"
+                aria-label="Notifications">
+          <i class="fa-solid fa-bell text-lg"></i>
+          <span id="notification-badge" class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center font-bold hidden">3</span>
+        </button>
+        <div id="notifications-panel" class="hidden absolute right-0 top-full mt-2 w-96 bg-white dark:bg-gray-900 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-800 z-50 animate-slide-up">
+          <div class="p-4 border-b border-gray-200 dark:border-gray-800">
+            <div class="flex justify-between items-center">
+              <h4 class="font-bold text-lg">Notifications</h4>
+              <button onclick="UI.markAllAsRead()" class="text-sm text-primary-600 dark:text-primary-400 hover:underline">
+                Mark all read
+              </button>
+            </div>
+          </div>
+          <div class="max-h-96 overflow-y-auto">
+            <div id="notifications-list" class="p-2 space-y-2">
+              <!-- Dynamic notifications -->
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Theme Toggle -->
+      <button onclick="UI.toggleTheme()" 
+              class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+              aria-label="Toggle theme">
+        <i id="theme-icon" class="fa-solid fa-moon text-lg"></i>
+      </button>
+      
+      <!-- User Menu -->
+      <div class="relative">
+        <button onclick="UI.toggleUserMenu()" 
+                class="flex items-center gap-2 p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+                aria-label="User menu">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-purple-500 flex items-center justify-center">
+            <span id="user-initials" class="text-white font-bold">U</span>
+          </div>
+          <div class="hidden lg:block text-left">
+            <div id="user-name" class="text-sm font-medium leading-tight truncate max-w-40">Loading...</div>
+            <div id="user-role" class="text-xs text-gray-500">Role</div>
+          </div>
+          <i class="fa-solid fa-chevron-down text-xs text-gray-500"></i>
+        </button>
+        
+        <div id="user-menu" class="hidden absolute right-0 top-full mt-2 w-64 bg-white dark:bg-gray-900 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-800 z-50 animate-slide-up">
+          <div class="p-4 border-b border-gray-200 dark:border-gray-800">
+            <div class="font-medium" id="menu-user-name">User</div>
+            <div class="text-sm text-gray-500" id="menu-user-email">email@company.com</div>
+          </div>
+          <div class="p-2 space-y-1">
+            <a href="#" onclick="UI.switchView('profile')" class="flex items-center px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg text-sm transition-colors">
+              <i class="fa-solid fa-user mr-3 text-gray-500"></i>Profile
+            </a>
+            <a href="#" onclick="UI.switchView('settings')" class="flex items-center px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg text-sm transition-colors">
+              <i class="fa-solid fa-cog mr-3 text-gray-500"></i>Settings
+            </a>
+            <div class="border-t border-gray-200 dark:border-gray-800 my-1"></div>
+            <button onclick="Auth.logout()" class="flex items-center w-full text-left px-3 py-2 hover:bg-red-50 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg text-sm transition-colors">
+              <i class="fa-solid fa-right-from-bracket mr-3"></i>Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Layout -->
+  <div class="flex flex-1 overflow-hidden">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="hidden lg:flex flex-col w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 h-full">
+      <!-- Sidebar Header -->
+      <div class="p-6 border-b border-gray-200 dark:border-gray-800">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-500 to-purple-500 flex items-center justify-center shadow-lg">
+            <i class="fa-solid fa-truck-fast text-white text-lg"></i>
+          </div>
+          <div>
+            <div class="font-bold">SNL Command</div>
+            <div class="text-xs text-gray-500">v4.0.1</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="flex-1 py-6 overflow-y-auto">
+        <div class="px-4 space-y-1">
+          <!-- Dashboard -->
+          <a href="#" onclick="UI.switchView('dashboard')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors active">
+            <i class="fa-solid fa-gauge-high"></i>
+            <span>Dashboard</span>
+            <span class="badge badge-primary ml-auto">Live</span>
+          </a>
+          
+          <!-- Trips -->
+          <div class="nav-group">
+            <div class="nav-group-header flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors" onclick="UI.toggleNavGroup('trips')">
+              <i class="fa-solid fa-route"></i>
+              <span>Trip Management</span>
+              <i class="fa-solid fa-chevron-down text-xs ml-auto"></i>
+            </div>
+            <div id="trips-group" class="hidden pl-4 space-y-1 mt-1">
+              <a href="#" onclick="UI.switchView('trips-active')" class="nav-subitem flex items-center gap-3 px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors">
+                <i class="fa-solid fa-play-circle"></i>
+                <span>Active Trips</span>
+                <span id="active-trips-count" class="badge badge-success badge-sm ml-auto">0</span>
+              </a>
+              <a href="#" onclick="UI.switchView('trips-new')" class="nav-subitem flex items-center gap-3 px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors">
+                <i class="fa-solid fa-plus-circle"></i>
+                <span>New Trip</span>
+              </a>
+              <a href="#" onclick="UI.switchView('trips-history')" class="nav-subitem flex items-center gap-3 px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                <span>Trip History</span>
+              </a>
+            </div>
+          </div>
+          
+          <!-- Fleet -->
+          <div class="nav-group">
+            <div class="nav-group-header flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors" onclick="UI.toggleNavGroup('fleet')">
+              <i class="fa-solid fa-truck-front"></i>
+              <span>Fleet Management</span>
+              <i class="fa-solid fa-chevron-down text-xs ml-auto"></i>
+            </div>
+            <div id="fleet-group" class="hidden pl-4 space-y-1 mt-1">
+              <a href="#" onclick="UI.switchView('fleet-overview')" class="nav-subitem flex items-center gap-3 px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors">
+                <i class="fa-solid fa-truck-plane"></i>
+                <span>Fleet Overview</span>
+              </a>
+              <a href="#" onclick="UI.switchView('fleet-maintenance')" class="nav-subitem flex items-center gap-3 px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors">
+                <i class="fa-solid fa-screwdriver-wrench"></i>
+                <span>Maintenance</span>
+              </a>
+              <a href="#" onclick="UI.switchView('fleet-analytics')" class="nav-subitem flex items-center gap-3 px-4 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Fleet Analytics</span>
+              </a>
+            </div>
+          </div>
+          
+          <!-- Analytics -->
+          <a href="#" onclick="UI.switchView('analytics')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors">
+            <i class="fa-solid fa-chart-pie"></i>
+            <span>Analytics</span>
+          </a>
+          
+          <!-- Reports -->
+          <a href="#" onclick="UI.switchView('reports')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors">
+            <i class="fa-solid fa-file-chart-column"></i>
+            <span>Reports</span>
+          </a>
+          
+          <!-- Settings -->
+          <a href="#" onclick="UI.switchView('settings')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors">
+            <i class="fa-solid fa-sliders"></i>
+            <span>Settings</span>
+          </a>
+        </div>
+      </nav>
+
+      <!-- Sidebar Footer -->
+      <div class="p-4 border-t border-gray-200 dark:border-gray-800">
+        <div class="flex items-center gap-3">
+          <div class="relative">
+            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-primary-500 to-purple-500 flex items-center justify-center">
+              <span id="sidebar-user-initials" class="text-white font-bold">U</span>
+            </div>
+            <span class="status-dot w-3 h-3 rounded-full bg-green-500 absolute bottom-0 right-0 ring-2 ring-white dark:ring-gray-900"></span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div id="sidebar-user-name" class="font-medium truncate">User Name</div>
+            <div class="text-xs text-gray-500 flex items-center gap-1">
+              <span class="status-dot w-2 h-2 rounded-full bg-green-500"></span>
+              <span>Online</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto overflow-x-hidden bg-gray-50/50 dark:bg-gray-950/50">
+      <div class="max-w-7xl mx-auto p-6 space-y-6">
+        <!-- Dynamic content will be loaded here -->
+        <div id="view-container"></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ===== TOAST CONTAINER ===== -->
+<div id="toast-container" class="fixed bottom-6 left-6 space-y-3 z-[9999]"></div>
+
+<!-- ===== MODALS ===== -->
+<!-- Add Vehicle Modal -->
+<div id="add-vehicle-modal" class="hidden modal-overlay">
+  <div class="modal-content animate-bounce-in">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-lg font-bold text-gray-900 dark:text-white">Add New Vehicle</h3>
+      <button onclick="UI.closeModal('add-vehicle-modal')" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+    </div>
+    <form id="add-vehicle-form" class="space-y-4">
+      <div>
+        <label class="form-label">Vehicle Number *</label>
+        <input type="text" id="vehicle-number" class="form-input" required placeholder="e.g. JH01AB1234">
+      </div>
+      <div>
+        <label class="form-label">Vehicle Type</label>
+        <select id="vehicle-type" class="form-input">
+          <option value="truck">Truck</option>
+          <option value="trailer">Trailer</option>
+          <option value="container">Container</option>
+          <option value="van">Van</option>
+          <option value="pickup">Pickup</option>
+        </select>
+      </div>
+      <div>
+        <label class="form-label">Capacity (tons)</label>
+        <input type="number" id="vehicle-capacity" class="form-input" min="0" step="0.1" placeholder="e.g. 10">
+      </div>
+      <div class="flex gap-3">
+        <button type="submit" class="btn btn-primary flex-1">Add Vehicle</button>
+        <button type="button" onclick="UI.closeModal('add-vehicle-modal')" class="btn btn-secondary flex-1">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Schedule Maintenance Modal -->
+<div id="maintenance-modal" class="hidden modal-overlay">
+  <div class="modal-content animate-bounce-in">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-lg font-bold text-gray-900 dark:text-white">Schedule Maintenance</h3>
+      <button onclick="UI.closeModal('maintenance-modal')" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+    </div>
+    <form id="maintenance-form" class="space-y-4">
+      <div>
+        <label class="form-label">Vehicle *</label>
+        <select id="maintenance-vehicle" class="form-input" required>
+          <option value="">Select Vehicle</option>
+        </select>
+      </div>
+      <div>
+        <label class="form-label">Service Type *</label>
+        <select id="maintenance-type" class="form-input" required>
+          <option value="routine">Routine Service</option>
+          <option value="oil">Oil Change</option>
+          <option value="tire">Tire Replacement</option>
+          <option value="brake">Brake Service</option>
+        </select>
+      </div>
+      <div>
+        <label class="form-label">Due Date *</label>
+        <input type="date" id="maintenance-date" class="form-input" required>
+      </div>
+      <div class="flex gap-3">
+        <button type="submit" class="btn btn-primary flex-1">Schedule</button>
+        <button type="button" onclick="UI.closeModal('maintenance-modal')" class="btn btn-secondary flex-1">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===== APPLICATION SCRIPT ===== -->
+<script type="module">
+// ============================================
+// ENTERPRISE LOGISTICS MANAGEMENT SYSTEM
+// ============================================
+
+// Import Firebase modules
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { 
+  getAuth, 
+  onAuthStateChanged, 
+  signInWithEmailAndPassword, 
+  signOut, 
+  sendPasswordResetEmail 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { 
+  getFirestore, 
+  collection, 
+  doc, 
+  addDoc, 
+  updateDoc, 
+  deleteDoc, 
+  onSnapshot, 
+  query, 
+  where, 
+  orderBy, 
+  limit, 
+  serverTimestamp, 
+  getDocs,
+  writeBatch
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+// Firebase Configuration
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyBrYy8AF0LtQkLD0ZCV4hzhwaDdznb5Q8Q",
+  authDomain: "shreenarayanlogistics-22d08.firebaseapp.com",
+  projectId: "shreenarayanlogistics-22d08",
+  storageBucket: "shreenarayanlogistics-22d08.firebasestorage.app",
+  messagingSenderId: "706107706476",
+  appId: "1:706107706476:web:1e34fa02e4da73b8209c49"
+};
+
+// Initialize Firebase
+const app = initializeApp(FIREBASE_CONFIG);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// ============================================
+// CORE APPLICATION MODULES
+// ============================================
+
+/**
+ * App State Management
+ */
+const AppState = {
+  user: null,
+  role: 'staff',
+  permissions: [],
+  settings: {},
+  cache: new Map(),
+  
+  init() {
+    this.loadSettings();
+    this.setupObservers();
+  },
+  
+  loadSettings() {
+    const saved = localStorage.getItem('snl_settings');
+    if (saved) {
+      this.settings = JSON.parse(saved);
+      this.applyTheme();
+    }
+  },
+  
+  applyTheme() {
+    const theme = this.settings.theme || 'system';
+    if (theme === 'system') {
+      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.classList.toggle('dark', isDark);
+    } else {
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+    }
+  },
+  
+  setupObservers() {
+    // Network status observer
+    window.addEventListener('online', () => {
+      UI.showToast('Connection restored', 'success');
+    });
+    
+    window.addEventListener('offline', () => {
+      UI.showToast('Working offline', 'warning');
+    });
+  },
+  
+  cacheData(key, data, ttl = 300) {
+    this.cache.set(key, {
+      data,
+      timestamp: Date.now(),
+      ttl: ttl * 1000
+    });
+  },
+  
+  getCachedData(key) {
+    const cached = this.cache.get(key);
+    if (cached && Date.now() - cached.timestamp < cached.ttl) {
+      return cached.data;
+    }
+    return null;
+  }
+};
+
+/**
+ * Authentication Module
+ */
+const Auth = {
+  async login(email, password) {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      await this.handleSuccessfulLogin(userCredential.user);
+      return true;
+    } catch (error) {
+      this.handleLoginError(error);
+      return false;
+    }
+  },
+  
+  async handleSuccessfulLogin(user) {
+    AppState.user = user;
+    UI.hideAuthScreen();
+    UI.showToast('Login successful', 'success');
+    
+    // Load user data
+    await this.loadUserData(user);
+  },
+  
+  async loadUserData(user) {
+    // Set user info
+    const email = user.email;
+    const initials = email.charAt(0).toUpperCase();
+    
+    // Update UI
+    document.getElementById('user-initials').textContent = initials;
+    document.getElementById('sidebar-user-initials').textContent = initials;
+    document.getElementById('user-name').textContent = email;
+    document.getElementById('sidebar-user-name').textContent = email;
+    document.getElementById('menu-user-name').textContent = email;
+    document.getElementById('menu-user-email').textContent = email;
+    
+    // Check admin status
+    const adminEmails = [
+      "shrinarayanlogistic@gmail.com",
+      "itexpress4u.cloud@gmail.com",
+      "admin@shrinarayanlogistics.com"
+    ];
+    
+    if (adminEmails.includes(email.toLowerCase())) {
+      AppState.role = 'admin';
+      document.getElementById('user-role').textContent = 'Admin';
+    } else {
+      AppState.role = 'staff';
+      document.getElementById('user-role').textContent = 'Staff';
+    }
+  },
+  
+  handleLoginError(error) {
+    let message = 'Login failed';
+    switch(error.code) {
+      case 'auth/invalid-credential':
+        message = 'Invalid email or password';
+        break;
+      case 'auth/user-not-found':
+        message = 'User not found';
+        break;
+      case 'auth/wrong-password':
+        message = 'Incorrect password';
+        break;
+      case 'auth/too-many-requests':
+        message = 'Too many attempts. Try again later';
+        break;
+    }
+    UI.showToast(message, 'error');
+  },
+  
+  async logout() {
+    try {
+      await signOut(auth);
+      AppState.user = null;
+      UI.showAuthScreen();
+      UI.showToast('Logged out successfully', 'success');
+    } catch (error) {
+      UI.showToast('Logout failed', 'error');
+    }
+  },
+  
+  async resetPassword(email) {
+    try {
+      await sendPasswordResetEmail(auth, email);
+      UI.showToast('Password reset email sent', 'success');
+      return true;
+    } catch (error) {
+      UI.showToast('Failed to send reset email', 'error');
+      return false;
+    }
+  },
+  
+  togglePassword(inputId) {
+    const input = document.getElementById(inputId);
+    if (input.type === 'password') {
+      input.type = 'text';
+    } else {
+      input.type = 'password';
+    }
+  }
+};
+
+/**
+ * UI Management Module
+ */
+const UI = {
+  currentView: 'dashboard',
+  views: {},
+  
+  init() {
+    this.setupEventListeners();
+    this.renderDashboard();
+  },
+  
+  setupEventListeners() {
+    // Login form
+    document.getElementById('login-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      await Auth.login(email, password);
+    });
+    
+    // Global search
+    const searchInput = document.getElementById('global-search');
+    if (searchInput) {
+      searchInput.addEventListener('input', this.debounce((e) => {
+        this.handleGlobalSearch(e.target.value);
+      }, 300));
+    }
+  },
+  
+  debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  },
+  
+  async switchView(viewName) {
+    this.currentView = viewName;
+    
+    // Update navigation
+    document.querySelectorAll('.nav-item, .nav-subitem').forEach(item => {
+      item.classList.remove('active');
+    });
+    
+    // Render the view
+    await this.renderView(viewName);
+    
+    // Close sidebar on mobile
+    if (window.innerWidth < 1024) {
+      this.toggleSidebar();
+    }
+  },
+  
+  async renderView(viewName) {
+    const container = document.getElementById('view-container');
+    
+    // Show loading skeleton
+    container.innerHTML = `
+      <div class="space-y-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="skeleton-text w-48 h-8 mb-2"></div>
+            <div class="skeleton-text w-64 h-4"></div>
+          </div>
+          <div class="skeleton-text w-32 h-10"></div>
+        </div>
+        <div class="skeleton h-96 rounded-xl"></div>
+      </div>
+    `;
+    
+    // Load view content
+    setTimeout(() => {
+      const view = this.views[viewName] || this.views.dashboard;
+      container.innerHTML = view();
+      
+      // Initialize view-specific components
+      this.initializeViewComponents(viewName);
+    }, 200);
+  },
+  
+  initializeViewComponents(viewName) {
+    switch(viewName) {
+      case 'dashboard':
+        this.initializeDashboard();
+        break;
+      case 'trips-active':
+        this.initializeActiveTrips();
+        break;
+      case 'fleet-overview':
+        this.initializeFleet();
+        break;
+      case 'analytics':
+        this.initializeAnalytics();
+        break;
+    }
+  },
+  
+  // View Templates
+  views: {
+    dashboard: () => `
+      <div class="space-y-6">
+        <!-- Header -->
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div>
+            <h1 class="text-2xl font-bold">Executive Dashboard</h1>
+            <p class="text-gray-600 dark:text-gray-400 text-sm">Real-time overview of logistics operations</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="relative">
+              <input type="text" placeholder="Quick search..." class="form-input pl-10 text-sm w-full lg:w-64">
+              <i class="fa-solid fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+            </div>
+            <button onclick="UI.refreshDashboard()" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
+              <i class="fa-solid fa-rotate"></i>
+            </button>
+          </div>
+        </div>
+        
+        <!-- KPI Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          ${[1,2,3,4].map(i => `
+            <div class="kpi-card">
+              <div class="flex items-center justify-between">
+                <div>
+                  <div class="text-sm text-gray-500 mb-1">Metric ${i}</div>
+                  <div class="kpi-value">0</div>
+                  <div class="kpi-change text-green-600">
+                    <i class="fa-solid fa-arrow-up mr-1"></i>0%
+                  </div>
+                </div>
+                <div class="w-12 h-12 rounded-xl bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+                  <i class="fa-solid fa-chart-line text-primary-600 dark:text-primary-400 text-xl"></i>
+                </div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+        
+        <!-- Charts -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="card">
+            <h3 class="font-bold mb-4">Trip Volume Trend</h3>
+            <div class="h-64">
+              <canvas id="volume-chart"></canvas>
+            </div>
+          </div>
+          <div class="card">
+            <h3 class="font-bold mb-4">Delivery Status</h3>
+            <div class="h-64">
+              <canvas id="status-chart"></canvas>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Recent Activity -->
+        <div class="card">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-bold">Recent Activity</h3>
+            <button class="text-sm text-primary-600 dark:text-primary-400 hover:underline">
+              View all
+            </button>
+          </div>
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Activity</th>
+                  <th>User</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="recent-activity">
+                <!-- Dynamic content -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    `,
+    
+    'trips-active': () => `
+      <div class="space-y-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-2xl font-bold">Active Trips</h1>
+            <p class="text-gray-600 dark:text-gray-400 text-sm">Monitor and manage ongoing trips</p>
+          </div>
+          <button onclick="UI.switchView('trips-new')" class="btn btn-primary">
+            <i class="fa-solid fa-plus"></i> New Trip
+          </button>
+        </div>
+        
+        <div class="card">
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Trip ID</th>
+                  <th>Vehicle</th>
+                  <th>Driver</th>
+                  <th>Route</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="active-trips-table">
+                <!-- Dynamic content -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    `,
+    
+    'fleet-overview': () => `
+      <div class="space-y-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-2xl font-bold">Fleet Overview</h1>
+            <p class="text-gray-600 dark:text-gray-400 text-sm">Manage your vehicle fleet</p>
+          </div>
+          <button onclick="UI.showModal('add-vehicle-modal')" class="btn btn-primary">
+            <i class="fa-solid fa-plus"></i> Add Vehicle
+          </button>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          ${[1,2,3].map(i => `
+            <div class="kpi-card">
+              <div class="text-sm text-gray-500 mb-1">Metric ${i}</div>
+              <div class="kpi-value">0</div>
+            </div>
+          `).join('')}
+        </div>
+        
+        <div class="card">
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Vehicle No</th>
+                  <th>Type</th>
+                  <th>Status</th>
+                  <th>Last Service</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="fleet-table">
+                <!-- Dynamic content -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    `
+  },
+  
+  // UI Controls
+  toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.toggle('hidden');
+  },
+  
+  toggleUserMenu() {
+    const menu = document.getElementById('user-menu');
+    menu.classList.toggle('hidden');
+  },
+  
+  toggleNotifications() {
+    const panel = document.getElementById('notifications-panel');
+    panel.classList.toggle('hidden');
+  },
+  
+  toggleTheme() {
+    const isDark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    
+    const icon = document.getElementById('theme-icon');
+    icon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+    
+    this.showToast(`Theme changed to ${isDark ? 'dark' : 'light'}`, 'info');
+  },
+  
+  showModal(modalId) {
+    document.getElementById(modalId).classList.remove('hidden');
+  },
+  
+  closeModal(modalId) {
+    document.getElementById(modalId).classList.add('hidden');
+  },
+  
+  showToast(message, type = 'info', duration = 3000) {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    
+    const icons = {
+      success: 'fa-circle-check',
+      error: 'fa-circle-exclamation',
+      warning: 'fa-triangle-exclamation',
+      info: 'fa-circle-info'
+    };
+    
+    toast.className = `toast toast-${type}`;
+    toast.innerHTML = `
+      <div class="flex items-center gap-3 p-4 rounded-xl shadow-lg">
+        <div class="w-5 h-5 rounded-full flex items-center justify-center">
+          <i class="fa-solid ${icons[type] || 'fa-circle-info'}"></i>
+        </div>
+        <div class="flex-1 text-sm">${message}</div>
+        <button class="p-1 hover:bg-white/10 rounded-full" onclick="this.parentElement.parentElement.remove()">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+    `;
+    
+    container.appendChild(toast);
+    
+    // Show animation
+    setTimeout(() => toast.classList.add('show'), 10);
+    
+    // Auto remove
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 300);
+    }, duration);
+  },
+  
+  showAuthScreen() {
+    document.getElementById('auth-screen').classList.remove('hidden');
+    document.getElementById('app-container').classList.add('hidden');
+  },
+  
+  hideAuthScreen() {
+    document.getElementById('auth-screen').classList.add('hidden');
+    document.getElementById('app-container').classList.remove('hidden');
+  },
+  
+  markAllAsRead() {
+    this.showToast('All notifications marked as read', 'success');
+    document.getElementById('notification-badge').classList.add('hidden');
+  },
+  
+  refreshDashboard() {
+    this.showToast('Dashboard refreshed', 'success');
+    // Implement actual refresh logic
+  },
+  
+  handleGlobalSearch(query) {
+    if (query.trim()) {
+      console.log('Searching for:', query);
+      // Implement search functionality
+    }
+  }
+};
+
+/**
+ * Data Service Module
+ */
+const DataService = {
+  async getTrips(status = null) {
+    try {
+      let q = query(collection(db, 'trips'), orderBy('createdAt', 'desc'), limit(50));
+      if (status) {
+        q = query(q, where('status', '==', status));
+      }
+      
+      const snapshot = await getDocs(q);
+      return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    } catch (error) {
+      console.error('Error getting trips:', error);
+      return [];
+    }
+  },
+  
+  async getFleet() {
+    try {
+      const q = query(collection(db, 'fleet'), orderBy('createdAt', 'desc'));
+      const snapshot = await getDocs(q);
+      return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    } catch (error) {
+      console.error('Error getting fleet:', error);
+      return [];
+    }
+  },
+  
+  async createTrip(data) {
+    try {
+      const tripData = {
+        ...data,
+        status: 'active',
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+        createdBy: AppState.user?.uid
+      };
+      
+      const docRef = await addDoc(collection(db, 'trips'), tripData);
+      return docRef.id;
+    } catch (error) {
+      console.error('Error creating trip:', error);
+      throw error;
+    }
+  },
+  
+  async updateTrip(tripId, updates) {
+    try {
+      await updateDoc(doc(db, 'trips', tripId), {
+        ...updates,
+        updatedAt: serverTimestamp()
+      });
+    } catch (error) {
+      console.error('Error updating trip:', error);
+      throw error;
+    }
+  },
+  
+  async addVehicle(data) {
+    try {
+      const vehicleData = {
+        ...data,
+        status: 'active',
+        createdAt: serverTimestamp(),
+        createdBy: AppState.user?.uid,
+        odometer: 0
+      };
+      
+      const docRef = await addDoc(collection(db, 'fleet'), vehicleData);
+      return docRef.id;
+    } catch (error) {
+      console.error('Error adding vehicle:', error);
+      throw error;
+    }
+  }
+};
+
+/**
+ * Analytics Module
+ */
+const Analytics = {
+  charts: {},
+  
+  initDashboardCharts() {
+    // Volume chart
+    const volumeCtx = document.getElementById('volume-chart');
+    if (volumeCtx) {
+      this.charts.volume = new Chart(volumeCtx.getContext('2d'), {
+        type: 'line',
+        data: {
+          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          datasets: [{
+            label: 'Trips',
+            data: [12, 19, 15, 25, 22, 30, 28],
+            borderColor: '#3b82f6',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            tension: 0.4,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } }
         }
-
-        async function logout() {
-            try {
-                await firebaseService.logout();
-                state.setUser(null);
-                document.getElementById('auth-container').classList.remove('hidden');
-                document.getElementById('app-container').classList.add('hidden');
-                Utilities.showToast('Logged out successfully', 'info');
-            } catch (error) {
-                console.error('Logout error:', error);
-            }
+      });
+    }
+    
+    // Status chart
+    const statusCtx = document.getElementById('status-chart');
+    if (statusCtx) {
+      this.charts.status = new Chart(statusCtx.getContext('2d'), {
+        type: 'doughnut',
+        data: {
+          labels: ['On Time', 'Delayed', 'Early', 'Pending'],
+          datasets: [{
+            data: [65, 15, 10, 10],
+            backgroundColor: ['#10b981', '#ef4444', '#3b82f6', '#f59e0b']
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '70%'
         }
+      });
+    }
+  },
+  
+  updateCharts(data) {
+    // Update charts with real data
+    // Implement based on your data structure
+  }
+};
 
-        async function loadUserSettings() {
-            try {
-                // Load settings from localStorage
-                const savedSettings = localStorage.getItem('fleetmaster_settings');
-                if (savedSettings) {
-                    state.settings = { ...state.settings, ...JSON.parse(savedSettings) };
-                }
-                
-                // Apply settings
-                applySettings();
-                
-            } catch (error) {
-                console.error('Error loading settings:', error);
-            }
-        }
+// ============================================
+// INITIALIZATION
+// ============================================
 
-        function applySettings() {
-            // Apply theme
-            if (state.settings.theme === 'dark' || (state.settings.theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
-                document.getElementById('theme-icon').className = 'fa-solid fa-sun';
-            } else {
-                document.documentElement.classList.remove('dark');
-                document.getElementById('theme-icon').className = 'fa-solid fa-moon';
-            }
-        }
+// Initialize app when DOM is loaded
+document.addEventListener('DOMContentLoaded', async () => {
+  // Initialize modules
+  AppState.init();
+  
+  // Set up auth state listener
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // User is signed in
+      Auth.handleSuccessfulLogin(user);
+      UI.init();
+      Analytics.initDashboardCharts();
+    } else {
+      // User is signed out
+      UI.showAuthScreen();
+    }
+  });
+  
+  // Initialize loading progress
+  let progress = 0;
+  const progressInterval = setInterval(() => {
+    progress += 10;
+    const progressBar = document.getElementById('loading-progress');
+    if (progressBar) {
+      progressBar.style.width = `${progress}%`;
+    }
+    
+    if (progress >= 100) {
+      clearInterval(progressInterval);
+      // Hide loading screen after a delay
+      setTimeout(() => {
+        document.getElementById('loading-screen').style.opacity = '0';
+        setTimeout(() => {
+          document.getElementById('loading-screen').classList.add('hidden');
+        }, 500);
+      }, 500);
+    }
+  }, 300);
+});
 
-        function toggleTheme() {
-            const isDark = document.documentElement.classList.toggle('dark');
-            state.settings.theme = isDark ? 'dark' : 'light';
-            document.getElementById('theme-icon').className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
-            saveSettings();
-        }
+// Export to window for debugging
+window.App = {
+  AppState,
+  Auth,
+  UI,
+  DataService,
+  Analytics
+};
 
-        function saveSettings() {
-            localStorage.setItem('fleetmaster_settings', JSON.stringify(state.settings));
-        }
+</script>
 
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('hidden');
-        }
-
-        function toggleSidebarCollapse() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('sidebar-collapsed');
-            const icon = sidebar.querySelector('.fa-chevron-left');
-            icon.classList.toggle('expand-icon');
-        }
-
-        function toggleUserMenu() {
-            document.getElementById('user-menu').classList.toggle('hidden');
-        }
-
-        function toggleNotifications() {
-            document.getElementById('notifications-panel').classList.toggle('hidden');
-        }
-
-        function markAllAsRead() {
-            state.markAllNotificationsAsRead();
-            Utilities.showToast('All notifications marked as read', 'success');
-        }
-
-        function togglePasswordVisibility(inputId) {
-            const input = document.getElementById(inputId);
-            const icon = input.nextElementSibling.querySelector('i');
-            
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.className = 'fa-solid fa-eye-slash';
-            } else {
-                input.type = 'password';
-                icon.className = 'fa-solid fa-eye';
-            }
-        }
-
-        function showForgotPassword() {
-            document.getElementById('forgot-password-modal').classList.remove('hidden');
-        }
-
-        function closeForgotPassword() {
-            document.getElementById('forgot-password-modal').classList.add('hidden');
-            document.getElementById('reset-message').textContent = '';
-            document.getElementById('reset-email').value = '';
-        }
-
-        async function sendPasswordReset() {
-            const email = document.getElementById('reset-email').value.trim();
-            const messageEl = document.getElementById('reset-message');
-            
-            if (!email) {
-                messageEl.innerHTML = '<span class="text-red-600">Please enter your email address</span>';
-                return;
-            }
-
-            try {
-                await firebaseService.resetPassword(email);
-                messageEl.innerHTML = '<span class="text-green-600">Password reset email sent! Check your inbox.</span>';
-                setTimeout(() => {
-                    closeForgotPassword();
-                }, 3000);
-            } catch (error) {
-                messageEl.innerHTML = `<span class="text-red-600">${error}</span>`;
-            }
-        }
-
-        function showProfile() {
-            document.getElementById('profile-initials').textContent = state.userProfile?.displayName?.substring(0, 2).toUpperCase() || 'U';
-            document.getElementById('profile-name').textContent = state.userProfile?.displayName || 'User';
-            document.getElementById('profile-email').textContent = state.userProfile?.email || '';
-            document.getElementById('profile-role').textContent = state.role.charAt(0).toUpperCase() + state.role.slice(1);
-            document.getElementById('profile-display-name').value = state.userProfile?.displayName || '';
-            document.getElementById('profile-phone').value = state.userProfile?.phone || '';
-            
-            document.getElementById('profile-modal').classList.remove('hidden');
-            toggleUserMenu();
-        }
-
-        function closeProfile() {
-            document.getElementById('profile-modal').classList.add('hidden');
-        }
-
-        async function updateProfile() {
-            const displayName = document.getElementById('profile-display-name').value.trim();
-            const phone = document.getElementById('profile-phone').value.trim();
-
-            try {
-                await firebaseService.updateProfile({
-                    displayName,
-                    phoneNumber: phone
-                });
-                
-                state.updateUserProfile();
-                Utilities.showToast('Profile updated successfully', 'success');
-                closeProfile();
-            } catch (error) {
-                Utilities.showToast('Failed to update profile', 'error');
-            }
-        }
-
-        function showSettings() {
-            // Load current settings
-            document.getElementById('setting-theme').value = state.settings.theme;
-            document.getElementById('setting-language').value = state.settings.language;
-            document.getElementById('setting-timezone').value = state.settings.timezone;
-            document.getElementById('setting-date-format').value = state.settings.dateFormat;
-            document.getElementById('setting-notify-trip-updates').checked = state.settings.notifyTripUpdates;
-            document.getElementById('setting-notify-delays').checked = state.settings.notifyDelays;
-            document.getElementById('setting-notify-maintenance').checked = state.settings.notifyMaintenance;
-            document.getElementById('setting-notify-system').checked = state.settings.notifySystem;
-            document.getElementById('setting-refresh-interval').value = state.settings.refreshInterval;
-            document.getElementById('refresh-value').textContent = `${state.settings.refreshInterval} seconds`;
-            
-            document.getElementById('settings-modal').classList.remove('hidden');
-        }
-
-        function closeSettings() {
-            document.getElementById('settings-modal').classList.add('hidden');
-        }
-
-        function saveSettings() {
-            state.settings = {
-                theme: document.getElementById('setting-theme').value,
-                language: document.getElementById('setting-language').value,
-                timezone: document.getElementById('setting-timezone').value,
-                dateFormat: document.getElementById('setting-date-format').value,
-                notifyTripUpdates: document.getElementById('setting-notify-trip-updates').checked,
-                notifyDelays: document.getElementById('setting-notify-delays').checked,
-                notifyMaintenance: document.getElementById('setting-notify-maintenance').checked,
-                notifySystem: document.getElementById('setting-notify-system').checked,
-                refreshInterval: parseInt(document.getElementById('setting-refresh-interval').value)
-            };
-            
-            saveSettings();
-            applySettings();
-            Utilities.showToast('Settings saved successfully', 'success');
-            closeSettings();
-        }
-
-        function resetSettings() {
-            state.settings = { ...CONFIG.defaultSettings };
-            saveSettings();
-            applySettings();
-            Utilities.showToast('Settings reset to defaults', 'success');
-            closeSettings();
-        }
-
-        function quickAction(action) {
-            switch (action) {
-                case 'new-trip':
-                    showNewTripModal();
-                    break;
-                case 'live-tracking':
-                    UIManager.switchTab('trips-map');
-                    break;
-                case 'reports':
-                    UIManager.switchTab('reports');
-                    break;
-            }
-        }
-
-        function showNewTripModal() {
-            // Load vehicles and drivers
-            loadVehiclesAndDrivers();
-            document.getElementById('new-trip-modal').classList.remove('hidden');
-        }
-
-        function closeNewTripModal() {
-            document.getElementById('new-trip-modal').classList.add('hidden');
-            document.getElementById('new-trip-form').reset();
-        }
-
-        async function loadVehiclesAndDrivers() {
-            try {
-                const [vehicles, drivers] = await Promise.all([
-                    firebaseService.getCollection('vehicles'),
-                    firebaseService.getCollection('drivers')
-                ]);
-                
-                const vehicleSelect = document.getElementById('trip-vehicle');
-                const driverSelect = document.getElementById('trip-driver');
-                
-                vehicleSelect.innerHTML = '<option value="">Select Vehicle</option>' + 
-                    vehicles.map(v => `<option value="${v.id}">${v.registrationNumber} - ${v.model}</option>`).join('');
-                
-                driverSelect.innerHTML = '<option value="">Select Driver</option>' + 
-                    drivers.map(d => `<option value="${d.id}">${d.name} (${d.licenseNumber})</option>`).join('');
-                    
-            } catch (error) {
-                console.error('Error loading vehicles and drivers:', error);
-            }
-        }
-
-        async function createNewTrip(e) {
-            e.preventDefault();
-            
-            const tripData = {
-                vehicleId: document.getElementById('trip-vehicle').value,
-                driverId: document.getElementById('trip-driver').value,
-                origin: document.getElementById('trip-origin').value,
-                destination: document.getElementById('trip-destination').value,
-                distance: parseFloat(document.getElementById('trip-distance').value) || 0,
-                estimatedDuration: parseFloat(document.getElementById('trip-duration').value) || 0,
-                cargoDetails: document.getElementById('trip-cargo').value,
-                specialInstructions: document.getElementById('trip-instructions').value
-            };
-            
-            try {
-                const tripId = await TripService.createTrip(tripData);
-                Utilities.showToast('Trip created successfully!', 'success');
-                closeNewTripModal();
-                UIManager.switchTab('trips-active');
-            } catch (error) {
-                Utilities.showToast('Failed to create trip: ' + error.message, 'error');
-            }
-        }
-
-        async function viewTripDetails(tripId) {
-            try {
-                const trip = await firebaseService.getDocument('trips', tripId);
-                if (!trip) {
-                    Utilities.showToast('Trip not found', 'error');
-                    return;
-                }
-                
-                const detailsHtml = `
-                    <div class="space-y-6">
-                        <!-- Trip Header -->
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <h4 class="text-lg font-bold">${trip.tripNumber || tripId}</h4>
-                                <p class="text-gray-600 dark:text-gray-400">${trip.origin} → ${trip.destination}</p>
-                            </div>
-                            <span class="status-badge status-${trip.status}">${trip.status}</span>
-                        </div>
-                        
-                        <!-- Trip Details -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <h5 class="font-medium mb-2">Trip Information</h5>
-                                <div class="space-y-2">
-                                    <div class="flex justify-between">
-                                        <span class="text-gray-600 dark:text-gray-400">Vehicle:</span>
-                                        <span class="font-medium">${trip.vehicleNumber || 'N/A'}</span>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <span class="text-gray-600 dark:text-gray-400">Driver:</span>
-                                        <span class="font-medium">${trip.driverName || 'N/A'}</span>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <span class="text-gray-600 dark:text-gray-400">Distance:</span>
-                                        <span class="font-medium">${trip.distance || 0} km</span>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <span class="text-gray-600 dark:text-gray-400">Estimated Duration:</span>
-                                        <span class="font-medium">${trip.estimatedDuration || 0} hours</span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div>
-                                <h5 class="font-medium mb-2">Timeline</h5>
-                                <div class="space-y-2">
-                                    <div class="flex justify-between">
-                                        <span class="text-gray-600 dark:text-gray-400">Created:</span>
-                                        <span class="font-medium">${Utilities.formatDate(trip.createdAt?.toDate?.() || new Date(), 'DD/MM/YYYY HH:mm')}</span>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <span class="text-gray-600 dark:text-gray-400">Started:</span>
-                                        <span class="font-medium">${trip.startedAt ? Utilities.formatDate(trip.startedAt.toDate(), 'DD/MM/YYYY HH:mm') : 'Not started'}</span>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <span class="text-gray-600 dark:text-gray-400">Completed:</span>
-                                        <span class="font-medium">${trip.completedAt ? Utilities.formatDate(trip.completedAt.toDate(), 'DD/MM/YYYY HH:mm') : 'Not completed'}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Cargo Details -->
-                        ${trip.cargoDetails ? `
-                            <div>
-                                <h5 class="font-medium mb-2">Cargo Details</h5>
-                                <p class="text-gray-700 dark:text-gray-300">${trip.cargoDetails}</p>
-                            </div>
-                        ` : ''}
-                        
-                        <!-- Actions -->
-                        <div class="flex space-x-3 pt-6">
-                            ${trip.status === 'pending' ? `
-                                <button onclick="updateTripStatus('${tripId}', 'active')" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg">
-                                    <i class="fa-solid fa-play mr-2"></i> Start Trip
-                                </button>
-                            ` : ''}
-                            ${trip.status === 'active' || trip.status === 'in_transit' ? `
-                                <button onclick="updateTripStatus('${tripId}', 'completed')" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg">
-                                    <i class="fa-solid fa-check mr-2"></i> Complete Trip
-                                </button>
-                            ` : ''}
-                            <button onclick="closeTripDetails()" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg">Close</button>
-                        </div>
-                    </div>
-                `;
-                
-                document.getElementById('trip-details-content').innerHTML = detailsHtml;
-                document.getElementById('trip-details-modal').classList.remove('hidden');
-                
-            } catch (error) {
-                Utilities.showToast('Error loading trip details', 'error');
-            }
-        }
-
-        function closeTripDetails() {
-            document.getElementById('trip-details-modal').classList.add('hidden');
-        }
-
-        async function updateTripStatus(tripId, status) {
-            try {
-                await TripService.updateTripStatus(tripId, status);
-                Utilities.showToast(`Trip status updated to ${status}`, 'success');
-                closeTripDetails();
-                UIManager.switchTab('trips-active');
-            } catch (error) {
-                Utilities.showToast('Failed to update trip status', 'error');
-            }
-        }
-
-        function showExportModal() {
-            const today = new Date();
-            const lastWeek = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
-            
-            document.getElementById('export-start-date').value = lastWeek.toISOString().split('T')[0];
-            document.getElementById('export-end-date').value = today.toISOString().split('T')[0];
-            
-            document.getElementById('export-modal').classList.remove('hidden');
-        }
-
-        function closeExportModal() {
-            document.getElementById('export-modal').classList.add('hidden');
-        }
-
-        async function exportData() {
-            const format = document.getElementById('export-format').value;
-            const dataType = document.getElementById('export-data-type').value;
-            const startDate = document.getElementById('export-start-date').value;
-            const endDate = document.getElementById('export-end-date').value;
-            
-            try {
-                let data = [];
-                let filename = '';
-                
-                switch (dataType) {
-                    case 'trips':
-                        data = await firebaseService.getCollection('trips', [
-                            { field: 'createdAt', op: '>=', value: new Date(startDate) },
-                            { field: 'createdAt', op: '<=', value: new Date(endDate) }
-                        ]);
-                        filename = `trips_${startDate}_to_${endDate}`;
-                        break;
-                    case 'vehicles':
-                        data = await firebaseService.getCollection('vehicles');
-                        filename = `vehicles_${new Date().toISOString().split('T')[0]}`;
-                        break;
-                    case 'drivers':
-                        data = await firebaseService.getCollection('drivers');
-                        filename = `drivers_${new Date().toISOString().split('T')[0]}`;
-                        break;
-                }
-                
-                if (format === 'excel') {
-                    await Utilities.exportToExcel(data, filename);
-                } else if (format === 'pdf') {
-                    await Utilities.exportToPDF(data, filename);
-                } else if (format === 'csv') {
-                    // CSV export logic here
-                }
-                
-                Utilities.showToast('Export completed successfully', 'success');
-                closeExportModal();
-                
-            } catch (error) {
-                Utilities.showToast('Export failed: ' + error.message, 'error');
-            }
-        }
-
-        function closeConfirmation() {
-            document.getElementById('confirmation-modal').classList.add('hidden');
-        }
-
-        // ============================================
-        // INITIALIZATION
-        // ============================================
-        async function initializeApp() {
-            try {
-                // Update loading progress
-                const progress = document.getElementById('loading-progress');
-                const loadingText = document.getElementById('loading-text');
-                
-                progress.style.width = '10%';
-                loadingText.textContent = 'Initializing Firebase...';
-                
-                // Initialize Firebase
-                await firebaseService.initialize();
-                
-                progress.style.width = '40%';
-                loadingText.textContent = 'Setting up authentication...';
-                
-                // Set up auth state listener
-                firebaseService.auth.onAuthStateChanged(async (user) => {
-                    if (user) {
-                        // User is signed in
-                        state.setUser(user);
-                        await loadUserSettings();
-                        
-                        progress.style.width = '80%';
-                        loadingText.textContent = 'Loading dashboard...';
-                        
-                        // Show main app
-                        document.getElementById('loading-screen').style.opacity = '0';
-                        setTimeout(() => {
-                            document.getElementById('loading-screen').classList.add('hidden');
-                            document.getElementById('auth-container').classList.add('hidden');
-                            document.getElementById('app-container').classList.remove('hidden');
-                            
-                            // Load default view
-                            UIManager.switchTab('dashboard');
-                            
-                            // Start data listeners
-                            startDataListeners();
-                        }, 300);
-                        
-                    } else {
-                        // User is signed out
-                        state.setUser(null);
-                        
-                        progress.style.width = '100%';
-                        loadingText.textContent = 'Ready!';
-                        
-                        setTimeout(() => {
-                            document.getElementById('loading-screen').classList.add('hidden');
-                            document.getElementById('auth-container').classList.remove('hidden');
-                        }, 500);
-                    }
-                });
-                
-            } catch (error) {
-                console.error('App initialization failed:', error);
-                document.getElementById('loading-text').textContent = 'Initialization failed. Please refresh.';
-                document.getElementById('loading-text').classList.add('text-red-500');
-            }
-        }
-
-        function startDataListeners() {
-            // Listen for real-time trip updates
-            firebaseService.onCollectionUpdate('trips', (trips) => {
-                state.trips = trips;
-                
-                // Update active trips count
-                const activeTrips = trips.filter(t => 
-                    t.status === TripService.STATUS.ACTIVE || 
-                    t.status === TripService.STATUS.IN_TRANSIT
-                ).length;
-                
-                const badge = document.getElementById('active-trips-badge');
-                if (badge) {
-                    badge.textContent = activeTrips;
-                }
-                
-                // Add notifications for new trips
-                trips.forEach(trip => {
-                    if (!trip.notified && trip.status === TripService.STATUS.PENDING) {
-                        state.addNotification({
-                            id: Utilities.generateId(),
-                            type: 'info',
-                            title: 'New Trip Created',
-                            message: `Trip ${trip.tripNumber} is pending assignment`,
-                            timestamp: new Date(),
-                            read: false
-                        });
-                    }
-                });
-            }, [
-                { field: 'status', op: 'in', value: [TripService.STATUS.ACTIVE, TripService.STATUS.PENDING, TripService.STATUS.IN_TRANSIT] }
-            ]);
-
-            // Listen for vehicle updates
-            firebaseService.onCollectionUpdate('vehicles', (vehicles) => {
-                state.vehicles = vehicles;
-                
-                // Check for maintenance due
-                vehicles.forEach(vehicle => {
-                    if (vehicle.maintenanceDue && !vehicle.maintenanceNotified) {
-                        state.addNotification({
-                            id: Utilities.generateId(),
-                            type: 'warning',
-                            title: 'Maintenance Due',
-                            message: `${vehicle.registrationNumber} requires maintenance`,
-                            timestamp: new Date(),
-                            read: false
-                        });
-                    }
-                });
-            });
-        }
-
-        // ============================================
-        // EVENT LISTENERS
-        // ============================================
-        document.addEventListener('DOMContentLoaded', () => {
-            // Initialize app
-            initializeApp();
-            
-            // Add event listeners
-            document.getElementById('login-form').addEventListener('submit', handleLogin);
-            document.getElementById('new-trip-form').addEventListener('submit', createNewTrip);
-            
-            // Settings slider
-            const refreshSlider = document.getElementById('setting-refresh-interval');
-            if (refreshSlider) {
-                refreshSlider.addEventListener('input', (e) => {
-                    document.getElementById('refresh-value').textContent = `${e.target.value} seconds`;
-                });
-            }
-        });
-
-        // Expose functions to global scope
-        window.toggleTheme = toggleTheme;
-        window.toggleSidebar = toggleSidebar;
-        window.toggleSidebarCollapse = toggleSidebarCollapse;
-        window.toggleUserMenu = toggleUserMenu;
-        window.toggleNotifications = toggleNotifications;
-        window.markAllAsRead = markAllAsRead;
-        window.togglePasswordVisibility = togglePasswordVisibility;
-        window.showForgotPassword = showForgotPassword;
-        window.closeForgotPassword = closeForgotPassword;
-        window.sendPasswordReset = sendPasswordReset;
-        window.showProfile = showProfile;
-        window.closeProfile = closeProfile;
-        window.updateProfile = updateProfile;
-        window.showSettings = showSettings;
-        window.closeSettings = closeSettings;
-        window.saveSettings = saveSettings;
-        window.resetSettings = resetSettings;
-        window.logout = logout;
-        window.quickAction = quickAction;
-        window.showNewTripModal = showNewTripModal;
-        window.closeNewTripModal = closeNewTripModal;
-        window.viewTripDetails = viewTripDetails;
-        window.closeTripDetails = closeTripDetails;
-        window.updateTripStatus = updateTripStatus;
-        window.showExportModal = showExportModal;
-        window.closeExportModal = closeExportModal;
-        window.exportData = exportData;
-        window.closeConfirmation = closeConfirmation;
-        window.switchTab = (tab) => UIManager.switchTab(tab);
-        window.refreshDashboard = () => UIManager.switchTab('dashboard');
-    </script>
 </body>
 </html>
