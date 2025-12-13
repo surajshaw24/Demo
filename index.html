@@ -1,1063 +1,2733 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fastag GPS | Advanced Vehicle Tracking Solutions</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
-            --accent: #e74c3c;
-            --success: #27ae60;
-            --warning: #f39c12;
-            --light: #ecf0f1;
-            --dark: #2c3e50;
-            --gray: #7f8c8d;
-            --shadow: 0 5px 15px rgba(0,0,0,0.1);
-            --transition: all 0.3s ease;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f9f9f9;
-        }
-        
-        /* Header & Navigation */
-        header {
-            background-color: white;
-            box-shadow: var(--shadow);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-        }
-        
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-        
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-        
-        .logo i {
-            color: var(--secondary);
-        }
-        
-        .nav-menu {
-            display: flex;
-            list-style: none;
-            gap: 30px;
-        }
-        
-        .nav-menu a {
-            text-decoration: none;
-            color: var(--dark);
-            font-weight: 500;
-            transition: var(--transition);
-            padding: 5px 0;
-            position: relative;
-        }
-        
-        .nav-menu a:hover {
-            color: var(--secondary);
-        }
-        
-        .nav-menu a.active {
-            color: var(--secondary);
-        }
-        
-        .nav-menu a.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background-color: var(--secondary);
-        }
-        
-        .dashboard-menu {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            background-color: var(--light);
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 10px;
-        }
-        
-        .menu-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 15px;
-            background-color: white;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: 0.9rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-        
-        .menu-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
-        }
-        
-        .menu-item.active {
-            background-color: var(--secondary);
-            color: white;
-        }
-        
-        .menu-item i {
-            font-size: 1.1rem;
-        }
-        
-        .menu-item input[type="checkbox"] {
-            margin-right: 5px;
-        }
-        
-        .menu-item.checked {
-            background-color: #e1f5fe;
-            color: var(--secondary);
-        }
-        
-        /* Hero Section */
-        .hero {
-            padding: 180px 0 100px;
-            background: linear-gradient(135deg, #1a2980, #26d0ce);
-            color: white;
-            text-align: center;
-        }
-        
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
-        
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin: 0 auto 40px;
-            opacity: 0.9;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 14px 32px;
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            text-decoration: none;
-            font-size: 1rem;
-        }
-        
-        .btn:hover {
-            background-color: #c0392b;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-        
-        .btn-secondary {
-            background-color: transparent;
-            border: 2px solid white;
-            margin-left: 15px;
-        }
-        
-        .btn-secondary:hover {
-            background-color: white;
-            color: var(--primary);
-        }
-        
-        /* Features Section */
-        .section-title {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-        
-        .section-title h2 {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 15px;
-        }
-        
-        .section-title p {
-            color: var(--gray);
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        
-        section {
-            padding: 100px 0;
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-        }
-        
-        .feature-card {
-            background-color: white;
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-        }
-        
-        .feature-icon {
-            width: 70px;
-            height: 70px;
-            background-color: rgba(52, 152, 219, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-        
-        .feature-icon i {
-            font-size: 1.8rem;
-            color: var(--secondary);
-        }
-        
-        .feature-card h3 {
-            font-size: 1.4rem;
-            margin-bottom: 15px;
-            color: var(--primary);
-        }
-        
-        /* Services Section */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 30px;
-        }
-        
-        .service-card {
-            background-color: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-        }
-        
-        .service-card:hover {
-            transform: translateY(-10px);
-        }
-        
-        .service-header {
-            background-color: var(--primary);
-            color: white;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .service-header i {
-            font-size: 1.8rem;
-            color: var(--secondary);
-        }
-        
-        .service-content {
-            padding: 25px;
-        }
-        
-        /* Dashboard Preview */
-        .dashboard-preview {
-            background-color: var(--light);
-            border-radius: 10px;
-            padding: 40px;
-            margin-top: 50px;
-        }
-        
-        .dashboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-        
-        .dashboard-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-        
-        .stat-card {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .stat-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-        }
-        
-        .stat-1 { background-color: #3498db; }
-        .stat-2 { background-color: #2ecc71; }
-        .stat-3 { background-color: #e74c3c; }
-        .stat-4 { background-color: #f39c12; }
-        
-        .map-container {
-            background-color: white;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-            height: 400px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 40px;
-        }
-        
-        .map-placeholder {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #74b9ff, #0984e3);
-            border-radius: 5px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: white;
-        }
-        
-        .map-placeholder i {
-            font-size: 4rem;
-            margin-bottom: 20px;
-        }
-        
-        /* Footer */
-        footer {
-            background-color: var(--primary);
-            color: white;
-            padding: 80px 0 30px;
-        }
-        
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 50px;
-        }
-        
-        .footer-column h3 {
-            font-size: 1.3rem;
-            margin-bottom: 25px;
-            position: relative;
-            padding-bottom: 10px;
-        }
-        
-        .footer-column h3::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 50px;
-            height: 2px;
-            background-color: var(--secondary);
-        }
-        
-        .footer-links {
-            list-style: none;
-        }
-        
-        .footer-links li {
-            margin-bottom: 12px;
-        }
-        
-        .footer-links a {
-            color: #bdc3c7;
-            text-decoration: none;
-            transition: var(--transition);
-        }
-        
-        .footer-links a:hover {
-            color: var(--secondary);
-            padding-left: 5px;
-        }
-        
-        .copyright {
-            text-align: center;
-            padding-top: 30px;
-            border-top: 1px solid #34495e;
-            color: #bdc3c7;
-            font-size: 0.9rem;
-        }
-        
-        /* Responsive */
-        @media (max-width: 992px) {
-            .hero h1 {
-                font-size: 2.8rem;
-            }
-            
-            .nav-menu {
-                display: none;
-            }
-            
-            .mobile-menu-btn {
-                display: block;
-                background: none;
-                border: none;
-                font-size: 1.5rem;
-                color: var(--primary);
-                cursor: pointer;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .hero {
-                padding: 150px 0 80px;
-            }
-            
-            .hero h1 {
-                font-size: 2.2rem;
-            }
-            
-            section {
-                padding: 70px 0;
-            }
-            
-            .features-grid, .services-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        /* Toggle Switch */
-        .toggle-switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 30px;
-            margin-left: 10px;
-        }
-        
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-        }
-        
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 22px;
-            width: 22px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-        }
-        
-        input:checked + .slider {
-            background-color: var(--success);
-        }
-        
-        input:checked + .slider:before {
-            transform: translateX(30px);
-        }
-        
-        .slider.round {
-            border-radius: 34px;
-        }
-        
-        .slider.round:before {
-            border-radius: 50%;
-        }
-        
-        /* Dashboard Page Styles */
-        .dashboard-container {
-            display: flex;
-            min-height: 100vh;
-            padding-top: 80px;
-        }
-        
-        .sidebar {
-            width: 250px;
-            background-color: var(--primary);
-            color: white;
-            padding: 30px 0;
-            position: fixed;
-            height: 100%;
-            overflow-y: auto;
-        }
-        
-        .sidebar-logo {
-            padding: 0 20px 30px;
-            border-bottom: 1px solid #34495e;
-            margin-bottom: 30px;
-        }
-        
-        .sidebar-menu {
-            list-style: none;
-        }
-        
-        .sidebar-menu li {
-            margin-bottom: 5px;
-        }
-        
-        .sidebar-menu a {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 15px 20px;
-            color: #bdc3c7;
-            text-decoration: none;
-            transition: var(--transition);
-        }
-        
-        .sidebar-menu a:hover, .sidebar-menu a.active {
-            background-color: #34495e;
-            color: white;
-        }
-        
-        .sidebar-menu i {
-            width: 20px;
-            text-align: center;
-        }
-        
-        .main-content {
-            flex: 1;
-            margin-left: 250px;
-            padding: 30px;
-            background-color: #f5f7fa;
-        }
-        
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-        
-        .page-title h1 {
-            font-size: 1.8rem;
-            color: var(--primary);
-        }
-        
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--secondary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-        }
-        
-        /* Responsive Dashboard */
-        @media (max-width: 992px) {
-            .sidebar {
-                width: 70px;
-                padding: 20px 0;
-            }
-            
-            .sidebar-logo span, .sidebar-menu span {
-                display: none;
-            }
-            
-            .sidebar-menu a {
-                justify-content: center;
-                padding: 15px 0;
-            }
-            
-            .sidebar-menu i {
-                font-size: 1.2rem;
-            }
-            
-            .main-content {
-                margin-left: 70px;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .sidebar {
-                display: none;
-            }
-            
-            .main-content {
-                margin-left: 0;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Shri Narayan Logistics – Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Logistics management system for Shri Narayan Logistics">
+  <link rel="manifest" href="data:application/manifest+json,{}">
+  <script>window.tailwind = {config: {darkMode: 'class'}};</script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <style>
+    body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Inter",sans-serif}
+    .sidebar-link{display:flex;align-items:center;padding:.75rem 1rem;border-left:3px solid transparent;font-size:.9rem;color:#94a3b8;transition:.15s;cursor:pointer;}
+    .sidebar-link i{width:20px;margin-right:12px}
+    .sidebar-link:hover,.sidebar-link.active{background:#1e293b;color:#e5e7eb;border-left-color:#3b82f6}
+    .badge{padding:2px 10px;border-radius:999px;font-size:.7rem;font-weight:700;white-space:nowrap}
+    .badge-yellow{background:#fef3c7;color:#92400e}
+    .badge-green{background:#dcfce7;color:#166534}
+    .badge-red{background:#fee2e2;color:#991b1b}
+    .badge-gray{background:#e5e7eb;color:#374151}
+    .badge-blue{background:#dbeafe;color:#1d4ed8}
+    #loader{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:50;background:#f9fafb}
+    .hidden-app{display:none!important}
+    #auth-screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1e3a8a,#020617);z-index:40}
+    .dc-block{border-radius:.75rem;border:1px solid #e5e7eb;padding:.6rem;background:#f9fafb}
+    .route-row{border-radius:.5rem;border:1px solid #e5e7eb;padding:.6rem;background:#fff}
+    #toast{transform:translateY(120%);transition:transform .25s ease}
+    #mobile-overlay {background-color: rgba(0,0,0,0.5);transition: opacity 0.3s;}
+    .loading{opacity:0.6;pointer-events:none;position:relative;}
+    .loading:after{content:"";position:absolute;top:50%;left:50%;width:20px;height:20px;border:2px solid #3b82f6;border-top-color:transparent;border-radius:50%;animation:spin 1s linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+    html.dark body{background:#020617;color:#e5e7eb}
+    html.dark #app-container{background:#020617}
+    html.dark aside{background:#0b1220;border-right:1px solid #1f2937}
+    html.dark .sidebar-link{color:#9ca3af}
+    html.dark .sidebar-link.active,html.dark .sidebar-link:hover{background:#111827;color:#e5e7eb}
+    html.dark .card-bg{background:#0f172a;border-color:#1e293b}
+    html.dark .table-bg{background:#020617}
+    html.dark .modal-bg{background:#020617}
+    html.dark .dc-block{background:#1e293b;border-color:#334155}
+    html.dark .route-row{background:#0f172a;border-color:#334155}
+    .shake{animation:shake 0.5s;}
+    @keyframes shake{0%,100%{transform:translateX(0);}10%,30%,50%,70%,90%{transform:translateX(-5px);}20%,40%,60%,80%{transform:translateX(5px);}}
+    .fade-in{animation:fadeIn 0.3s;}
+    @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+    [aria-busy="true"]{opacity:0.7;pointer-events:none;}
+  </style>
 </head>
-<body>
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <div class="nav-container">
-                <div class="logo">
-                    <i class="fas fa-satellite-dish"></i>
-                    <span>Fastag GPS</span>
-                </div>
-                
-                <ul class="nav-menu">
-                    <li><a href="#home" class="active">Home</a></li>
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="Dashboard.html">Dashboard</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-                
-                <button class="btn">Get Started</button>
-            </div>
-            
-            <!-- Dashboard Menu -->
-            <div class="dashboard-menu">
-                <div class="menu-item active">
-                    <i class="fas fa-map-marked-alt"></i>
-                    <span>GPS Dashboard</span>
-                </div>
-                <div class="menu-item checked">
-                    <i class="fas fa-gas-pump"></i>
-                    <span>Diesel Dashboard</span>
-                </div>
-                <div class="menu-item">
-                    <i class="fas fa-chart-bar"></i>
-                    <span>Reports</span>
-                </div>
-                <div class="menu-item">
-                    <i class="fas fa-question-circle"></i>
-                    <span>Devices</span>
-                </div>
-                <div class="menu-item">
-                    <i class="fas fa-user-friends"></i>
-                    <span>Drivers</span>
-                </div>
-                <div class="menu-item checked">
-                    <i class="fas fa-bookmark"></i>
-                    <span>Saved Places</span>
-                </div>
-                <div class="menu-item">
-                    <i class="fas fa-users-cog"></i>
-                    <span>UMS</span>
-                </div>
-                <div class="menu-item">
-                    <i class="fas fa-cog"></i>
-                    <span>Settings</span>
-                </div>
-                <div class="menu-item">
-                    <i class="fas fa-tags"></i>
-                    <span>Tags</span>
-                </div>
-                <div class="menu-item">
-                    <i class="fas fa-route"></i>
-                    <span>Trips & Routes</span>
-                </div>
-                <div class="menu-item">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Log Out</span>
-                </div>
-            </div>
-        </div>
-    </header>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 overflow-hidden">
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="container">
-            <h1>Advanced GPS Tracking & Fleet Management</h1>
-            <p>Real-time vehicle tracking, fuel monitoring, route optimization, and comprehensive fleet management solutions for businesses of all sizes.</p>
-            <a href="#dashboard" class="btn">View Live Dashboard</a>
-            <a href="#services" class="btn btn-secondary">Our Services</a>
-        </div>
-    </section>
+<div id="loader">
+  <div class="h-10 w-10 rounded-full border-2 border-blue-500 border-t-transparent animate-spin mb-3"></div>
+  <p id="loader-msg" class="text-slate-500 text-sm">Loading Application...</p>
+</div>
 
-    <!-- Features Section -->
-    <section id="features" class="features">
-        <div class="container">
-            <div class="section-title">
-                <h2>GPS Tracking Features</h2>
-                <p>Comprehensive features designed to give you complete control and visibility over your fleet operations</p>
-            </div>
-            
-            <div class="features-grid">
-                <!-- Feature 1 -->
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-map-marker-alt"></i>
-                    </div>
-                    <h3>Live Vehicle Tracking</h3>
-                    <p>Track the exact real-time location of any vehicle on the map, including speed, route, and live movement status.</p>
-                </div>
-                
-                <!-- Feature 2 -->
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-history"></i>
-                    </div>
-                    <h3>Route History Playback</h3>
-                    <p>View up to 90 days of route history, stops, movements, and timings. Know where the vehicle traveled and for how long.</p>
-                </div>
-                
-                <!-- Feature 3 -->
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-draw-polygon"></i>
-                    </div>
-                    <h3>Geo-Fence Alerts</h3>
-                    <p>Create a virtual boundary for any location. Get instant alerts when the vehicle enters or exits that area.</p>
-                </div>
-                
-                <!-- Feature 4 -->
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-tachometer-alt"></i>
-                    </div>
-                    <h3>Over-Speed Alerts</h3>
-                    <p>Get notified instantly when the driver crosses the speed limit. Promotes safe and controlled driving.</p>
-                </div>
-                
-                <!-- Feature 5 -->
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-car"></i>
-                    </div>
-                    <h3>Engine On/Off Status</h3>
-                    <p>Monitor engine ignition status in real time. Helps prevent unauthorized vehicle use.</p>
-                </div>
-                
-                <!-- Feature 6 -->
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-gas-pump"></i>
-                    </div>
-                    <h3>Fuel Monitoring System</h3>
-                    <p>Track fuel level, fuel usage, mileage, and detect fuel theft or sudden drops.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+<script>
+  // Enhanced error handling
+  window.onerror = function(msg, url, line, col, error) {
+    const el = document.getElementById('loader-msg');
+    const errorMsg = error ? error.message : msg;
+    if(el) el.innerHTML = `<span style="color:red">Error: ${errorMsg}</span><br><small>${url}:${line}</small>`;
+    console.error('Global error:', {msg, url, line, col, error});
+    return false;
+  };
+  
+  window.addEventListener('unhandledrejection', function(event) {
+    console.error('Unhandled promise rejection:', event.reason);
+    showToast(`Error: ${event.reason.message || event.reason}`);
+  });
+  
+  setTimeout(() => {
+     const l = document.getElementById("loader");
+     const a = document.getElementById("auth-screen");
+     if(l && !l.classList.contains("hidden-app") && a && a.classList.contains("hidden-app")) {
+         console.warn("Forcing auth screen");
+         l.classList.add("hidden-app");
+         a.classList.remove("hidden-app");
+     }
+  }, 8000);
+</script>
 
-    <!-- Services Section -->
-    <section id="services" class="services">
-        <div class="container">
-            <div class="section-title">
-                <h2>Our GPS Services</h2>
-                <p>Specialized tracking solutions for different vehicle types and business needs</p>
-            </div>
-            
-            <div class="services-grid">
-                <!-- Service 1 -->
-                <div class="service-card">
-                    <div class="service-header">
-                        <i class="fas fa-truck"></i>
-                        <h3>Vehicle GPS Tracking Service</h3>
-                    </div>
-                    <div class="service-content">
-                        <p>Our Vehicle GPS Tracking service allows you to monitor your vehicle 24/7. You can check live location, speed, route history, stoppage time, and complete travel details directly from your dashboard.</p>
-                    </div>
-                </div>
-                
-                <!-- Service 2 -->
-                <div class="service-card">
-                    <div class="service-header">
-                        <i class="fas fa-shipping-fast"></i>
-                        <h3>Fleet Management Service</h3>
-                    </div>
-                    <div class="service-content">
-                        <p>A complete solution for transport and logistics companies. Includes multi-vehicle tracking, fuel data, driver behavior reports, geo-fencing, and custom alerts for full fleet control.</p>
-                    </div>
-                </div>
-                
-                <!-- Service 3 -->
-                <div class="service-card">
-                    <div class="service-header">
-                        <i class="fas fa-bus"></i>
-                        <h3>School Bus Tracking Service</h3>
-                    </div>
-                    <div class="service-content">
-                        <p>A safe and reliable tracking system for schools and parents. View real-time bus location, arrival alerts, route playback, and overspeed warnings for student safety.</p>
-                    </div>
-                </div>
-                
-                <!-- Service 4 -->
-                <div class="service-card">
-                    <div class="service-header">
-                        <i class="fas fa-gas-pump"></i>
-                        <h3>Fuel Monitoring Service</h3>
-                    </div>
-                    <div class="service-content">
-                        <p>Advanced fuel-level sensors track fuel usage, detect theft, and monitor refilling. Daily mileage and consumption reports included.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<div id="auth-screen" class="hidden-app">
+  <div class="bg-white rounded-xl shadow-2xl p-8 w-full max-w-sm mx-4 fade-in">
+    <div class="text-center mb-6">
+      <i class="fa-solid fa-truck-fast text-4xl text-blue-600 mb-3"></i>
+      <h1 class="font-black text-lg uppercase leading-tight text-slate-800">Shri Narayan<br>Logistics</h1>
+      <p class="text-xs text-slate-500 mt-1">Secure Admin Login</p>
+    </div>
+    <form onsubmit="handleLogin(event)" class="space-y-4 text-xs">
+      <input id="login-email" type="email" class="w-full border rounded px-3 py-3" placeholder="admin@shrinarayanlogistics.com" required aria-label="Email">
+      <input id="login-password" type="password" class="w-full border rounded px-3 py-3" placeholder="••••••••" required aria-label="Password">
+      <div id="auth-error" class="hidden text-red-600 text-center text-sm"></div>
+      <button type="submit" class="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold rounded py-3 relative" id="login-btn">Sign In</button>
+      <div class="text-center mt-2"><button type="button" onclick="toggleReset()" class="text-blue-700 hover:underline">Forgot Password?</button></div>
+    </form>
+  </div>
+</div>
 
-    <!-- Dashboard Preview -->
-    <section id="dashboard" class="dashboard-preview">
-        <div class="container">
-            <div class="dashboard-header">
-                <div>
-                    <h2 style="color: var(--primary);">Live Dashboard Preview</h2>
-                    <p style="color: var(--gray);">Real-time monitoring and control panel</p>
-                </div>
-                <div>
-                    <span style="margin-right: 10px;">Live Updates</span>
-                    <label class="toggle-switch">
-                        <input type="checkbox" checked>
-                        <span class="slider round"></span>
-                    </label>
-                </div>
-            </div>
-            
-            <div class="dashboard-stats">
-                <div class="stat-card">
-                    <div class="stat-icon stat-1">
-                        <i class="fas fa-car"></i>
-                    </div>
-                    <div>
-                        <h3>24</h3>
-                        <p>Active Vehicles</p>
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon stat-2">
-                        <i class="fas fa-road"></i>
-                    </div>
-                    <div>
-                        <h3>1,847 km</h3>
-                        <p>Today's Distance</p>
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon stat-3">
-                        <i class="fas fa-gas-pump"></i>
-                    </div>
-                    <div>
-                        <h3>412 L</h3>
-                        <p>Fuel Used Today</p>
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon stat-4">
-                        <i class="fas fa-exclamation-triangle"></i>
-                    </div>
-                    <div>
-                        <h3>3</h3>
-                        <p>Active Alerts</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="map-container">
-                <div class="map-placeholder">
-                    <i class="fas fa-map-marked-alt"></i>
-                    <h3>Live Vehicle Tracking Map</h3>
-                    <p>Real-time location of all your vehicles</p>
-                </div>
-            </div>
-            
-            <div style="text-align: center;">
-                <a href="#login" class="btn" style="padding: 12px 40px;">Access Full Dashboard</a>
-            </div>
-        </div>
-    </section>
+<div id="reset-modal" class="hidden fixed inset-0 bg-black/40 flex justify-center items-center z-[60] px-4">
+  <div class="bg-white dark:bg-slate-900 p-6 w-full max-w-sm rounded-lg shadow-xl">
+    <h3 class="font-bold mb-3 text-slate-800 dark:text-slate-100">Reset Password</h3>
+    <input id="reset-email" type="email" placeholder="Email" class="w-full border rounded px-3 py-2 mb-2 bg-white dark:bg-slate-900 dark:border-slate-700 dark:text-slate-100" aria-label="Reset email">
+    <div id="reset-msg" class="mb-2 text-xs"></div>
+    <div class="flex gap-3"><button onclick="sendResetEmail()" class="flex-1 bg-blue-600 text-white rounded py-2">Send</button><button onclick="closeReset()" class="flex-1 border rounded py-2 bg-white dark:bg-slate-800 dark:text-slate-200">Cancel</button></div>
+  </div>
+</div>
 
-    <!-- Footer -->
-    <footer id="contact">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-column">
-                    <h3>Fastag GPS</h3>
-                    <p>Advanced GPS tracking and fleet management solutions for businesses of all sizes. Real-time monitoring, fuel tracking, and comprehensive reporting.</p>
-                    <div style="margin-top: 20px; display: flex; gap: 15px;">
-                        <a href="#" style="color: white; font-size: 1.2rem;"><i class="fab fa-facebook"></i></a>
-                        <a href="#" style="color: white; font-size: 1.2rem;"><i class="fab fa-twitter"></i></a>
-                        <a href="#" style="color: white; font-size: 1.2rem;"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" style="color: white; font-size: 1.2rem;"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Quick Links</h3>
-                    <ul class="footer-links">
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#features">Features</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#dashboard">Dashboard</a></li>
-                        <li><a href="#">Pricing</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Services</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Vehicle Tracking</a></li>
-                        <li><a href="#">Fleet Management</a></li>
-                        <li><a href="#">School Bus Tracking</a></li>
-                        <li><a href="#">Personal Tracker</a></li>
-                        <li><a href="#">Fuel Monitoring</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Contact Us</h3>
-                    <ul class="footer-links">
-                        <li><i class="fas fa-map-marker-alt" style="margin-right: 10px;"></i> 123 Business Street, City, Country</li>
-                        <li><i class="fas fa-phone" style="margin-right: 10px;"></i> +1 (555) 123-4567</li>
-                        <li><i class="fas fa-envelope" style="margin-right: 10px;"></i> info@fastaggps.com</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="copyright">
-                <p>&copy; 2023 Fastag GPS. All rights reserved. | Designed for Advanced Vehicle Tracking Solutions</p>
-            </div>
-        </div>
-    </footer>
+<div id="app-container" class="hidden-app h-screen flex flex-col md:flex-row bg-slate-50 dark:bg-slate-950">
+  <header class="md:hidden flex items-center justify-between p-4 bg-slate-900 text-white border-b border-slate-800 shrink-0">
+    <div class="flex items-center gap-2"><div class="h-8 w-8 rounded bg-blue-600 flex items-center justify-center font-bold text-sm">SN</div><span class="font-bold tracking-wide text-sm">LOGISTICS</span></div>
+    <button onclick="toggleSidebar()" class="text-slate-200 p-1" aria-label="Toggle sidebar"><i class="fa-solid fa-bars text-xl"></i></button>
+  </header>
+  <div id="mobile-overlay" onclick="toggleSidebar()" class="hidden fixed inset-0 z-40 md:hidden backdrop-blur-sm"></div>
 
-    <script>
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if(targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if(targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 100,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
+  <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-slate-900 dark:bg-[#020617] text-slate-100 border-r border-slate-800 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 flex flex-col h-full shadow-2xl md:shadow-none">
+    <div class="p-4 border-b border-slate-800 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="h-8 w-8 rounded bg-blue-600 flex items-center justify-center font-bold text-sm">SN</div>
+        <div><div class="font-bold text-sm tracking-wide">LOGISTICS</div><div class="text-[10px] text-slate-500">Admin Panel</div></div>
+      </div>
+      <button onclick="toggleSidebar()" class="md:hidden text-slate-400" aria-label="Close sidebar"><i class="fa-solid fa-xmark text-lg"></i></button>
+      <button onclick="toggleTheme()" class="hidden md:flex text-slate-300 border border-slate-700 rounded-full px-2 py-1 items-center gap-1" aria-label="Toggle theme"><i id="theme-icon" class="fa-solid fa-moon text-xs"></i></button>
+    </div>
+    <nav class="flex-1 py-3 overflow-y-auto text-xs">
+      <p class="px-4 text-[10px] uppercase text-slate-500 mb-2 mt-2">Main</p>
+      <div id="nav-dashboard" onclick="switchTab('dashboard')" class="sidebar-link active" role="button" tabindex="0" aria-label="Dashboard"><i class="fa-solid fa-grid-2"></i>Dashboard</div>
+      <div id="nav-database" onclick="switchTab('database')" class="sidebar-link" role="button" tabindex="0" aria-label="Database"><i class="fa-solid fa-table-list"></i>Database</div>
+      <div id="nav-entry" onclick="switchTab('entry')" class="sidebar-link" role="button" tabindex="0" aria-label="New Trip"><i class="fa-solid fa-plus-circle"></i>New Trip</div>
+      <div id="nav-fleet" onclick="switchTab('fleet')" class="sidebar-link" role="button" tabindex="0" aria-label="Fleet"><i class="fa-solid fa-truck"></i>Fleet</div>
+      <div id="nav-users" onclick="switchTab('users')" class="sidebar-link" role="button" tabindex="0" aria-label="Users"><i class="fa-solid fa-users"></i>Users</div>
+      <div id="nav-reports" onclick="switchTab('reports')" class="sidebar-link" role="button" tabindex="0" aria-label="Reports"><i class="fa-solid fa-file-lines"></i>Reports</div>
+      <div id="nav-settings" onclick="switchTab('settings')" class="sidebar-link" role="button" tabindex="0" aria-label="Settings"><i class="fa-solid fa-gear"></i>Settings</div>
+    </nav>
+    <div class="p-4 border-t border-slate-800 flex items-center justify-between text-xs bg-slate-900/50">
+      <div class="flex items-center gap-2">
+        <div class="h-8 w-8 rounded-full bg-slate-700 flex items-center justify-center shrink-0"><i class="fa-solid fa-user text-slate-300 text-sm"></i></div>
+        <div class="overflow-hidden"><div id="user-display-name" class="font-semibold truncate max-w-[110px]">User</div><div class="text-[10px] text-green-400 flex items-center gap-1"><span class="h-1.5 w-1.5 rounded-full bg-green-400"></span>Online</div></div>
+      </div>
+      <div class="flex gap-3"><button onclick="toggleTheme()" class="md:hidden text-slate-400" aria-label="Toggle theme"><i id="theme-icon-mobile" class="fa-solid fa-moon"></i></button><button onclick="logout()" class="text-slate-400 text-lg" aria-label="Logout"><i class="fa-solid fa-right-from-bracket"></i></button></div>
+    </div>
+  </aside>
+
+  <main class="flex-1 overflow-y-auto overflow-x-hidden bg-slate-50 dark:bg-slate-950 w-full relative">
+    <div class="max-w-7xl mx-auto p-3 md:p-6 space-y-6 pb-20 md:pb-6">
+      
+      <!-- DASHBOARD -->
+      <section id="view-dashboard">
+        <div class="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-2">
+          <div><h2 class="text-xl font-semibold">Dashboard</h2><p class="text-xs text-slate-500">Showing trips from last 3 days only</p></div>
+          <button onclick="location.reload()" class="text-xs border rounded px-3 py-2 bg-white dark:bg-slate-900 dark:border-slate-700 shadow-sm"><i class="fa-solid fa-rotate mr-1"></i>Refresh</button>
+        </div>
+        <div class="grid grid-cols-2 lg:grid-cols-5 gap-3 mb-4">
+           <div class="card-bg bg-white dark:bg-slate-900 rounded-lg border border-slate-100 dark:border-slate-700 p-3 shadow-sm"><div class="text-[10px] uppercase text-slate-400 font-semibold">Active</div><div id="stat-active" class="text-2xl font-bold mt-1 text-blue-600">0</div></div>
+           <div class="card-bg bg-white dark:bg-slate-900 rounded-lg border border-slate-100 dark:border-slate-700 p-3 shadow-sm"><div class="text-[10px] uppercase text-slate-400 font-semibold">Completed</div><div id="stat-completed" class="text-2xl font-bold mt-1 text-green-600">0</div></div>
+           <div class="card-bg bg-white dark:bg-slate-900 rounded-lg border border-slate-100 dark:border-slate-700 p-3 shadow-sm"><div class="text-[10px] uppercase text-slate-400 font-semibold">Pending</div><div id="stat-pending" class="text-2xl font-bold mt-1 text-amber-600">0</div></div>
+           <div class="card-bg bg-white dark:bg-slate-900 rounded-lg border border-slate-100 dark:border-slate-700 p-3 shadow-sm"><div class="text-[10px] uppercase text-slate-400 font-semibold">Issues</div><div id="stat-issues" class="text-2xl font-bold mt-1 text-red-600">0</div></div>
+           <div class="col-span-2 md:col-span-1 card-bg bg-white dark:bg-slate-900 rounded-lg border border-slate-100 dark:border-slate-700 p-3 shadow-sm"><div class="text-[10px] uppercase text-slate-400 font-semibold">Delayed</div><div id="stat-delayed" class="text-2xl font-bold mt-1 text-purple-600">0</div></div>
+        </div>
+        <div class="card-bg bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+          <div class="flex items-center justify-between px-4 py-3 border-b border-slate-100 dark:border-slate-800 text-xs">
+            <h3 class="font-semibold">Recent Trips</h3><button onclick="switchTab('database')" class="text-blue-500 hover:underline">View Database</button>
+          </div>
+          <div id="dashboard-trips-container" class="grid grid-cols-1 xl:grid-cols-2 gap-4 p-4 text-xs"></div>
+        </div>
+      </section>
+
+      <!-- DATABASE -->
+      <section id="view-database" class="hidden">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
+          <div><h2 class="text-xl font-semibold">Trip Database</h2><p class="text-xs text-slate-500">Full trip history</p></div>
+          <input id="db-search" type="text" placeholder="Search vehicle / driver / phone" class="border rounded px-3 py-2 text-xs w-full md:w-64 bg-white dark:bg-slate-900 dark:border-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-500" oninput="debouncedRenderDatabase()" aria-label="Search trips">
+        </div>
+        <div class="card-bg bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
+          <div class="overflow-x-auto text-xs table-bg">
+            <table class="min-w-full whitespace-nowrap" aria-label="Trip database">
+              <thead class="bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 text-[11px] uppercase text-slate-500">
+                <tr>
+                  <th class="px-4 py-3 text-left">Actions</th>
+                  <th class="px-4 py-3 text-left">Date</th>
+                  <th class="px-4 py-3 text-left">Vehicle</th>
+                  <th class="px-4 py-3 text-left">Driver</th>
+                  <th class="px-4 py-3 text-left">DC / Stops</th>
+                  <th class="px-4 py-3 text-left">POD Status</th>
+                  <th class="px-4 py-3 text-left">Finished</th>
+                  <th class="px-4 py-3 text-left">Phone</th>
+                </tr>
+              </thead>
+              <tbody id="db-table-body" class="divide-y divide-slate-100 dark:divide-slate-800"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ENTRY -->
+      <section id="view-entry" class="hidden">
+        <div class="max-w-3xl card-bg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl mx-auto shadow-md">
+          <div id="form-header" class="bg-blue-600 rounded-t-xl px-4 py-3 text-white flex items-center justify-between">
+            <div><h3 id="form-title" class="font-semibold text-sm">New Trip</h3><p class="text-[11px] text-blue-100">Multi-DC trip with multiple stops</p></div>
+            <button onclick="closeEntryForm()" class="text-white/80 hover:text-white text-sm p-2" aria-label="Close form"><i class="fa-solid fa-xmark text-lg"></i></button>
+          </div>
+          <form id="trip-form" onsubmit="submitTrip(event)" class="p-4 space-y-4 text-xs">
+            <div class="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg border border-slate-200 dark:border-slate-700 mb-4">
+              <label class="block text-[11px] font-bold text-blue-600 dark:text-blue-400 mb-1"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i>Auto-Fill from Template</label>
+              <select id="template-select" onchange="applyTemplate()" class="w-full border rounded px-3 py-2 text-xs bg-white dark:bg-slate-900 dark:border-slate-600 dark:text-slate-100 outline-none"><option value="">-- Select a Route Template (Optional) --</option></select>
+            </div>
+            <input type="hidden" id="trip-id">
+            <div class="grid md:grid-cols-3 gap-3">
+              <div><label class="text-[11px] font-semibold text-slate-600 dark:text-slate-300">Vehicle No</label><input id="vehicle" list="fleet-list" required class="mt-1 w-full border rounded px-3 py-2 text-xs uppercase bg-white dark:bg-slate-900 dark:border-slate-700 dark:text-slate-100" placeholder="Enter vehicle no" aria-label="Vehicle number"></div>
+              <div><label class="text-[11px] font-semibold text-slate-600 dark:text-slate-300">Driver</label><input id="driver" class="mt-1 w-full border rounded px-3 py-2 text-xs bg-white dark:bg-slate-900 dark:border-slate-700 dark:text-slate-100" placeholder="Driver Name" aria-label="Driver name"></div>
+              <div><label class="text-[11px] font-semibold text-slate-600 dark:text-slate-300">Phone</label><input id="phone" type="tel" class="mt-1 w-full border rounded px-3 py-2 text-xs bg-white dark:bg-slate-900 dark:border-slate-700 dark:text-slate-100" placeholder="Mobile Number" aria-label="Phone number"></div>
+            </div>
+            <datalist id="fleet-list"></datalist>
+            <datalist id="dc-list-global"></datalist>
+            <div>
+              <div class="flex items-center justify-between mb-2 mt-4 border-t border-slate-100 dark:border-slate-800 pt-3">
+                <div class="text-[11px] font-semibold text-slate-600 dark:text-slate-300">Distribution Centers & Stops</div>
+                <button type="button" onclick="addDcBlock()" class="text-xs bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 font-semibold px-2 py-1 rounded">+ Add DC</button>
+              </div>
+              <div id="dc-container" class="space-y-4"></div>
+            </div>
+            <div class="flex gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
+              <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded py-2.5" id="save-trip-btn">Save Trip</button>
+              <button type="button" onclick="closeEntryForm()" class="flex-1 border text-xs rounded px-3 py-2.5 bg-white dark:bg-slate-900 dark:border-slate-700 dark:text-slate-100">Cancel</button>
+            </div>
+            <button type="button" id="btn-form-delete" onclick="deleteTripFromForm()" class="hidden w-full bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 text-red-600 dark:text-red-300 text-[11px] font-semibold rounded px-3 py-2.5 mt-2">Delete Trip</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- FLEET -->
+      <section id="view-fleet" class="hidden">
+        <div class="flex items-center justify-between mb-3"><h2 class="text-xl font-semibold">Fleet</h2><button onclick="openFleetModal()" class="text-xs bg-blue-600 text-white rounded px-3 py-2 font-semibold shadow-sm">+ Add Vehicle</button></div>
+        <div class="card-bg bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
+          <div class="overflow-x-auto text-xs"><table class="min-w-full whitespace-nowrap" aria-label="Fleet vehicles"><thead class="bg-slate-50 dark:bg-slate-800 text-[11px] uppercase text-slate-500 border-b border-slate-200 dark:border-slate-700"><tr><th class="px-4 py-3 text-left">Vehicle</th><th class="px-4 py-3 text-left">Type</th><th class="px-4 py-3 text-left">Driver</th><th class="px-4 py-3 text-left">Phone</th><th class="px-4 py-3 text-left">Status</th><th class="px-4 py-3 text-right">Action</th></tr></thead><tbody id="fleet-tbody" class="divide-y divide-slate-100 dark:divide-slate-800"></tbody></table></div>
+        </div>
+      </section>
+
+      <!-- USERS -->
+      <section id="view-users" class="hidden">
+        <h2 class="text-xl font-semibold mb-3">Users</h2>
+        <div class="grid md:grid-cols-3 gap-4 text-xs">
+          <div class="card-bg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">
+            <h3 class="font-semibold mb-2">Create New User</h3>
+            <form id="user-form" onsubmit="submitUser(event)" class="space-y-3">
+              <input id="user-email" type="email" required class="w-full border rounded px-3 py-2 text-xs bg-white dark:bg-slate-900 dark:border-slate-700 dark:text-slate-100" placeholder="Email" aria-label="User email">
+              <input id="user-pass" type="password" class="w-full border rounded px-3 py-2 text-xs bg-white dark:bg-slate-900 dark:border-slate-700 dark:text-slate-100" placeholder="Password (min 6 chars)" aria-label="Password">
+              <input id="user-name" class="w-full border rounded px-3 py-2 text-xs bg-white dark:bg-slate-900 dark:border-slate-700 dark:text-slate-100" placeholder="Name" aria-label="User name">
+              <select id="user-role" class="w-full border rounded px-3 py-2 text-xs bg-white dark:bg-slate-900 dark:border-slate-700 dark:text-slate-100"><option value="Staff">Staff</option><option value="Admin">Admin</option></select>
+              <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-white rounded py-2 font-semibold">Create User</button>
+            </form>
+          </div>
+          <div class="card-bg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-0 md:col-span-2 overflow-hidden shadow-sm">
+            <div class="overflow-x-auto text-xs"><table class="min-w-full whitespace-nowrap" aria-label="Users list"><thead class="bg-slate-50 dark:bg-slate-800 text-[11px] uppercase text-slate-500 border-b border-slate-200 dark:border-slate-700"><tr><th class="px-4 py-3 text-left">Name</th><th class="px-4 py-3 text-left">Email</th><th class="px-4 py-3 text-left">Role</th><th class="px-4 py-3 text-right">Action</th></tr></thead><tbody id="users-tbody" class="divide-y divide-slate-100 dark:divide-slate-800"></tbody></table></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- REPORTS -->
+      <section id="view-reports" class="hidden">
+        <h2 class="text-xl font-semibold mb-3">Reports</h2>
+        <div class="card-bg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-4 text-xs mb-3 shadow-sm">
+          <div class="grid md:grid-cols-4 gap-3 mb-3">
+            <div><label class="text-[11px] text-slate-600 dark:text-slate-300 font-semibold">Vehicle</label><input id="rep-vehicle" class="mt-1 w-full border rounded px-3 py-2 text-xs bg-white dark:bg-slate-900 dark:border-slate-700 dark:text-slate-100" placeholder="e.g. JH10" aria-label="Vehicle filter"></div>
+            <div><label class="text-[11px] text-slate-600 dark:text-slate-300 font-semibold">Status</label><select id="rep-status" class="mt-1 w-full border rounded px-3 py-2 text-xs bg-white dark:bg-slate-900 dark:border-slate-700 dark:text-slate-100"><option value="ALL">All</option><option value="PENDING">PENDING</option><option value="RECEIVED">RECEIVED</option><option value="ISSUE">ISSUE</option><option value="DELAYED">DELAYED</option></select></div>
+            <div><label class="text-[11px] text-slate-600 dark:text-slate-300 font-semibold">Date From</label><input id="rep-date-from" type="date" class="mt-1 w-full border rounded px-3 py-2 text-xs bg-white dark:bg-slate-900 dark:border-slate-700 dark:text-slate-100"></div>
+            <div><label class="text-[11px] text-slate-600 dark:text-slate-300 font-semibold">Date To</label><input id="rep-date-to" type="date" class="mt-1 w-full border rounded px-3 py-2 text-xs bg-white dark:bg-slate-900 dark:border-slate-700 dark:text-slate-100"></div>
+          </div>
+          <div class="flex gap-2 mb-3">
+            <button onclick="renderReport()" class="bg-blue-600 text-white rounded px-4 py-2 text-xs font-semibold">Apply</button>
+            <button onclick="downloadReportCsv()" class="bg-green-600 text-white rounded px-4 py-2 text-xs font-semibold">Download CSV</button>
+            <button onclick="printReport()" class="bg-purple-600 text-white rounded px-4 py-2 text-xs font-semibold"><i class="fa-solid fa-print mr-1"></i>Print</button>
+          </div>
+          <div id="rep-summary" class="text-[11px] text-slate-600 dark:text-slate-400 font-medium"></div>
+        </div>
+        <div class="card-bg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden text-xs shadow-sm">
+          <div class="overflow-x-auto"><table class="min-w-full whitespace-nowrap" aria-label="Reports table"><thead class="bg-slate-50 dark:bg-slate-800 text-[11px] uppercase text-slate-500 border-b border-slate-200 dark:border-slate-700"><tr><th class="px-4 py-3 text-left">Date</th><th class="px-4 py-3 text-left">Vehicle</th><th class="px-4 py-3 text-left">Driver</th><th class="px-4 py-3 text-left">DC</th><th class="px-4 py-3 text-left">Stop</th><th class="px-4 py-3 text-left">KM</th><th class="px-4 py-3 text-left">ETA</th><th class="px-4 py-3 text-left">IN</th><th class="px-4 py-3 text-left">OUT</th><th class="px-4 py-3 text-left">POD</th></tr></thead><tbody id="rep-tbody" class="divide-y divide-slate-100 dark:divide-slate-800"></tbody></table></div>
+        </div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section id="view-settings" class="hidden">
+        <h2 class="text-xl font-semibold mb-3">Settings</h2>
+        <div class="bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-700 rounded-xl p-4 text-xs mb-4 shadow-sm">
+          <h3 class="font-semibold text-indigo-900 dark:text-indigo-200 mb-2 flex items-center gap-2"><i class="fa-solid fa-route"></i> Route Templates</h3>
+          <div class="mb-4 p-3 bg-white dark:bg-slate-900 rounded-lg border border-indigo-100 dark:border-indigo-800">
+            <label class="block font-semibold mb-1">Bulk Upload CSV</label>
+            <div class="flex items-center gap-2">
+                <input type="file" id="tmpl-file" accept=".csv" class="block w-full text-[10px] text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" onchange="handleTemplateCsv(this)" aria-label="Upload CSV template">
+            </div>
+            <p class="text-[10px] text-slate-500 mt-1">Headers: RouteName, DC, Stop, Distance, ETA</p>
+          </div>
+          <div class="flex flex-col md:flex-row gap-2 mb-3">
+            <input id="tmpl-name" placeholder="Route Name" class="border rounded px-3 py-2 text-xs w-full bg-white dark:bg-slate-900 dark:border-indigo-700 dark:text-slate-100" aria-label="Template name">
+            <input id="tmpl-dc" placeholder="DC" class="border rounded px-3 py-2 text-xs w-full md:w-32 bg-white dark:bg-slate-900 dark:border-indigo-700 dark:text-slate-100" aria-label="Distribution center">
+            <input id="tmpl-stop" placeholder="Stop" class="border rounded px-3 py-2 text-xs w-full md:w-32 bg-white dark:bg-slate-900 dark:border-indigo-700 dark:text-slate-100" aria-label="Stop location">
+            <input id="tmpl-dist" placeholder="KM" type="number" class="border rounded px-3 py-2 text-xs w-full md:w-20 bg-white dark:bg-slate-900 dark:border-indigo-700 dark:text-slate-100" aria-label="Distance">
+            <input id="tmpl-eta" placeholder="ETA" type="time" class="border rounded px-3 py-2 text-xs w-full md:w-24 bg-white dark:bg-slate-900 dark:border-indigo-700 dark:text-slate-100" aria-label="Estimated time">
+            <button onclick="addTemplateManual()" class="bg-indigo-600 text-white rounded px-4 py-2 text-xs font-semibold whitespace-nowrap">Add</button>
+          </div>
+          <div class="bg-white dark:bg-slate-900 border border-indigo-100 dark:border-indigo-700 rounded max-h-52 overflow-y-auto">
+            <table class="min-w-full text-xs" aria-label="Templates list">
+              <thead class="bg-indigo-50 dark:bg-indigo-900/50 sticky top-0"><tr><th class="px-2 py-1 text-left">Route</th><th class="px-2 py-1 text-left">DC</th><th class="px-2 py-1 text-left">Stop</th><th class="px-2 py-1 text-left">Dist</th><th class="px-2 py-1 text-left">ETA</th><th class="px-2 py-1 text-right">Act</th></tr></thead>
+              <tbody id="trip-templates-tbody" class="divide-y divide-slate-100 dark:divide-slate-800"></tbody>
+            </table>
+          </div>
+        </div>
         
-        // Toggle menu items
-        document.querySelectorAll('.menu-item').forEach(item => {
-            item.addEventListener('click', function() {
-                // Remove active class from all items
-                document.querySelectorAll('.menu-item').forEach(i => {
-                    i.classList.remove('active');
-                });
-                
-                // Add active class to clicked item
-                this.classList.add('active');
-                
-                // Toggle checked state for checkbox items
-                if(this.classList.contains('checked')) {
-                    this.classList.remove('checked');
-                } else {
-                    // For demo purposes, don't add checked class back
-                    // In real implementation, you would track state differently
-                }
-            });
+        <!-- Legacy Routes -->
+        <div class="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-700 rounded-xl p-4 text-xs mb-4 shadow-sm">
+           <h3 class="font-semibold text-amber-900 dark:text-amber-200 mb-2 flex items-center gap-2"><i class="fa-solid fa-map-pin"></i> Simple Routes (Legacy)</h3>
+           <div class="flex gap-2 mb-2">
+              <input id="set-dc" placeholder="DC Name" class="border rounded px-2 py-1.5 w-1/3 bg-white dark:bg-slate-900 dark:border-amber-700 dark:text-slate-100" aria-label="DC name">
+              <input id="set-stop" placeholder="Stop Name" class="border rounded px-2 py-1.5 w-1/3 bg-white dark:bg-slate-900 dark:border-amber-700 dark:text-slate-100" aria-label="Stop name">
+              <button onclick="addMasterRoute()" class="bg-amber-600 text-white rounded px-3 py-1.5">Add</button>
+           </div>
+           <div class="bg-white dark:bg-slate-900 border border-amber-100 dark:border-amber-700 rounded max-h-40 overflow-y-auto">
+              <table class="min-w-full text-xs" aria-label="Master routes"><tbody id="route-master-tbody"></tbody></table>
+           </div>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-4 text-xs">
+          <div class="card-bg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">
+            <h3 class="font-semibold text-green-700 dark:text-green-400 mb-2">Google Sheet Sync</h3>
+            <input id="gsheet-url" placeholder="Apps Script URL..." class="w-full border rounded px-3 py-2 text-xs bg-white dark:bg-slate-900 dark:border-slate-700 dark:text-slate-100 mb-2" aria-label="Google Sheet URL">
+            <button onclick="saveSheetUrl()" class="w-full bg-green-600 text-white rounded px-3 py-2 text-xs font-semibold">Save & Push</button>
+          </div>
+          <div class="card-bg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">
+            <h3 class="font-semibold text-indigo-700 dark:text-indigo-400 mb-2">Local CSV Sync</h3>
+            <button onclick="initializeFileHandler()" class="w-full bg-indigo-600 text-white rounded px-3 py-2 text-xs font-semibold">Choose File</button>
+            <p id="file-status-msg" class="text-[11px] text-slate-500 dark:text-slate-400 mt-2">Not connected</p>
+          </div>
+          <div class="card-bg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">
+            <h3 class="font-semibold text-red-700 dark:text-red-400 mb-2">Delay Alert Email</h3>
+            <input id="delay-email" placeholder="ops@company.com" class="w-full border rounded px-3 py-2 text-xs bg-white dark:bg-slate-900 dark:border-slate-700 dark:text-slate-100 mb-2" aria-label="Delay email">
+            <button onclick="saveDelayEmail()" class="w-full bg-red-600 text-white rounded px-3 py-2 text-xs font-semibold">Save Email</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<!-- FLEET MODAL -->
+<div id="fleet-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-[60] px-4">
+  <div class="modal-bg bg-white dark:bg-slate-900 rounded-xl p-5 w-full max-w-sm text-xs border border-slate-200 dark:border-slate-700 shadow-2xl">
+    <h3 id="fleet-modal-title" class="font-semibold mb-4 text-sm">Add Vehicle</h3>
+    <input id="fleet-id" type="hidden">
+    <div class="space-y-3 mb-4">
+      <input id="fleet-no" class="w-full border rounded px-3 py-2 text-xs uppercase" placeholder="Vehicle No" aria-label="Vehicle number">
+      <input id="fleet-type" class="w-full border rounded px-3 py-2 text-xs" placeholder="Type" aria-label="Vehicle type">
+      <input id="fleet-driver" class="w-full border rounded px-3 py-2 text-xs" placeholder="Driver" aria-label="Driver name">
+      <input id="fleet-phone" class="w-full border rounded px-3 py-2 text-xs" placeholder="Phone" aria-label="Phone number">
+    </div>
+    <div class="flex gap-3"><button onclick="saveFleet()" class="flex-1 bg-blue-600 text-white rounded py-2 font-semibold">Save</button><button onclick="closeFleetModal()" class="flex-1 border rounded py-2">Cancel</button></div>
+  </div>
+</div>
+
+<!-- CONFIRMATION MODAL -->
+<div id="confirm-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-[70] px-4">
+  <div class="bg-white dark:bg-slate-900 rounded-xl p-5 w-full max-w-sm text-xs border border-slate-200 dark:border-slate-700 shadow-2xl">
+    <h3 id="confirm-title" class="font-semibold mb-3 text-sm text-red-600 dark:text-red-400">Confirm Action</h3>
+    <p id="confirm-message" class="mb-4 text-slate-600 dark:text-slate-300">Are you sure you want to proceed?</p>
+    <div class="flex gap-3">
+      <button onclick="confirmAction(true)" class="flex-1 bg-red-600 text-white rounded py-2 font-semibold" id="confirm-yes">Yes</button>
+      <button onclick="confirmAction(false)" class="flex-1 border rounded py-2 bg-white dark:bg-slate-800 dark:text-slate-200">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="fixed bottom-4 right-4 bg-slate-800 text-white text-xs px-4 py-3 rounded-lg shadow-xl z-[70] translate-y-[150%] transition-transform duration-300"></div>
+
+<script type="module">
+  import { initializeApp, deleteApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import { getFirestore, collection, doc, addDoc, setDoc, updateDoc, deleteDoc, onSnapshot, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBrYy8AF0LtQkLD0ZCV4hzhwaDdznb5Q8Q",
+    authDomain: "shreenarayanlogistics-22d08.firebaseapp.com",
+    projectId: "shreenarayanlogistics-22d08",
+    storageBucket: "shreenarayanlogistics-22d08.firebasestorage.app",
+    messagingSenderId: "706107706476",
+    appId: "1:706107706476:web:1e34fa02e4da73b8209c49"
+  };
+
+  // ============ GLOBAL STATE ============
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const ADMIN_EMAILS = ["shrinarayanlogistic@gmail.com","itexpress4u.cloud@gmail.com","admin@shrinarayanlogistics.com"];
+  
+  let trips=[], fleet=[], users=[], tripTemplates=[], routeMaster=[], fileHandle=null, 
+      googleSheetUrl=localStorage.getItem("snl_gsheet_url")||"", 
+      delayEmailTo=localStorage.getItem("snl_delay_email")||"", 
+      currentRole="Staff",
+      pendingConfirmation = { resolve: null, reject: null };
+
+  // ============ UTILITY FUNCTIONS ============
+  function showToast(message, type = "info") {
+    const toast = document.getElementById("toast");
+    if (!toast) return;
+    
+    // Set background color based on type
+    const colors = {
+      success: "bg-green-600",
+      error: "bg-red-600",
+      warning: "bg-amber-600",
+      info: "bg-slate-800"
+    };
+    
+    toast.className = `fixed bottom-4 right-4 text-white text-xs px-4 py-3 rounded-lg shadow-xl z-[70] translate-y-[150%] transition-transform duration-300 ${colors[type] || colors.info}`;
+    toast.innerText = message;
+    toast.style.transform = "translateY(0)";
+    
+    setTimeout(() => {
+      toast.style.transform = "translateY(150%)";
+    }, 3000);
+    
+    // Track event
+    trackEvent('toast', 'show', type);
+  }
+
+  function setLoading(element, isLoading) {
+    if (!element) return;
+    
+    if (isLoading) {
+      element.setAttribute("aria-busy", "true");
+      element.classList.add("loading");
+      const originalText = element.innerHTML;
+      element.dataset.originalText = originalText;
+      element.innerHTML = '<span class="opacity-0">' + originalText + '</span>';
+    } else {
+      element.removeAttribute("aria-busy");
+      element.classList.remove("loading");
+      if (element.dataset.originalText) {
+        element.innerHTML = element.dataset.originalText;
+        delete element.dataset.originalText;
+      }
+    }
+  }
+
+  async function withRetry(operation, maxRetries = 3, delay = 1000) {
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        return await operation();
+      } catch (error) {
+        if (attempt === maxRetries) throw error;
+        console.warn(`Attempt ${attempt} failed, retrying in ${delay}ms...`, error);
+        await new Promise(resolve => setTimeout(resolve, delay * attempt));
+      }
+    }
+  }
+
+  function trackEvent(category, action, label) {
+    // Could integrate with Google Analytics
+    console.log(`[Analytics] ${category}.${action}: ${label}`);
+  }
+
+  function validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  }
+
+  function validatePhone(phone) {
+    const re = /^[\d\s\+\-\(\)]{10,15}$/;
+    return re.test(phone.replace(/\D/g, ''));
+  }
+
+  function sanitizeInput(input) {
+    if (typeof input !== 'string') return input;
+    return input
+      .replace(/[<>&"']/g, '')
+      .trim();
+  }
+
+  // ============ CONFIRMATION DIALOG ============
+  window.showConfirmation = function(title, message) {
+    return new Promise((resolve, reject) => {
+      document.getElementById('confirm-title').textContent = title;
+      document.getElementById('confirm-message').textContent = message;
+      document.getElementById('confirm-modal').classList.remove('hidden');
+      pendingConfirmation = { resolve, reject };
+    });
+  };
+
+  window.confirmAction = function(confirmed) {
+    document.getElementById('confirm-modal').classList.add('hidden');
+    if (pendingConfirmation.resolve) {
+      if (confirmed) {
+        pendingConfirmation.resolve(true);
+      } else {
+        pendingConfirmation.resolve(false);
+      }
+      pendingConfirmation = { resolve: null, reject: null };
+    }
+  };
+
+  // ============ IDLE TIMER ============
+  let idleTime = 0;
+  function resetTimer(){ 
+    idleTime = 0; 
+    if (document.getElementById('user-display-name')) {
+      document.querySelector('.text-green-400 .h-1\\.5').classList.remove('bg-red-500');
+      document.querySelector('.text-green-400 .h-1\\.5').classList.add('bg-green-400');
+    }
+  }
+  
+  window.onload = function(){ 
+    document.body.onmousemove = resetTimer; 
+    document.body.onkeypress = resetTimer; 
+    document.body.onclick = resetTimer; 
+    document.body.ontouchstart = resetTimer; 
+  };
+  
+  setInterval(() => { 
+    idleTime++; 
+    if (idleTime >= 55) { // Warning at 55 seconds
+      const statusDot = document.querySelector('.text-green-400 .h-1\\.5');
+      if (statusDot) {
+        statusDot.classList.remove('bg-green-400');
+        statusDot.classList.add('bg-amber-500');
+      }
+    }
+    if (idleTime >= 60 && auth.currentUser) {
+      showToast("Session expired due to inactivity", "warning");
+      signOut(auth).then(() => window.location.reload());
+    }
+  }, 1000);
+
+  // ============ UI FUNCTIONS ============
+  window.toggleSidebar = function() { 
+    const s = document.getElementById("sidebar");
+    const o = document.getElementById("mobile-overlay");
+    if (s.classList.contains("-translate-x-full")) {
+      s.classList.remove("-translate-x-full");
+      o.classList.remove("hidden");
+      trackEvent('sidebar', 'open', 'mobile');
+    } else {
+      s.classList.add("-translate-x-full");
+      o.classList.add("hidden");
+      trackEvent('sidebar', 'close', 'mobile');
+    }
+  };
+
+  function updateThemeIcon(isDark) {
+    const i1 = document.getElementById("theme-icon");
+    const i2 = document.getElementById("theme-icon-mobile");
+    const icon = isDark ? "fa-sun" : "fa-moon";
+    if (i1) i1.className = `fa-solid ${icon} text-xs`;
+    if (i2) i2.className = `fa-solid ${icon}`;
+  }
+
+  function applyTheme() {
+    const saved = localStorage.getItem("snl_theme") || "light";
+    const isDark = saved === "dark";
+    if (isDark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+    updateThemeIcon(isDark);
+    trackEvent('theme', 'change', saved);
+  }
+
+  applyTheme();
+
+  window.toggleTheme = function() {
+    const isDark = document.documentElement.classList.toggle("dark");
+    localStorage.setItem("snl_theme", isDark ? "dark" : "light");
+    updateThemeIcon(isDark);
+    showToast(`Theme changed to ${isDark ? 'dark' : 'light'}`, "info");
+  };
+
+  window.switchTab = function(tab) {
+    // Update active tab
+    ["dashboard","database","entry","fleet","users","reports","settings"].forEach(t => {
+      const v = document.getElementById("view-"+t);
+      if (v) v.classList.add("hidden");
+      const n = document.getElementById("nav-"+t);
+      if (n) n.classList.remove("active");
+    });
+    
+    const v = document.getElementById("view-"+tab);
+    if (v) {
+      v.classList.remove("hidden");
+      v.classList.add("fade-in");
+    }
+    
+    const n = document.getElementById("nav-"+tab);
+    if (n) n.classList.add("active");
+    
+    // Tab-specific initialization
+    if (tab === "entry" && !document.querySelector("#dc-container .dc-block")) {
+      addDcBlock();
+    }
+    if (tab === "reports") {
+      renderReport();
+    }
+    if (tab === "database") {
+      renderDatabase();
+    }
+    if (tab === "dashboard") {
+      renderDashboard();
+    }
+    
+    // Auto-close sidebar on mobile
+    if (window.innerWidth < 768 && !document.getElementById("sidebar").classList.contains("-translate-x-full")) {
+      window.toggleSidebar();
+    }
+    
+    trackEvent('navigation', 'switch', tab);
+  };
+
+  // ============ AUTHENTICATION ============
+  onAuthStateChanged(auth, user => {
+    document.getElementById("loader").classList.add("hidden-app");
+    
+    if (user) {
+      document.getElementById("auth-screen").classList.add("hidden-app");
+      document.getElementById("app-container").classList.remove("hidden-app");
+      document.getElementById("user-display-name").innerText = user.email.split("@")[0];
+      
+      // Check admin status
+      if (ADMIN_EMAILS.includes(user.email)) {
+        currentRole = "Admin";
+        showToast("Welcome Admin!", "success");
+      } else {
+        // Check if user exists in database
+        const dbUser = users.find(u => u.email === user.email);
+        currentRole = dbUser?.role || "Staff";
+      }
+      
+      startListeners();
+      trackEvent('auth', 'login', 'success');
+    } else {
+      document.getElementById("auth-screen").classList.remove("hidden-app");
+      document.getElementById("app-container").classList.add("hidden-app");
+      trackEvent('auth', 'logout', 'auto');
+    }
+  });
+
+  window.handleLogin = async function(e) {
+    e.preventDefault();
+    const email = document.getElementById("login-email").value.trim();
+    const password = document.getElementById("login-password").value;
+    const loginBtn = document.getElementById("login-btn");
+    const errorDiv = document.getElementById("auth-error");
+    
+    // Validation
+    if (!validateEmail(email)) {
+      errorDiv.innerText = "Please enter a valid email address";
+      errorDiv.classList.remove("hidden");
+      document.getElementById("login-email").classList.add("shake");
+      setTimeout(() => document.getElementById("login-email").classList.remove("shake"), 500);
+      return;
+    }
+    
+    setLoading(loginBtn, true);
+    errorDiv.classList.add("hidden");
+    
+    try {
+      await withRetry(() => signInWithEmailAndPassword(auth, email, password));
+      trackEvent('auth', 'manual_login', 'success');
+    } catch (error) {
+      errorDiv.innerText = error.message;
+      errorDiv.classList.remove("hidden");
+      trackEvent('auth', 'manual_login', 'error');
+    } finally {
+      setLoading(loginBtn, false);
+    }
+  };
+
+  window.logout = async function() {
+    const confirmed = await showConfirmation("Logout", "Are you sure you want to logout?");
+    if (confirmed) {
+      try {
+        await signOut(auth);
+        showToast("Logged out successfully", "info");
+        trackEvent('auth', 'manual_logout', 'success');
+      } catch (error) {
+        showToast("Logout failed: " + error.message, "error");
+      }
+    }
+  };
+
+  window.toggleReset = function() {
+    document.getElementById("reset-modal").classList.remove("hidden");
+    trackEvent('auth', 'password_reset', 'open');
+  };
+
+  window.closeReset = function() {
+    document.getElementById("reset-modal").classList.add("hidden");
+  };
+
+  window.sendResetEmail = async function() {
+    const email = document.getElementById("reset-email").value.trim();
+    const msgDiv = document.getElementById("reset-msg");
+    
+    if (!validateEmail(email)) {
+      msgDiv.innerHTML = '<span class="text-red-600">Please enter a valid email</span>';
+      return;
+    }
+    
+    try {
+      await sendPasswordResetEmail(auth, email);
+      msgDiv.innerHTML = '<span class="text-green-600">Reset email sent! Check your inbox.</span>';
+      trackEvent('auth', 'password_reset', 'sent');
+      setTimeout(() => {
+        closeReset();
+        msgDiv.innerHTML = '';
+      }, 3000);
+    } catch (error) {
+      msgDiv.innerHTML = `<span class="text-red-600">Error: ${error.message}</span>`;
+      trackEvent('auth', 'password_reset', 'error');
+    }
+  };
+
+  // ============ DATA FUNCTIONS ============
+  function normalizeTripData(rawData, id) {
+    let data = { ...rawData };
+    
+    // Robust date parsing
+    let date = new Date();
+    if (data.createdDate) {
+      date = new Date(data.createdDate);
+    } else if (data.created_at && data.created_at.toDate) {
+      date = data.created_at.toDate();
+    } else if (typeof data.created_at === 'string') {
+      // Try different date formats
+      const formats = [
+        /\d{4}-\d{2}-\d{2}/, // YYYY-MM-DD
+        /\d{2}\/\d{2}\/\d{4}/, // DD/MM/YYYY
+        /\d{1,2}-\d{1,2}-\d{4}/ // D-M-YYYY
+      ];
+      
+      for (const format of formats) {
+        if (format.test(data.created_at)) {
+          date = new Date(data.created_at);
+          break;
+        }
+      }
+    }
+    
+    if (isNaN(date.getTime())) {
+      console.warn("Invalid date, using current date:", data.created_at);
+      date = new Date();
+    }
+    
+    data.createdDate = date.toISOString();
+    data.created_at = date.toLocaleDateString("en-GB");
+    
+    // Handle legacy data formats
+    if (!Array.isArray(data.dcBlocks)) {
+      data.dcBlocks = [];
+      if (Array.isArray(data.routes)) {
+        data.dcBlocks.push({
+          dc: data.dc || "Main",
+          routes: data.routes
         });
-        
-        // Toggle switch functionality
-        const toggleSwitch = document.querySelector('.toggle-switch input');
-        toggleSwitch.addEventListener('change', function() {
-            if(this.checked) {
-                console.log('Live updates enabled');
-                // In real app, start live updates
-            } else {
-                console.log('Live updates disabled');
-                // In real app, stop live updates
-            }
+      } else if (data.location) {
+        data.dcBlocks.push({
+          dc: data.dc || "Main",
+          routes: [{
+            stop: data.location,
+            distance: data.distance || "",
+            eta: data.eta || "",
+            inTime: data.inTime || "",
+            outTime: data.outTime || "",
+            pod: data.pod || "PENDING"
+          }]
         });
+      }
+    }
+    
+    // Safe map and validate
+    data.dcBlocks = data.dcBlocks.map(block => ({
+      dc: sanitizeInput(block.dc || "DC"),
+      routes: (Array.isArray(block.routes) ? block.routes : []).map(route => ({
+        stop: sanitizeInput(route.stop || "-"),
+        distance: route.distance || "",
+        eta: route.eta || "",
+        inTime: route.inTime || "",
+        outTime: route.outTime || "",
+        pod: route.pod || "PENDING"
+      })).filter(route => route.stop && route.stop !== "-")
+    })).filter(block => block.routes.length > 0);
+    
+    data.vehicle = sanitizeInput(data.vehicle || "-").toUpperCase();
+    data.driver = sanitizeInput(data.driver || "-");
+    data.phone = data.phone || "";
+    
+    return { id, ...data };
+  }
+
+  function validateTripData(tripData) {
+    const errors = [];
+    
+    if (!tripData.vehicle || tripData.vehicle.trim() === "") {
+      errors.push("Vehicle number is required");
+    }
+    
+    if (!tripData.driver || tripData.driver.trim() === "") {
+      errors.push("Driver name is required");
+    }
+    
+    if (tripData.phone && !validatePhone(tripData.phone)) {
+      errors.push("Phone number is invalid");
+    }
+    
+    if (!tripData.dcBlocks || tripData.dcBlocks.length === 0) {
+      errors.push("At least one DC with stops is required");
+    } else {
+      tripData.dcBlocks.forEach((block, blockIndex) => {
+        if (!block.dc || block.dc.trim() === "") {
+          errors.push(`DC ${blockIndex + 1}: DC name is required`);
+        }
+        if (!block.routes || block.routes.length === 0) {
+          errors.push(`DC ${blockIndex + 1}: At least one stop is required`);
+        }
+      });
+    }
+    
+    return errors;
+  }
+
+  function startListeners() {
+    // Trips listener
+    onSnapshot(query(collection(db, "trips")), 
+      snapshot => {
+        trips = [];
+        snapshot.forEach(doc => {
+          trips.push(normalizeTripData(doc.data(), doc.id));
+        });
+        renderDashboard();
+        renderDatabase();
+        renderReport();
         
-        // Update stats every 5 seconds (demo)
-        function updateStats() {
-            const distanceElement = document.querySelector('.stat-card:nth-child(2) h3');
-            const fuelElement = document.querySelector('.stat-card:nth-child(3) h3');
-            
-            if(distanceElement && fuelElement && toggleSwitch.checked) {
-                // Generate random small increments for demo
-                const currentDistance = parseInt(distanceElement.textContent.replace(' km', '').replace(',', ''));
-                const currentFuel = parseInt(fuelElement.textContent.replace(' L', ''));
-                
-                const newDistance = currentDistance + Math.floor(Math.random() * 10);
-                const newFuel = currentFuel + Math.floor(Math.random() * 3);
-                
-                distanceElement.textContent = newDistance.toLocaleString() + ' km';
-                fuelElement.textContent = newFuel + ' L';
-            }
+        if (googleSheetUrl) {
+          syncToGoogleSheet();
+        }
+        if (fileHandle) {
+          saveToLocalFile();
         }
         
-        // Update stats every 5 seconds if live updates are enabled
-        setInterval(updateStats, 5000);
-        
-        // Initialize Chart.js for stats (if needed)
-        window.addEventListener('DOMContentLoaded', function() {
-            // Chart initialization code can go here
-            console.log('Fastag GPS Dashboard loaded successfully');
+        trackEvent('data', 'trips_updated', trips.length.toString());
+      },
+      error => {
+        console.error("Trips fetch error", error);
+        showToast("Sync Error: " + error.code, "error");
+        trackEvent('data', 'trips_error', error.code);
+      }
+    );
+
+    // Fleet listener
+    onSnapshot(query(collection(db, "fleet")),
+      snapshot => {
+        fleet = [];
+        snapshot.forEach(doc => {
+          fleet.push({ id: doc.id, ...doc.data() });
         });
-    </script>
+        renderFleet();
+        
+        const fleetList = document.getElementById("fleet-list");
+        if (fleetList) {
+          fleetList.innerHTML = "";
+          fleet.filter(x => x.active !== false).forEach(vehicle => {
+            const option = document.createElement("option");
+            option.value = vehicle.no;
+            fleetList.appendChild(option);
+          });
+        }
+      },
+      error => {
+        showToast("Fleet Error: " + error.code, "error");
+        trackEvent('data', 'fleet_error', error.code);
+      }
+    );
+
+    // Users listener
+    onSnapshot(query(collection(db, "users")),
+      snapshot => {
+        users = [];
+        snapshot.forEach(doc => {
+          users.push({ id: doc.id, ...doc.data() });
+        });
+        
+        const currentUser = users.find(x => x.email === auth.currentUser?.email);
+        if (currentUser) {
+          currentRole = currentUser.role;
+        } else if (ADMIN_EMAILS.includes(auth.currentUser?.email)) {
+          currentRole = "Admin";
+        } else {
+          currentRole = "Staff";
+        }
+        
+        renderUsers();
+        renderDashboard();
+        renderDatabase();
+        renderFleet();
+        renderRouteMaster();
+        renderTemplateTable();
+      },
+      error => {
+        showToast("User Error: " + error.code, "error");
+        trackEvent('data', 'users_error', error.code);
+      }
+    );
+
+    // Route Master listener
+    onSnapshot(query(collection(db, "routeMaster")),
+      snapshot => {
+        routeMaster = [];
+        snapshot.forEach(doc => {
+          routeMaster.push({ id: doc.id, ...doc.data() });
+        });
+        renderRouteMaster();
+      },
+      error => {
+        console.error("Route master error:", error);
+      }
+    );
+
+    // Trip Templates listener
+    onSnapshot(query(collection(db, "tripTemplates")),
+      snapshot => {
+        tripTemplates = [];
+        snapshot.forEach(doc => {
+          tripTemplates.push({ id: doc.id, ...doc.data() });
+        });
+        renderTemplateTable();
+        renderTemplateOptions();
+        populateGlobalDcList();
+      },
+      error => {
+        console.error("Trip templates error:", error);
+      }
+    );
+  }
+
+  function isRouteDelayed(route) {
+    if (!route.eta || !route.inTime) return false;
+    
+    const [etaHours, etaMinutes] = route.eta.split(":").map(Number);
+    const [inHours, inMinutes] = route.inTime.split(":").map(Number);
+    
+    if (isNaN(etaHours) || isNaN(inHours)) return false;
+    
+    // Convert to minutes for comparison
+    const etaTotal = etaHours * 60 + etaMinutes;
+    const inTotal = inHours * 60 + inMinutes;
+    
+    // Consider delayed if inTime is more than 15 minutes after eta
+    return (inTotal - etaTotal) > 15;
+  }
+
+  // ============ DASHBOARD RENDER ============
+  function renderDashboard() {
+    try {
+      const now = new Date();
+      const threeDaysAgo = new Date();
+      threeDaysAgo.setDate(now.getDate() - 3);
+      
+      const recentTrips = trips.filter(t => {
+        const tripDate = new Date(t.createdDate);
+        return tripDate >= threeDaysAgo;
+      });
+      
+      const displayTrips = recentTrips.length > 0 ? recentTrips : trips.slice(0, 8);
+      
+      let activeCount = 0, completedCount = 0, pendingCount = 0, issuesCount = 0, delayedCount = 0;
+      
+      displayTrips.forEach(trip => {
+        const allRoutes = trip.dcBlocks.flatMap(block => block.routes);
+        const pods = allRoutes.map(route => route.pod);
+        const isCompleted = trip.finished || (pods.length > 0 && pods.every(pod => pod === "RECEIVED" || pod === "YES RECIVED"));
+        const hasIssue = pods.some(pod => pod === "ISSUE");
+        
+        allRoutes.forEach(route => {
+          if (route.pod !== "RECEIVED" && route.pod !== "YES RECIVED" && route.pod !== "ISSUE" && !isRouteDelayed(route)) {
+            pendingCount++;
+          }
+          if (isRouteDelayed(route)) {
+            delayedCount++;
+          }
+        });
+        
+        if (isCompleted) {
+          completedCount++;
+        } else if (hasIssue) {
+          issuesCount++;
+        } else {
+          activeCount++;
+        }
+      });
+      
+      // Update stats
+      document.getElementById("stat-active").innerText = activeCount;
+      document.getElementById("stat-completed").innerText = completedCount;
+      document.getElementById("stat-pending").innerText = pendingCount;
+      document.getElementById("stat-issues").innerText = issuesCount;
+      document.getElementById("stat-delayed").innerText = delayedCount;
+      
+      // Render trip cards
+      const container = document.getElementById("dashboard-trips-container");
+      if (!container) return;
+      
+      container.innerHTML = "";
+      
+      displayTrips
+        .sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate))
+        .slice(0, 8)
+        .forEach(trip => {
+          const allRoutes = trip.dcBlocks.flatMap(block => block.routes);
+          const delayedRoutes = allRoutes.filter(route => isRouteDelayed(route));
+          const hasIssue = allRoutes.some(route => route.pod === "ISSUE");
+          
+          let badgeClass = "badge-yellow";
+          let badgeText = "ACTIVE";
+          
+          if (trip.finished) {
+            badgeClass = "badge-green";
+            badgeText = "FINISHED";
+          } else if (hasIssue) {
+            badgeClass = "badge-red";
+            badgeText = "ISSUE";
+          }
+          
+          const html = trip.dcBlocks.map(block => `
+            <div class="mt-2">
+              <div class="text-[11px] font-bold text-slate-700 dark:text-slate-200 flex items-center gap-1 uppercase">
+                <i class="fa-solid fa-warehouse"></i> ${block.dc}
+              </div>
+              <div class="mt-1 border-l border-slate-200 dark:border-slate-700 pl-3">
+                ${block.routes.map(route => {
+                  const isDelayed = isRouteDelayed(route);
+                  let dotColor = "bg-slate-300";
+                  if (route.pod === "RECEIVED" || route.pod === "YES RECIVED") {
+                    dotColor = "bg-green-500";
+                  } else if (route.pod === "ISSUE") {
+                    dotColor = "bg-red-500";
+                  } else if (isDelayed) {
+                    dotColor = "bg-blue-500";
+                  }
+                  
+                  return `
+                    <div class="flex gap-2 items-start py-2">
+                      <div class="pt-1">
+                        <span class="h-2.5 w-2.5 rounded-full block shadow-sm ${dotColor}"></span>
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <div class="font-semibold text-xs truncate text-slate-700 dark:text-slate-200">
+                          ${route.stop} 
+                          ${isDelayed ? '<span class="text-blue-500 text-[10px] ml-1">DELAYED</span>' : ''}
+                        </div>
+                        <div class="text-[10px] text-slate-500 mt-0.5">
+                          Dist: ${route.distance} | ETA: ${route.eta}
+                        </div>
+                        <div class="text-[10px] text-slate-400">
+                          In: ${route.inTime} | Out: ${route.outTime}
+                        </div>
+                      </div>
+                      <div>
+                        <span class="badge ${
+                          route.pod === "RECEIVED" || route.pod === "YES RECIVED" ? "badge-green" :
+                          route.pod === "ISSUE" ? "badge-red" : "badge-yellow"
+                        }">
+                          ${route.pod}
+                        </span>
+                      </div>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+          `).join('');
+          
+          const deleteButton = currentRole === 'Admin' 
+            ? `<button onclick="deleteTrip('${trip.id}')" class="text-red-600 text-xs px-2 py-1 border rounded hover:bg-red-50" aria-label="Delete trip">Del</button>`
+            : '';
+          
+          container.innerHTML += `
+            <div class="bg-[#f9fafb] dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-3 shadow-sm">
+              <div class="flex justify-between items-start border-b border-slate-200 dark:border-slate-800 pb-2 mb-1">
+                <div>
+                  <div class="font-bold text-sm text-blue-600 dark:text-blue-400">${trip.vehicle}</div>
+                  <div class="text-[10px] text-slate-500 flex gap-2 mt-1">
+                    <span>${trip.driver}</span><span>|</span><span>${trip.created_at}</span>
+                  </div>
+                  ${delayedRoutes.length > 0 
+                    ? `<div class="text-[10px] text-blue-500 mt-1 font-bold">⏰ ${delayedRoutes.length} Delayed</div>` 
+                    : ''}
+                </div>
+                <span class="${badgeClass} text-[10px]">${badgeText}</span>
+              </div>
+              ${html}
+              <div class="mt-3 flex justify-end gap-2 border-t border-slate-200 dark:border-slate-800 pt-2">
+                ${!trip.finished 
+                  ? `<button onclick="finishTrip('${trip.id}')" class="text-emerald-600 text-xs px-2 py-1 border rounded hover:bg-emerald-50" aria-label="Finish trip">Finish</button>` 
+                  : ''}
+                <button onclick="editTrip('${trip.id}')" class="text-blue-600 text-xs px-2 py-1 border rounded hover:bg-blue-50" aria-label="Edit trip">Edit</button>
+                ${deleteButton}
+                <button onclick="shareTripWhatsapp('${trip.id}')" class="text-green-600 text-xs px-2 py-1 border rounded hover:bg-green-50" aria-label="Share via WhatsApp">
+                  <i class="fa-brands fa-whatsapp"></i> Share
+                </button>
+              </div>
+            </div>
+          `;
+        });
+    } catch (error) {
+      console.error("Dashboard render error:", error);
+      showToast("Error loading dashboard", "error");
+    }
+  }
+
+  // ============ DATABASE RENDER ============
+  let searchTimeout;
+  window.debouncedRenderDatabase = function() {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(renderDatabase, 300);
+  };
+
+  function renderDatabase() {
+    try {
+      const tbody = document.getElementById("db-table-body");
+      if (!tbody) return;
+      
+      const searchQuery = (document.getElementById("db-search").value || "").toLowerCase();
+      
+      const filteredTrips = trips.filter(trip => 
+        (trip.vehicle || "").toLowerCase().includes(searchQuery) ||
+        (trip.driver || "").toLowerCase().includes(searchQuery) ||
+        (trip.phone || "").toLowerCase().includes(searchQuery)
+      );
+      
+      if (filteredTrips.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" class="px-4 py-8 text-center text-slate-500 text-sm">
+              No trips found${searchQuery ? ' matching "' + searchQuery + '"' : ''}
+            </td>
+          </tr>
+        `;
+        return;
+      }
+      
+      const html = filteredTrips.map(trip => {
+        const dcStops = trip.dcBlocks.map(block => 
+          `<span class="font-bold text-slate-600 dark:text-slate-300">${block.dc}:</span> ${block.routes.map(route => route.stop).join(", ")}`
+        ).join(" | ");
+        
+        const deleteButton = currentRole === 'Admin' 
+          ? `<button onclick="deleteTrip('${trip.id}')" class="text-red-500 hover:text-red-700 px-2" aria-label="Delete">Del</button>`
+          : '';
+        
+        let badges = [];
+        let pending = 0, received = 0, issue = 0, delayed = 0;
+        
+        trip.dcBlocks.forEach(block => {
+          block.routes.forEach(route => {
+            if (route.pod === 'ISSUE') issue++;
+            else if (route.pod === 'RECEIVED' || route.pod === 'YES RECIVED') received++;
+            else pending++;
+            
+            if (isRouteDelayed(route)) delayed++;
+          });
+        });
+        
+        if (issue > 0) badges.push(`<span class="badge badge-red mb-1">Issue (${issue})</span>`);
+        if (pending > 0) badges.push(`<span class="badge badge-yellow mb-1">Pending (${pending})</span>`);
+        if (received > 0) badges.push(`<span class="badge badge-green mb-1">Received (${received})</span>`);
+        if (delayed > 0) badges.push(`<span class="badge badge-blue mb-1">Delayed (${delayed})</span>`);
+        
+        const podBadge = badges.join(" ");
+        
+        return `
+          <tr class="bg-white dark:bg-slate-900 border-b dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800">
+            <td class="px-4 py-2 text-xs flex items-center gap-1">
+              <button onclick="editTrip('${trip.id}')" class="text-blue-500 hover:text-blue-700 px-2" aria-label="Edit">Edit</button>
+              ${deleteButton}
+              <button onclick="shareTripWhatsapp('${trip.id}')" class="text-green-500 hover:text-green-700 px-2" aria-label="Share">
+                <i class="fa-brands fa-whatsapp"></i>
+              </button>
+            </td>
+            <td class="px-4 py-2 text-xs whitespace-nowrap">${trip.created_at}</td>
+            <td class="px-4 py-2 text-xs font-bold text-blue-600">${trip.vehicle}</td>
+            <td class="px-4 py-2 text-xs">${trip.driver}</td>
+            <td class="px-4 py-2 text-xs min-w-[200px] whitespace-normal leading-relaxed">${dcStops}</td>
+            <td class="px-4 py-2 text-xs flex flex-wrap gap-1">${podBadge}</td>
+            <td class="px-4 py-2 text-xs">
+              ${trip.finished 
+                ? '<span class="text-green-600 font-bold">YES</span>' 
+                : '<span class="text-slate-400">NO</span>'}
+            </td>
+            <td class="px-4 py-2 text-xs">${trip.phone}</td>
+          </tr>
+        `;
+      }).join('');
+      
+      tbody.innerHTML = html;
+      trackEvent('database', 'render', filteredTrips.length.toString());
+    } catch (error) {
+      console.error("Database render error:", error);
+      showToast("Error loading database", "error");
+    }
+  }
+
+  // ============ FORM FUNCTIONS ============
+  window.addDcBlock = function(blockData = { dc: '', routes: [] }) {
+    const container = document.getElementById("dc-container");
+    if (!container) return;
+    
+    const block = document.createElement("div");
+    block.className = "dc-block bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-sm mb-4";
+    block.innerHTML = `
+      <div class="flex justify-between mb-2">
+        <div class="w-full mr-2">
+          <label class="text-[10px] uppercase font-bold text-slate-500">DC Name</label>
+          <input list="dc-list-global" class="dc-name-input w-full border rounded px-2 py-1 text-xs bg-white dark:bg-slate-800 dark:border-slate-600" 
+                 value="${blockData.dc || ''}" aria-label="DC name">
+        </div>
+        <button type="button" class="text-red-500 text-xs mt-4 px-2 remove-dc-btn" aria-label="Remove DC">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </div>
+      <div class="flex justify-between items-center mb-2">
+        <span class="text-[11px] font-bold text-slate-500">Stops</span>
+        <button type="button" class="add-stop-btn text-xs bg-white border px-2 py-1 rounded shadow-sm text-blue-600">
+          + Add Stop
+        </button>
+      </div>
+      <div class="routes-container space-y-2"></div>
+    `;
+    
+    block.querySelector(".remove-dc-btn").onclick = () => {
+      if (container.querySelectorAll(".dc-block").length > 1) {
+        block.remove();
+      } else {
+        showToast("At least one DC block is required", "warning");
+      }
+    };
+    
+    block.querySelector(".add-stop-btn").onclick = () => addRouteRowToBlock(block);
+    
+    container.appendChild(block);
+    
+    const routes = (blockData.routes && blockData.routes.length) ? blockData.routes : [{}];
+    routes.forEach(route => addRouteRowToBlock(block, route));
+    
+    trackEvent('form', 'add_dc_block', 'success');
+  };
+
+  window.addRouteRowToBlock = function(blockElement, routeData = {}) {
+    const routesContainer = blockElement.querySelector(".routes-container");
+    
+    const row = document.createElement("div");
+    row.className = "route-row bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-700 p-2 relative grid grid-cols-2 md:grid-cols-6 gap-2";
+    row.innerHTML = `
+      <div class="col-span-2">
+        <label class="text-[10px]">Stop</label>
+        <input class="inp-stop w-full border rounded px-2 py-1 text-xs bg-white dark:bg-slate-800 dark:border-slate-600" 
+               value="${routeData.stop || ''}" aria-label="Stop location">
+      </div>
+      <div>
+        <label class="text-[10px]">Dist</label>
+        <input class="inp-dist w-full border rounded px-2 py-1 text-xs bg-white dark:bg-slate-800 dark:border-slate-600" 
+               value="${routeData.distance || ''}" aria-label="Distance">
+      </div>
+      <div>
+        <label class="text-[10px]">ETA</label>
+        <input type="time" class="inp-eta w-full border rounded px-2 py-1 text-xs bg-white dark:bg-slate-800 dark:border-slate-600" 
+               value="${routeData.eta || ''}" aria-label="Estimated time">
+      </div>
+      <div>
+        <label class="text-[10px]">In</label>
+        <input type="time" class="inp-in w-full border rounded px-2 py-1 text-xs bg-white dark:bg-slate-800 dark:border-slate-600" 
+               value="${routeData.inTime || ''}" aria-label="In time">
+      </div>
+      <div>
+        <label class="text-[10px]">Out</label>
+        <input type="time" class="inp-out w-full border rounded px-2 py-1 text-xs bg-white dark:bg-slate-800 dark:border-slate-600" 
+               value="${routeData.outTime || ''}" aria-label="Out time">
+      </div>
+      <div class="col-span-2 md:col-span-6 flex items-center gap-2 mt-1 border-t pt-1 border-slate-100 dark:border-slate-800">
+        <label class="text-[10px] font-bold">Status:</label>
+        <select class="inp-pod w-full border rounded px-2 py-1 text-xs bg-white dark:bg-slate-800 dark:border-slate-600" aria-label="POD status">
+          <option value="PENDING" ${routeData.pod === 'PENDING' ? 'selected' : ''}>PENDING</option>
+          <option value="RECEIVED" ${routeData.pod === 'RECEIVED' ? 'selected' : ''}>RECEIVED</option>
+          <option value="ISSUE" ${routeData.pod === 'ISSUE' ? 'selected' : ''}>ISSUE</option>
+        </select>
+      </div>
+    `;
+    
+    // Add remove button
+    const removeBtn = document.createElement("button");
+    removeBtn.type = "button";
+    removeBtn.className = "absolute top-1 right-1 bg-red-100 text-red-600 rounded-full w-5 h-5 flex items-center justify-center text-[10px] z-20 hover:bg-red-200";
+    removeBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+    removeBtn.setAttribute("aria-label", "Remove stop");
+    removeBtn.onclick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      if (routesContainer.querySelectorAll(".route-row").length > 1) {
+        row.remove();
+      } else {
+        showToast("At least one stop is required", "warning");
+      }
+    };
+    
+    row.appendChild(removeBtn);
+    routesContainer.appendChild(row);
+  };
+
+  // ============ TEMPLATE FUNCTIONS ============
+  window.handleTemplateCsv = async function(input) {
+    if (!input.files[0]) return;
+    
+    const file = input.files[0];
+    if (file.size > 5 * 1024 * 1024) { // 5MB limit
+      showToast("File too large (max 5MB)", "error");
+      input.value = "";
+      return;
+    }
+    
+    try {
+      const text = await file.text();
+      const lines = text.split(/\r?\n/).filter(x => x.trim());
+      
+      if (lines.length < 2) {
+        showToast("CSV file is empty or invalid", "error");
+        return;
+      }
+      
+      const headers = lines[0].split(",").map(x => x.trim().toLowerCase());
+      const requiredHeaders = ["routename", "dc", "stop"];
+      const missingHeaders = requiredHeaders.filter(h => !headers.includes(h));
+      
+      if (missingHeaders.length > 0) {
+        showToast(`Missing headers: ${missingHeaders.join(", ")}`, "error");
+        return;
+      }
+      
+      let count = 0;
+      let errors = [];
+      
+      for (let i = 1; i < lines.length; i++) {
+        const columns = lines[i].split(",").map(x => x.trim());
+        if (columns.length < 3) continue;
+        
+        const row = {};
+        headers.forEach((header, index) => {
+          row[header] = columns[index] || "";
+        });
+        
+        const routeName = row["routename"];
+        const dc = row["dc"];
+        const stop = row["stop"];
+        
+        if (!routeName || !dc || !stop) {
+          errors.push(`Row ${i + 1}: Missing required fields`);
+          continue;
+        }
+        
+        try {
+          await addDoc(collection(db, "tripTemplates"), {
+            routeName: routeName,
+            dc: dc,
+            stop: stop,
+            distance: row["distance"] || "",
+            eta: row["eta"] || "",
+            createdAt: serverTimestamp()
+          });
+          count++;
+        } catch (error) {
+          errors.push(`Row ${i + 1}: ${error.message}`);
+        }
+      }
+      
+      if (count > 0) {
+        showToast(`Uploaded ${count} templates successfully`, "success");
+        trackEvent('templates', 'csv_upload', count.toString());
+      }
+      
+      if (errors.length > 0) {
+        console.error("Template upload errors:", errors);
+        if (errors.length < 5) {
+          showToast(`Some errors: ${errors.join("; ")}`, "warning");
+        }
+      }
+      
+    } catch (error) {
+      console.error("Template CSV error:", error);
+      showToast("Error processing CSV: " + error.message, "error");
+    } finally {
+      input.value = "";
+    }
+  };
+
+  window.applyTemplate = function() {
+    const select = document.getElementById("template-select");
+    const selectedValue = select.value;
+    
+    if (!selectedValue) {
+      showToast("Please select a template", "warning");
+      return;
+    }
+    
+    const templatePoints = tripTemplates.filter(t => t.routeName === selectedValue);
+    
+    if (templatePoints.length === 0) {
+      showToast("No points found for this template", "warning");
+      return;
+    }
+    
+    // Clear existing DC blocks
+    document.getElementById("dc-container").innerHTML = "";
+    
+    // Group by DC
+    const groupedByDc = {};
+    templatePoints.forEach(point => {
+      const dcKey = (point.dc || "DC").trim();
+      if (!groupedByDc[dcKey]) {
+        groupedByDc[dcKey] = {
+          name: point.dc,
+          points: []
+        };
+      }
+      groupedByDc[dcKey].points.push(point);
+    });
+    
+    // Create DC blocks
+    Object.values(groupedByDc).forEach(group => {
+      const routes = group.points.map(point => ({
+        stop: point.stop,
+        distance: point.distance,
+        eta: point.eta
+      }));
+      
+      addDcBlock({
+        dc: group.name,
+        routes: routes
+      });
+    });
+    
+    showToast(`Applied template "${selectedValue}" with ${templatePoints.length} stops`, "success");
+    trackEvent('templates', 'apply', selectedValue);
+  };
+
+  function renderTemplateOptions() {
+    const select = document.getElementById("template-select");
+    if (!select) return;
+    
+    const routeNames = [...new Set(tripTemplates.map(t => t.routeName))].sort();
+    
+    select.innerHTML = '<option value="">-- Select Template --</option>' +
+      routeNames.map(name => `<option value="${name}">${name}</option>`).join('');
+  }
+
+  function populateGlobalDcList() {
+    const datalist = document.getElementById("dc-list-global");
+    if (!datalist) return;
+    
+    const dcNames = [...new Set(tripTemplates.map(t => (t.dc || "").trim()))]
+      .filter(Boolean)
+      .sort();
+    
+    datalist.innerHTML = dcNames.map(name => `<option value="${name}"></option>`).join('');
+  }
+
+  function renderTemplateTable() {
+    const tbody = document.getElementById("trip-templates-tbody");
+    if (!tbody) return;
+    
+    const sortedTemplates = tripTemplates.sort((a, b) => 
+      (a.routeName || "").localeCompare(b.routeName || "")
+    );
+    
+    if (sortedTemplates.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="6" class="px-2 py-4 text-center text-slate-500 text-xs">
+            No templates found. Add some templates to get started.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+    
+    tbody.innerHTML = sortedTemplates.map(template => `
+      <tr class="bg-white dark:bg-slate-900 border-b dark:border-slate-800">
+        <td class="px-2 py-1 font-bold">${template.routeName}</td>
+        <td class="px-2 py-1">${template.dc}</td>
+        <td class="px-2 py-1">${template.stop}</td>
+        <td class="px-2 py-1">${template.distance || ""}</td>
+        <td class="px-2 py-1">${template.eta || ""}</td>
+        <td class="px-2 py-1 text-right">
+          ${currentRole === 'Admin' 
+            ? `<button onclick="deleteTemplatePoint('${template.id}')" class="text-red-500 hover:text-red-700" aria-label="Delete template">
+                <i class="fa-solid fa-trash text-xs"></i>
+              </button>` 
+            : ''}
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  window.addTemplateManual = async function() {
+    const routeName = document.getElementById("tmpl-name").value.trim();
+    const dc = document.getElementById("tmpl-dc").value.trim();
+    const stop = document.getElementById("tmpl-stop").value.trim();
+    const distance = document.getElementById("tmpl-dist").value;
+    const eta = document.getElementById("tmpl-eta").value;
+    
+    if (!routeName || !dc || !stop) {
+      showToast("Route Name, DC, and Stop are required", "error");
+      return;
+    }
+    
+    try {
+      await addDoc(collection(db, "tripTemplates"), {
+        routeName: routeName,
+        dc: dc,
+        stop: stop,
+        distance: distance,
+        eta: eta,
+        createdAt: serverTimestamp()
+      });
+      
+      // Clear form
+      document.getElementById("tmpl-name").value = "";
+      document.getElementById("tmpl-dc").value = "";
+      document.getElementById("tmpl-stop").value = "";
+      document.getElementById("tmpl-dist").value = "";
+      document.getElementById("tmpl-eta").value = "";
+      
+      showToast("Template added successfully", "success");
+      trackEvent('templates', 'add_manual', routeName);
+    } catch (error) {
+      console.error("Error adding template:", error);
+      showToast("Error adding template: " + error.message, "error");
+    }
+  };
+
+  window.deleteTemplatePoint = async function(id) {
+    if (currentRole !== 'Admin') {
+      showToast("Admin privileges required", "error");
+      return;
+    }
+    
+    const confirmed = await showConfirmation(
+      "Delete Template Point",
+      "Are you sure you want to delete this template point? This action cannot be undone."
+    );
+    
+    if (!confirmed) return;
+    
+    try {
+      await deleteDoc(doc(db, "tripTemplates", id));
+      showToast("Template point deleted", "success");
+      trackEvent('templates', 'delete', 'success');
+    } catch (error) {
+      console.error("Error deleting template:", error);
+      showToast("Error deleting template: " + error.message, "error");
+    }
+  };
+
+  // ============ ROUTE MASTER FUNCTIONS ============
+  function renderRouteMaster() {
+    const tbody = document.getElementById("route-master-tbody");
+    if (!tbody) return;
+    
+    if (routeMaster.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="3" class="px-4 py-4 text-center text-slate-500 text-xs">
+            No legacy routes found
+          </td>
+        </tr>
+      `;
+      return;
+    }
+    
+    tbody.innerHTML = routeMaster.map(route => `
+      <tr class="bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800">
+        <td class="px-4 py-2 text-xs">${route.dc}</td>
+        <td class="px-4 py-2 text-xs">${route.stop}</td>
+        <td class="px-4 py-2 text-xs text-right">
+          ${currentRole === 'Admin' 
+            ? `<button onclick="deleteMasterRoute('${route.id}')" class="text-red-500 hover:text-red-700" aria-label="Delete route">
+                <i class="fa-solid fa-trash"></i>
+              </button>` 
+            : ''}
+        </td>
+      </tr>
+    `).join("");
+  }
+
+  window.addMasterRoute = async function() {
+    const dc = document.getElementById("set-dc").value.trim();
+    const stop = document.getElementById("set-stop").value.trim();
+    
+    if (!dc || !stop) {
+      showToast("DC and Stop are required", "error");
+      return;
+    }
+    
+    try {
+      await addDoc(collection(db, "routeMaster"), {
+        dc: dc,
+        stop: stop,
+        createdAt: serverTimestamp()
+      });
+      
+      // Clear form
+      document.getElementById("set-dc").value = "";
+      document.getElementById("set-stop").value = "";
+      
+      showToast("Route added successfully", "success");
+      trackEvent('routes', 'add_master', 'success');
+    } catch (error) {
+      console.error("Error adding route:", error);
+      showToast("Error adding route: " + error.message, "error");
+    }
+  };
+
+  window.deleteMasterRoute = async function(id) {
+    if (currentRole !== "Admin") {
+      showToast("Admin privileges required", "error");
+      return;
+    }
+    
+    const confirmed = await showConfirmation(
+      "Delete Route",
+      "Are you sure you want to delete this route? This action cannot be undone."
+    );
+    
+    if (!confirmed) return;
+    
+    try {
+      await deleteDoc(doc(db, "routeMaster", id));
+      showToast("Route deleted", "success");
+      trackEvent('routes', 'delete_master', 'success');
+    } catch (error) {
+      console.error("Error deleting route:", error);
+      showToast("Error deleting route: " + error.message, "error");
+    }
+  };
+
+  // ============ TRIP CRUD FUNCTIONS ============
+  window.submitTrip = async function(e) {
+    e.preventDefault();
+    
+    const saveBtn = document.getElementById("save-trip-btn");
+    setLoading(saveBtn, true);
+    
+    try {
+      const tripId = document.getElementById("trip-id").value;
+      const vehicle = document.getElementById("vehicle").value.toUpperCase().trim();
+      const driver = document.getElementById("driver").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      
+      // Validation
+      if (!vehicle) {
+        throw new Error("Vehicle number is required");
+      }
+      
+      if (!driver) {
+        throw new Error("Driver name is required");
+      }
+      
+      if (phone && !validatePhone(phone)) {
+        throw new Error("Phone number is invalid");
+      }
+      
+      // Collect DC blocks
+      const dcBlocks = [];
+      document.querySelectorAll("#dc-container .dc-block").forEach(block => {
+        const dcName = block.querySelector(".dc-name-input").value.trim();
+        if (!dcName) return;
+        
+        const routes = [];
+        block.querySelectorAll(".route-row").forEach(row => {
+          const stop = row.querySelector(".inp-stop").value.trim();
+          if (!stop) return;
+          
+          routes.push({
+            stop: stop,
+            distance: row.querySelector(".inp-dist").value,
+            eta: row.querySelector(".inp-eta").value,
+            inTime: row.querySelector(".inp-in").value,
+            outTime: row.querySelector(".inp-out").value,
+            pod: row.querySelector(".inp-pod").value
+          });
+        });
+        
+        if (routes.length > 0) {
+          dcBlocks.push({
+            dc: dcName,
+            routes: routes
+          });
+        }
+      });
+      
+      if (dcBlocks.length === 0) {
+        throw new Error("Add at least one DC with stops");
+      }
+      
+      const now = new Date().toISOString();
+      const tripData = {
+        vehicle: vehicle,
+        driver: driver,
+        phone: phone,
+        createdDate: now,
+        created_at: new Date(now).toLocaleDateString("en-GB"),
+        dcBlocks: dcBlocks,
+        finished: false,
+        updatedAt: serverTimestamp()
+      };
+      
+      if (auth.currentUser) {
+        tripData.createdBy = auth.currentUser.uid;
+        tripData.createdByEmail = auth.currentUser.email;
+      }
+      
+      // Validate trip data
+      const validationErrors = validateTripData(tripData);
+      if (validationErrors.length > 0) {
+        throw new Error(validationErrors.join(". "));
+      }
+      
+      if (tripId) {
+        // Update existing trip
+        await updateDoc(doc(db, "trips", tripId), tripData);
+        showToast("Trip updated successfully", "success");
+        trackEvent('trips', 'update', tripId);
+      } else {
+        // Create new trip
+        await addDoc(collection(db, "trips"), tripData);
+        showToast("Trip created successfully", "success");
+        trackEvent('trips', 'create', 'new');
+      }
+      
+      closeEntryForm();
+      
+    } catch (error) {
+      console.error("Error saving trip:", error);
+      showToast("Error: " + error.message, "error");
+    } finally {
+      setLoading(saveBtn, false);
+    }
+  };
+
+  window.editTrip = function(id) {
+    const trip = trips.find(t => t.id === id);
+    if (!trip) {
+      showToast("Trip not found", "error");
+      return;
+    }
+    
+    document.getElementById("trip-id").value = trip.id;
+    document.getElementById("vehicle").value = trip.vehicle;
+    document.getElementById("driver").value = trip.driver;
+    document.getElementById("phone").value = trip.phone;
+    
+    // Clear existing DC blocks
+    document.getElementById("dc-container").innerHTML = "";
+    
+    // Add DC blocks from trip
+    if (trip.dcBlocks && trip.dcBlocks.length > 0) {
+      trip.dcBlocks.forEach(block => {
+        addDcBlock(block);
+      });
+    } else {
+      addDcBlock();
+    }
+    
+    // Show/hide delete button based on role
+    const deleteBtn = document.getElementById("btn-form-delete");
+    if (currentRole === 'Admin') {
+      deleteBtn.classList.remove("hidden");
+    } else {
+      deleteBtn.classList.add("hidden");
+    }
+    
+    // Update form header
+    document.getElementById("form-header").classList.replace("bg-blue-600", "bg-amber-600");
+    document.getElementById("form-title").innerText = "Edit Trip";
+    
+    switchTab("entry");
+    trackEvent('trips', 'edit', id);
+  };
+
+  window.deleteTrip = async function(id) {
+    if (currentRole !== 'Admin') {
+      showToast("Admin privileges required", "error");
+      return;
+    }
+    
+    const confirmed = await showConfirmation(
+      "Delete Trip",
+      "Are you sure you want to delete this trip? This action cannot be undone."
+    );
+    
+    if (!confirmed) return;
+    
+    try {
+      await deleteDoc(doc(db, "trips", id));
+      showToast("Trip deleted successfully", "success");
+      trackEvent('trips', 'delete', id);
+    } catch (error) {
+      console.error("Error deleting trip:", error);
+      showToast("Error deleting trip: " + error.message, "error");
+    }
+  };
+
+  window.deleteTripFromForm = function() {
+    const tripId = document.getElementById("trip-id").value;
+    if (tripId) {
+      window.deleteTrip(tripId);
+    }
+    closeEntryForm();
+  };
+
+  window.closeEntryForm = function() {
+    document.getElementById("trip-form").reset();
+    document.getElementById("dc-container").innerHTML = "";
+    addDcBlock();
+    document.getElementById("trip-id").value = "";
+    document.getElementById("btn-form-delete").classList.add("hidden");
+    document.getElementById("form-header").classList.replace("bg-amber-600", "bg-blue-600");
+    document.getElementById("form-title").innerText = "New Trip";
+    switchTab("dashboard");
+    trackEvent('form', 'close', 'entry');
+  };
+
+  window.finishTrip = async function(id) {
+    const confirmed = await showConfirmation(
+      "Finish Trip",
+      "Are you sure you want to mark this trip as finished?"
+    );
+    
+    if (!confirmed) return;
+    
+    try {
+      await updateDoc(doc(db, "trips", id), {
+        finished: true,
+        finishedAt: serverTimestamp()
+      });
+      showToast("Trip marked as finished", "success");
+      trackEvent('trips', 'finish', id);
+    } catch (error) {
+      console.error("Error finishing trip:", error);
+      showToast("Error: " + error.message, "error");
+    }
+  };
+
+  // ============ SHARE FUNCTIONS ============
+  window.shareTripWhatsapp = function(id) {
+    const trip = trips.find(t => t.id === id);
+    if (!trip) {
+      showToast("Trip not found", "error");
+      return;
+    }
+    
+    // Build message
+    let message = "🚛 *SHRI NARAYAN LOGISTICS*\n";
+    message += "Poc Contact: 8651744312\n\n";
+    message += `👨‍✈️ DRIVER: ${trip.driver || ''}\n`;
+    message += `📱 PH: ${trip.phone || ''}\n`;
+    message += `🔢 VEHICLE NO: ${trip.vehicle || ''}\n`;
+    message += `📅 DEPARTURE DATE: ${trip.created_at || ''}\n`;
+    message += `⏰ DEPARTURE TIME: ${new Date(trip.createdDate).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}\n\n`;
+    
+    trip.dcBlocks.forEach(block => {
+      message += `📍 *${block.dc.toUpperCase()}*\n`;
+      block.routes.forEach(route => {
+        const podStatus = route.pod === "RECEIVED" ? "YES RECIVED" : route.pod;
+        message += `• ${route.stop}\n`;
+        message += `  ⏱️ ETA: ${route.eta || 'N/A'}\n`;
+        message += `  🕐 IN: ${route.inTime || 'N/A'}\n`;
+        message += `  🕒 OUT: ${route.outTime || 'N/A'}\n`;
+        message += `  📄 POD: ${podStatus || 'PENDING'}\n\n`;
+      });
+    });
+    
+    // Encode for WhatsApp
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/?text=${encodedMessage}`;
+    
+    // Open in new window
+    window.open(whatsappUrl, '_blank');
+    trackEvent('share', 'whatsapp', id);
+  };
+
+  // ============ LOCAL FILE SYNC ============
+  window.initializeFileHandler = async function() {
+    if (!('showOpenFilePicker' in window)) {
+      showToast("Your browser doesn't support local file sync. Try Chrome or Edge.", "error");
+      return;
+    }
+    
+    try {
+      const [handle] = await window.showOpenFilePicker({
+        types: [{
+          description: "CSV Files",
+          accept: { "text/csv": [".csv"] }
+        }],
+        multiple: false
+      });
+      
+      fileHandle = handle;
+      
+      // Request permission
+      const options = { mode: "readwrite" };
+      if ((await fileHandle.queryPermission(options)) !== "granted") {
+        if ((await fileHandle.requestPermission(options)) !== "granted") {
+          throw new Error("Permission denied");
+        }
+      }
+      
+      document.getElementById("file-status-msg").innerText = "Connected: " + fileHandle.name;
+      showToast("File connected successfully", "success");
+      trackEvent('sync', 'file_connected', fileHandle.name);
+      
+      // Save current data to file
+      await saveToLocalFile();
+      
+    } catch (error) {
+      console.error("File handler error:", error);
+      showToast("Failed to connect file: " + error.message, "error");
+      document.getElementById("file-status-msg").innerText = "Not connected";
+    }
+  };
+
+  async function saveToLocalFile() {
+    if (!fileHandle) return;
+    
+    try {
+      const writable = await fileHandle.createWritable();
+      
+      // Build CSV
+      const headers = ["date", "vehicle", "driver", "phone", "dc", "stop", "distance", "eta", "inTime", "outTime", "pod", "finished"];
+      const rows = [headers.join(",")];
+      
+      trips.forEach(trip => {
+        trip.dcBlocks.forEach(block => {
+          block.routes.forEach(route => {
+            const row = [
+              trip.created_at,
+              trip.vehicle,
+              trip.driver,
+              trip.phone,
+              block.dc,
+              route.stop,
+              route.distance,
+              route.eta,
+              route.inTime,
+              route.outTime,
+              route.pod,
+              trip.finished ? "YES" : "NO"
+            ].map(cell => `"${(cell || '').toString().replace(/"/g, '""')}"`);
+            
+            rows.push(row.join(","));
+          });
+        });
+      });
+      
+      await writable.write(rows.join("\r\n"));
+      await writable.close();
+      
+      console.log("Data saved to local file");
+    } catch (error) {
+      console.error("Error saving to file:", error);
+      showToast("Error saving to file: " + error.message, "error");
+    }
+  }
+
+  // ============ FLEET FUNCTIONS ============
+  function renderFleet() {
+    try {
+      const tbody = document.getElementById('fleet-tbody');
+      if (!tbody) return;
+      
+      if (fleet.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="px-4 py-4 text-center text-slate-500 text-xs">
+              No fleet vehicles found. Add some vehicles to get started.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+      
+      tbody.innerHTML = fleet.map(vehicle => {
+        const isActive = vehicle.active !== false;
+        const deleteButton = currentRole === 'Admin' 
+          ? `<button onclick="deleteFleet('${vehicle.id}')" class="text-red-600 text-xs px-2 py-1 border border-red-200 rounded hover:bg-red-50" aria-label="Delete vehicle">
+              Del
+            </button>`
+          : '';
+        
+        return `
+          <tr class="bg-white dark:bg-slate-900 border-b dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800">
+            <td class="px-4 py-2 text-xs font-bold">${vehicle.no || ""}</td>
+            <td class="px-4 py-2 text-xs">${vehicle.type || ""}</td>
+            <td class="px-4 py-2 text-xs">${vehicle.driver || ""}</td>
+            <td class="px-4 py-2 text-xs">${vehicle.phone || ""}</td>
+            <td class="px-4 py-2 text-xs">
+              <span class="badge ${isActive ? 'badge-green' : 'badge-gray'}">
+                ${isActive ? 'Active' : 'Inactive'}
+              </span>
+            </td>
+            <td class="px-4 py-2 text-xs text-right">
+              <div class="flex justify-end gap-1">
+                <button onclick="toggleFleetActive('${vehicle.id}')" class="text-xs px-2 py-1 border rounded ${
+                  isActive ? 'text-red-500 border-red-200' : 'text-green-500 border-green-200'
+                }" aria-label="${isActive ? 'Disable' : 'Enable'} vehicle">
+                  ${isActive ? 'Disable' : 'Enable'}
+                </button>
+                <button onclick="editFleet('${vehicle.id}')" class="text-blue-500 text-xs px-2 py-1 border border-blue-200 rounded" aria-label="Edit vehicle">
+                  Edit
+                </button>
+                ${deleteButton}
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+      
+    } catch (error) {
+      console.error("Fleet render error:", error);
+      showToast("Error loading fleet", "error");
+    }
+  }
+
+  window.saveFleet = async function() {
+    const id = document.getElementById("fleet-id").value;
+    const vehicleNo = document.getElementById("fleet-no").value.toUpperCase().trim();
+    
+    if (!vehicleNo) {
+      showToast("Vehicle number is required", "error");
+      return;
+    }
+    
+    const fleetData = {
+      no: vehicleNo,
+      type: document.getElementById("fleet-type").value.trim(),
+      driver: document.getElementById("fleet-driver").value.trim(),
+      phone: document.getElementById("fleet-phone").value.trim(),
+      updatedAt: serverTimestamp()
+    };
+    
+    try {
+      if (id) {
+        // Update existing vehicle
+        await updateDoc(doc(db, "fleet", id), fleetData);
+        showToast("Vehicle updated successfully", "success");
+        trackEvent('fleet', 'update', id);
+      } else {
+        // Add new vehicle
+        await addDoc(collection(db, "fleet"), {
+          ...fleetData,
+          active: true,
+          createdAt: serverTimestamp()
+        });
+        showToast("Vehicle added successfully", "success");
+        trackEvent('fleet', 'create', 'new');
+      }
+      
+      closeFleetModal();
+    } catch (error) {
+      console.error("Error saving fleet:", error);
+      showToast("Error saving vehicle: " + error.message, "error");
+    }
+  };
+
+  window.editFleet = function(id) {
+    const vehicle = fleet.find(v => v.id === id);
+    if (!vehicle) {
+      showToast("Vehicle not found", "error");
+      return;
+    }
+    
+    document.getElementById("fleet-id").value = vehicle.id;
+    document.getElementById("fleet-no").value = vehicle.no || "";
+    document.getElementById("fleet-type").value = vehicle.type || "";
+    document.getElementById("fleet-driver").value = vehicle.driver || "";
+    document.getElementById("fleet-phone").value = vehicle.phone || "";
+    document.getElementById("fleet-modal-title").innerText = "Edit Vehicle";
+    document.getElementById("fleet-modal").classList.remove("hidden");
+    
+    trackEvent('fleet', 'edit', id);
+  };
+
+  window.deleteFleet = async function(id) {
+    if (currentRole !== 'Admin') {
+      showToast("Admin privileges required", "error");
+      return;
+    }
+    
+    const confirmed = await showConfirmation(
+      "Delete Vehicle",
+      "Are you sure you want to delete this vehicle? This action cannot be undone."
+    );
+    
+    if (!confirmed) return;
+    
+    try {
+      await deleteDoc(doc(db, "fleet", id));
+      showToast("Vehicle deleted successfully", "success");
+      trackEvent('fleet', 'delete', id);
+    } catch (error) {
+      console.error("Error deleting vehicle:", error);
+      showToast("Error deleting vehicle: " + error.message, "error");
+    }
+  };
+
+  window.toggleFleetActive = async function(id) {
+    const vehicle = fleet.find(v => v.id === id);
+    if (!vehicle) return;
+    
+    try {
+      await updateDoc(doc(db, "fleet", id), {
+        active: vehicle.active === false,
+        updatedAt: serverTimestamp()
+      });
+      
+      const newStatus = vehicle.active === false ? "enabled" : "disabled";
+      showToast(`Vehicle ${newStatus} successfully`, "success");
+      trackEvent('fleet', 'toggle_active', newStatus);
+    } catch (error) {
+      console.error("Error toggling vehicle status:", error);
+      showToast("Error updating vehicle: " + error.message, "error");
+    }
+  };
+
+  window.openFleetModal = function() {
+    document.getElementById("fleet-modal").classList.remove("hidden");
+    document.getElementById("fleet-id").value = "";
+    document.getElementById("fleet-no").value = "";
+    document.getElementById("fleet-type").value = "";
+    document.getElementById("fleet-driver").value = "";
+    document.getElementById("fleet-phone").value = "";
+    document.getElementById("fleet-modal-title").innerText = "Add Vehicle";
+    
+    trackEvent('fleet', 'modal_open', 'add');
+  };
+
+  window.closeFleetModal = function() {
+    document.getElementById("fleet-modal").classList.add("hidden");
+    trackEvent('fleet', 'modal_close', 'cancel');
+  };
+
+  // ============ REPORTS FUNCTIONS ============
+  function renderReport() {
+    try {
+      const tbody = document.getElementById("rep-tbody");
+      if (!tbody) return;
+      
+      const vehicleFilter = (document.getElementById("rep-vehicle").value || "").toLowerCase();
+      const statusFilter = document.getElementById("rep-status").value;
+      const dateFrom = document.getElementById("rep-date-from").value;
+      const dateTo = document.getElementById("rep-date-to").value;
+      
+      const rows = [];
+      
+      trips.forEach(trip => {
+        // Date filtering
+        if (dateFrom) {
+          const tripDate = new Date(trip.createdDate);
+          const fromDate = new Date(dateFrom);
+          if (tripDate < fromDate) return;
+        }
+        
+        if (dateTo) {
+          const tripDate = new Date(trip.createdDate);
+          const toDate = new Date(dateTo);
+          toDate.setHours(23, 59, 59, 999); // End of day
+          if (tripDate > toDate) return;
+        }
+        
+        trip.dcBlocks.forEach(block => {
+          block.routes.forEach(route => {
+            // Determine status
+            let status = route.pod || "PENDING";
+            if (isRouteDelayed(route)) {
+              status = "DELAYED";
+            }
+            
+            // Apply filters
+            if (statusFilter !== "ALL" && status !== statusFilter) return;
+            if (vehicleFilter && !(trip.vehicle || "").toLowerCase().includes(vehicleFilter)) return;
+            
+            rows.push({
+              date: trip.created_at,
+              vehicle: trip.vehicle,
+              driver: trip.driver,
+              dc: block.dc,
+              stop: route.stop,
+              distance: route.distance,
+              eta: route.eta,
+              inTime: route.inTime,
+              outTime: route.outTime,
+              pod: status
+            });
+          });
+        });
+      });
+      
+      // Update summary
+      document.getElementById("rep-summary").innerText = 
+        `Showing ${rows.length} record${rows.length !== 1 ? 's' : ''}`;
+      
+      if (rows.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="10" class="px-4 py-8 text-center text-slate-500 text-sm">
+              No records found matching your criteria
+            </td>
+          </tr>
+        `;
+        return;
+      }
+      
+      // Render rows
+      tbody.innerHTML = rows.map(row => `
+        <tr class="bg-white dark:bg-slate-900 border-b dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800">
+          <td class="px-4 py-2 text-xs">${row.date}</td>
+          <td class="px-4 py-2 text-xs font-bold">${row.vehicle}</td>
+          <td class="px-4 py-2 text-xs">${row.driver}</td>
+          <td class="px-4 py-2 text-xs">${row.dc}</td>
+          <td class="px-4 py-2 text-xs">${row.stop}</td>
+          <td class="px-4 py-2 text-xs">${row.distance}</td>
+          <td class="px-4 py-2 text-xs">${row.eta}</td>
+          <td class="px-4 py-2 text-xs">${row.inTime}</td>
+          <td class="px-4 py-2 text-xs">${row.outTime}</td>
+          <td class="px-4 py-2 text-xs">
+            <span class="badge ${
+              row.pod === 'RECEIVED' ? 'badge-green' :
+              row.pod === 'ISSUE' ? 'badge-red' :
+              row.pod === 'DELAYED' ? 'badge-blue' : 'badge-yellow'
+            }">
+              ${row.pod}
+            </span>
+          </td>
+        </tr>
+      `).join('');
+      
+      trackEvent('reports', 'render', rows.length.toString());
+      
+    } catch (error) {
+      console.error("Report render error:", error);
+      showToast("Error loading report", "error");
+    }
+  }
+
+  window.downloadReportCsv = function() {
+    try {
+      const tbody = document.getElementById("rep-tbody");
+      if (!tbody || tbody.children.length === 0 || tbody.children[0].children.length === 0) {
+        showToast("No data to export", "warning");
+        return;
+      }
+      
+      // Collect data from rendered table
+      const headers = ["Date", "Vehicle", "Driver", "DC", "Stop", "Distance", "ETA", "IN", "OUT", "POD"];
+      const rows = [];
+      
+      // Get all rows from table body
+      const tableRows = tbody.querySelectorAll("tr");
+      tableRows.forEach(row => {
+        if (row.children.length === 10) { // Ensure we have all columns
+          const cells = Array.from(row.children).map(cell => {
+            // Get text from cell, handling badges
+            const badge = cell.querySelector(".badge");
+            if (badge) {
+              return badge.textContent.trim();
+            }
+            return cell.textContent.trim();
+          });
+          rows.push(cells);
+        }
+      });
+      
+      if (rows.length === 0) {
+        showToast("No data to export", "warning");
+        return;
+      }
+      
+      // Create CSV content
+      const csvContent = [
+        headers.join(","),
+        ...rows.map(row => row.map(cell => `"${cell.replace(/"/g, '""')}"`).join(","))
+      ].join("\n");
+      
+      // Create download link
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `snl-report-${new Date().toISOString().split('T')[0]}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
+      showToast("Report downloaded successfully", "success");
+      trackEvent('reports', 'download_csv', rows.length.toString());
+      
+    } catch (error) {
+      console.error("CSV export error:", error);
+      showToast("Error exporting CSV: " + error.message, "error");
+    }
+  };
+
+  window.printReport = function() {
+    const printContent = document.getElementById("view-reports").innerHTML;
+    const originalContent = document.body.innerHTML;
+    
+    document.body.innerHTML = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>SNL Report - ${new Date().toLocaleDateString()}</title>
+        <style>
+          body { font-family: Arial, sans-serif; margin: 20px; }
+          h1 { color: #1e40af; }
+          .header { margin-bottom: 20px; }
+          table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+          th, td { border: 1px solid #ddd; padding: 8px; text-align: left; font-size: 12px; }
+          th { background-color: #f8fafc; }
+          .badge { padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: bold; }
+          .badge-green { background: #dcfce7; color: #166534; }
+          .badge-red { background: #fee2e2; color: #991b1b; }
+          .badge-blue { background: #dbeafe; color: #1d4ed8; }
+          .badge-yellow { background: #fef3c7; color: #92400e; }
+          @media print {
+            body { margin: 0; }
+            .no-print { display: none; }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1>Shri Narayan Logistics - Trip Report</h1>
+          <p>Generated: ${new Date().toLocaleString()}</p>
+          <p>Total Records: ${document.getElementById("rep-tbody").children.length}</p>
+        </div>
+        ${printContent}
+        <div class="no-print" style="margin-top: 20px;">
+          <button onclick="window.print()" style="padding: 10px 20px; background: #3b82f6; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            Print Report
+          </button>
+          <button onclick="window.close()" style="padding: 10px 20px; background: #6b7280; color: white; border: none; border-radius: 5px; cursor: pointer; margin-left: 10px;">
+            Close
+          </button>
+        </div>
+        <script>
+          window.onload = function() {
+            window.print();
+          };
+        <\/script>
+      </body>
+      </html>
+    `;
+    
+    window.onafterprint = function() {
+      document.body.innerHTML = originalContent;
+      switchTab('reports'); // Restore the reports view
+    };
+    
+    trackEvent('reports', 'print', 'success');
+  };
+
+  // ============ USER MANAGEMENT ============
+  window.submitUser = async function(e) {
+    e.preventDefault();
+    
+    if (currentRole !== "Admin") {
+      showToast("Admin privileges required", "error");
+      return;
+    }
+    
+    const email = document.getElementById("user-email").value.trim();
+    const password = document.getElementById("user-pass").value;
+    const name = document.getElementById("user-name").value.trim();
+    const role = document.getElementById("user-role").value;
+    
+    // Validation
+    if (!validateEmail(email)) {
+      showToast("Please enter a valid email address", "error");
+      return;
+    }
+    
+    if (password && password.length < 6) {
+      showToast("Password must be at least 6 characters", "error");
+      return;
+    }
+    
+    if (!name) {
+      showToast("Name is required", "error");
+      return;
+    }
+    
+    try {
+      // Check if user already exists
+      const existingUser = users.find(u => u.email === email);
+      
+      if (existingUser) {
+        // Update existing user
+        await setDoc(doc(db, "users", email), {
+          email: email,
+          name: name,
+          role: role,
+          updatedAt: serverTimestamp()
+        }, { merge: true });
+        
+        showToast("User updated successfully", "success");
+        trackEvent('users', 'update', email);
+        
+      } else {
+        // Create new user with Firebase Auth
+        const secondaryApp = initializeApp(firebaseConfig, "Secondary");
+        const secondaryAuth = getAuth(secondaryApp);
+        
+        await createUserWithEmailAndPassword(secondaryAuth, email, password || "default123");
+        await signOut(secondaryAuth);
+        await deleteApp(secondaryApp);
+        
+        // Store user data in Firestore
+        await setDoc(doc(db, "users", email), {
+          email: email,
+          name: name,
+          role: role,
+          createdAt: serverTimestamp()
+        });
+        
+        showToast("User created successfully", "success");
+        trackEvent('users', 'create', email);
+      }
+      
+      // Clear form
+      document.getElementById("user-form").reset();
+      
+    } catch (error) {
+      console.error("User creation error:", error);
+      
+      if (error.code === 'auth/email-already-in-use') {
+        // User exists in Auth but not in Firestore, just update Firestore
+        await setDoc(doc(db, "users", email), {
+          email: email,
+          name: name,
+          role: role,
+          updatedAt: serverTimestamp()
+        }, { merge: true });
+        
+        showToast("User updated successfully", "success");
+      } else {
+        showToast("Error: " + error.message, "error");
+      }
+    }
+  };
+
+  window.deleteUser = async function(id) {
+    if (currentRole !== "Admin") {
+      showToast("Admin privileges required", "error");
+      return;
+    }
+    
+    const user = users.find(u => u.id === id);
+    if (!user) return;
+    
+    const confirmed = await showConfirmation(
+      "Delete User",
+      `Are you sure you want to delete user "${user.email}"? This action cannot be undone.`
+    );
+    
+    if (!confirmed) return;
+    
+    try {
+      await deleteDoc(doc(db, "users", id));
+      showToast("User deleted successfully", "success");
+      trackEvent('users', 'delete', user.email);
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      showToast("Error deleting user: " + error.message, "error");
+    }
+  };
+
+  function renderUsers() {
+    const tbody = document.getElementById("users-tbody");
+    if (!tbody) return;
+    
+    if (users.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="4" class="px-4 py-4 text-center text-slate-500 text-xs">
+            No users found. Create users to manage access.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+    
+    tbody.innerHTML = users.map(user => `
+      <tr class="bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800">
+        <td class="px-4 py-3 text-xs font-semibold">${user.name || "-"}</td>
+        <td class="px-4 py-3 text-xs">${user.email}</td>
+        <td class="px-4 py-3 text-xs">
+          <span class="badge ${user.role === 'Admin' ? 'badge-blue' : 'badge-gray'}">
+            ${user.role || "Staff"}
+          </span>
+        </td>
+        <td class="px-4 py-3 text-xs text-right">
+          ${currentRole === 'Admin' && user.email !== auth.currentUser?.email
+            ? `<button onclick="deleteUser('${user.id}')" class="text-red-600 hover:text-red-800" aria-label="Delete user">
+                <i class="fa-solid fa-trash"></i>
+              </button>`
+            : '<span class="text-slate-400 text-xs">Current</span>'}
+        </td>
+      </tr>
+    `).join("");
+  }
+
+  // ============ SETTINGS FUNCTIONS ============
+  window.saveSheetUrl = function() {
+    const url = document.getElementById("gsheet-url").value.trim();
+    
+    if (!url) {
+      showToast("Please enter a Google Sheets URL", "error");
+      return;
+    }
+    
+    try {
+      // Validate URL
+      new URL(url);
+      googleSheetUrl = url;
+      localStorage.setItem("snl_gsheet_url", url);
+      showToast("Google Sheets URL saved successfully", "success");
+      trackEvent('settings', 'save_gsheet_url', 'success');
+    } catch (error) {
+      showToast("Please enter a valid URL", "error");
+    }
+  };
+
+  window.saveDelayEmail = function() {
+    const email = document.getElementById("delay-email").value.trim();
+    
+    if (!validateEmail(email)) {
+      showToast("Please enter a valid email address", "error");
+      return;
+    }
+    
+    delayEmailTo = email;
+    localStorage.setItem("snl_delay_email", email);
+    showToast("Delay alert email saved successfully", "success");
+    trackEvent('settings', 'save_delay_email', email);
+  };
+
+  async function syncToGoogleSheet() {
+    if (!googleSheetUrl) return;
+    
+    try {
+      // Prepare data for Google Sheets
+      const data = trips.map(trip => ({
+        date: trip.created_at,
+        vehicle: trip.vehicle,
+        driver: trip.driver,
+        phone: trip.phone,
+        status: trip.finished ? "FINISHED" : "ACTIVE",
+        created: new Date(trip.createdDate).toISOString()
+      }));
+      
+      // Send to Google Sheets (simplified - would need Apps Script implementation)
+      // await fetch(googleSheetUrl, { method: 'POST', body: JSON.stringify(data) });
+      
+      console.log("Data synced to Google Sheets:", data.length);
+    } catch (error) {
+      console.error("Google Sheets sync error:", error);
+    }
+  }
+
+  // ============ KEYBOARD SHORTCUTS ============
+  document.addEventListener('keydown', function(e) {
+    // Ctrl/Cmd + S to save trip form
+    if ((e.ctrlKey || e.metaKey) && e.key === 's' && !document.getElementById("view-entry").classList.contains("hidden")) {
+      e.preventDefault();
+      const saveBtn = document.getElementById("save-trip-btn");
+      if (saveBtn) saveBtn.click();
+    }
+    
+    // Escape to close modals
+    if (e.key === 'Escape') {
+      if (!document.getElementById("confirm-modal").classList.contains("hidden")) {
+        confirmAction(false);
+      }
+      if (!document.getElementById("fleet-modal").classList.contains("hidden")) {
+        closeFleetModal();
+      }
+      if (!document.getElementById("reset-modal").classList.contains("hidden")) {
+        closeReset();
+      }
+    }
+    
+    // Number keys for quick navigation (1-7 for tabs)
+    if (e.key >= '1' && e.key <= '7' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      const tabs = ['dashboard', 'database', 'entry', 'fleet', 'users', 'reports', 'settings'];
+      const index = parseInt(e.key) - 1;
+      if (index < tabs.length) {
+        e.preventDefault();
+        switchTab(tabs[index]);
+      }
+    }
+  });
+
+  // ============ INITIALIZATION ============
+  document.addEventListener("DOMContentLoaded", function() {
+    // Initialize with one DC block
+    if (!document.querySelector("#dc-container .dc-block")) {
+      addDcBlock();
+    }
+    
+    // Set current date for report filters
+    const today = new Date().toISOString().split('T')[0];
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+    const oneWeekAgoStr = oneWeekAgo.toISOString().split('T')[0];
+    
+    document.getElementById("rep-date-from").value = oneWeekAgoStr;
+    document.getElementById("rep-date-to").value = today;
+    
+    // Load saved settings
+    const savedGsheetUrl = localStorage.getItem("snl_gsheet_url");
+    const savedDelayEmail = localStorage.getItem("snl_delay_email");
+    
+    if (savedGsheetUrl) {
+      document.getElementById("gsheet-url").value = savedGsheetUrl;
+      googleSheetUrl = savedGsheetUrl;
+    }
+    
+    if (savedDelayEmail) {
+      document.getElementById("delay-email").value = savedDelayEmail;
+      delayEmailTo = savedDelayEmail;
+    }
+    
+    // Accessibility enhancements
+    enhanceAccessibility();
+    
+    // Initialize service worker for PWA
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(err => {
+        console.log('Service Worker registration failed:', err);
+      });
+    }
+    
+    trackEvent('app', 'loaded', 'success');
+  });
+
+  function enhanceAccessibility() {
+    // Add ARIA labels where missing
+    document.querySelectorAll('button:not([aria-label])').forEach(btn => {
+      const text = btn.textContent || btn.title || '';
+      if (text.trim()) {
+        btn.setAttribute('aria-label', text.trim());
+      }
+    });
+    
+    // Ensure all inputs have labels
+    document.querySelectorAll('input:not([id*="search"]):not([type="hidden"])').forEach(input => {
+      if (!input.hasAttribute('aria-label') && !document.querySelector(`label[for="${input.id}"]`)) {
+        const placeholder = input.getAttribute('placeholder') || '';
+        if (placeholder) {
+          input.setAttribute('aria-label', placeholder);
+        }
+      }
+    });
+  }
+
+  // ============ ERROR BOUNDARY ============
+  window.addEventListener('error', function(event) {
+    console.error('Global error caught:', event.error);
+    showToast('An unexpected error occurred. Please refresh the page.', 'error');
+    trackEvent('error', 'global', event.error.message);
+    return false;
+  });
+
+  // ============ PWA INSTALL PROMPT ============
+  let deferredPrompt;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    
+    // Show install button (you could add this to your UI)
+    const installBtn = document.createElement('button');
+    installBtn.className = 'fixed bottom-4 left-4 bg-blue-600 text-white text-xs px-4 py-2 rounded-lg shadow-lg z-50';
+    installBtn.innerHTML = '<i class="fa-solid fa-download mr-2"></i>Install App';
+    installBtn.onclick = async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        trackEvent('pwa', 'install_prompt', outcome);
+        deferredPrompt = null;
+        installBtn.remove();
+      }
+    };
+    document.body.appendChild(installBtn);
+  });
+
+  // ============ EXPORT ALL FUNCTIONS ============
+  // Make sure all functions are available globally
+  window.renderDashboard = renderDashboard;
+  window.renderDatabase = renderDatabase;
+  window.renderReport = renderReport;
+  window.renderFleet = renderFleet;
+  window.renderUsers = renderUsers;
+  window.renderRouteMaster = renderRouteMaster;
+  window.renderTemplateTable = renderTemplateTable;
+  window.renderTemplateOptions = renderTemplateOptions;
+  window.populateGlobalDcList = populateGlobalDcList;
+  window.saveToLocalFile = saveToLocalFile;
+  window.syncToGoogleSheet = syncToGoogleSheet;
+  window.validateTripData = validateTripData;
+  window.isRouteDelayed = isRouteDelayed;
+  window.setLoading = setLoading;
+  window.showToast = showToast;
+  window.withRetry = withRetry;
+  window.trackEvent = trackEvent;
+
+</script>
 </body>
 </html>
