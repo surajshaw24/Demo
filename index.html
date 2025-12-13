@@ -1866,21 +1866,21 @@
     // Build message
     let message = "🚛 *SHRI NARAYAN LOGISTICS*\n";
     message += "Poc Contact: 8651744312\n\n";
-    message += `👨‍✈️ DRIVER: ${trip.driver || ''}\n`;
-    message += `📱 PH: ${trip.phone || ''}\n`;
-    message += `🔢 VEHICLE NO: ${trip.vehicle || ''}\n`;
-    message += `📅 DEPARTURE DATE: ${trip.created_at || ''}\n`;
-    message += `⏰ DEPARTURE TIME: ${new Date(trip.createdDate).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}\n\n`;
+    message += ` DRIVER: ${trip.driver || ''}\n`;
+    message += ` PH: ${trip.phone || ''}\n`;
+    message += ` VEHICLE NO: ${trip.vehicle || ''}\n`;
+    message += ` DEPARTURE DATE: ${trip.created_at || ''}\n`;
+    message += ` DEPARTURE TIME: ${new Date(trip.createdDate).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}\n\n`;
     
     trip.dcBlocks.forEach(block => {
-      message += `📍 *${block.dc.toUpperCase()}*\n`;
+      message += ` *${block.dc.toUpperCase()}*\n`;
       block.routes.forEach(route => {
         const podStatus = route.pod === "RECEIVED" ? "YES RECIVED" : route.pod;
         message += `• ${route.stop}\n`;
-        message += `  ⏱️ ETA: ${route.eta || 'N/A'}\n`;
-        message += `  🕐 IN: ${route.inTime || 'N/A'}\n`;
-        message += `  🕒 OUT: ${route.outTime || 'N/A'}\n`;
-        message += `  📄 POD: ${podStatus || 'PENDING'}\n\n`;
+        message += `   ETA: ${route.eta || 'N/A'}\n`;
+        message += `   IN: ${route.inTime || 'N/A'}\n`;
+        message += `   OUT: ${route.outTime || 'N/A'}\n`;
+        message += `   POD: ${podStatus || 'PENDING'}\n\n`;
       });
     });
     
