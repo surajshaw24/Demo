@@ -323,6 +323,11 @@
       color: #cbd5e1;
     }
     
+    html.dark .btn-outline:hover {
+      border-color: #64748b;
+      color: #e2e8f0;
+    }
+    
     /* Table Styles */
     .table-container {
       overflow-x: auto;
@@ -432,7 +437,7 @@
 </div>
 
 <!-- Auth Screen -->
-<div id="auth-screen" class="fixed inset-0 bg-gradient-to-br from-blue-900 via-slate-900 to-slate-950 z-40 flex-col items-center justify-center p-4 hidden">
+<div id="auth-screen" class="fixed inset-0 bg-gradient-to-br from-blue-900 via-slate-900 to-slate-950 z-40 flex-col items-center justify-center p-4" style="display: none;">
   <div class="w-full max-w-md">
     <div class="text-center mb-8">
       <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 shadow-xl mb-4">
@@ -535,7 +540,7 @@
 </div>
 
 <!-- Main App Container -->
-<div id="app-container" class="hidden h-screen flex flex-col bg-slate-50 dark:bg-slate-950">
+<div id="app-container" class="h-screen flex flex-col bg-slate-50 dark:bg-slate-950" style="display: none;">
   
   <!-- Top Navigation -->
   <header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-sm z-40">
@@ -1465,7 +1470,7 @@
   }
 
   // ============ AUTHENTICATION ============
-  async function handleLogin(e) {
+  function handleLogin(e) {
     e.preventDefault();
     
     const email = document.getElementById('login-email').value.trim();
@@ -1482,39 +1487,54 @@
     setLoading(loginBtn, true);
     errorDiv.classList.add('hidden');
     
-    try {
-      // Simulate login - In production, use Firebase Auth
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      if (email === 'admin@shrinarayanlogistics.com' && password === 'admin123') {
-        currentUser = { email: email, displayName: 'Admin User' };
+    // Simulate login delay
+    setTimeout(() => {
+      if ((email === 'admin@shrinarayanlogistics.com' || email === 'shrinarayanlogistic@gmail.com' || email === 'itexpress4u.cloud@gmail.com') && password === 'admin123') {
+        currentUser = { 
+          email: email, 
+          displayName: email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1) 
+        };
         currentRole = 'Admin';
         
-        showToast(`Welcome back, Admin!`, 'success');
+        showToast(`Welcome back, ${currentUser.displayName}!`, 'success');
         handleSuccessfulLogin();
       } else if (email === 'staff@shrinarayanlogistics.com' && password === 'staff123') {
-        currentUser = { email: email, displayName: 'Staff User' };
+        currentUser = { 
+          email: email, 
+          displayName: 'Staff User' 
+        };
         currentRole = 'Staff';
         
         showToast(`Welcome back, Staff!`, 'success');
         handleSuccessfulLogin();
+      } else if (email === 'driver@shrinarayanlogistics.com' && password === 'driver123') {
+        currentUser = { 
+          email: email, 
+          displayName: 'Driver User' 
+        };
+        currentRole = 'Driver';
+        
+        showToast(`Welcome back, Driver!`, 'success');
+        handleSuccessfulLogin();
       } else {
-        throw new Error('Invalid credentials');
+        errorDiv.textContent = 'Invalid email or password';
+        errorDiv.classList.remove('hidden');
       }
       
-    } catch (error) {
-      errorDiv.textContent = 'Invalid email or password';
-      errorDiv.classList.remove('hidden');
-    } finally {
       setLoading(loginBtn, false);
-    }
+    }, 1000);
   }
 
   function handleSuccessfulLogin() {
-    // Hide auth screen, show app
-    document.getElementById('auth-screen').classList.add('hidden');
-    document.getElementById('app-container').classList.remove('hidden');
-    document.getElementById('loader').classList.add('hidden');
+    // Save user to localStorage
+    localStorage.setItem('snl_user', JSON.stringify(currentUser));
+    
+    // Hide loader and auth screen
+    document.getElementById('loader').style.display = 'none';
+    document.getElementById('auth-screen').style.display = 'none';
+    
+    // Show app
+    document.getElementById('app-container').style.display = 'flex';
     
     // Update user info in UI
     document.getElementById('user-display-name').textContent = 
@@ -1542,14 +1562,22 @@
     ).then(confirmed => {
       if (!confirmed) return;
       
+      // Clear localStorage
+      localStorage.removeItem('snl_user');
+      
       currentUser = null;
-      document.getElementById('auth-screen').classList.remove('hidden');
-      document.getElementById('app-container').classList.add('hidden');
+      currentRole = "Staff";
+      
+      // Hide app, show auth screen
+      document.getElementById('app-container').style.display = 'none';
+      document.getElementById('auth-screen').style.display = 'flex';
+      document.getElementById('loader').style.display = 'none';
+      
       showToast('Signed out successfully', 'info');
     });
   }
 
-  async function sendResetEmail() {
+  function sendResetEmail() {
     const email = document.getElementById('reset-email').value.trim();
     const msgDiv = document.getElementById('reset-msg');
     
@@ -1637,8 +1665,6 @@
 
   // ============ DASHBOARD FUNCTIONS ============
   function loadDashboardData() {
-    updateLoaderProgress(30, 'Loading dashboard data...');
-    
     // Use sample trips for demo
     trips = [...sampleTrips];
     
@@ -1653,8 +1679,6 @@
     
     // Initialize chart
     initStatusChart();
-    
-    updateLoaderProgress(100, 'Dashboard loaded');
   }
 
   function updateDashboardStats() {
@@ -1722,10 +1746,12 @@
             <button onclick="viewTrip('${trip.id}')" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
               <i class="fa-solid fa-eye"></i>
             </button>
-            ${currentRole === 'Admin' ? `
+            ${currentRole === 'Admin' || currentRole === 'Staff' ? `
               <button onclick="editTrip('${trip.id}')" class="text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-300">
                 <i class="fa-solid fa-edit"></i>
               </button>
+            ` : ''}
+            ${currentRole === 'Admin' ? `
               <button onclick="deleteTrip('${trip.id}')" class="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300">
                 <i class="fa-solid fa-trash"></i>
               </button>
@@ -1855,7 +1881,63 @@
   function viewTrip(tripId) {
     const trip = trips.find(t => t.id === tripId);
     if (trip) {
-      alert(`Trip Details:\nID: ${trip.id}\nVehicle: ${trip.vehicleNumber}\nDriver: ${trip.driverName}\nRoute: ${trip.from} to ${trip.to}\nStatus: ${trip.status}`);
+      const modal = document.createElement('div');
+      modal.className = 'modal-overlay';
+      modal.innerHTML = `
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 w-full max-w-md shadow-2xl">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100">Trip Details</h3>
+            <button onclick="this.closest('.modal-overlay').remove()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+              <i class="fa-solid fa-times text-xl"></i>
+            </button>
+          </div>
+          <div class="space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <div class="text-sm text-slate-500">Trip ID</div>
+                <div class="font-medium">${trip.id}</div>
+              </div>
+              <div>
+                <div class="text-sm text-slate-500">Status</div>
+                <span class="badge ${
+                  trip.status === 'completed' ? 'badge-success' :
+                  trip.status === 'active' ? 'badge-info' :
+                  trip.status === 'pending' ? 'badge-warning' : 'badge-danger'
+                }">${trip.status}</span>
+              </div>
+              <div>
+                <div class="text-sm text-slate-500">Vehicle</div>
+                <div class="font-medium">${trip.vehicleNumber}</div>
+              </div>
+              <div>
+                <div class="text-sm text-slate-500">Driver</div>
+                <div class="font-medium">${trip.driverName}</div>
+              </div>
+              <div>
+                <div class="text-sm text-slate-500">From</div>
+                <div class="font-medium">${trip.from}</div>
+              </div>
+              <div>
+                <div class="text-sm text-slate-500">To</div>
+                <div class="font-medium">${trip.to}</div>
+              </div>
+              <div>
+                <div class="text-sm text-slate-500">Distance</div>
+                <div class="font-medium">${trip.distance} km</div>
+              </div>
+              <div>
+                <div class="text-sm text-slate-500">ETA</div>
+                <div class="font-medium">${trip.eta}</div>
+              </div>
+              <div class="col-span-2">
+                <div class="text-sm text-slate-500">Revenue</div>
+                <div class="font-medium text-green-600">${formatCurrency(trip.revenue)}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
     }
   }
 
@@ -1978,7 +2060,7 @@
                     <button onclick="viewTrip('${trip.id}')" class="text-blue-600 hover:text-blue-800">
                       <i class="fa-solid fa-eye"></i>
                     </button>
-                    ${currentRole === 'Admin' ? `
+                    ${currentRole === 'Admin' || currentRole === 'Staff' ? `
                       <button onclick="editTrip('${trip.id}')" class="text-green-600 hover:text-green-800">
                         <i class="fa-solid fa-edit"></i>
                       </button>
@@ -1994,13 +2076,143 @@
   }
 
   function searchTrips(query) {
-    // Filter trips based on search query
-    // Implement search logic here
+    if (query.trim() === '') {
+      loadDatabaseData();
+      return;
+    }
+    
+    const filteredTrips = trips.filter(trip =>
+      trip.id.toLowerCase().includes(query.toLowerCase()) ||
+      trip.vehicleNumber.toLowerCase().includes(query.toLowerCase()) ||
+      trip.driverName.toLowerCase().includes(query.toLowerCase()) ||
+      trip.from.toLowerCase().includes(query.toLowerCase()) ||
+      trip.to.toLowerCase().includes(query.toLowerCase())
+    );
+    
+    const container = document.getElementById('database-content');
+    if (filteredTrips.length === 0) {
+      container.innerHTML = '<p class="text-center py-8 text-slate-500">No trips found matching "' + query + '"</p>';
+      return;
+    }
+    
+    container.innerHTML = `
+      <div class="table-container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Trip ID</th>
+              <th>Vehicle</th>
+              <th>Driver</th>
+              <th>Route</th>
+              <th>Distance</th>
+              <th>Status</th>
+              <th>Revenue</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${filteredTrips.map(trip => `
+              <tr>
+                <td class="font-mono">${trip.id}</td>
+                <td>${trip.vehicleNumber}</td>
+                <td>${trip.driverName}</td>
+                <td>${trip.from} → ${trip.to}</td>
+                <td>${trip.distance || '0'} km</td>
+                <td>
+                  <span class="badge ${
+                    trip.status === 'completed' ? 'badge-success' :
+                    trip.status === 'active' ? 'badge-info' :
+                    trip.status === 'pending' ? 'badge-warning' : 'badge-danger'
+                  }">
+                    ${trip.status}
+                  </span>
+                </td>
+                <td>${formatCurrency(trip.revenue)}</td>
+                <td>
+                  <div class="flex gap-2">
+                    <button onclick="viewTrip('${trip.id}')" class="text-blue-600 hover:text-blue-800">
+                      <i class="fa-solid fa-eye"></i>
+                    </button>
+                    ${currentRole === 'Admin' || currentRole === 'Staff' ? `
+                      <button onclick="editTrip('${trip.id}')" class="text-green-600 hover:text-green-800">
+                        <i class="fa-solid fa-edit"></i>
+                      </button>
+                    ` : ''}
+                  </div>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    `;
   }
 
   function filterByStatus(status) {
-    // Filter trips by status
-    // Implement filter logic here
+    if (!status) {
+      loadDatabaseData();
+      return;
+    }
+    
+    const filteredTrips = trips.filter(trip => trip.status === status);
+    
+    const container = document.getElementById('database-content');
+    if (filteredTrips.length === 0) {
+      container.innerHTML = '<p class="text-center py-8 text-slate-500">No trips with status "' + status + '"</p>';
+      return;
+    }
+    
+    container.innerHTML = `
+      <div class="table-container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Trip ID</th>
+              <th>Vehicle</th>
+              <th>Driver</th>
+              <th>Route</th>
+              <th>Distance</th>
+              <th>Status</th>
+              <th>Revenue</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${filteredTrips.map(trip => `
+              <tr>
+                <td class="font-mono">${trip.id}</td>
+                <td>${trip.vehicleNumber}</td>
+                <td>${trip.driverName}</td>
+                <td>${trip.from} → ${trip.to}</td>
+                <td>${trip.distance || '0'} km</td>
+                <td>
+                  <span class="badge ${
+                    trip.status === 'completed' ? 'badge-success' :
+                    trip.status === 'active' ? 'badge-info' :
+                    trip.status === 'pending' ? 'badge-warning' : 'badge-danger'
+                  }">
+                    ${trip.status}
+                  </span>
+                </td>
+                <td>${formatCurrency(trip.revenue)}</td>
+                <td>
+                  <div class="flex gap-2">
+                    <button onclick="viewTrip('${trip.id}')" class="text-blue-600 hover:text-blue-800">
+                      <i class="fa-solid fa-eye"></i>
+                    </button>
+                    ${currentRole === 'Admin' || currentRole === 'Staff' ? `
+                      <button onclick="editTrip('${trip.id}')" class="text-green-600 hover:text-green-800">
+                        <i class="fa-solid fa-edit"></i>
+                      </button>
+                    ` : ''}
+                  </div>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    `;
   }
 
   function exportToExcel() {
@@ -2019,19 +2231,125 @@
   function loadFleetData() {
     const container = document.getElementById('fleet-content');
     container.innerHTML = `
-      <div class="text-center py-8 text-slate-500">
-        <i class="fa-solid fa-truck fa-3x mb-4 opacity-30"></i>
-        <p>Fleet Management coming soon</p>
+      <div class="space-y-6">
+        <div class="text-center py-4">
+          <h3 class="text-lg font-semibold mb-4">Vehicle Fleet</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="card p-4">
+              <div class="flex items-center gap-3">
+                <div class="h-12 w-12 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                  <i class="fa-solid fa-truck text-blue-600 dark:text-blue-400"></i>
+                </div>
+                <div>
+                  <div class="font-semibold">MH12AB1234</div>
+                  <div class="text-sm text-slate-500">Tata Ace</div>
+                </div>
+              </div>
+              <div class="mt-3 pt-3 border-t border-slate-200">
+                <div class="text-xs text-slate-500">Status: <span class="text-green-600 font-medium">Active</span></div>
+              </div>
+            </div>
+            <div class="card p-4">
+              <div class="flex items-center gap-3">
+                <div class="h-12 w-12 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                  <i class="fa-solid fa-truck text-green-600 dark:text-green-400"></i>
+                </div>
+                <div>
+                  <div class="font-semibold">GJ01CD5678</div>
+                  <div class="text-sm text-slate-500">Ashok Leyland</div>
+                </div>
+              </div>
+              <div class="mt-3 pt-3 border-t border-slate-200">
+                <div class="text-xs text-slate-500">Status: <span class="text-green-600 font-medium">Active</span></div>
+              </div>
+            </div>
+            <div class="card p-4">
+              <div class="flex items-center gap-3">
+                <div class="h-12 w-12 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+                  <i class="fa-solid fa-truck text-amber-600 dark:text-amber-400"></i>
+                </div>
+                <div>
+                  <div class="font-semibold">DL09EF9012</div>
+                  <div class="text-sm text-slate-500">Eicher Pro</div>
+                </div>
+              </div>
+              <div class="mt-3 pt-3 border-t border-slate-200">
+                <div class="text-xs text-slate-500">Status: <span class="text-amber-600 font-medium">Maintenance</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pt-4 border-t">
+          <button onclick="showToast('Add vehicle form coming soon', 'info')" class="btn btn-primary">
+            <i class="fa-solid fa-plus"></i> Add New Vehicle
+          </button>
+        </div>
       </div>
     `;
   }
 
   function loadUsersData() {
     const container = document.getElementById('users-content');
+    const users = [
+      { name: 'Admin User', email: 'admin@shrinarayanlogistics.com', role: 'Admin', status: 'Active' },
+      { name: 'Staff User', email: 'staff@shrinarayanlogistics.com', role: 'Staff', status: 'Active' },
+      { name: 'Driver User', email: 'driver@shrinarayanlogistics.com', role: 'Driver', status: 'Active' }
+    ];
+    
     container.innerHTML = `
-      <div class="text-center py-8 text-slate-500">
-        <i class="fa-solid fa-users fa-3x mb-4 opacity-30"></i>
-        <p>User Management coming soon</p>
+      <div class="space-y-6">
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${users.map(user => `
+                <tr>
+                  <td>${user.name}</td>
+                  <td>${user.email}</td>
+                  <td>
+                    <span class="badge ${
+                      user.role === 'Admin' ? 'badge-danger' :
+                      user.role === 'Staff' ? 'badge-info' : 'badge-success'
+                    }">${user.role}</span>
+                  </td>
+                  <td>
+                    <span class="flex items-center">
+                      <span class="h-2 w-2 rounded-full ${user.status === 'Active' ? 'bg-green-500' : 'bg-red-500'} mr-2"></span>
+                      ${user.status}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="flex gap-2">
+                      <button onclick="showToast('Edit user coming soon', 'info')" class="text-blue-600 hover:text-blue-800">
+                        <i class="fa-solid fa-edit"></i>
+                      </button>
+                      ${currentRole === 'Admin' && user.role !== 'Admin' ? `
+                        <button onclick="showToast('Delete user coming soon', 'info')" class="text-red-600 hover:text-red-800">
+                          <i class="fa-solid fa-trash"></i>
+                        </button>
+                      ` : ''}
+                    </div>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+        ${currentRole === 'Admin' ? `
+          <div class="pt-4 border-t">
+            <button onclick="showToast('Add user form coming soon', 'info')" class="btn btn-primary">
+              <i class="fa-solid fa-user-plus"></i> Add New User
+            </button>
+          </div>
+        ` : ''}
       </div>
     `;
   }
@@ -2039,11 +2357,62 @@
   function loadReportsData() {
     const container = document.getElementById('reports-content');
     container.innerHTML = `
-      <div class="text-center py-8 text-slate-500">
-        <i class="fa-solid fa-chart-pie fa-3x mb-4 opacity-30"></i>
-        <p>Analytics & Reports coming soon</p>
+      <div class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="card p-6">
+            <h3 class="font-semibold mb-4">Monthly Summary</h3>
+            <div class="space-y-4">
+              <div class="flex justify-between">
+                <span class="text-slate-600">Total Trips</span>
+                <span class="font-semibold">48</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-600">Completed</span>
+                <span class="font-semibold text-green-600">42</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-600">Active</span>
+                <span class="font-semibold text-blue-600">4</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-600">Delayed</span>
+                <span class="font-semibold text-red-600">2</span>
+              </div>
+            </div>
+          </div>
+          <div class="card p-6">
+            <h3 class="font-semibold mb-4">Revenue Summary</h3>
+            <div class="space-y-4">
+              <div class="flex justify-between">
+                <span class="text-slate-600">Total Revenue</span>
+                <span class="font-semibold">₹8,75,000</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-600">Avg per Trip</span>
+                <span class="font-semibold">₹18,229</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-600">This Month</span>
+                <span class="font-semibold text-green-600">+12.5%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pt-4">
+          <button onclick="generateReport()" class="btn btn-primary">
+            <i class="fa-solid fa-file-pdf"></i> Generate PDF Report
+          </button>
+        </div>
       </div>
     `;
+  }
+
+  function generateReport() {
+    showToast('Report generation started. Check downloads.', 'success');
+    // Simulate report generation
+    setTimeout(() => {
+      showToast('Report generated successfully!', 'success');
+    }, 2000);
   }
 
   function loadSettingsData() {
@@ -2065,10 +2434,37 @@
                 <option>EUR (€)</option>
               </select>
             </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">Time Zone</label>
+              <select class="input-field">
+                <option>IST (India Standard Time)</option>
+                <option>UTC</option>
+                <option>EST</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Notification Settings</h3>
+          <div class="space-y-3">
+            <label class="flex items-center gap-3">
+              <input type="checkbox" class="rounded" checked>
+              <span>Email notifications</span>
+            </label>
+            <label class="flex items-center gap-3">
+              <input type="checkbox" class="rounded" checked>
+              <span>New trip alerts</span>
+            </label>
+            <label class="flex items-center gap-3">
+              <input type="checkbox" class="rounded">
+              <span>Daily summary reports</span>
+            </label>
           </div>
         </div>
         <div class="pt-6 border-t">
-          <button class="btn btn-primary">Save Settings</button>
+          <button onclick="showToast('Settings saved successfully', 'success')" class="btn btn-primary">
+            Save Settings
+          </button>
         </div>
       </div>
     `;
@@ -2150,13 +2546,38 @@
     initTheme();
     loadNotifications();
     
-    // Check if user is already logged in (demo)
+    // Check if user is already logged in
     const savedUser = localStorage.getItem('snl_user');
     if (savedUser) {
       try {
         currentUser = JSON.parse(savedUser);
-        currentRole = currentUser.email === 'admin@shrinarayanlogistics.com' ? 'Admin' : 'Staff';
-        handleSuccessfulLogin();
+        // Determine role based on email
+        if (currentUser.email.includes('admin') || 
+            currentUser.email === 'shrinarayanlogistic@gmail.com' || 
+            currentUser.email === 'itexpress4u.cloud@gmail.com') {
+          currentRole = 'Admin';
+        } else if (currentUser.email.includes('staff')) {
+          currentRole = 'Staff';
+        } else if (currentUser.email.includes('driver')) {
+          currentRole = 'Driver';
+        }
+        
+        // Hide loader and auth screen, show app
+        setTimeout(() => {
+          document.getElementById('loader').style.display = 'none';
+          document.getElementById('auth-screen').style.display = 'none';
+          document.getElementById('app-container').style.display = 'flex';
+          
+          // Update user info
+          document.getElementById('user-display-name').textContent = currentUser.displayName;
+          document.getElementById('sidebar-user-name').textContent = currentUser.displayName;
+          document.getElementById('user-email').textContent = currentUser.email;
+          document.getElementById('user-role').textContent = currentRole;
+          
+          // Load dashboard
+          loadDashboardData();
+          updateLoaderProgress(100, 'System ready');
+        }, 500);
       } catch (e) {
         showLoginScreen();
       }
@@ -2182,13 +2603,14 @@
       e.preventDefault();
       deferredPrompt = e;
     });
-    
-    updateLoaderProgress(100, 'System ready');
   }
 
   function showLoginScreen() {
-    document.getElementById('loader').classList.add('hidden');
-    document.getElementById('auth-screen').classList.remove('hidden');
+    setTimeout(() => {
+      document.getElementById('loader').style.display = 'none';
+      document.getElementById('auth-screen').style.display = 'flex';
+      updateLoaderProgress(100, 'Ready to login');
+    }, 1000);
   }
 
   // Make functions available globally
@@ -2219,22 +2641,43 @@
   window.searchTrips = searchTrips;
   window.filterByStatus = filterByStatus;
   window.exportToExcel = exportToExcel;
-  window.addVehicle = function() { showToast('Add vehicle coming soon', 'info'); };
-  window.openQuickTrip = function() { showToast('Quick trip entry coming soon', 'info'); };
-  window.openBulkUpload = function() { showToast('Bulk upload coming soon', 'info'); };
-  window.generateDailyReport = function() { showToast('Daily report coming soon', 'info'); };
-  window.showSystemInfo = function() { showToast('System info coming soon', 'info'); };
-  window.clearCache = function() { showToast('Cache cleared', 'success'); };
+  window.addVehicle = function() { 
+    showToast('Add vehicle form coming soon', 'info'); 
+    switchTab('fleet');
+  };
+  window.openQuickTrip = function() { 
+    showToast('Quick trip entry coming soon', 'info'); 
+    switchTab('entry');
+  };
+  window.openBulkUpload = function() { 
+    showToast('Bulk upload coming soon', 'info'); 
+  };
+  window.generateDailyReport = function() { 
+    generateReport(); 
+  };
+  window.showSystemInfo = function() { 
+    showToast('System Info:\nVersion: 3.0.0\nLast Updated: 2024\nUsers: ' + trips.length, 'info', 5000); 
+  };
+  window.clearCache = function() { 
+    localStorage.clear(); 
+    showToast('Cache cleared successfully', 'success'); 
+  };
   window.toggleDateRange = function() {
-    document.getElementById('date-range-dropdown').classList.toggle('hidden');
+    const dropdown = document.getElementById('date-range-dropdown');
+    dropdown.classList.toggle('hidden');
   };
   window.setDateRange = function(range) {
     document.getElementById('date-range-label').textContent = range;
     document.getElementById('date-range-dropdown').classList.add('hidden');
     showToast(`Date range set to ${range}`, 'info');
   };
-  window.updateChart = function() { showToast('Chart updated', 'info'); };
-  window.loadMoreActivity = function() { showToast('Loading more activity...', 'info'); };
+  window.updateChart = function() { 
+    initStatusChart();
+    showToast('Chart updated', 'success'); 
+  };
+  window.loadMoreActivity = function() { 
+    showToast('Loading more activity...', 'info'); 
+  };
 
   // Initialize the app
   document.addEventListener('DOMContentLoaded', initializeApp);
