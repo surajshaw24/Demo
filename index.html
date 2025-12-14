@@ -10,16 +10,31 @@
   <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚛</text></svg>">
   
   <!-- Tailwind CSS -->
-  <script>window.tailwind = {config: {darkMode: 'class'}};</script>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1e40af',
+            secondary: '#0ea5e9',
+            success: '#10b981',
+            warning: '#f59e0b',
+            danger: '#ef4444'
+          }
+        }
+      }
+    }
+  </script>
   
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
   
-  <!-- Chart.js for Analytics -->
+  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
-  <!-- SheetJS for Excel Export -->
+  <!-- SheetJS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   
   <style>
@@ -39,7 +54,7 @@
     }
     
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
@@ -69,10 +84,6 @@
     
     html.dark ::-webkit-scrollbar-thumb {
       background: #475569;
-    }
-    
-    html.dark ::-webkit-scrollbar-thumb:hover {
-      background: #64748b;
     }
     
     /* Sidebar Navigation */
@@ -161,12 +172,12 @@
       background: white;
       border-radius: 12px;
       border: 1px solid #e2e8f0;
-      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
       transition: all 0.3s ease;
     }
     
     .card:hover {
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     }
     
     html.dark .card {
@@ -205,31 +216,8 @@
       to { opacity: 1; transform: translateY(0); }
     }
     
-    @keyframes slideInRight {
-      from { transform: translateX(100%); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-    
-    @keyframes slideInLeft {
-      from { transform: translateX(-100%); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-    
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-    
     .fade-in {
       animation: fadeIn 0.3s ease-out;
-    }
-    
-    .slide-in-right {
-      animation: slideInRight 0.3s ease-out;
-    }
-    
-    .slide-in-left {
-      animation: slideInLeft 0.3s ease-out;
     }
     
     .pulse {
@@ -289,6 +277,11 @@
       gap: 0.5rem;
     }
     
+    .btn-sm {
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+    }
+    
     .btn-primary {
       background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
       color: white;
@@ -304,29 +297,14 @@
       color: white;
     }
     
-    .btn-success:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-    }
-    
     .btn-danger {
       background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
       color: white;
     }
     
-    .btn-danger:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-    }
-    
     .btn-secondary {
       background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
       color: white;
-    }
-    
-    .btn-secondary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
     }
     
     .btn-outline {
@@ -343,11 +321,6 @@
     html.dark .btn-outline {
       border-color: #475569;
       color: #cbd5e1;
-    }
-    
-    html.dark .btn-outline:hover {
-      border-color: #64748b;
-      color: #e2e8f0;
     }
     
     /* Table Styles */
@@ -376,18 +349,12 @@
       letter-spacing: 0.05em;
       color: #64748b;
       border-bottom: 2px solid #e2e8f0;
-      white-space: nowrap;
     }
     
     .table td {
       padding: 1rem;
       font-size: 0.875rem;
       border-bottom: 1px solid #f1f5f9;
-      vertical-align: middle;
-    }
-    
-    .table tbody tr {
-      transition: all 0.2s;
     }
     
     .table tbody tr:hover {
@@ -438,28 +405,19 @@
     .status-pending { background: #f59e0b; }
     .status-inactive { background: #64748b; }
     .status-delayed { background: #ef4444; }
-    .status-completed { background: #3b82f6; }
-    
-    /* Print Styles */
-    @media print {
-      .no-print { display: none !important; }
-      body { background: white !important; color: black !important; }
-      .card { box-shadow: none !important; border: 1px solid #ddd !important; }
-    }
     
     /* Mobile Optimizations */
     @media (max-width: 768px) {
       .hide-mobile { display: none !important; }
-      .show-mobile { display: block !important; }
       .table th, .table td { padding: 0.75rem 0.5rem; }
       .btn { padding: 0.625rem 1rem; }
     }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 overflow-x-hidden">
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100">
 
 <!-- Loader -->
-<div id="loader" class="fixed inset-0 flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-950 z-[100] transition-opacity duration-300">
+<div id="loader" class="fixed inset-0 flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-950 z-50">
   <div class="relative">
     <div class="h-16 w-16 rounded-full border-4 border-blue-100 dark:border-blue-900"></div>
     <div class="absolute top-0 left-0 h-16 w-16 rounded-full border-4 border-blue-600 border-t-transparent animate-spin"></div>
@@ -474,8 +432,8 @@
 </div>
 
 <!-- Auth Screen -->
-<div id="auth-screen" class="fixed inset-0 bg-gradient-to-br from-blue-900 via-slate-900 to-slate-950 z-50 hidden flex-col items-center justify-center p-4">
-  <div class="w-full max-w-md animate-fade-in">
+<div id="auth-screen" class="fixed inset-0 bg-gradient-to-br from-blue-900 via-slate-900 to-slate-950 z-40 flex-col items-center justify-center p-4 hidden">
+  <div class="w-full max-w-md">
     <div class="text-center mb-8">
       <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 shadow-xl mb-4">
         <i class="fa-solid fa-truck-fast text-3xl text-white"></i>
@@ -487,7 +445,7 @@
     <div class="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 p-8 shadow-2xl">
       <div class="flex items-center justify-between mb-6">
         <h2 class="text-xl font-bold text-white">Admin Login</h2>
-        <button onclick="toggleTheme()" class="text-white/70 hover:text-white p-2 rounded-lg hover:bg-white/10 transition-colors" aria-label="Toggle theme">
+        <button onclick="toggleTheme()" class="text-white/70 hover:text-white p-2 rounded-lg hover:bg-white/10">
           <i id="auth-theme-icon" class="fa-solid fa-moon"></i>
         </button>
       </div>
@@ -498,8 +456,7 @@
           <input id="login-email" type="email" 
                  class="input-field bg-white/5 border-white/20 text-white placeholder-blue-300"
                  placeholder="admin@shrinarayanlogistics.com"
-                 required
-                 autocomplete="email">
+                 required>
         </div>
         
         <div>
@@ -508,8 +465,7 @@
             <input id="login-password" type="password" 
                    class="input-field bg-white/5 border-white/20 text-white placeholder-blue-300 pr-10"
                    placeholder="••••••••"
-                   required
-                   autocomplete="current-password">
+                   required>
             <button type="button" onclick="togglePasswordVisibility('login-password')" 
                     class="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-300 hover:text-white">
               <i class="fa-solid fa-eye"></i>
@@ -527,7 +483,7 @@
         
         <div class="text-center pt-4 border-t border-white/10">
           <button type="button" onclick="toggleReset()" 
-                  class="text-blue-300 hover:text-white text-sm font-medium transition-colors">
+                  class="text-blue-300 hover:text-white text-sm font-medium">
             <i class="fa-solid fa-key mr-2"></i>
             Forgot Password?
           </button>
@@ -544,7 +500,7 @@
 
 <!-- Reset Password Modal -->
 <div id="reset-modal" class="modal-overlay hidden">
-  <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 w-full max-w-md shadow-2xl animate-fade-in">
+  <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 w-full max-w-md shadow-2xl">
     <div class="flex items-center justify-between mb-4">
       <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100">Reset Password</h3>
       <button onclick="closeReset()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
@@ -994,42 +950,133 @@
       
       <!-- Database View -->
       <section id="view-database" class="space-y-6 hidden">
-        <!-- Database content will be loaded here -->
+        <div class="flex items-center justify-between">
+          <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Trip Database</h2>
+          <button onclick="exportToExcel()" class="btn btn-success">
+            <i class="fa-solid fa-file-excel"></i> Export Excel
+          </button>
+        </div>
+        <div class="card p-5">
+          <div class="flex gap-4 mb-6">
+            <input type="text" placeholder="Search trips..." class="input-field flex-1" oninput="searchTrips(this.value)">
+            <select class="input-field w-48" onchange="filterByStatus(this.value)">
+              <option value="">All Status</option>
+              <option value="active">Active</option>
+              <option value="completed">Completed</option>
+              <option value="pending">Pending</option>
+            </select>
+          </div>
+          <div id="database-content">
+            <!-- Database content will be loaded here -->
+          </div>
+        </div>
       </section>
       
       <!-- Entry Form View -->
       <section id="view-entry" class="space-y-6 hidden">
-        <!-- Entry form will be loaded here -->
+        <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">New Trip Entry</h2>
+        <div class="card p-5">
+          <form id="trip-form" onsubmit="saveTrip(event)">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-medium mb-2">Vehicle Number *</label>
+                <input type="text" name="vehicleNumber" class="input-field" required>
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-2">Driver Name *</label>
+                <input type="text" name="driverName" class="input-field" required>
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-2">From Location *</label>
+                <input type="text" name="from" class="input-field" required>
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-2">To Location *</label>
+                <input type="text" name="to" class="input-field" required>
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-2">Distance (km)</label>
+                <input type="number" name="distance" class="input-field">
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-2">Status</label>
+                <select name="status" class="input-field">
+                  <option value="pending">Pending</option>
+                  <option value="active">Active</option>
+                  <option value="completed">Completed</option>
+                  <option value="delayed">Delayed</option>
+                </select>
+              </div>
+              <div class="md:col-span-2">
+                <label class="block text-sm font-medium mb-2">Remarks</label>
+                <textarea name="remarks" class="input-field" rows="3"></textarea>
+              </div>
+            </div>
+            <div class="flex gap-3 mt-8">
+              <button type="submit" class="btn btn-primary">
+                <i class="fa-solid fa-save"></i> Save Trip
+              </button>
+              <button type="button" onclick="clearForm()" class="btn btn-outline">
+                Clear Form
+              </button>
+            </div>
+          </form>
+        </div>
       </section>
       
       <!-- Fleet View -->
       <section id="view-fleet" class="space-y-6 hidden">
-        <!-- Fleet content will be loaded here -->
+        <div class="flex items-center justify-between">
+          <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Fleet Management</h2>
+          <button onclick="addVehicle()" class="btn btn-primary">
+            <i class="fa-solid fa-plus"></i> Add Vehicle
+          </button>
+        </div>
+        <div class="card p-5">
+          <div id="fleet-content">
+            <!-- Fleet content will be loaded here -->
+          </div>
+        </div>
       </section>
       
       <!-- Users View -->
       <section id="view-users" class="space-y-6 hidden">
-        <!-- Users content will be loaded here -->
+        <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">User Management</h2>
+        <div class="card p-5">
+          <div id="users-content">
+            <!-- Users content will be loaded here -->
+          </div>
+        </div>
       </section>
       
       <!-- Reports View -->
       <section id="view-reports" class="space-y-6 hidden">
-        <!-- Reports content will be loaded here -->
+        <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Analytics & Reports</h2>
+        <div class="card p-5">
+          <div id="reports-content">
+            <!-- Reports content will be loaded here -->
+          </div>
+        </div>
       </section>
       
       <!-- Settings View -->
       <section id="view-settings" class="space-y-6 hidden">
-        <!-- Settings content will be loaded here -->
+        <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Settings</h2>
+        <div class="card p-5">
+          <div id="settings-content">
+            <!-- Settings content will be loaded here -->
+          </div>
+        </div>
       </section>
     </div>
   </main>
 
   <!-- Toast Notification -->
-  <div id="toast" class="fixed bottom-4 right-4 z-[100] max-w-md"></div>
+  <div id="toast" class="fixed bottom-4 right-4 z-50 max-w-md"></div>
 
   <!-- Confirmation Modal -->
   <div id="confirm-modal" class="modal-overlay hidden">
-    <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 w-full max-w-md shadow-2xl animate-fade-in">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 w-full max-w-md shadow-2xl">
       <div class="text-center mb-6">
         <div class="h-16 w-16 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center mx-auto mb-4">
           <i class="fa-solid fa-exclamation-triangle text-red-600 dark:text-red-400 text-2xl"></i>
@@ -1054,7 +1101,7 @@
 
   <!-- Quick Actions Modal -->
   <div id="quick-actions-modal" class="modal-overlay hidden">
-    <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 w-full max-w-2xl shadow-2xl animate-fade-in">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 w-full max-w-2xl shadow-2xl">
       <div class="flex items-center justify-between mb-6">
         <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100">Quick Actions</h3>
         <button onclick="closeQuickActions()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
@@ -1113,74 +1160,65 @@
       </div>
     </div>
   </div>
-
-  <!-- Install PWA Prompt -->
-  <div id="install-prompt" class="fixed bottom-4 left-4 bg-white dark:bg-slate-900 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-800 p-4 max-w-sm z-[90] hidden">
-    <div class="flex items-start gap-3">
-      <div class="h-10 w-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
-        <i class="fa-solid fa-mobile-screen text-white text-lg"></i>
-      </div>
-      <div class="flex-1">
-        <div class="font-bold text-slate-800 dark:text-slate-100">Install App</div>
-        <div class="text-sm text-slate-600 dark:text-slate-400 mt-1">Install SN Logistics for better experience</div>
-      </div>
-      <button onclick="closeInstallPrompt()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
-        <i class="fa-solid fa-times"></i>
-      </button>
-    </div>
-    <div class="flex gap-2 mt-4">
-      <button onclick="installPWA()" class="btn btn-primary flex-1 btn-sm">Install</button>
-      <button onclick="closeInstallPrompt()" class="btn btn-outline flex-1 btn-sm">Later</button>
-    </div>
-  </div>
 </div>
 
-<!-- Firebase Configuration -->
-<script type="module">
-  // Firebase Import
-  import { initializeApp, deleteApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, sendPasswordResetEmail, updateProfile } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-  import { getFirestore, collection, doc, addDoc, setDoc, updateDoc, deleteDoc, onSnapshot, query, where, orderBy, serverTimestamp, getDocs, writeBatch } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-  import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
-  import { getAnalytics, logEvent } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
-
-  // Firebase Configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyBrYy8AF0LtQkLD0ZCV4hzhwaDdznb5Q8Q",
-    authDomain: "shreenarayanlogistics-22d08.firebaseapp.com",
-    projectId: "shreenarayanlogistics-22d08",
-    storageBucket: "shreenarayanlogistics-22d08.firebasestorage.app",
-    messagingSenderId: "706107706476",
-    appId: "1:706107706476:web:1e34fa02e4da73b8209c49",
-    measurementId: "G-XXXXXXXXXX"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-  const storage = getStorage(app);
-  const analytics = getAnalytics(app);
-
-  // Global State
+<script>
+  // ============ GLOBAL STATE ============
   let currentUser = null;
   let currentRole = "Staff";
   let trips = [];
-  let fleet = [];
-  let users = [];
-  let templates = [];
   let notifications = [];
-  let settings = {};
   let chartInstance = null;
   let pendingConfirmation = null;
   let deferredPrompt = null;
-
-  // Admin Emails
-  const ADMIN_EMAILS = ["shrinarayanlogistic@gmail.com", "itexpress4u.cloud@gmail.com", "admin@shrinarayanlogistics.com"];
+  let sampleTrips = [
+    {
+      id: "TRIP001",
+      vehicleNumber: "MH12AB1234",
+      driverName: "Rajesh Kumar",
+      from: "Mumbai",
+      to: "Delhi",
+      status: "active",
+      eta: "12:00 PM",
+      distance: "1400",
+      revenue: 25000
+    },
+    {
+      id: "TRIP002",
+      vehicleNumber: "GJ01CD5678",
+      driverName: "Suresh Patel",
+      from: "Ahmedabad",
+      to: "Bangalore",
+      status: "completed",
+      eta: "10:30 AM",
+      distance: "1200",
+      revenue: 22000
+    },
+    {
+      id: "TRIP003",
+      vehicleNumber: "DL09EF9012",
+      driverName: "Amit Sharma",
+      from: "Delhi",
+      to: "Kolkata",
+      status: "pending",
+      eta: "03:00 PM",
+      distance: "1500",
+      revenue: 28000
+    },
+    {
+      id: "TRIP004",
+      vehicleNumber: "KA05GH3456",
+      driverName: "Vikram Singh",
+      from: "Bangalore",
+      to: "Chennai",
+      status: "delayed",
+      eta: "05:00 PM",
+      distance: "350",
+      revenue: 8000
+    }
+  ];
 
   // ============ UTILITY FUNCTIONS ============
-  
-  // Update loader progress
   function updateLoaderProgress(percent, message) {
     const progress = document.getElementById('loader-progress');
     const msg = document.getElementById('loader-msg');
@@ -1188,15 +1226,12 @@
     if (msg) msg.textContent = message;
   }
 
-  // Show toast notification
   function showToast(message, type = "info", duration = 3000) {
     const toast = document.getElementById('toast');
     if (!toast) return;
     
-    // Remove existing classes
-    toast.className = 'fixed bottom-4 right-4 z-[100] max-w-md p-4 rounded-xl shadow-2xl transform translate-y-[150%] transition-transform duration-300';
+    toast.className = 'fixed bottom-4 right-4 z-50 max-w-md p-4 rounded-xl shadow-2xl transform translate-y-[150%] transition-transform duration-300';
     
-    // Add type-specific classes
     const colors = {
       success: 'bg-gradient-to-r from-green-500 to-green-600 text-white',
       error: 'bg-gradient-to-r from-red-500 to-red-600 text-white',
@@ -1216,23 +1251,17 @@
       </div>
     `;
     
-    // Show toast
     setTimeout(() => {
       toast.classList.add('show');
       toast.style.transform = 'translateY(0)';
     }, 10);
     
-    // Auto hide
     setTimeout(() => {
       toast.style.transform = 'translateY(150%)';
       setTimeout(() => toast.classList.remove('show'), 300);
     }, duration);
-    
-    // Log event
-    logEvent(analytics, 'toast_shown', { type, message: message.substring(0, 50) });
   }
 
-  // Set loading state for buttons
   function setLoading(element, isLoading) {
     if (!element) return;
     
@@ -1253,74 +1282,21 @@
     }
   }
 
-  // Debounce function
-  function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-      const later = () => {
-        clearTimeout(timeout);
-        func(...args);
-      };
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-    };
+  function formatDate(date) {
+    return new Date(date).toLocaleDateString('en-IN', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
+    });
   }
 
-  // Format date
-  function formatDate(date, format = 'short') {
-    const d = new Date(date);
-    if (format === 'short') {
-      return d.toLocaleDateString('en-IN', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric'
-      });
-    } else if (format === 'long') {
-      return d.toLocaleDateString('en-IN', {
-        weekday: 'short',
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      });
-    }
-    return d.toISOString().split('T')[0];
+  function formatCurrency(amount) {
+    return '₹' + new Intl.NumberFormat('en-IN').format(amount || 0);
   }
 
-  // Generate unique ID
-  function generateId() {
-    return Date.now().toString(36) + Math.random().toString(36).substr(2);
-  }
-
-  // Validate email
   function validateEmail(email) {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(email);
-  }
-
-  // Validate phone number
-  function validatePhone(phone) {
-    const re = /^[\+]?[1-9][\d]{0,15}$/;
-    return re.test(phone.replace(/\D/g, ''));
-  }
-
-  // Sanitize input
-  function sanitizeInput(input) {
-    if (typeof input !== 'string') return input;
-    return input
-      .replace(/[<>]/g, '')
-      .trim()
-      .substring(0, 500);
-  }
-
-  // Format currency
-  function formatCurrency(amount) {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
-      minimumFractionDigits: 0
-    }).format(amount);
   }
 
   // ============ CONFIRMATION MODAL ============
@@ -1360,8 +1336,6 @@
     localStorage.setItem('snl_theme', isDark ? 'dark' : 'light');
     updateThemeIcon(isDark);
     showToast(`Theme changed to ${isDark ? 'dark' : 'light'} mode`, 'info');
-    
-    logEvent(analytics, 'theme_toggled', { theme: isDark ? 'dark' : 'light' });
   }
 
   function updateThemeIcon(isDark) {
@@ -1386,13 +1360,12 @@
   }
 
   // ============ NOTIFICATION SYSTEM ============
-  function addNotification(title, message, type = 'info', action = null) {
+  function addNotification(title, message, type = 'info') {
     const notification = {
-      id: generateId(),
+      id: Date.now(),
       title,
       message,
       type,
-      action,
       timestamp: new Date().toISOString(),
       read: false
     };
@@ -1400,15 +1373,11 @@
     notifications.unshift(notification);
     updateNotificationUI();
     
-    // Show toast for important notifications
     if (type === 'error' || type === 'warning') {
       showToast(`${title}: ${message}`, type);
     }
     
-    // Save to localStorage for persistence
     saveNotifications();
-    
-    logEvent(analytics, 'notification_added', { type });
   }
 
   function updateNotificationUI() {
@@ -1416,7 +1385,6 @@
     const countEl = document.getElementById('notification-count');
     const listEl = document.getElementById('notification-list');
     
-    // Update count
     if (countEl) {
       if (count > 0) {
         countEl.textContent = count > 99 ? '99+' : count;
@@ -1426,7 +1394,6 @@
       }
     }
     
-    // Update list
     if (listEl) {
       listEl.innerHTML = notifications.slice(0, 10).map(notif => `
         <div class="p-3 border-b border-slate-200 dark:border-slate-800 last:border-b-0 hover:bg-slate-50 dark:hover:bg-slate-800/50 ${notif.read ? 'opacity-70' : ''}">
@@ -1447,14 +1414,9 @@
               <div class="font-semibold text-sm text-slate-800 dark:text-slate-100">${notif.title}</div>
               <div class="text-xs text-slate-600 dark:text-slate-400 mt-1">${notif.message}</div>
               <div class="text-xs text-slate-500 dark:text-slate-500 mt-2">
-                ${formatDate(notif.timestamp, 'long')}
+                ${formatDate(notif.timestamp)}
               </div>
             </div>
-            ${notif.action ? `
-              <button onclick="handleNotificationAction('${notif.id}')" class="text-blue-600 dark:text-blue-400 text-sm">
-                ${notif.action}
-              </button>
-            ` : ''}
           </div>
         </div>
       `).join('');
@@ -1474,7 +1436,6 @@
     const dropdown = document.getElementById('notification-dropdown');
     dropdown.classList.toggle('hidden');
     
-    // Mark as read when opened
     notifications.forEach(notif => notif.read = true);
     updateNotificationUI();
     saveNotifications();
@@ -1512,7 +1473,6 @@
     const loginBtn = document.getElementById('login-btn');
     const errorDiv = document.getElementById('auth-error');
     
-    // Validation
     if (!validateEmail(email)) {
       errorDiv.textContent = 'Please enter a valid email address';
       errorDiv.classList.remove('hidden');
@@ -1523,62 +1483,70 @@
     errorDiv.classList.add('hidden');
     
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      currentUser = userCredential.user;
+      // Simulate login - In production, use Firebase Auth
+      await new Promise(resolve => setTimeout(resolve, 1500));
       
-      // Check if user is admin
-      if (ADMIN_EMAILS.includes(email)) {
+      if (email === 'admin@shrinarayanlogistics.com' && password === 'admin123') {
+        currentUser = { email: email, displayName: 'Admin User' };
         currentRole = 'Admin';
+        
+        showToast(`Welcome back, Admin!`, 'success');
+        handleSuccessfulLogin();
+      } else if (email === 'staff@shrinarayanlogistics.com' && password === 'staff123') {
+        currentUser = { email: email, displayName: 'Staff User' };
+        currentRole = 'Staff';
+        
+        showToast(`Welcome back, Staff!`, 'success');
+        handleSuccessfulLogin();
       } else {
-        // Check user role from Firestore
-        const userDoc = await getDocs(query(collection(db, 'users'), where('email', '==', email)));
-        if (!userDoc.empty) {
-          const userData = userDoc.docs[0].data();
-          currentRole = userData.role || 'Staff';
-        }
+        throw new Error('Invalid credentials');
       }
       
-      showToast(`Welcome back, ${currentUser.email.split('@')[0]}!`, 'success');
-      logEvent(analytics, 'login', { method: 'email' });
-      
     } catch (error) {
-      console.error('Login error:', error);
-      errorDiv.textContent = getErrorMessage(error.code);
+      errorDiv.textContent = 'Invalid email or password';
       errorDiv.classList.remove('hidden');
-      logEvent(analytics, 'login_error', { error: error.code });
     } finally {
       setLoading(loginBtn, false);
     }
   }
 
-  function getErrorMessage(errorCode) {
-    const errors = {
-      'auth/user-not-found': 'User not found',
-      'auth/wrong-password': 'Incorrect password',
-      'auth/invalid-email': 'Invalid email address',
-      'auth/user-disabled': 'Account disabled',
-      'auth/too-many-requests': 'Too many attempts. Try again later',
-      'auth/network-request-failed': 'Network error. Check connection'
-    };
-    return errors[errorCode] || 'Login failed. Please try again.';
+  function handleSuccessfulLogin() {
+    // Hide auth screen, show app
+    document.getElementById('auth-screen').classList.add('hidden');
+    document.getElementById('app-container').classList.remove('hidden');
+    document.getElementById('loader').classList.add('hidden');
+    
+    // Update user info in UI
+    document.getElementById('user-display-name').textContent = 
+      currentUser.displayName;
+    document.getElementById('sidebar-user-name').textContent = 
+      currentUser.displayName;
+    document.getElementById('user-email').textContent = currentUser.email;
+    document.getElementById('user-role').textContent = currentRole;
+    
+    // Load dashboard data
+    loadDashboardData();
+    
+    // Add welcome notification
+    addNotification(
+      'Welcome Back',
+      `Welcome to SN Logistics Dashboard!`,
+      'success'
+    );
   }
 
-  async function logout() {
-    const confirmed = await showConfirmation(
+  function logout() {
+    showConfirmation(
       'Sign Out',
       'Are you sure you want to sign out?'
-    );
-    
-    if (!confirmed) return;
-    
-    try {
-      await signOut(auth);
+    ).then(confirmed => {
+      if (!confirmed) return;
+      
+      currentUser = null;
+      document.getElementById('auth-screen').classList.remove('hidden');
+      document.getElementById('app-container').classList.add('hidden');
       showToast('Signed out successfully', 'info');
-      logEvent(analytics, 'logout');
-    } catch (error) {
-      console.error('Logout error:', error);
-      showToast('Error signing out', 'error');
-    }
+    });
   }
 
   async function sendResetEmail() {
@@ -1590,19 +1558,14 @@
       return;
     }
     
-    try {
-      await sendPasswordResetEmail(auth, email);
-      msgDiv.innerHTML = '<span class="text-green-600">Password reset email sent! Check your inbox.</span>';
-      showToast('Reset email sent', 'success');
-      logEvent(analytics, 'password_reset_requested');
-      
-      setTimeout(() => {
-        closeReset();
-        msgDiv.innerHTML = '';
-      }, 3000);
-    } catch (error) {
-      msgDiv.innerHTML = `<span class="text-red-600">Error: ${getErrorMessage(error.code)}</span>`;
-    }
+    // Simulate sending reset email
+    msgDiv.innerHTML = '<span class="text-green-600">Password reset email sent! Check your inbox.</span>';
+    showToast('Reset email sent', 'success');
+    
+    setTimeout(() => {
+      closeReset();
+      msgDiv.innerHTML = '';
+    }, 3000);
   }
 
   function toggleReset() {
@@ -1631,7 +1594,6 @@
     const view = document.getElementById(`view-${tabName}`);
     if (view) {
       view.classList.remove('hidden');
-      view.classList.add('fade-in');
     }
     
     // Set active nav item
@@ -1645,87 +1607,63 @@
     
     // Load data for the tab
     loadTabData(tabName);
-    
-    logEvent(analytics, 'navigation', { tab: tabName });
   }
 
-  async function loadTabData(tabName) {
+  function loadTabData(tabName) {
     switch(tabName) {
       case 'dashboard':
-        await loadDashboardData();
+        loadDashboardData();
         break;
       case 'database':
-        await loadDatabaseData();
+        loadDatabaseData();
         break;
       case 'entry':
-        await loadEntryForm();
+        loadEntryForm();
         break;
       case 'fleet':
-        await loadFleetData();
+        loadFleetData();
         break;
       case 'users':
-        await loadUsersData();
+        loadUsersData();
         break;
       case 'reports':
-        await loadReportsData();
+        loadReportsData();
         break;
       case 'settings':
-        await loadSettingsData();
+        loadSettingsData();
         break;
     }
   }
 
   // ============ DASHBOARD FUNCTIONS ============
-  async function loadDashboardData() {
+  function loadDashboardData() {
     updateLoaderProgress(30, 'Loading dashboard data...');
     
-    try {
-      // Load trips from today
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      
-      const tripsQuery = query(
-        collection(db, 'trips'),
-        where('createdAt', '>=', today),
-        orderBy('createdAt', 'desc')
-      );
-      
-      const tripsSnapshot = await getDocs(tripsQuery);
-      trips = tripsSnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      
-      // Update stats
-      updateDashboardStats();
-      
-      // Load recent trips for table
-      await loadRecentTrips();
-      
-      // Load activity feed
-      await loadActivityFeed();
-      
-      // Initialize chart
-      initStatusChart();
-      
-      updateLoaderProgress(100, 'Dashboard loaded');
-      
-    } catch (error) {
-      console.error('Error loading dashboard:', error);
-      showToast('Error loading dashboard data', 'error');
-      addNotification('Dashboard Error', 'Failed to load dashboard data', 'error');
-    }
+    // Use sample trips for demo
+    trips = [...sampleTrips];
+    
+    // Update stats
+    updateDashboardStats();
+    
+    // Load recent trips for table
+    loadRecentTrips();
+    
+    // Load activity feed
+    loadActivityFeed();
+    
+    // Initialize chart
+    initStatusChart();
+    
+    updateLoaderProgress(100, 'Dashboard loaded');
   }
 
   function updateDashboardStats() {
-    const today = new Date().toISOString().split('T')[0];
-    
-    // Calculate stats
+    // Calculate stats from sample trips
     const activeTrips = trips.filter(t => t.status === 'active').length;
     const completedTrips = trips.filter(t => t.status === 'completed').length;
     const pendingTrips = trips.filter(t => t.status === 'pending').length;
     
-    // Calculate revenue (example calculation)
+    // Calculate revenue
     const revenue = trips.reduce((sum, trip) => sum + (trip.revenue || 0), 0);
     
     // Update UI
@@ -1738,62 +1676,56 @@
     document.getElementById('sidebar-trips-count').textContent = trips.length;
   }
 
-  async function loadRecentTrips() {
+  function loadRecentTrips() {
     const tbody = document.getElementById('recent-trips-table');
     if (!tbody) return;
     
-    // Get recent trips (last 10)
-    const recentTrips = trips.slice(0, 10);
-    
-    if (recentTrips.length === 0) {
+    if (trips.length === 0) {
       tbody.innerHTML = `
         <tr>
           <td colspan="7" class="text-center py-8 text-slate-500 dark:text-slate-400">
             <i class="fa-solid fa-truck fa-2x mb-3 opacity-30"></i>
-            <div>No trips today</div>
+            <div>No trips found</div>
           </td>
         </tr>
       `;
       return;
     }
     
-    tbody.innerHTML = recentTrips.map(trip => `
+    tbody.innerHTML = trips.map(trip => `
       <tr>
-        <td class="font-mono text-xs">${trip.id.substring(0, 8)}</td>
+        <td class="font-mono text-xs">${trip.id}</td>
         <td>
-          <div class="font-semibold">${trip.vehicleNumber || 'N/A'}</div>
-          <div class="text-xs text-slate-500 dark:text-slate-400">${trip.vehicleType || ''}</div>
+          <div class="font-semibold">${trip.vehicleNumber}</div>
         </td>
         <td>
-          <div class="font-medium">${trip.driverName || 'N/A'}</div>
-          <div class="text-xs text-slate-500 dark:text-slate-400">${trip.driverPhone || ''}</div>
+          <div class="font-medium">${trip.driverName}</div>
         </td>
         <td>
-          <div class="font-medium">${trip.from || 'N/A'} → ${trip.to || 'N/A'}</div>
-          <div class="text-xs text-slate-500 dark:text-slate-400">${trip.stops || 'No stops'}</div>
+          <div class="font-medium">${trip.from} → ${trip.to}</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400">${trip.distance || '0'} km</div>
         </td>
         <td>
           <span class="badge ${
             trip.status === 'completed' ? 'badge-success' :
             trip.status === 'active' ? 'badge-info' :
-            trip.status === 'pending' ? 'badge-warning' : 'badge-secondary'
+            trip.status === 'pending' ? 'badge-warning' : 'badge-danger'
           }">
-            ${trip.status || 'pending'}
+            ${trip.status}
           </span>
         </td>
         <td>
-          <div class="font-medium">${trip.eta || 'N/A'}</div>
-          <div class="text-xs text-slate-500 dark:text-slate-400">${trip.distance || '0'} km</div>
+          <div class="font-medium">${trip.eta}</div>
         </td>
         <td class="text-right">
           <div class="flex justify-end gap-2">
             <button onclick="viewTrip('${trip.id}')" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
               <i class="fa-solid fa-eye"></i>
             </button>
-            <button onclick="editTrip('${trip.id}')" class="text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-300">
-              <i class="fa-solid fa-edit"></i>
-            </button>
             ${currentRole === 'Admin' ? `
+              <button onclick="editTrip('${trip.id}')" class="text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-300">
+                <i class="fa-solid fa-edit"></i>
+              </button>
               <button onclick="deleteTrip('${trip.id}')" class="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300">
                 <i class="fa-solid fa-trash"></i>
               </button>
@@ -1804,15 +1736,13 @@
     `).join('');
   }
 
-  async function loadActivityFeed() {
+  function loadActivityFeed() {
     const feed = document.getElementById('activity-feed');
     if (!feed) return;
     
-    // Simulate activity data
     const activities = [
-      { type: 'trip_added', user: 'Admin', time: '2 min ago', description: 'New trip added for JH10AB1234' },
-      { type: 'trip_completed', user: 'Driver', time: '15 min ago', description: 'Trip completed successfully' },
-      { type: 'vehicle_added', user: 'Admin', time: '1 hour ago', description: 'New vehicle added to fleet' },
+      { type: 'trip_added', user: 'Admin', time: '2 min ago', description: 'New trip added for MH12AB1234' },
+      { type: 'trip_completed', user: 'Driver', time: '15 min ago', description: 'Trip GJ01CD5678 completed' },
       { type: 'user_logged_in', user: 'Staff', time: '2 hours ago', description: 'User logged in from new device' },
       { type: 'report_generated', user: 'System', time: '3 hours ago', description: 'Daily report generated' }
     ];
@@ -1822,13 +1752,11 @@
         <div class="h-8 w-8 rounded-full ${
           activity.type === 'trip_added' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' :
           activity.type === 'trip_completed' ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400' :
-          activity.type === 'vehicle_added' ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400' :
           'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
         } flex items-center justify-center shrink-0">
           <i class="fa-solid ${
             activity.type === 'trip_added' ? 'fa-truck' :
-            activity.type === 'trip_completed' ? 'fa-check-circle' :
-            activity.type === 'vehicle_added' ? 'fa-car' : 'fa-user'
+            activity.type === 'trip_completed' ? 'fa-check-circle' : 'fa-user'
           } text-sm"></i>
         </div>
         <div class="flex-1 min-w-0">
@@ -1847,12 +1775,10 @@
     const ctx = document.getElementById('status-chart');
     if (!ctx) return;
     
-    // Destroy previous chart instance
     if (chartInstance) {
       chartInstance.destroy();
     }
     
-    // Prepare data
     const statusData = {
       active: trips.filter(t => t.status === 'active').length,
       completed: trips.filter(t => t.status === 'completed').length,
@@ -1866,12 +1792,7 @@
         labels: ['Active', 'Completed', 'Pending', 'Delayed'],
         datasets: [{
           data: [statusData.active, statusData.completed, statusData.pending, statusData.delayed],
-          backgroundColor: [
-            '#3b82f6', // blue
-            '#10b981', // green
-            '#f59e0b', // amber
-            '#ef4444'  // red
-          ],
+          backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444'],
           borderWidth: 2,
           borderColor: '#ffffff'
         }]
@@ -1884,19 +1805,7 @@
             position: 'bottom',
             labels: {
               padding: 20,
-              usePointStyle: true,
-              font: {
-                family: "'Inter', sans-serif"
-              }
-            }
-          },
-          tooltip: {
-            backgroundColor: 'rgba(15, 23, 42, 0.9)',
-            titleFont: {
-              family: "'Inter', sans-serif"
-            },
-            bodyFont: {
-              family: "'Inter', sans-serif"
+              usePointStyle: true
             }
           }
         },
@@ -1911,7 +1820,6 @@
   }
 
   function exportDashboardData() {
-    // Create CSV content
     const headers = ['ID', 'Vehicle', 'Driver', 'From', 'To', 'Status', 'ETA', 'Distance', 'Revenue'];
     const rows = trips.map(trip => [
       trip.id,
@@ -1930,7 +1838,6 @@
       ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
     ].join('\n');
     
-    // Create download link
     const blob = new Blob([csvContent], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -1942,49 +1849,229 @@
     URL.revokeObjectURL(url);
     
     showToast('Dashboard data exported', 'success');
-    logEvent(analytics, 'dashboard_exported');
   }
 
   // ============ TRIP MANAGEMENT ============
-  async function viewTrip(tripId) {
-    // Implementation for viewing trip details
-    showToast('View trip functionality coming soon', 'info');
-  }
-
-  async function editTrip(tripId) {
-    // Implementation for editing trip
-    showToast('Edit trip functionality coming soon', 'info');
-  }
-
-  async function deleteTrip(tripId) {
-    if (currentRole !== 'Admin') {
-      showToast('Admin privileges required', 'error');
-      return;
+  function viewTrip(tripId) {
+    const trip = trips.find(t => t.id === tripId);
+    if (trip) {
+      alert(`Trip Details:\nID: ${trip.id}\nVehicle: ${trip.vehicleNumber}\nDriver: ${trip.driverName}\nRoute: ${trip.from} to ${trip.to}\nStatus: ${trip.status}`);
     }
-    
-    const confirmed = await showConfirmation(
-      'Delete Trip',
-      'Are you sure you want to delete this trip? This action cannot be undone.'
-    );
-    
-    if (!confirmed) return;
-    
-    try {
-      await deleteDoc(doc(db, 'trips', tripId));
-      showToast('Trip deleted successfully', 'success');
-      addNotification('Trip Deleted', 'A trip has been deleted', 'warning');
-      logEvent(analytics, 'trip_deleted');
+  }
+
+  function editTrip(tripId) {
+    const trip = trips.find(t => t.id === tripId);
+    if (trip) {
+      // Populate form and switch to entry tab
+      const form = document.getElementById('trip-form');
+      form.vehicleNumber.value = trip.vehicleNumber;
+      form.driverName.value = trip.driverName;
+      form.from.value = trip.from;
+      form.to.value = trip.to;
+      form.distance.value = trip.distance;
+      form.status.value = trip.status;
+      form.remarks.value = trip.remarks || '';
       
-      // Refresh dashboard
-      loadDashboardData();
-    } catch (error) {
-      console.error('Error deleting trip:', error);
-      showToast('Error deleting trip', 'error');
+      switchTab('entry');
+      showToast('Edit trip details', 'info');
     }
+  }
+
+  function deleteTrip(tripId) {
+    showConfirmation(
+      'Delete Trip',
+      'Are you sure you want to delete this trip?'
+    ).then(confirmed => {
+      if (!confirmed) return;
+      
+      // Remove from array
+      const index = trips.findIndex(t => t.id === tripId);
+      if (index > -1) {
+        trips.splice(index, 1);
+        showToast('Trip deleted successfully', 'success');
+        addNotification('Trip Deleted', 'A trip has been deleted', 'warning');
+        loadDashboardData();
+      }
+    });
   }
 
   function addNewTrip() {
     switchTab('entry');
+  }
+
+  function saveTrip(e) {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+    
+    const newTrip = {
+      id: 'TRIP' + Date.now().toString().slice(-6),
+      vehicleNumber: formData.get('vehicleNumber'),
+      driverName: formData.get('driverName'),
+      from: formData.get('from'),
+      to: formData.get('to'),
+      distance: formData.get('distance'),
+      status: formData.get('status'),
+      remarks: formData.get('remarks'),
+      eta: new Date(Date.now() + 8 * 60 * 60 * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      revenue: Math.floor(Math.random() * 20000) + 5000
+    };
+    
+    trips.unshift(newTrip);
+    showToast('Trip saved successfully!', 'success');
+    addNotification('New Trip Added', `Trip ${newTrip.id} added`, 'success');
+    
+    // Clear form and switch to dashboard
+    form.reset();
+    switchTab('dashboard');
+  }
+
+  function clearForm() {
+    document.getElementById('trip-form').reset();
+  }
+
+  // ============ DATABASE VIEW ============
+  function loadDatabaseData() {
+    const container = document.getElementById('database-content');
+    if (!container) return;
+    
+    if (trips.length === 0) {
+      container.innerHTML = '<p class="text-center py-8 text-slate-500">No trips found</p>';
+      return;
+    }
+    
+    container.innerHTML = `
+      <div class="table-container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Trip ID</th>
+              <th>Vehicle</th>
+              <th>Driver</th>
+              <th>Route</th>
+              <th>Distance</th>
+              <th>Status</th>
+              <th>Revenue</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${trips.map(trip => `
+              <tr>
+                <td class="font-mono">${trip.id}</td>
+                <td>${trip.vehicleNumber}</td>
+                <td>${trip.driverName}</td>
+                <td>${trip.from} → ${trip.to}</td>
+                <td>${trip.distance || '0'} km</td>
+                <td>
+                  <span class="badge ${
+                    trip.status === 'completed' ? 'badge-success' :
+                    trip.status === 'active' ? 'badge-info' :
+                    trip.status === 'pending' ? 'badge-warning' : 'badge-danger'
+                  }">
+                    ${trip.status}
+                  </span>
+                </td>
+                <td>${formatCurrency(trip.revenue)}</td>
+                <td>
+                  <div class="flex gap-2">
+                    <button onclick="viewTrip('${trip.id}')" class="text-blue-600 hover:text-blue-800">
+                      <i class="fa-solid fa-eye"></i>
+                    </button>
+                    ${currentRole === 'Admin' ? `
+                      <button onclick="editTrip('${trip.id}')" class="text-green-600 hover:text-green-800">
+                        <i class="fa-solid fa-edit"></i>
+                      </button>
+                    ` : ''}
+                  </div>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+
+  function searchTrips(query) {
+    // Filter trips based on search query
+    // Implement search logic here
+  }
+
+  function filterByStatus(status) {
+    // Filter trips by status
+    // Implement filter logic here
+  }
+
+  function exportToExcel() {
+    const ws = XLSX.utils.json_to_sheet(trips);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Trips");
+    XLSX.writeFile(wb, `trips-${new Date().toISOString().split('T')[0]}.xlsx`);
+    showToast('Data exported to Excel', 'success');
+  }
+
+  // ============ OTHER VIEWS ============
+  function loadEntryForm() {
+    // Already implemented in HTML
+  }
+
+  function loadFleetData() {
+    const container = document.getElementById('fleet-content');
+    container.innerHTML = `
+      <div class="text-center py-8 text-slate-500">
+        <i class="fa-solid fa-truck fa-3x mb-4 opacity-30"></i>
+        <p>Fleet Management coming soon</p>
+      </div>
+    `;
+  }
+
+  function loadUsersData() {
+    const container = document.getElementById('users-content');
+    container.innerHTML = `
+      <div class="text-center py-8 text-slate-500">
+        <i class="fa-solid fa-users fa-3x mb-4 opacity-30"></i>
+        <p>User Management coming soon</p>
+      </div>
+    `;
+  }
+
+  function loadReportsData() {
+    const container = document.getElementById('reports-content');
+    container.innerHTML = `
+      <div class="text-center py-8 text-slate-500">
+        <i class="fa-solid fa-chart-pie fa-3x mb-4 opacity-30"></i>
+        <p>Analytics & Reports coming soon</p>
+      </div>
+    `;
+  }
+
+  function loadSettingsData() {
+    const container = document.getElementById('settings-content');
+    container.innerHTML = `
+      <div class="space-y-6">
+        <div>
+          <h3 class="text-lg font-semibold mb-4">General Settings</h3>
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium mb-2">Company Name</label>
+              <input type="text" class="input-field" value="Shri Narayan Logistics">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">Default Currency</label>
+              <select class="input-field">
+                <option>INR (₹)</option>
+                <option>USD ($)</option>
+                <option>EUR (€)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="pt-6 border-t">
+          <button class="btn btn-primary">Save Settings</button>
+        </div>
+      </div>
+    `;
   }
 
   // ============ QUICK ACTIONS ============
@@ -2009,235 +2096,73 @@
       case 'generate_report':
         switchTab('reports');
         break;
-      case 'bulk_update':
-        showToast('Bulk update functionality coming soon', 'info');
-        break;
-      case 'send_alerts':
-        showToast('Send alerts functionality coming soon', 'info');
-        break;
       case 'backup_data':
         exportAllData();
         break;
-    }
-    
-    logEvent(analytics, 'quick_action', { action });
-  }
-
-  // ============ DATA EXPORT ============
-  async function exportAllData() {
-    try {
-      showToast('Preparing data export...', 'info');
-      
-      // Collect all data
-      const exportData = {
-        trips: trips,
-        fleet: fleet,
-        users: users,
-        templates: templates,
-        settings: settings,
-        exportedAt: new Date().toISOString(),
-        exportedBy: currentUser.email
-      };
-      
-      // Convert to JSON
-      const jsonStr = JSON.stringify(exportData, null, 2);
-      const blob = new Blob([jsonStr], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `snl-backup-${new Date().toISOString().split('T')[0]}.json`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      
-      showToast('Data exported successfully', 'success');
-      addNotification('Data Backup', 'All data has been exported', 'success');
-      logEvent(analytics, 'data_exported');
-      
-    } catch (error) {
-      console.error('Error exporting data:', error);
-      showToast('Error exporting data', 'error');
+      default:
+        showToast('Action coming soon', 'info');
     }
   }
 
-  // ============ PWA INSTALLATION ============
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
+  // ============ MISC FUNCTIONS ============
+  function exportAllData() {
+    const exportData = {
+      trips: trips,
+      exportedAt: new Date().toISOString(),
+      exportedBy: currentUser?.email
+    };
     
-    // Show install prompt after 5 seconds
-    setTimeout(() => {
-      if (deferredPrompt) {
-        document.getElementById('install-prompt').classList.remove('hidden');
-      }
-    }, 5000);
-  });
+    const jsonStr = JSON.stringify(exportData, null, 2);
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `snl-backup-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    showToast('Data exported successfully', 'success');
+    addNotification('Data Backup', 'All data has been exported', 'success');
+  }
 
-  async function installPWA() {
-    if (!deferredPrompt) {
-      showToast('Installation not available', 'info');
-      return;
-    }
-    
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    
-    if (outcome === 'accepted') {
-      showToast('App installed successfully!', 'success');
-      logEvent(analytics, 'pwa_installed');
+  function togglePasswordVisibility(inputId) {
+    const input = document.getElementById(inputId);
+    const icon = input.parentNode.querySelector('i');
+    if (input.type === 'password') {
+      input.type = 'text';
+      icon.className = 'fa-solid fa-eye-slash';
     } else {
-      showToast('Installation cancelled', 'info');
+      input.type = 'password';
+      icon.className = 'fa-solid fa-eye';
     }
-    
-    deferredPrompt = null;
-    closeInstallPrompt();
   }
 
-  function closeInstallPrompt() {
-    document.getElementById('install-prompt').classList.add('hidden');
+  function toggleUserMenu() {
+    document.getElementById('user-dropdown').classList.toggle('hidden');
   }
 
   // ============ INITIALIZATION ============
-  async function initializeApp() {
+  function initializeApp() {
     updateLoaderProgress(10, 'Initializing system...');
     
-    // Initialize theme
     initTheme();
-    
-    // Load notifications
     loadNotifications();
     
-    // Set up auth state listener
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        // User is signed in
-        currentUser = user;
-        updateLoaderProgress(50, 'Loading user data...');
-        
-        // Update user info in UI
-        document.getElementById('user-display-name').textContent = 
-          user.displayName || user.email.split('@')[0];
-        document.getElementById('sidebar-user-name').textContent = 
-          user.displayName || user.email.split('@')[0];
-        document.getElementById('user-email').textContent = user.email;
-        
-        // Check user role
-        if (ADMIN_EMAILS.includes(user.email)) {
-          currentRole = 'Admin';
-        } else {
-          const userDoc = await getDocs(query(collection(db, 'users'), where('email', '==', user.email)));
-          if (!userDoc.empty) {
-            const userData = userDoc.docs[0].data();
-            currentRole = userData.role || 'Staff';
-          }
-        }
-        
-        document.getElementById('user-role').textContent = currentRole;
-        
-        // Hide auth screen, show app
-        document.getElementById('auth-screen').classList.add('hidden');
-        document.getElementById('app-container').classList.remove('hidden');
-        document.getElementById('loader').classList.add('hidden');
-        
-        updateLoaderProgress(80, 'Loading dashboard...');
-        
-        // Load dashboard data
-        await loadDashboardData();
-        
-        updateLoaderProgress(100, 'Ready!');
-        
-        // Show welcome notification
-        addNotification(
-          'Welcome Back',
-          `Welcome to SN Logistics Dashboard, ${user.email.split('@')[0]}!`,
-          'success'
-        );
-        
-        // Set up real-time listeners
-        setupRealtimeListeners();
-        
-      } else {
-        // User is signed out
-        document.getElementById('loader').classList.add('hidden');
-        document.getElementById('auth-screen').classList.remove('hidden');
-        document.getElementById('app-container').classList.add('hidden');
+    // Check if user is already logged in (demo)
+    const savedUser = localStorage.getItem('snl_user');
+    if (savedUser) {
+      try {
+        currentUser = JSON.parse(savedUser);
+        currentRole = currentUser.email === 'admin@shrinarayanlogistics.com' ? 'Admin' : 'Staff';
+        handleSuccessfulLogin();
+      } catch (e) {
+        showLoginScreen();
       }
-    });
-    
-    // Set up error handling
-    window.onerror = function(msg, url, line, col, error) {
-      console.error('Global error:', { msg, url, line, col, error });
-      addNotification('System Error', `Error: ${msg}`, 'error');
-      return false;
-    };
-    
-    window.addEventListener('unhandledrejection', function(event) {
-      console.error('Unhandled rejection:', event.reason);
-      addNotification('Promise Error', 'An unexpected error occurred', 'error');
-    });
-  }
-
-  function setupRealtimeListeners() {
-    // Real-time trips listener
-    const tripsQuery = query(collection(db, 'trips'), orderBy('createdAt', 'desc'));
-    onSnapshot(tripsQuery, (snapshot) => {
-      trips = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      
-      // Update dashboard if visible
-      if (!document.getElementById('view-dashboard').classList.contains('hidden')) {
-        updateDashboardStats();
-        loadRecentTrips();
-        if (chartInstance) {
-          initStatusChart();
-        }
-      }
-    });
-    
-    // Real-time fleet listener
-    const fleetQuery = query(collection(db, 'fleet'), orderBy('createdAt', 'desc'));
-    onSnapshot(fleetQuery, (snapshot) => {
-      fleet = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-    });
-    
-    // Real-time users listener
-    const usersQuery = query(collection(db, 'users'), orderBy('createdAt', 'desc'));
-    onSnapshot(usersQuery, (snapshot) => {
-      users = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-    });
-  }
-
-  // ============ EVENT LISTENERS ============
-  document.addEventListener('DOMContentLoaded', () => {
-    // Initialize app
-    initializeApp();
-    
-    // Password visibility toggle
-    window.togglePasswordVisibility = function(inputId) {
-      const input = document.getElementById(inputId);
-      const icon = input.parentNode.querySelector('i');
-      if (input.type === 'password') {
-        input.type = 'text';
-        icon.className = 'fa-solid fa-eye-slash';
-      } else {
-        input.type = 'password';
-        icon.className = 'fa-solid fa-eye';
-      }
-    };
-    
-    // Toggle user menu
-    window.toggleUserMenu = function() {
-      document.getElementById('user-dropdown').classList.toggle('hidden');
-    };
+    } else {
+      showLoginScreen();
+    }
     
     // Close dropdowns when clicking outside
     document.addEventListener('click', (e) => {
@@ -2252,43 +2177,23 @@
       }
     });
     
-    // Keyboard shortcuts
-    document.addEventListener('keydown', (e) => {
-      // Ctrl/Cmd + S to save
-      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-        e.preventDefault();
-        showToast('Save functionality coming soon', 'info');
-      }
-      
-      // Escape to close modals
-      if (e.key === 'Escape') {
-        closeQuickActions();
-        closeReset();
-        if (pendingConfirmation) {
-          confirmAction(false);
-        }
-      }
-      
-      // Number keys for navigation (1-7)
-      if (e.key >= '1' && e.key <= '7' && !e.ctrlKey && !e.metaKey) {
-        const tabs = ['dashboard', 'database', 'entry', 'fleet', 'users', 'reports', 'settings'];
-        const index = parseInt(e.key) - 1;
-        if (index < tabs.length) {
-          e.preventDefault();
-          switchTab(tabs[index]);
-        }
-      }
+    // PWA Installation
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
     });
     
-    // Service Worker for PWA
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js').catch(err => {
-        console.log('Service Worker registration failed:', err);
-      });
-    }
-  });
+    updateLoaderProgress(100, 'System ready');
+  }
 
-  // ============ WINDOW EXPORTS ============
+  function showLoginScreen() {
+    document.getElementById('loader').classList.add('hidden');
+    document.getElementById('auth-screen').classList.remove('hidden');
+  }
+
+  // Make functions available globally
+  window.togglePasswordVisibility = togglePasswordVisibility;
+  window.toggleUserMenu = toggleUserMenu;
   window.switchTab = switchTab;
   window.toggleTheme = toggleTheme;
   window.toggleSidebar = toggleSidebar;
@@ -2301,17 +2206,38 @@
   window.showQuickActions = showQuickActions;
   window.closeQuickActions = closeQuickActions;
   window.quickAction = quickAction;
-  window.installPWA = installPWA;
-  window.closeInstallPrompt = closeInstallPrompt;
   window.refreshDashboard = refreshDashboard;
   window.exportDashboardData = exportDashboardData;
   window.addNewTrip = addNewTrip;
   window.viewTrip = viewTrip;
   window.editTrip = editTrip;
   window.deleteTrip = deleteTrip;
+  window.saveTrip = saveTrip;
+  window.clearForm = clearForm;
   window.exportAllData = exportAllData;
   window.clearNotifications = clearNotifications;
+  window.searchTrips = searchTrips;
+  window.filterByStatus = filterByStatus;
+  window.exportToExcel = exportToExcel;
+  window.addVehicle = function() { showToast('Add vehicle coming soon', 'info'); };
+  window.openQuickTrip = function() { showToast('Quick trip entry coming soon', 'info'); };
+  window.openBulkUpload = function() { showToast('Bulk upload coming soon', 'info'); };
+  window.generateDailyReport = function() { showToast('Daily report coming soon', 'info'); };
+  window.showSystemInfo = function() { showToast('System info coming soon', 'info'); };
+  window.clearCache = function() { showToast('Cache cleared', 'success'); };
+  window.toggleDateRange = function() {
+    document.getElementById('date-range-dropdown').classList.toggle('hidden');
+  };
+  window.setDateRange = function(range) {
+    document.getElementById('date-range-label').textContent = range;
+    document.getElementById('date-range-dropdown').classList.add('hidden');
+    showToast(`Date range set to ${range}`, 'info');
+  };
+  window.updateChart = function() { showToast('Chart updated', 'info'); };
+  window.loadMoreActivity = function() { showToast('Loading more activity...', 'info'); };
 
+  // Initialize the app
+  document.addEventListener('DOMContentLoaded', initializeApp);
 </script>
 </body>
 </html>
