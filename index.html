@@ -3,102 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SNL Logistics Pro | Advanced Enterprise Platform</title>
-    
+    <title>SNL Logistics Pro - Working</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            50: '#eff6ff',
-                            100: '#dbeafe',
-                            200: '#bfdbfe',
-                            300: '#93c5fd',
-                            400: '#60a5fa',
-                            500: '#3b82f6',
-                            600: '#2563eb',
-                            700: '#1d4ed8',
-                            800: '#1e40af',
-                            900: '#1e3a8a',
-                        },
-                        secondary: {
-                            50: '#f8fafc',
-                            100: '#f1f5f9',
-                            200: '#e2e8f0',
-                            300: '#cbd5e1',
-                            400: '#94a3b8',
-                            500: '#64748b',
-                            600: '#475569',
-                            700: '#334155',
-                            800: '#1e293b',
-                            900: '#0f172a',
-                        }
-                    },
-                    animation: {
-                        'float': 'float 3s ease-in-out infinite',
-                        'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
-                        'shimmer': 'shimmer 2s infinite',
-                        'slide-up': 'slide-up 0.3s ease-out',
-                        'fade-in': 'fade-in 0.2s ease-out',
-                        'bounce-in': 'bounce-in 0.5s ease-out',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' }
-                        },
-                        'pulse-glow': {
-                            '0%, 100%': { opacity: 1 },
-                            '50%': { opacity: 0.5 }
-                        },
-                        shimmer: {
-                            '0%': { backgroundPosition: '-200px 0' },
-                            '100%': { backgroundPosition: 'calc(200px + 100%) 0' }
-                        },
-                        'slide-up': {
-                            '0%': { transform: 'translateY(20px)', opacity: 0 },
-                            '100%': { transform: 'translateY(0)', opacity: 1 }
-                        },
-                        'fade-in': {
-                            '0%': { opacity: 0 },
-                            '100%': { opacity: 1 }
-                        },
-                        'bounce-in': {
-                            '0%': { transform: 'scale(0.3)', opacity: 0 },
-                            '50%': { transform: 'scale(1.05)' },
-                            '100%': { transform: 'scale(1)', opacity: 1 }
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <!-- ApexCharts -->
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    
-    <!-- Map Integration -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    
-    <!-- Stripe Payment (Demo) -->
-    <script src="https://js.stripe.com/v3/"></script>
-    
     <style>
         /* Custom Styles */
-        :root {
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --success-gradient: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
         }
 
         .glass-effect {
@@ -113,93 +33,31 @@
         }
 
         .gradient-text {
-            background: var(--primary-gradient);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
         .gradient-bg {
-            background: var(--primary-gradient);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 8px;
-        }
-
-        .status-active { background-color: #10b981; }
-        .status-inactive { background-color: #ef4444; }
-        .status-pending { background-color: #f59e0b; }
-
-        .progress-ring {
-            transform: rotate(-90deg);
-        }
-
-        .progress-ring-circle {
-            stroke-dasharray: 314;
-            stroke-dashoffset: 314;
-            transition: stroke-dashoffset 0.5s;
-            stroke-linecap: round;
-        }
-
-        .chat-bubble {
-            max-width: 70%;
-            border-radius: 20px;
-            padding: 12px 16px;
-            margin: 8px 0;
-            position: relative;
-        }
-
-        .chat-bubble.user {
-            background: var(--primary-gradient);
-            color: white;
-            align-self: flex-end;
-        }
-
-        .chat-bubble.ai {
-            background: #f3f4f6;
-            color: #1f2937;
-            align-self: flex-start;
-        }
-
-        .dark .chat-bubble.ai {
-            background: #374151;
-            color: #f9fafb;
-        }
-
-        .course-card {
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-
-        .course-card:hover {
+        .card-hover:hover {
             transform: translateY(-5px);
-            border-color: var(--primary-gradient);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        .marketplace-item {
-            transition: all 0.3s ease;
-        }
-
-        .marketplace-item:hover {
-            transform: scale(1.02);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
 
         .sidebar {
-            transition: all 0.3s ease;
+            transition: all 0.3s ease-in-out;
         }
 
         @media (max-width: 1024px) {
             .sidebar {
                 position: fixed;
                 left: -100%;
-                z-index: 50;
+                z-index: 1000;
+                height: 100vh;
             }
             .sidebar.active {
                 left: 0;
@@ -210,8 +68,8 @@
             position: absolute;
             top: -5px;
             right: -5px;
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             background: linear-gradient(135deg, #ef4444, #dc2626);
             border-radius: 50%;
             display: flex;
@@ -222,35 +80,15 @@
             font-weight: bold;
         }
 
-        .wave-animation {
-            animation: wave 2s ease-in-out infinite;
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
         }
 
-        @keyframes wave {
-            0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(10px); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-
-        .dark ::-webkit-scrollbar-thumb {
-            background: #4b5563;
-        }
-
-        /* Loading skeleton */
         .skeleton {
             background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
             background-size: 200% 100%;
@@ -266,169 +104,159 @@
             100% { background-position: -200% 0; }
         }
 
-        /* Timeline */
-        .timeline-item {
-            position: relative;
-            padding-left: 30px;
-            margin-bottom: 30px;
+        .progress-ring {
+            transform: rotate(-90deg);
         }
 
-        .timeline-item:before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--primary-gradient);
+        .progress-ring-circle {
+            stroke-dasharray: 314;
+            stroke-dashoffset: 314;
+            transition: stroke-dashoffset 0.5s;
         }
 
-        .timeline-item:after {
-            content: '';
-            position: absolute;
-            left: 5px;
-            top: 12px;
-            width: 2px;
-            height: calc(100% + 18px);
-            background: #e5e7eb;
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
         }
 
-        .dark .timeline-item:after {
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+
+        .dark ::-webkit-scrollbar-thumb {
             background: #4b5563;
         }
 
-        .timeline-item:last-child:after {
-            display: none;
+        .animate-pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
         }
 
-        /* Kanban Board */
-        .kanban-column {
-            min-height: 500px;
-            background: #f9fafb;
-            border-radius: 10px;
-            padding: 15px;
-        }
-
-        .dark .kanban-column {
-            background: #1f2937;
-        }
-
-        .kanban-item {
-            background: white;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 10px;
-            cursor: move;
-            transition: all 0.2s;
-        }
-
-        .dark .kanban-item {
-            background: #374151;
-        }
-
-        .kanban-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .kanban-item.dragging {
-            opacity: 0.5;
-        }
-
-        /* File Upload */
-        .file-upload-area {
-            border: 2px dashed #cbd5e1;
-            border-radius: 10px;
-            padding: 40px;
-            text-align: center;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .file-upload-area:hover {
-            border-color: #3b82f6;
-            background: rgba(59, 130, 246, 0.05);
-        }
-
-        .dark .file-upload-area {
-            border-color: #4b5563;
-        }
-
-        .dark .file-upload-area:hover {
-            border-color: #3b82f6;
-            background: rgba(59, 130, 246, 0.1);
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
         }
     </style>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
     <!-- Loading Screen -->
     <div id="loadingScreen" class="fixed inset-0 bg-white dark:bg-gray-900 z-50 flex flex-col items-center justify-center">
-        <div class="relative">
-            <div class="w-24 h-24 rounded-full border-4 border-blue-200 dark:border-blue-800 border-t-blue-500 dark:border-t-blue-400 animate-spin"></div>
-            <div class="absolute inset-0 flex items-center justify-center">
-                <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
-                    <i class="fas fa-truck-fast text-2xl text-white animate-pulse-glow"></i>
+        <div class="text-center">
+            <div class="w-24 h-24 mx-auto mb-6 relative">
+                <div class="absolute inset-0 border-4 border-blue-200 dark:border-blue-800 border-t-blue-500 dark:border-t-blue-400 rounded-full animate-spin"></div>
+                <div class="absolute inset-4 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
+                    <i class="fas fa-truck text-3xl text-blue-600 dark:text-blue-400 animate-pulse-glow"></i>
                 </div>
             </div>
-        </div>
-        <div class="mt-8 text-center">
-            <h2 class="text-2xl font-bold gradient-text mb-2">SNL Logistics Pro</h2>
-            <p class="text-gray-600 dark:text-gray-400 mb-4">Initializing Enterprise Platform...</p>
+            <h2 class="text-3xl font-bold gradient-text mb-3">SNL Logistics Pro</h2>
+            <p class="text-gray-600 dark:text-gray-400 mb-4">Loading enterprise system...</p>
             <div class="w-80 h-2 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
                 <div id="loadingBar" class="h-full gradient-bg transition-all duration-300" style="width: 0%"></div>
             </div>
-            <div class="mt-2 text-sm text-gray-500" id="loadingMessage">Loading core modules...</div>
+            <div class="mt-2 text-sm text-gray-500" id="loadingMessage">Initializing modules...</div>
         </div>
     </div>
 
-    <!-- Main App Container -->
-    <div id="appContainer" class="hidden min-h-screen">
+    <!-- Auth Screen -->
+    <div id="authScreen" class="hidden min-h-screen bg-gradient-to-br from-blue-900 via-gray-900 to-purple-900 flex items-center justify-center p-4">
+        <div class="w-full max-w-md">
+            <div class="glass-effect rounded-2xl p-8 shadow-2xl">
+                <!-- Logo -->
+                <div class="text-center mb-8">
+                    <div class="w-20 h-20 mx-auto mb-4 rounded-2xl gradient-bg flex items-center justify-center">
+                        <i class="fas fa-truck-fast text-3xl text-white"></i>
+                    </div>
+                    <h1 class="text-3xl font-bold text-white">SNL Logistics Pro</h1>
+                    <p class="text-gray-300 text-sm mt-1">Enterprise Platform</p>
+                </div>
+
+                <!-- Login Form -->
+                <form id="loginForm" class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
+                        <div class="relative">
+                            <i class="fas fa-envelope absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="email" id="loginEmail" 
+                                   class="w-full pl-10 pr-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                   placeholder="admin@company.com"
+                                   required>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                        <div class="relative">
+                            <i class="fas fa-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="password" id="loginPassword" 
+                                   class="w-full pl-10 pr-10 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                   placeholder="••••••••"
+                                   required>
+                            <button type="button" onclick="togglePassword('loginPassword')" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <label class="flex items-center">
+                            <input type="checkbox" id="rememberMe" class="w-4 h-4 text-blue-600 bg-gray-800 border-gray-700 rounded focus:ring-blue-500">
+                            <span class="ml-2 text-sm text-gray-300">Remember me</span>
+                        </label>
+                        <button type="button" onclick="showForgotPassword()" class="text-sm text-blue-400 hover:text-blue-300">
+                            Forgot password?
+                        </button>
+                    </div>
+
+                    <div id="loginError" class="hidden bg-red-900/50 border border-red-700 rounded-lg p-3 text-sm text-red-200"></div>
+
+                    <button type="submit" id="loginBtn" class="w-full gradient-bg text-white font-bold py-3.5 px-4 rounded-lg transition-all duration-300 hover:opacity-90 active:scale-95">
+                        <span id="loginBtnText">Sign In to Dashboard</span>
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+
+                    <!-- Demo Credentials -->
+                    <div class="mt-6 p-4 bg-gray-800/30 rounded-lg">
+                        <p class="text-sm text-gray-400 mb-2">Demo Credentials:</p>
+                        <p class="text-sm text-gray-300"><i class="fas fa-user mr-2"></i>Email: admin@snl.com</p>
+                        <p class="text-sm text-gray-300"><i class="fas fa-key mr-2"></i>Password: demo123</p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="appContainer" class="hidden">
         <!-- Top Navigation -->
         <nav class="glass-effect border-b border-gray-200 dark:border-gray-800 px-6 py-4 flex items-center justify-between sticky top-0 z-40">
             <!-- Left: Logo & Menu -->
             <div class="flex items-center gap-4">
                 <button onclick="toggleSidebar()" class="lg:hidden p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
-                    <i class="fas fa-bars text-lg"></i>
+                    <i class="fas fa-bars text-xl"></i>
                 </button>
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center">
-                        <i class="fas fa-truck text-white"></i>
+                    <div class="w-12 h-12 rounded-xl gradient-bg flex items-center justify-center">
+                        <i class="fas fa-truck text-white text-lg"></i>
                     </div>
                     <div>
-                        <h1 class="font-bold text-lg">SNL Logistics Pro</h1>
-                        <p class="text-xs text-gray-500 dark:text-gray-400">Enterprise Platform</p>
+                        <div class="font-bold">SNL Logistics Pro</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400">Enterprise Edition</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Center: Quick Actions -->
-            <div class="hidden lg:flex items-center gap-6">
-                <button onclick="quickAction('newTrip')" class="flex items-center gap-2 text-sm hover:text-blue-600 dark:hover:text-blue-400">
-                    <i class="fas fa-plus-circle"></i>
-                    <span>New Trip</span>
-                </button>
-                <button onclick="quickAction('trackShipment')" class="flex items-center gap-2 text-sm hover:text-blue-600 dark:hover:text-blue-400">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>Track Shipment</span>
-                </button>
-                <button onclick="quickAction('generateReport')" class="flex items-center gap-2 text-sm hover:text-blue-600 dark:hover:text-blue-400">
-                    <i class="fas fa-chart-bar"></i>
-                    <span>Reports</span>
-                </button>
-                <button onclick="quickAction('aiAssistant')" class="flex items-center gap-2 text-sm hover:text-blue-600 dark:hover:text-blue-400">
-                    <i class="fas fa-robot"></i>
-                    <span>AI Assistant</span>
-                </button>
-            </div>
-
-            <!-- Right: User & Notifications -->
+            <!-- Right: User & Controls -->
             <div class="flex items-center gap-4">
                 <!-- Search -->
                 <div class="hidden md:block relative">
                     <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                     <input type="text" 
-                           placeholder="Search everything..." 
+                           placeholder="Search..." 
                            class="pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-800 border-none rounded-lg w-64 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                            id="globalSearch">
                 </div>
@@ -436,66 +264,56 @@
                 <!-- Notifications -->
                 <div class="relative">
                     <button onclick="toggleNotifications()" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg relative">
-                        <i class="fas fa-bell text-lg"></i>
-                        <span class="notification-badge">5</span>
+                        <i class="fas fa-bell text-xl"></i>
+                        <span class="notification-badge">3</span>
                     </button>
-                    <div id="notificationsPanel" class="hidden absolute right-0 mt-2 w-96 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 z-50">
+                    <div id="notificationsPanel" class="hidden absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700">
                         <div class="p-4 border-b border-gray-200 dark:border-gray-700">
                             <div class="flex justify-between items-center">
                                 <h3 class="font-bold">Notifications</h3>
-                                <button onclick="markAllAsRead()" class="text-sm text-blue-600 dark:text-blue-400">Mark all read</button>
+                                <button onclick="markAllAsRead()" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">
+                                    Mark all read
+                                </button>
                             </div>
                         </div>
                         <div class="max-h-96 overflow-y-auto p-2">
-                            <!-- Notifications will be populated here -->
+                            <!-- Notifications content -->
                         </div>
                     </div>
                 </div>
 
                 <!-- Theme Toggle -->
                 <button onclick="toggleTheme()" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
-                    <i id="themeIcon" class="fas fa-moon text-lg"></i>
+                    <i id="themeIcon" class="fas fa-moon text-xl"></i>
                 </button>
 
                 <!-- User Menu -->
                 <div class="relative">
-                    <button onclick="toggleUserMenu()" class="flex items-center gap-2 p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
+                    <button onclick="toggleUserMenu()" class="flex items-center gap-3 p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
                         <div class="w-10 h-10 rounded-full gradient-bg flex items-center justify-center">
                             <span id="userInitials" class="text-white font-bold">A</span>
                         </div>
                         <div class="hidden md:block text-left">
-                            <div class="text-sm font-medium">Admin User</div>
-                            <div class="text-xs text-gray-500">Premium Plan</div>
+                            <div class="text-sm font-medium" id="userName">Admin User</div>
+                            <div class="text-xs text-gray-500">Premium</div>
                         </div>
                         <i class="fas fa-chevron-down text-xs text-gray-500"></i>
                     </button>
-                    <div id="userMenu" class="hidden absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 z-50">
+                    <div id="userMenu" class="hidden absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700">
                         <div class="p-4 border-b border-gray-200 dark:border-gray-700">
-                            <div class="font-medium">Admin User</div>
-                            <div class="text-sm text-gray-500">admin@snl.com</div>
-                            <div class="mt-2">
-                                <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded-full">
-                                    Enterprise Plan
-                                </span>
-                            </div>
+                            <div class="font-medium" id="menuUserName">Admin User</div>
+                            <div class="text-sm text-gray-500" id="menuUserEmail">admin@snl.com</div>
                         </div>
                         <div class="p-2">
                             <a href="#" onclick="navigateTo('profile')" class="flex items-center px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                                <i class="fas fa-user mr-3 text-gray-500"></i>
-                                <span>Profile</span>
-                            </a>
-                            <a href="#" onclick="navigateTo('billing')" class="flex items-center px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                                <i class="fas fa-credit-card mr-3 text-gray-500"></i>
-                                <span>Billing & Plans</span>
+                                <i class="fas fa-user mr-3 text-gray-500"></i>Profile
                             </a>
                             <a href="#" onclick="navigateTo('settings')" class="flex items-center px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                                <i class="fas fa-cog mr-3 text-gray-500"></i>
-                                <span>Settings</span>
+                                <i class="fas fa-cog mr-3 text-gray-500"></i>Settings
                             </a>
                             <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
                             <button onclick="logout()" class="w-full flex items-center px-3 py-2 hover:bg-red-50 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg">
-                                <i class="fas fa-sign-out-alt mr-3"></i>
-                                <span>Logout</span>
+                                <i class="fas fa-sign-out-alt mr-3"></i>Logout
                             </button>
                         </div>
                     </div>
@@ -506,164 +324,97 @@
         <!-- Main Layout -->
         <div class="flex">
             <!-- Sidebar -->
-            <aside id="sidebar" class="sidebar w-64 lg:w-72 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 h-[calc(100vh-73px)] overflow-y-auto">
-                <!-- User Profile Summary -->
+            <aside id="sidebar" class="sidebar w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 h-[calc(100vh-73px)] overflow-y-auto lg:block hidden">
+                <!-- User Profile -->
                 <div class="p-6 border-b border-gray-200 dark:border-gray-700">
                     <div class="flex items-center gap-3 mb-4">
                         <div class="relative">
                             <div class="w-14 h-14 rounded-full gradient-bg flex items-center justify-center">
                                 <span class="text-white text-xl font-bold">A</span>
                             </div>
-                            <div class="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full border-2 border-white dark:border-gray-800"></div>
+                            <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-800"></div>
                         </div>
                         <div>
                             <div class="font-bold">Admin User</div>
                             <div class="text-sm text-gray-500 dark:text-gray-400">Administrator</div>
                         </div>
                     </div>
-                    <div class="flex justify-between items-center">
-                        <div class="text-sm text-gray-500">Credits</div>
-                        <div class="font-bold text-blue-600 dark:text-blue-400">1,250</div>
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-gray-500">Credits</span>
+                        <span class="font-bold text-blue-600 dark:text-blue-400">1,250</span>
                     </div>
-                    <div class="mt-2">
-                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                            <div class="gradient-bg rounded-full h-2" style="width: 75%"></div>
-                        </div>
+                    <div class="mt-2 w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                        <div class="gradient-bg rounded-full h-2" style="width: 75%"></div>
                     </div>
                 </div>
 
                 <!-- Navigation -->
                 <nav class="p-4 space-y-1">
-                    <!-- Dashboard -->
-                    <a href="#" onclick="navigateTo('dashboard')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
+                    <a href="#" onclick="navigateTo('dashboard')" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
                         <i class="fas fa-gauge-high"></i>
                         <span>Dashboard</span>
-                        <span class="ml-auto badge bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-200 text-xs px-2 py-1 rounded-full">Live</span>
+                        <span class="ml-auto px-2 py-1 bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-200 text-xs rounded-full">Live</span>
                     </a>
 
-                    <!-- Logistics Management -->
-                    <div class="nav-group">
-                        <a href="#" onclick="toggleNavGroup('logistics')" class="nav-item flex items-center justify-between px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                            <div class="flex items-center gap-3">
-                                <i class="fas fa-route"></i>
-                                <span>Logistics</span>
-                            </div>
-                            <i class="fas fa-chevron-down text-xs transition-transform" id="logisticsChevron"></i>
-                        </a>
-                        <div id="logisticsSubmenu" class="hidden pl-11 mt-1 space-y-1">
-                            <a href="#" onclick="navigateTo('trips')" class="block py-2 px-4 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-sm">
-                                <i class="fas fa-truck-moving mr-2"></i>Trip Management
-                                <span class="ml-auto badge bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 text-xs px-1.5 py-0.5 rounded-full">12</span>
-                            </a>
-                            <a href="#" onclick="navigateTo('shipments')" class="block py-2 px-4 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-sm">
-                                <i class="fas fa-box mr-2"></i>Shipments
-                            </a>
-                            <a href="#" onclick="navigateTo('routes')" class="block py-2 px-4 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-sm">
-                                <i class="fas fa-map-marked-alt mr-2"></i>Route Optimization
-                            </a>
-                            <a href="#" onclick="navigateTo('tracking')" class="block py-2 px-4 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-sm">
-                                <i class="fas fa-satellite-dish mr-2"></i>Live Tracking
-                            </a>
+                    <div onclick="toggleNavGroup('trips')" class="flex items-center justify-between px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-route"></i>
+                            <span>Trip Management</span>
                         </div>
+                        <i class="fas fa-chevron-down text-xs"></i>
+                    </div>
+                    <div id="tripsSubmenu" class="hidden pl-11 space-y-1">
+                        <a href="#" onclick="navigateTo('trips-active')" class="block py-2 px-4 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-sm">
+                            <i class="fas fa-play-circle mr-2"></i>Active Trips
+                        </a>
+                        <a href="#" onclick="navigateTo('trips-new')" class="block py-2 px-4 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-sm">
+                            <i class="fas fa-plus-circle mr-2"></i>New Trip
+                        </a>
                     </div>
 
-                    <!-- Fleet Management -->
-                    <div class="nav-group">
-                        <a href="#" onclick="toggleNavGroup('fleet')" class="nav-item flex items-center justify-between px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                            <div class="flex items-center gap-3">
-                                <i class="fas fa-truck-front"></i>
-                                <span>Fleet Management</span>
-                            </div>
-                            <i class="fas fa-chevron-down text-xs" id="fleetChevron"></i>
-                        </a>
-                        <div id="fleetSubmenu" class="hidden pl-11 mt-1 space-y-1">
-                            <a href="#" onclick="navigateTo('fleet-overview')" class="block py-2 px-4 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-sm">
-                                <i class="fas fa-truck mr-2"></i>Fleet Overview
-                            </a>
-                            <a href="#" onclick="navigateTo('maintenance')" class="block py-2 px-4 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-sm">
-                                <i class="fas fa-tools mr-2"></i>Maintenance
-                            </a>
-                            <a href="#" onclick="navigateTo('fuel')" class="block py-2 px-4 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-sm">
-                                <i class="fas fa-gas-pump mr-2"></i>Fuel Management
-                            </a>
-                            <a href="#" onclick="navigateTo('telematics')" class="block py-2 px-4 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-sm">
-                                <i class="fas fa-satellite mr-2"></i>Telematics
-                            </a>
+                    <div onclick="toggleNavGroup('fleet')" class="flex items-center justify-between px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-truck-front"></i>
+                            <span>Fleet Management</span>
                         </div>
+                        <i class="fas fa-chevron-down text-xs"></i>
+                    </div>
+                    <div id="fleetSubmenu" class="hidden pl-11 space-y-1">
+                        <a href="#" onclick="navigateTo('fleet-overview')" class="block py-2 px-4 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-sm">
+                            <i class="fas fa-truck mr-2"></i>Fleet Overview
+                        </a>
+                        <a href="#" onclick="navigateTo('fleet-maintenance')" class="block py-2 px-4 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-sm">
+                            <i class="fas fa-tools mr-2"></i>Maintenance
+                        </a>
                     </div>
 
-                    <!-- Finance -->
-                    <a href="#" onclick="navigateTo('finance')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                        <i class="fas fa-wallet"></i>
-                        <span>Finance</span>
-                        <span class="ml-auto badge bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 text-xs px-2 py-1 rounded-full">₹1.2L</span>
+                    <a href="#" onclick="navigateTo('courses')" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>Courses</span>
+                        <span class="ml-auto px-2 py-1 bg-yellow-100 dark:bg-yellow-800 text-yellow-800 dark:text-yellow-200 text-xs rounded-full">New</span>
                     </a>
 
-                    <!-- Marketplace -->
-                    <a href="#" onclick="navigateTo('marketplace')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <a href="#" onclick="navigateTo('marketplace')" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
                         <i class="fas fa-store"></i>
                         <span>Marketplace</span>
-                        <span class="ml-auto badge bg-purple-100 dark:bg-purple-800 text-purple-800 dark:text-purple-200 text-xs px-2 py-1 rounded-full">New</span>
+                        <span class="ml-auto px-2 py-1 bg-purple-100 dark:bg-purple-800 text-purple-800 dark:text-purple-200 text-xs rounded-full">Hot</span>
                     </a>
 
-                    <!-- Courses & Training -->
-                    <a href="#" onclick="navigateTo('courses')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                        <i class="fas fa-graduation-cap"></i>
-                        <span>Courses & Training</span>
-                        <span class="ml-auto badge bg-yellow-100 dark:bg-yellow-800 text-yellow-800 dark:text-yellow-200 text-xs px-2 py-1 rounded-full">4</span>
-                    </a>
-
-                    <!-- AI Assistant -->
-                    <a href="#" onclick="navigateTo('ai-assistant')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <a href="#" onclick="navigateTo('ai-assistant')" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
                         <i class="fas fa-robot"></i>
                         <span>AI Assistant</span>
-                        <span class="ml-auto badge bg-pink-100 dark:bg-pink-800 text-pink-800 dark:text-pink-200 text-xs px-2 py-1 rounded-full">Beta</span>
                     </a>
 
-                    <!-- Analytics -->
-                    <a href="#" onclick="navigateTo('analytics')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <a href="#" onclick="navigateTo('analytics')" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
                         <i class="fas fa-chart-pie"></i>
                         <span>Analytics</span>
                     </a>
 
-                    <!-- Reports -->
-                    <a href="#" onclick="navigateTo('reports')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                        <i class="fas fa-file-chart-column"></i>
-                        <span>Reports</span>
-                    </a>
-
-                    <!-- CRM -->
-                    <a href="#" onclick="navigateTo('crm')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                        <i class="fas fa-users"></i>
-                        <span>CRM</span>
-                        <span class="ml-auto badge bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-200 text-xs px-2 py-1 rounded-full">45</span>
-                    </a>
-
-                    <!-- Settings -->
-                    <a href="#" onclick="navigateTo('settings')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <a href="#" onclick="navigateTo('settings')" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
                         <i class="fas fa-cog"></i>
                         <span>Settings</span>
                     </a>
                 </nav>
-
-                <!-- Quick Stats -->
-                <div class="p-4 mt-6 border-t border-gray-200 dark:border-gray-700">
-                    <div class="text-sm text-gray-500 dark:text-gray-400 mb-3">Quick Stats</div>
-                    <div class="space-y-3">
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm">Active Trips</span>
-                            <span class="font-bold">12</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm">On-time Delivery</span>
-                            <span class="font-bold text-green-600 dark:text-green-400">94%</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm">Fleet Health</span>
-                            <span class="font-bold text-blue-600 dark:text-blue-400">88%</span>
-                        </div>
-                    </div>
-                </div>
             </aside>
 
             <!-- Mobile Overlay -->
@@ -683,172 +434,88 @@
 
     <!-- Payment Modal -->
     <div id="paymentModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-lg w-full">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-md w-full">
             <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-bold">Complete Your Purchase</h3>
+                <h3 class="text-xl font-bold">Complete Purchase</h3>
                 <button onclick="closeModal('paymentModal')" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
                     <i class="fas fa-times text-lg"></i>
                 </button>
             </div>
             
             <div class="space-y-6">
-                <!-- Order Summary -->
                 <div class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                     <h4 class="font-bold mb-3">Order Summary</h4>
                     <div class="space-y-2">
                         <div class="flex justify-between">
-                            <span id="planName">Enterprise Plan</span>
-                            <span id="planPrice">₹49,999/month</span>
+                            <span>Enterprise Plan</span>
+                            <span>₹49,999/month</span>
                         </div>
                         <div class="flex justify-between">
-                            <span>Additional Users (5)</span>
+                            <span>Additional Users</span>
                             <span>₹5,000</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span>Premium Support</span>
-                            <span>₹2,999</span>
                         </div>
                         <div class="border-t border-gray-300 dark:border-gray-600 pt-2 mt-2">
                             <div class="flex justify-between font-bold">
                                 <span>Total</span>
-                                <span id="totalAmount">₹57,998</span>
+                                <span>₹54,999</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Payment Method -->
                 <div>
                     <h4 class="font-bold mb-3">Payment Method</h4>
-                    <div class="grid grid-cols-2 gap-3 mb-4">
-                        <button onclick="selectPaymentMethod('card')" class="payment-method flex items-center justify-center gap-2 p-3 border rounded-lg hover:border-blue-500">
-                            <i class="fas fa-credit-card"></i>
-                            <span>Credit Card</span>
-                        </button>
-                        <button onclick="selectPaymentMethod('upi')" class="payment-method flex items-center justify-center gap-2 p-3 border rounded-lg hover:border-blue-500">
-                            <i class="fas fa-mobile-alt"></i>
-                            <span>UPI</span>
-                        </button>
-                        <button onclick="selectPaymentMethod('netbanking')" class="payment-method flex items-center justify-center gap-2 p-3 border rounded-lg hover:border-blue-500">
-                            <i class="fas fa-university"></i>
+                    <div class="space-y-3">
+                        <label class="flex items-center p-3 border rounded-lg cursor-pointer">
+                            <input type="radio" name="payment" class="w-4 h-4 text-blue-600" checked>
+                            <i class="fas fa-credit-card mx-3 text-gray-500"></i>
+                            <span>Credit/Debit Card</span>
+                        </label>
+                        <label class="flex items-center p-3 border rounded-lg cursor-pointer">
+                            <input type="radio" name="payment" class="w-4 h-4 text-blue-600">
+                            <i class="fas fa-university mx-3 text-gray-500"></i>
                             <span>Net Banking</span>
-                        </button>
-                        <button onclick="selectPaymentMethod('paypal')" class="payment-method flex items-center justify-center gap-2 p-3 border rounded-lg hover:border-blue-500">
-                            <i class="fab fa-paypal"></i>
+                        </label>
+                        <label class="flex items-center p-3 border rounded-lg cursor-pointer">
+                            <input type="radio" name="payment" class="w-4 h-4 text-blue-600">
+                            <i class="fab fa-paypal mx-3 text-gray-500"></i>
                             <span>PayPal</span>
-                        </button>
-                    </div>
-
-                    <!-- Card Details -->
-                    <div id="cardDetails" class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium mb-2">Card Number</label>
-                            <input type="text" placeholder="1234 5678 9012 3456" 
-                                   class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium mb-2">Expiry Date</label>
-                                <input type="text" placeholder="MM/YY" 
-                                       class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium mb-2">CVV</label>
-                                <input type="text" placeholder="123" 
-                                       class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium mb-2">Cardholder Name</label>
-                            <input type="text" placeholder="John Doe" 
-                                   class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
+                        </label>
                     </div>
                 </div>
 
-                <!-- Coupon Code -->
-                <div>
-                    <div class="flex gap-2">
-                        <input type="text" placeholder="Coupon Code" id="couponCode"
-                               class="flex-1 px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700">
-                        <button onclick="applyCoupon()" class="px-4 py-2.5 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600">
-                            Apply
-                        </button>
-                    </div>
-                    <div id="couponMessage" class="mt-2 text-sm hidden"></div>
-                </div>
-
-                <!-- Terms -->
-                <div class="flex items-center">
-                    <input type="checkbox" id="termsAgreement" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                    <label for="termsAgreement" class="ml-2 text-sm">
-                        I agree to the <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">Terms of Service</a> and <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">Privacy Policy</a>
-                    </label>
-                </div>
-
-                <!-- Action Buttons -->
                 <div class="flex gap-3">
-                    <button onclick="processPayment()" class="flex-1 gradient-bg text-white py-3 px-4 rounded-lg font-bold hover:opacity-90 transition-opacity">
+                    <button onclick="processPayment()" class="flex-1 gradient-bg text-white py-3 px-4 rounded-lg font-bold hover:opacity-90">
                         <i class="fas fa-lock mr-2"></i>
-                        Pay ₹57,998
+                        Pay Now
                     </button>
                     <button onclick="closeModal('paymentModal')" class="flex-1 border border-gray-300 dark:border-gray-600 py-3 px-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
                         Cancel
                     </button>
                 </div>
-
-                <!-- Security Notice -->
-                <div class="text-center text-xs text-gray-500 dark:text-gray-400">
-                    <i class="fas fa-lock mr-1"></i>
-                    Secure payment processed by Stripe. Your payment details are encrypted.
-                </div>
             </div>
         </div>
     </div>
 
-    <!-- AI Assistant Chat -->
-    <div id="aiChat" class="hidden fixed bottom-4 right-4 w-96 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 z-40">
-        <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <div class="w-8 h-8 rounded-full gradient-bg flex items-center justify-center">
-                    <i class="fas fa-robot text-white text-sm"></i>
-                </div>
-                <div>
-                    <div class="font-bold">SNL AI Assistant</div>
-                    <div class="text-xs text-gray-500 dark:text-gray-400">Online • Premium</div>
-                </div>
-            </div>
-            <div class="flex items-center gap-2">
-                <button onclick="toggleAIVoice()" class="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                    <i class="fas fa-volume-up text-gray-500"></i>
-                </button>
-                <button onclick="closeAIChat()" class="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                    <i class="fas fa-times text-gray-500"></i>
+    <!-- Forgot Password Modal -->
+    <div id="forgotPasswordModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-md w-full">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold">Reset Password</h3>
+                <button onclick="closeModal('forgotPasswordModal')" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                    <i class="fas fa-times"></i>
                 </button>
             </div>
-        </div>
-        <div class="h-96 overflow-y-auto p-4" id="aiChatMessages">
-            <!-- Messages will be added here -->
-        </div>
-        <div class="p-4 border-t border-gray-200 dark:border-gray-700">
-            <div class="flex gap-2">
-                <input type="text" 
-                       placeholder="Ask AI assistant anything..." 
-                       id="aiInput"
-                       class="flex-1 px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                <button onclick="sendAIMessage()" class="px-4 py-2.5 gradient-bg text-white rounded-lg hover:opacity-90">
-                    <i class="fas fa-paper-plane"></i>
+            <p class="text-gray-600 dark:text-gray-400 mb-4">Enter your email to receive reset instructions.</p>
+            <input type="email" id="resetEmail" placeholder="your@email.com" 
+                   class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 mb-4">
+            <div id="resetMessage" class="mb-4 text-sm hidden"></div>
+            <div class="flex gap-3">
+                <button onclick="sendResetEmail()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg">
+                    Send Reset Link
                 </button>
-            </div>
-            <div class="mt-2 flex flex-wrap gap-1">
-                <button onclick="quickAIQuestion('optimize route')" class="text-xs px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600">
-                    Optimize Route
-                </button>
-                <button onclick="quickAIQuestion('fuel cost')" class="text-xs px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600">
-                    Fuel Cost Analysis
-                </button>
-                <button onclick="quickAIQuestion('maintenance')" class="text-xs px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600">
-                    Maintenance Schedule
+                <button onclick="closeModal('forgotPasswordModal')" class="flex-1 border border-gray-300 dark:border-gray-600 py-2.5 rounded-lg">
+                    Cancel
                 </button>
             </div>
         </div>
@@ -857,175 +524,59 @@
     <!-- JavaScript Application -->
     <script>
         // ============================================
-        // ENTERPRISE LOGISTICS PLATFORM
+        // APPLICATION STATE
         // ============================================
-
-        // Application State
         const AppState = {
             user: {
                 name: 'Admin User',
                 email: 'admin@snl.com',
+                initials: 'A',
                 role: 'admin',
-                plan: 'enterprise',
-                credits: 1250,
-                subscription: {
-                    plan: 'Enterprise',
-                    price: 49999,
-                    nextBilling: '2024-03-15',
-                    status: 'active'
-                }
+                credits: 1250
             },
             currentView: 'dashboard',
             darkMode: localStorage.getItem('darkMode') === 'true',
-            notifications: [
-                {
-                    id: 1,
-                    title: 'New Trip Assigned',
-                    message: 'Trip #TRP-2024-0012 assigned to you',
-                    time: '10 min ago',
-                    read: false,
-                    type: 'trip'
-                },
-                {
-                    id: 2,
-                    title: 'Maintenance Alert',
-                    message: 'Vehicle JH01AB1234 needs service',
-                    time: '1 hour ago',
-                    read: false,
-                    type: 'maintenance'
-                },
-                {
-                    id: 3,
-                    title: 'Payment Received',
-                    message: '₹1,25,000 received from ABC Corp',
-                    time: '2 hours ago',
-                    read: true,
-                    type: 'payment'
-                },
-                {
-                    id: 4,
-                    title: 'Course Update',
-                    message: 'New course "Advanced Logistics" available',
-                    time: '1 day ago',
-                    read: true,
-                    type: 'course'
-                }
-            ],
             
-            // Mock data for demonstration
-            trips: [
-                { id: 'TRP-2024-0012', vehicle: 'JH01AB1234', driver: 'Rajesh Kumar', route: 'Delhi → Mumbai → Bangalore', status: 'active', progress: 65, eta: '12 hrs' },
-                { id: 'TRP-2024-0011', vehicle: 'MH02CD5678', driver: 'Suresh Patel', route: 'Chennai → Hyderabad', status: 'active', progress: 40, eta: '8 hrs' },
-                { id: 'TRP-2024-0010', vehicle: 'KA03EF9012', driver: 'Amit Sharma', route: 'Kolkata → Patna', status: 'completed', progress: 100, eta: 'Completed' },
-                { id: 'TRP-2024-0009', vehicle: 'RJ04GH3456', driver: 'Vikram Singh', route: 'Jaipur → Ahmedabad', status: 'delayed', progress: 30, eta: '24 hrs' }
-            ],
-            
-            fleet: [
-                { id: 'VH-001', number: 'JH01AB1234', type: 'Truck', capacity: '15T', driver: 'Rajesh Kumar', status: 'active', health: 92, fuel: 65 },
-                { id: 'VH-002', number: 'MH02CD5678', type: 'Trailer', capacity: '25T', driver: 'Suresh Patel', status: 'active', health: 88, fuel: 45 },
-                { id: 'VH-003', number: 'KA03EF9012', type: 'Container', capacity: '30T', driver: 'Amit Sharma', status: 'maintenance', health: 45, fuel: 20 },
-                { id: 'VH-004', number: 'RJ04GH3456', type: 'Van', capacity: '2T', driver: 'Vikram Singh', status: 'active', health: 95, fuel: 80 }
-            ],
-            
+            // Sample data
             courses: [
                 {
                     id: 1,
                     title: 'Advanced Logistics Management',
-                    description: 'Master advanced logistics concepts and optimization techniques',
-                    instructor: 'Dr. Rajesh Sharma',
+                    description: 'Master logistics optimization techniques',
                     price: 4999,
                     discountPrice: 3999,
-                    duration: '8 weeks',
-                    lessons: 24,
-                    students: 1245,
+                    instructor: 'Dr. Rajesh Sharma',
                     rating: 4.8,
-                    category: 'management',
-                    featured: true
+                    students: 1245
                 },
                 {
                     id: 2,
                     title: 'Fleet Maintenance Certification',
-                    description: 'Complete guide to modern fleet maintenance practices',
-                    instructor: 'Captain Ramesh Kumar',
+                    description: 'Complete guide to fleet maintenance',
                     price: 2999,
                     discountPrice: 2499,
-                    duration: '6 weeks',
-                    lessons: 18,
-                    students: 892,
+                    instructor: 'Captain Ramesh',
                     rating: 4.6,
-                    category: 'technical',
-                    featured: true
-                },
-                {
-                    id: 3,
-                    title: 'Digital Transformation in Logistics',
-                    description: 'Implement digital solutions for logistics optimization',
-                    instructor: 'Prof. Meena Patel',
-                    price: 3999,
-                    discountPrice: 3499,
-                    duration: '5 weeks',
-                    lessons: 20,
-                    students: 567,
-                    rating: 4.7,
-                    category: 'technology',
-                    featured: false
-                },
-                {
-                    id: 4,
-                    title: 'Supply Chain Risk Management',
-                    description: 'Identify and mitigate risks in supply chain operations',
-                    instructor: 'Dr. Arvind Joshi',
-                    price: 3499,
-                    discountPrice: 2999,
-                    duration: '4 weeks',
-                    lessons: 16,
-                    students: 432,
-                    rating: 4.5,
-                    category: 'risk',
-                    featured: false
+                    students: 892
                 }
             ],
             
             marketplace: [
                 {
                     id: 1,
-                    title: 'GPS Tracking Device Pro',
-                    description: 'Advanced GPS tracker with real-time monitoring',
+                    title: 'GPS Tracking Device',
+                    description: 'Advanced real-time tracker',
                     price: 2499,
                     category: 'hardware',
-                    rating: 4.7,
-                    reviews: 124,
-                    featured: true
+                    rating: 4.7
                 },
                 {
                     id: 2,
                     title: 'Fleet Management Software',
-                    description: 'Complete fleet management solution',
+                    description: 'Complete fleet solution',
                     price: 14999,
                     category: 'software',
-                    rating: 4.8,
-                    reviews: 89,
-                    featured: true
-                },
-                {
-                    id: 3,
-                    title: 'Driver Safety Kit',
-                    description: 'Complete safety equipment for drivers',
-                    price: 1999,
-                    category: 'safety',
-                    rating: 4.5,
-                    reviews: 67,
-                    featured: false
-                },
-                {
-                    id: 4,
-                    title: 'Fuel Efficiency Analyzer',
-                    description: 'Analyze and optimize fuel consumption',
-                    price: 5999,
-                    category: 'analytics',
-                    rating: 4.6,
-                    reviews: 45,
-                    featured: false
+                    rating: 4.8
                 }
             ]
         };
@@ -1033,11 +584,19 @@
         // ============================================
         // UTILITY FUNCTIONS
         // ============================================
-        class Utilities {
+        class Utils {
             static showToast(message, type = 'info', duration = 3000) {
                 const container = document.getElementById('toastContainer');
                 const toast = document.createElement('div');
-                toast.className = `px-4 py-3 rounded-lg shadow-lg text-white animate-slide-up ${type === 'success' ? 'bg-green-600' : type === 'error' ? 'bg-red-600' : type === 'warning' ? 'bg-yellow-600' : 'bg-blue-600'}`;
+                
+                const colors = {
+                    success: 'bg-green-600',
+                    error: 'bg-red-600',
+                    warning: 'bg-yellow-600',
+                    info: 'bg-blue-600'
+                };
+                
+                toast.className = `px-4 py-3 rounded-lg shadow-lg text-white ${colors[type]} animate__animated animate__fadeInUp`;
                 toast.innerHTML = `
                     <div class="flex items-center">
                         <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle'} mr-2"></i>
@@ -1047,35 +606,17 @@
                         </button>
                     </div>
                 `;
+                
                 container.appendChild(toast);
-                setTimeout(() => toast.remove(), duration);
+                
+                // Auto remove
+                setTimeout(() => {
+                    toast.remove();
+                }, duration);
             }
 
             static formatCurrency(amount) {
-                return new Intl.NumberFormat('en-IN', {
-                    style: 'currency',
-                    currency: 'INR',
-                    minimumFractionDigits: 0
-                }).format(amount);
-            }
-
-            static formatDate(date) {
-                return new Date(date).toLocaleDateString('en-IN', {
-                    day: '2-digit',
-                    month: 'short',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
-            }
-
-            static generateId(prefix = 'ID') {
-                return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).substr(2, 9)}`;
-            }
-
-            static validateEmail(email) {
-                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                return re.test(email);
+                return '₹' + amount.toLocaleString('en-IN');
             }
 
             static debounce(func, wait) {
@@ -1089,71 +630,32 @@
                     timeout = setTimeout(later, wait);
                 };
             }
-
-            static animateProgress(progressElement, target) {
-                let current = 0;
-                const increment = target / 100;
-                const timer = setInterval(() => {
-                    current += increment;
-                    if (current >= target) {
-                        current = target;
-                        clearInterval(timer);
-                    }
-                    progressElement.style.width = `${current}%`;
-                }, 10);
-            }
         }
 
         // ============================================
         // UI CONTROLLER
         // ============================================
-        class UIController {
-            static currentView = 'dashboard';
-            static charts = {};
-            static aiMessages = [];
-
+        class UI {
             static init() {
+                this.setupLoadingAnimation();
                 this.setupEventListeners();
                 this.applyTheme();
-                this.loadDashboard();
-                this.setupLoadingAnimation();
-            }
-
-            static setupEventListeners() {
-                // Global search
-                const searchInput = document.getElementById('globalSearch');
-                if (searchInput) {
-                    searchInput.addEventListener('input', Utilities.debounce((e) => {
-                        this.handleGlobalSearch(e.target.value);
-                    }, 300));
-                }
-
-                // AI Chat input
-                const aiInput = document.getElementById('aiInput');
-                if (aiInput) {
-                    aiInput.addEventListener('keypress', (e) => {
-                        if (e.key === 'Enter') {
-                            this.sendAIMessage();
-                        }
-                    });
-                }
             }
 
             static setupLoadingAnimation() {
                 let progress = 0;
+                const messages = [
+                    'Loading core modules...',
+                    'Initializing database...',
+                    'Setting up interface...',
+                    'Almost ready...'
+                ];
+                
                 const interval = setInterval(() => {
                     progress += 5;
                     document.getElementById('loadingBar').style.width = `${progress}%`;
                     
-                    const messages = [
-                        'Loading core modules...',
-                        'Initializing database...',
-                        'Setting up AI engine...',
-                        'Configuring payment gateway...',
-                        'Almost ready...'
-                    ];
-                    
-                    const messageIndex = Math.floor(progress / 20);
+                    const messageIndex = Math.floor(progress / 25);
                     if (messageIndex < messages.length) {
                         document.getElementById('loadingMessage').textContent = messages[messageIndex];
                     }
@@ -1164,40 +666,86 @@
                             document.getElementById('loadingScreen').style.opacity = '0';
                             setTimeout(() => {
                                 document.getElementById('loadingScreen').classList.add('hidden');
-                                document.getElementById('appContainer').classList.remove('hidden');
+                                this.showAuthScreen();
                             }, 500);
                         }, 500);
                     }
                 }, 100);
             }
 
+            static setupEventListeners() {
+                // Login form
+                document.getElementById('loginForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleLogin();
+                });
+
+                // Global search
+                const searchInput = document.getElementById('globalSearch');
+                if (searchInput) {
+                    searchInput.addEventListener('input', Utils.debounce((e) => {
+                        this.handleSearch(e.target.value);
+                    }, 300));
+                }
+            }
+
             static applyTheme() {
                 if (AppState.darkMode) {
                     document.documentElement.classList.add('dark');
                     document.getElementById('themeIcon').className = 'fas fa-sun';
-                } else {
-                    document.documentElement.classList.remove('dark');
-                    document.getElementById('themeIcon').className = 'fas fa-moon';
                 }
             }
 
-            static navigateTo(view) {
-                this.currentView = view;
-                this.updateActiveNav();
-                this.loadView(view);
+            static showAuthScreen() {
+                document.getElementById('authScreen').classList.remove('hidden');
             }
 
-            static updateActiveNav() {
-                // Remove active class from all nav items
-                document.querySelectorAll('.nav-item').forEach(item => {
-                    item.classList.remove('bg-blue-50', 'dark:bg-blue-900/30', 'text-blue-600', 'dark:text-blue-400');
-                });
+            static showApp() {
+                document.getElementById('authScreen').classList.add('hidden');
+                document.getElementById('appContainer').classList.remove('hidden');
                 
-                // Add active class to current view
-                // This would be expanded based on actual view mapping
+                // Update user info
+                document.getElementById('userName').textContent = AppState.user.name;
+                document.getElementById('userInitials').textContent = AppState.user.initials;
+                document.getElementById('menuUserName').textContent = AppState.user.name;
+                document.getElementById('menuUserEmail').textContent = AppState.user.email;
+                
+                // Load dashboard
+                this.loadView('dashboard');
+            }
+
+            static async handleLogin() {
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                const errorDiv = document.getElementById('loginError');
+                const loginBtn = document.getElementById('loginBtn');
+                const btnText = document.getElementById('loginBtnText');
+
+                // Show loading
+                loginBtn.disabled = true;
+                btnText.textContent = 'Signing in...';
+
+                // Simulate API call
+                await new Promise(resolve => setTimeout(resolve, 1500));
+
+                // Check credentials
+                if (email === 'admin@snl.com' && password === 'demo123') {
+                    errorDiv.classList.add('hidden');
+                    Utils.showToast('Login successful! Welcome back.', 'success');
+                    this.showApp();
+                } else {
+                    errorDiv.textContent = 'Invalid credentials. Use demo: admin@snl.com / demo123';
+                    errorDiv.classList.remove('hidden');
+                    Utils.showToast('Login failed. Check credentials.', 'error');
+                }
+
+                // Reset button
+                loginBtn.disabled = false;
+                btnText.textContent = 'Sign In to Dashboard';
             }
 
             static loadView(view) {
+                AppState.currentView = view;
                 const contentArea = document.getElementById('contentArea');
                 
                 // Show loading skeleton
@@ -1205,42 +753,35 @@
                 
                 // Load actual content
                 setTimeout(() => {
+                    let content = '';
                     switch(view) {
                         case 'dashboard':
-                            contentArea.innerHTML = this.getDashboardView();
-                            this.initDashboardCharts();
-                            break;
-                        case 'trips':
-                            contentArea.innerHTML = this.getTripsView();
-                            this.initTripsTable();
-                            break;
-                        case 'fleet-overview':
-                            contentArea.innerHTML = this.getFleetOverviewView();
-                            this.initFleetCharts();
+                            content = this.getDashboardView();
                             break;
                         case 'courses':
-                            contentArea.innerHTML = this.getCoursesView();
+                            content = this.getCoursesView();
                             break;
                         case 'marketplace':
-                            contentArea.innerHTML = this.getMarketplaceView();
-                            break;
-                        case 'finance':
-                            contentArea.innerHTML = this.getFinanceView();
-                            this.initFinanceCharts();
+                            content = this.getMarketplaceView();
                             break;
                         case 'ai-assistant':
-                            contentArea.innerHTML = this.getAIAssistantView();
+                            content = this.getAIAssistantView();
                             break;
-                        case 'analytics':
-                            contentArea.innerHTML = this.getAnalyticsView();
-                            this.initAnalyticsCharts();
+                        case 'fleet-overview':
+                            content = this.getFleetView();
+                            break;
+                        case 'trips-active':
+                            content = this.getTripsView();
                             break;
                         case 'settings':
-                            contentArea.innerHTML = this.getSettingsView();
+                            content = this.getSettingsView();
                             break;
                         default:
-                            contentArea.innerHTML = this.getDashboardView();
+                            content = this.getDashboardView();
                     }
+                    
+                    contentArea.innerHTML = content;
+                    this.updateActiveNav();
                 }, 300);
             }
 
@@ -1264,182 +805,160 @@
 
             static getDashboardView() {
                 return `
-                    <div class="space-y-6 animate-fade-in">
+                    <div class="space-y-6 fade-in">
                         <!-- Header -->
                         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                             <div>
                                 <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Welcome back, ${AppState.user.name}!</h1>
-                                <p class="text-gray-600 dark:text-gray-400">Here's what's happening with your logistics operations today.</p>
+                                <p class="text-gray-600 dark:text-gray-400">Your logistics dashboard at a glance</p>
                             </div>
                             <div class="flex items-center gap-3">
-                                <div class="relative">
-                                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                                    <input type="text" placeholder="Search dashboard..." 
-                                           class="pl-10 pr-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full lg:w-64">
-                                </div>
-                                <button onclick="UIController.refreshDashboard()" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
-                                    <i class="fas fa-sync-alt"></i>
+                                <button onclick="UI.quickAction('newTrip')" class="px-4 py-2 gradient-bg text-white rounded-lg font-medium">
+                                    <i class="fas fa-plus mr-2"></i>New Trip
                                 </button>
                             </div>
                         </div>
 
                         <!-- KPI Cards -->
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:border-blue-500 transition-colors">
-                                <div class="flex items-center justify-between mb-4">
+                            <div class="card-hover bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                                <div class="flex items-center justify-between">
                                     <div>
-                                        <p class="text-sm text-gray-500">Active Trips</p>
-                                        <h3 class="text-3xl font-bold text-gray-900 dark:text-white mt-1">${AppState.trips.filter(t => t.status === 'active').length}</h3>
+                                        <div class="text-sm text-gray-500">Active Trips</div>
+                                        <div class="text-3xl font-bold text-gray-900 dark:text-white mt-2">12</div>
+                                        <div class="text-sm text-green-600 dark:text-green-400 mt-1">
+                                            <i class="fas fa-arrow-up mr-1"></i>18%
+                                        </div>
                                     </div>
                                     <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
                                         <i class="fas fa-route text-blue-600 dark:text-blue-400 text-xl"></i>
                                     </div>
                                 </div>
-                                <div class="text-sm text-green-600 dark:text-green-400 flex items-center">
-                                    <i class="fas fa-arrow-up mr-1"></i>
-                                    <span>12% from yesterday</span>
-                                </div>
                             </div>
 
-                            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:border-green-500 transition-colors">
-                                <div class="flex items-center justify-between mb-4">
+                            <div class="card-hover bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                                <div class="flex items-center justify-between">
                                     <div>
-                                        <p class="text-sm text-gray-500">On-time Delivery</p>
-                                        <h3 class="text-3xl font-bold text-gray-900 dark:text-white mt-1">94%</h3>
+                                        <div class="text-sm text-gray-500">Revenue Today</div>
+                                        <div class="text-3xl font-bold text-gray-900 dark:text-white mt-2">₹1.2L</div>
+                                        <div class="text-sm text-green-600 dark:text-green-400 mt-1">
+                                            <i class="fas fa-arrow-up mr-1"></i>24%
+                                        </div>
                                     </div>
                                     <div class="w-12 h-12 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                                        <i class="fas fa-clock text-green-600 dark:text-green-400 text-xl"></i>
+                                        <i class="fas fa-rupee-sign text-green-600 dark:text-green-400 text-xl"></i>
                                     </div>
-                                </div>
-                                <div class="text-sm text-green-600 dark:text-green-400 flex items-center">
-                                    <i class="fas fa-arrow-up mr-1"></i>
-                                    <span>5% improvement</span>
                                 </div>
                             </div>
 
-                            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:border-purple-500 transition-colors">
-                                <div class="flex items-center justify-between mb-4">
+                            <div class="card-hover bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                                <div class="flex items-center justify-between">
                                     <div>
-                                        <p class="text-sm text-gray-500">Fleet Health</p>
-                                        <h3 class="text-3xl font-bold text-gray-900 dark:text-white mt-1">88%</h3>
+                                        <div class="text-sm text-gray-500">Fleet Health</div>
+                                        <div class="text-3xl font-bold text-gray-900 dark:text-white mt-2">92%</div>
+                                        <div class="text-sm text-yellow-600 dark:text-yellow-400 mt-1">
+                                            <i class="fas fa-exclamation-triangle mr-1"></i>Needs attention
+                                        </div>
+                                    </div>
+                                    <div class="w-12 h-12 rounded-xl bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center">
+                                        <i class="fas fa-heartbeat text-yellow-600 dark:text-yellow-400 text-xl"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-hover bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <div class="text-sm text-gray-500">On-time Delivery</div>
+                                        <div class="text-3xl font-bold text-gray-900 dark:text-white mt-2">94%</div>
+                                        <div class="text-sm text-green-600 dark:text-green-400 mt-1">
+                                            <i class="fas fa-arrow-up mr-1"></i>5%
+                                        </div>
                                     </div>
                                     <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
-                                        <i class="fas fa-heartbeat text-purple-600 dark:text-purple-400 text-xl"></i>
+                                        <i class="fas fa-clock text-purple-600 dark:text-purple-400 text-xl"></i>
                                     </div>
-                                </div>
-                                <div class="text-sm text-yellow-600 dark:text-yellow-400 flex items-center">
-                                    <i class="fas fa-exclamation-triangle mr-1"></i>
-                                    <span>1 vehicle needs attention</span>
-                                </div>
-                            </div>
-
-                            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:border-indigo-500 transition-colors">
-                                <div class="flex items-center justify-between mb-4">
-                                    <div>
-                                        <p class="text-sm text-gray-500">Revenue Today</p>
-                                        <h3 class="text-3xl font-bold text-gray-900 dark:text-white mt-1">${Utilities.formatCurrency(124850)}</h3>
-                                    </div>
-                                    <div class="w-12 h-12 rounded-xl bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
-                                        <i class="fas fa-rupee-sign text-indigo-600 dark:text-indigo-400 text-xl"></i>
-                                    </div>
-                                </div>
-                                <div class="text-sm text-green-600 dark:text-green-400 flex items-center">
-                                    <i class="fas fa-arrow-up mr-1"></i>
-                                    <span>18% from yesterday</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Charts & Recent Activity -->
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            <!-- Performance Chart -->
-                            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-                                <div class="flex items-center justify-between mb-4">
-                                    <h3 class="font-bold text-gray-900 dark:text-white">Performance Overview</h3>
-                                    <select class="px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-blue-500">
-                                        <option>Last 7 days</option>
-                                        <option>Last 30 days</option>
-                                        <option>Last quarter</option>
-                                    </select>
-                                </div>
-                                <div class="h-64">
-                                    <canvas id="performanceChart"></canvas>
-                                </div>
-                            </div>
-
-                            <!-- Recent Activity -->
-                            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-                                <div class="flex items-center justify-between mb-4">
-                                    <h3 class="font-bold text-gray-900 dark:text-white">Recent Activity</h3>
-                                    <button onclick="UIController.navigateTo('trips')" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">
-                                        View All
-                                    </button>
-                                </div>
-                                <div class="space-y-4">
-                                    ${AppState.trips.slice(0, 3).map(trip => `
-                                        <div class="flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg transition-colors">
-                                            <div class="flex items-center gap-3">
-                                                <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-                                                    <i class="fas fa-truck text-blue-600 dark:text-blue-400"></i>
-                                                </div>
-                                                <div>
-                                                    <div class="font-medium">${trip.id}</div>
-                                                    <div class="text-sm text-gray-500">${trip.route}</div>
-                                                </div>
-                                            </div>
-                                            <div class="flex items-center gap-3">
-                                                <span class="px-3 py-1 rounded-full text-xs ${trip.status === 'active' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' : trip.status === 'completed' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400'}">
-                                                    ${trip.status}
-                                                </span>
-                                                <div class="text-sm text-gray-500">${trip.eta}</div>
-                                            </div>
-                                        </div>
-                                    `).join('')}
                                 </div>
                             </div>
                         </div>
 
                         <!-- Quick Actions -->
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <button onclick="UIController.quickAction('newTrip')" class="bg-gradient-to-r from-blue-500 to-purple-500 text-white p-4 rounded-xl hover:opacity-90 transition-opacity">
+                            <button onclick="navigateTo('trips-new')" class="p-6 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl hover:opacity-90 transition-opacity text-left">
                                 <div class="flex items-center justify-between">
                                     <div>
                                         <div class="font-bold text-lg">New Trip</div>
-                                        <div class="text-sm opacity-90">Create shipment</div>
+                                        <div class="text-sm opacity-90 mt-1">Create shipment</div>
                                     </div>
                                     <i class="fas fa-plus text-xl"></i>
                                 </div>
                             </button>
 
-                            <button onclick="UIController.quickAction('track')" class="bg-gradient-to-r from-green-500 to-emerald-500 text-white p-4 rounded-xl hover:opacity-90 transition-opacity">
+                            <button onclick="navigateTo('courses')" class="p-6 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-xl hover:opacity-90 transition-opacity text-left">
                                 <div class="flex items-center justify-between">
                                     <div>
-                                        <div class="font-bold text-lg">Track Shipment</div>
-                                        <div class="text-sm opacity-90">Live tracking</div>
+                                        <div class="font-bold text-lg">Courses</div>
+                                        <div class="text-sm opacity-90 mt-1">Learn & grow</div>
                                     </div>
-                                    <i class="fas fa-satellite-dish text-xl"></i>
+                                    <i class="fas fa-graduation-cap text-xl"></i>
                                 </div>
                             </button>
 
-                            <button onclick="UIController.quickAction('report')" class="bg-gradient-to-r from-orange-500 to-red-500 text-white p-4 rounded-xl hover:opacity-90 transition-opacity">
+                            <button onclick="navigateTo('marketplace')" class="p-6 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-xl hover:opacity-90 transition-opacity text-left">
                                 <div class="flex items-center justify-between">
                                     <div>
-                                        <div class="font-bold text-lg">Generate Report</div>
-                                        <div class="text-sm opacity-90">Analytics</div>
+                                        <div class="font-bold text-lg">Marketplace</div>
+                                        <div class="text-sm opacity-90 mt-1">Buy tools</div>
                                     </div>
-                                    <i class="fas fa-chart-bar text-xl"></i>
+                                    <i class="fas fa-store text-xl"></i>
                                 </div>
                             </button>
 
-                            <button onclick="UIController.openAIChat()" class="bg-gradient-to-r from-pink-500 to-rose-500 text-white p-4 rounded-xl hover:opacity-90 transition-opacity">
+                            <button onclick="navigateTo('ai-assistant')" class="p-6 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-xl hover:opacity-90 transition-opacity text-left">
                                 <div class="flex items-center justify-between">
                                     <div>
                                         <div class="font-bold text-lg">AI Assistant</div>
-                                        <div class="text-sm opacity-90">Get help</div>
+                                        <div class="text-sm opacity-90 mt-1">Get help</div>
                                     </div>
                                     <i class="fas fa-robot text-xl"></i>
                                 </div>
                             </button>
+                        </div>
+
+                        <!-- Recent Activity -->
+                        <div class="card-hover bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="font-bold text-gray-900 dark:text-white">Recent Activity</h3>
+                                <button onclick="navigateTo('trips-active')" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">
+                                    View All
+                                </button>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                                            <i class="fas fa-truck text-blue-600 dark:text-blue-400"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium">TRP-2024-0012</div>
+                                            <div class="text-sm text-gray-500">Delhi → Mumbai</div>
+                                        </div>
+                                    </div>
+                                    <div class="text-sm text-green-600 dark:text-green-400">In Progress</div>
+                                </div>
+                                <div class="flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                                            <i class="fas fa-check-circle text-green-600 dark:text-green-400"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium">Payment Received</div>
+                                            <div class="text-sm text-gray-500">ABC Corporation</div>
+                                        </div>
+                                    </div>
+                                    <div class="font-bold">₹1,25,000</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -1447,134 +966,68 @@
 
             static getCoursesView() {
                 return `
-                    <div class="space-y-6 animate-fade-in">
+                    <div class="space-y-6 fade-in">
                         <!-- Header -->
                         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                             <div>
                                 <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Courses & Training</h1>
-                                <p class="text-gray-600 dark:text-gray-400">Enhance your skills with industry-leading courses</p>
+                                <p class="text-gray-600 dark:text-gray-400">Enhance your logistics expertise</p>
                             </div>
-                            <div class="flex items-center gap-3">
-                                <select class="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                    <option>All Categories</option>
-                                    <option>Management</option>
-                                    <option>Technical</option>
-                                    <option>Technology</option>
-                                    <option>Risk Management</option>
-                                </select>
-                                <button onclick="UIController.navigateTo('course-library')" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg">
-                                    <i class="fas fa-graduation-cap mr-2"></i>
-                                    My Courses
-                                </button>
-                            </div>
+                            <button onclick="UI.openPaymentModal('course-bundle')" class="px-4 py-2 gradient-bg text-white rounded-lg font-medium">
+                                <i class="fas fa-shopping-cart mr-2"></i>Buy Bundle
+                            </button>
                         </div>
 
-                        <!-- Featured Courses -->
-                        <div>
-                            <h2 class="text-xl font-bold mb-4">Featured Courses</h2>
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                ${AppState.courses.filter(c => c.featured).map(course => `
-                                    <div class="course-card bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-                                        <div class="mb-4">
-                                            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded-full">
-                                                Featured
-                                            </span>
-                                        </div>
-                                        <h3 class="font-bold text-lg mb-2">${course.title}</h3>
-                                        <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">${course.description}</p>
-                                        
-                                        <div class="flex items-center justify-between mb-4">
-                                            <div class="flex items-center gap-2">
-                                                <div class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
-                                                    <i class="fas fa-user text-gray-600 dark:text-gray-400"></i>
-                                                </div>
-                                                <div>
-                                                    <div class="text-sm font-medium">${course.instructor}</div>
-                                                    <div class="text-xs text-gray-500">Instructor</div>
-                                                </div>
+                        <!-- Course Cards -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            ${AppState.courses.map(course => `
+                                <div class="card-hover bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                                    <div class="mb-4">
+                                        <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded-full">
+                                            Featured
+                                        </span>
+                                    </div>
+                                    <h3 class="font-bold text-lg mb-2">${course.title}</h3>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">${course.description}</p>
+                                    
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+                                                <i class="fas fa-user text-gray-600 dark:text-gray-400"></i>
                                             </div>
-                                            <div class="text-right">
-                                                <div class="text-2xl font-bold text-gray-900 dark:text-white">${Utilities.formatCurrency(course.discountPrice)}</div>
-                                                <div class="text-sm text-gray-500 line-through">${Utilities.formatCurrency(course.price)}</div>
+                                            <div>
+                                                <div class="text-sm font-medium">${course.instructor}</div>
+                                                <div class="text-xs text-gray-500">Instructor</div>
                                             </div>
                                         </div>
-
-                                        <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
-                                            <div class="flex items-center gap-1">
-                                                <i class="fas fa-clock"></i>
-                                                <span>${course.duration}</span>
-                                            </div>
-                                            <div class="flex items-center gap-1">
-                                                <i class="fas fa-book"></i>
-                                                <span>${course.lessons} lessons</span>
-                                            </div>
-                                            <div class="flex items-center gap-1">
-                                                <i class="fas fa-star text-yellow-500"></i>
-                                                <span>${course.rating}</span>
-                                            </div>
-                                        </div>
-
-                                        <div class="flex gap-3">
-                                            <button onclick="UIController.buyCourse(${course.id})" class="flex-1 bg-gradient-to-r from-blue-500 to-purple-500 text-white py-2.5 rounded-lg font-medium hover:opacity-90">
-                                                <i class="fas fa-shopping-cart mr-2"></i>
-                                                Buy Now
-                                            </button>
-                                            <button onclick="UIController.viewCourseDetails(${course.id})" class="px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
+                                        <div class="text-right">
+                                            <div class="text-2xl font-bold text-gray-900 dark:text-white">${Utils.formatCurrency(course.discountPrice)}</div>
+                                            <div class="text-sm text-gray-500 line-through">${Utils.formatCurrency(course.price)}</div>
                                         </div>
                                     </div>
-                                `).join('')}
-                            </div>
-                        </div>
 
-                        <!-- All Courses -->
-                        <div>
-                            <h2 class="text-xl font-bold mb-4">All Courses</h2>
-                            <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-                                <div class="overflow-x-auto">
-                                    <table class="w-full">
-                                        <thead class="bg-gray-50 dark:bg-gray-900">
-                                            <tr>
-                                                <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Course</th>
-                                                <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Instructor</th>
-                                                <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Duration</th>
-                                                <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Rating</th>
-                                                <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Price</th>
-                                                <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                                            ${AppState.courses.map(course => `
-                                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                                                    <td class="px-6 py-4">
-                                                        <div class="font-medium">${course.title}</div>
-                                                        <div class="text-sm text-gray-500">${course.category}</div>
-                                                    </td>
-                                                    <td class="px-6 py-4">${course.instructor}</td>
-                                                    <td class="px-6 py-4">${course.duration}</td>
-                                                    <td class="px-6 py-4">
-                                                        <div class="flex items-center">
-                                                            <i class="fas fa-star text-yellow-500 mr-1"></i>
-                                                            <span>${course.rating}</span>
-                                                            <span class="text-gray-500 text-sm ml-2">(${course.students})</span>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-6 py-4">
-                                                        <div class="font-bold">${Utilities.formatCurrency(course.discountPrice)}</div>
-                                                        <div class="text-sm text-gray-500 line-through">${Utilities.formatCurrency(course.price)}</div>
-                                                    </td>
-                                                    <td class="px-6 py-4">
-                                                        <button onclick="UIController.buyCourse(${course.id})" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm">
-                                                            Buy Now
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            `).join('')}
-                                        </tbody>
-                                    </table>
+                                    <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+                                        <div class="flex items-center gap-1">
+                                            <i class="fas fa-star text-yellow-500"></i>
+                                            <span>${course.rating}</span>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <i class="fas fa-users"></i>
+                                            <span>${course.students} students</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex gap-3">
+                                        <button onclick="UI.buyCourse(${course.id})" class="flex-1 gradient-bg text-white py-2.5 rounded-lg font-medium hover:opacity-90">
+                                            <i class="fas fa-shopping-cart mr-2"></i>
+                                            Buy Now
+                                        </button>
+                                        <button onclick="UI.viewCourseDetails(${course.id})" class="px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
+                            `).join('')}
                         </div>
                     </div>
                 `;
@@ -1582,331 +1035,48 @@
 
             static getMarketplaceView() {
                 return `
-                    <div class="space-y-6 animate-fade-in">
+                    <div class="space-y-6 fade-in">
                         <!-- Header -->
                         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                             <div>
                                 <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Marketplace</h1>
-                                <p class="text-gray-600 dark:text-gray-400">Discover tools and solutions for your logistics business</p>
+                                <p class="text-gray-600 dark:text-gray-400">Tools and solutions for your business</p>
                             </div>
                             <div class="flex items-center gap-3">
-                                <select class="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <select class="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg">
                                     <option>All Categories</option>
                                     <option>Hardware</option>
                                     <option>Software</option>
-                                    <option>Safety</option>
-                                    <option>Analytics</option>
                                 </select>
-                                <button onclick="UIController.openCart()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg relative">
-                                    <i class="fas fa-shopping-cart mr-2"></i>
-                                    Cart
-                                    <span class="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">3</span>
-                                </button>
                             </div>
                         </div>
 
-                        <!-- Featured Products -->
+                        <!-- Product Grid -->
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            ${AppState.marketplace.filter(p => p.featured).map(product => `
-                                <div class="marketplace-item bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-                                    <div class="mb-4">
-                                        <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs rounded-full">
-                                            Featured
-                                        </span>
-                                    </div>
-                                    <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center mb-4 mx-auto">
+                            ${AppState.marketplace.map(product => `
+                                <div class="card-hover bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                                    <div class="w-16 h-16 rounded-xl gradient-bg flex items-center justify-center mb-4 mx-auto">
                                         <i class="fas fa-box text-white text-2xl"></i>
                                     </div>
                                     <h3 class="font-bold text-lg text-center mb-2">${product.title}</h3>
                                     <p class="text-gray-600 dark:text-gray-400 text-sm text-center mb-4">${product.description}</p>
                                     
-                                    <div class="flex items-center justify-center mb-4">
-                                        <div class="flex items-center">
-                                            ${Array(5).fill().map((_, i) => `
-                                                <i class="fas fa-star ${i < Math.floor(product.rating) ? 'text-yellow-500' : 'text-gray-300 dark:text-gray-600'}"></i>
-                                            `).join('')}
-                                            <span class="ml-2 text-sm text-gray-500">${product.rating} (${product.reviews})</span>
-                                        </div>
-                                    </div>
-
                                     <div class="text-center mb-4">
-                                        <div class="text-2xl font-bold text-gray-900 dark:text-white">${Utilities.formatCurrency(product.price)}</div>
+                                        <div class="text-2xl font-bold text-gray-900 dark:text-white">${Utils.formatCurrency(product.price)}</div>
                                         <div class="text-sm text-gray-500">One-time payment</div>
                                     </div>
 
                                     <div class="flex gap-3">
-                                        <button onclick="UIController.addToCart(${product.id})" class="flex-1 bg-gradient-to-r from-blue-500 to-purple-500 text-white py-2.5 rounded-lg font-medium hover:opacity-90">
+                                        <button onclick="UI.addToCart(${product.id})" class="flex-1 gradient-bg text-white py-2.5 rounded-lg font-medium hover:opacity-90">
                                             <i class="fas fa-cart-plus mr-2"></i>
                                             Add to Cart
                                         </button>
-                                        <button onclick="UIController.viewProduct(${product.id})" class="px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        <button onclick="UI.viewProduct(${product.id})" class="px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
                                             <i class="fas fa-eye"></i>
                                         </button>
                                     </div>
                                 </div>
                             `).join('')}
-                        </div>
-
-                        <!-- Product Categories -->
-                        <div>
-                            <h2 class="text-xl font-bold mb-4">Browse by Category</h2>
-                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                <button onclick="UIController.filterCategory('hardware')" class="p-6 bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-xl hover:opacity-90 transition-opacity">
-                                    <i class="fas fa-microchip text-2xl mb-2"></i>
-                                    <div class="font-bold">Hardware</div>
-                                    <div class="text-sm opacity-90">GPS, Sensors, Devices</div>
-                                </button>
-                                
-                                <button onclick="UIController.filterCategory('software')" class="p-6 bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-xl hover:opacity-90 transition-opacity">
-                                    <i class="fas fa-code text-2xl mb-2"></i>
-                                    <div class="font-bold">Software</div>
-                                    <div class="text-sm opacity-90">Applications, Platforms</div>
-                                </button>
-                                
-                                <button onclick="UIController.filterCategory('safety')" class="p-6 bg-gradient-to-br from-green-500 to-green-600 text-white rounded-xl hover:opacity-90 transition-opacity">
-                                    <i class="fas fa-shield-alt text-2xl mb-2"></i>
-                                    <div class="font-bold">Safety</div>
-                                    <div class="text-sm opacity-90">Equipment, Training</div>
-                                </button>
-                                
-                                <button onclick="UIController.filterCategory('analytics')" class="p-6 bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-xl hover:opacity-90 transition-opacity">
-                                    <i class="fas fa-chart-line text-2xl mb-2"></i>
-                                    <div class="font-bold">Analytics</div>
-                                    <div class="text-sm opacity-90">Tools, Reports, Insights</div>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- All Products -->
-                        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-                            <div class="overflow-x-auto">
-                                <table class="w-full">
-                                    <thead class="bg-gray-50 dark:bg-gray-900">
-                                        <tr>
-                                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Product</th>
-                                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Category</th>
-                                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Rating</th>
-                                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Price</th>
-                                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                                        ${AppState.marketplace.map(product => `
-                                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                                                <td class="px-6 py-4">
-                                                    <div class="font-medium">${product.title}</div>
-                                                    <div class="text-sm text-gray-500">${product.description}</div>
-                                                </td>
-                                                <td class="px-6 py-4">
-                                                    <span class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 text-xs rounded-full">
-                                                        ${product.category}
-                                                    </span>
-                                                </td>
-                                                <td class="px-6 py-4">
-                                                    <div class="flex items-center">
-                                                        <i class="fas fa-star text-yellow-500 mr-1"></i>
-                                                        <span>${product.rating}</span>
-                                                        <span class="text-gray-500 text-sm ml-2">(${product.reviews} reviews)</span>
-                                                    </div>
-                                                </td>
-                                                <td class="px-6 py-4 font-bold">${Utilities.formatCurrency(product.price)}</td>
-                                                <td class="px-6 py-4">
-                                                    <button onclick="UIController.addToCart(${product.id})" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm mr-2">
-                                                        <i class="fas fa-cart-plus mr-1"></i> Add
-                                                    </button>
-                                                    <button onclick="UIController.viewProduct(${product.id})" class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                                                        <i class="fas fa-eye"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        `).join('')}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-
-            static getFinanceView() {
-                return `
-                    <div class="space-y-6 animate-fade-in">
-                        <!-- Header -->
-                        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                            <div>
-                                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Financial Dashboard</h1>
-                                <p class="text-gray-600 dark:text-gray-400">Manage payments, invoices, and billing</p>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <button onclick="UIController.downloadReport()" class="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                                    <i class="fas fa-download mr-2"></i>
-                                    Export
-                                </button>
-                                <button onclick="UIController.openPaymentModal()" class="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:opacity-90">
-                                    <i class="fas fa-plus mr-2"></i>
-                                    New Payment
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Financial Overview -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-                                <div class="flex items-center justify-between mb-4">
-                                    <div>
-                                        <p class="text-sm text-gray-500">Total Revenue</p>
-                                        <h3 class="text-3xl font-bold text-gray-900 dark:text-white mt-1">₹12.4L</h3>
-                                    </div>
-                                    <div class="w-12 h-12 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                                        <i class="fas fa-rupee-sign text-green-600 dark:text-green-400 text-xl"></i>
-                                    </div>
-                                </div>
-                                <div class="text-sm text-green-600 dark:text-green-400 flex items-center">
-                                    <i class="fas fa-arrow-up mr-1"></i>
-                                    <span>24% growth</span>
-                                </div>
-                            </div>
-
-                            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-                                <div class="flex items-center justify-between mb-4">
-                                    <div>
-                                        <p class="text-sm text-gray-500">Pending Payments</p>
-                                        <h3 class="text-3xl font-bold text-gray-900 dark:text-white mt-1">₹2.8L</h3>
-                                    </div>
-                                    <div class="w-12 h-12 rounded-xl bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center">
-                                        <i class="fas fa-clock text-yellow-600 dark:text-yellow-400 text-xl"></i>
-                                    </div>
-                                </div>
-                                <div class="text-sm text-yellow-600 dark:text-yellow-400 flex items-center">
-                                    <i class="fas fa-exclamation-triangle mr-1"></i>
-                                    <span>15 invoices due</span>
-                                </div>
-                            </div>
-
-                            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-                                <div class="flex items-center justify-between mb-4">
-                                    <div>
-                                        <p class="text-sm text-gray-500">Expenses</p>
-                                        <h3 class="text-3xl font-bold text-gray-900 dark:text-white mt-1">₹8.7L</h3>
-                                    </div>
-                                    <div class="w-12 h-12 rounded-xl bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
-                                        <i class="fas fa-money-bill-wave text-red-600 dark:text-red-400 text-xl"></i>
-                                    </div>
-                                </div>
-                                <div class="text-sm text-red-600 dark:text-red-400 flex items-center">
-                                    <i class="fas fa-arrow-up mr-1"></i>
-                                    <span>12% increase</span>
-                                </div>
-                            </div>
-
-                            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-                                <div class="flex items-center justify-between mb-4">
-                                    <div>
-                                        <p class="text-sm text-gray-500">Profit Margin</p>
-                                        <h3 class="text-3xl font-bold text-gray-900 dark:text-white mt-1">28%</h3>
-                                    </div>
-                                    <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-                                        <i class="fas fa-chart-line text-blue-600 dark:text-blue-400 text-xl"></i>
-                                    </div>
-                                </div>
-                                <div class="text-sm text-green-600 dark:text-green-400 flex items-center">
-                                    <i class="fas fa-arrow-up mr-1"></i>
-                                    <span>3% improvement</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Charts -->
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-                                <h3 class="font-bold text-gray-900 dark:text-white mb-4">Revenue Trend</h3>
-                                <div class="h-64">
-                                    <canvas id="revenueChart"></canvas>
-                                </div>
-                            </div>
-
-                            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-                                <h3 class="font-bold text-gray-900 dark:text-white mb-4">Expense Distribution</h3>
-                                <div class="h-64">
-                                    <canvas id="expenseChart"></canvas>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Recent Transactions -->
-                        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-                            <div class="p-6 border-b border-gray-200 dark:border-gray-700">
-                                <h3 class="font-bold text-gray-900 dark:text-white">Recent Transactions</h3>
-                            </div>
-                            <div class="overflow-x-auto">
-                                <table class="w-full">
-                                    <thead class="bg-gray-50 dark:bg-gray-900">
-                                        <tr>
-                                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Date</th>
-                                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Description</th>
-                                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Amount</th>
-                                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Status</th>
-                                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-400">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                                            <td class="px-6 py-4">15 Jan 2024</td>
-                                            <td class="px-6 py-4">
-                                                <div class="font-medium">ABC Corporation</div>
-                                                <div class="text-sm text-gray-500">Invoice #INV-2024-0012</div>
-                                            </td>
-                                            <td class="px-6 py-4 font-bold text-green-600 dark:text-green-400">₹1,25,000</td>
-                                            <td class="px-6 py-4">
-                                                <span class="px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs rounded-full">
-                                                    Paid
-                                                </span>
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <button onclick="UIController.downloadInvoice('INV-2024-0012')" class="text-blue-600 dark:text-blue-400 hover:underline text-sm">
-                                                    Download
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                                            <td class="px-6 py-4">14 Jan 2024</td>
-                                            <td class="px-6 py-4">
-                                                <div class="font-medium">XYZ Logistics</div>
-                                                <div class="text-sm text-gray-500">Invoice #INV-2024-0011</div>
-                                            </td>
-                                            <td class="px-6 py-4 font-bold text-yellow-600 dark:text-yellow-400">₹85,000</td>
-                                            <td class="px-6 py-4">
-                                                <span class="px-3 py-1 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-xs rounded-full">
-                                                    Pending
-                                                </span>
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <button onclick="UIController.sendReminder('INV-2024-0011')" class="text-blue-600 dark:text-blue-400 hover:underline text-sm">
-                                                    Send Reminder
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                                            <td class="px-6 py-4">13 Jan 2024</td>
-                                            <td class="px-6 py-4">
-                                                <div class="font-medium">Fuel Expense</div>
-                                                <div class="text-sm text-gray-500">Vehicle JH01AB1234</div>
-                                            </td>
-                                            <td class="px-6 py-4 font-bold text-red-600 dark:text-red-400">₹12,500</td>
-                                            <td class="px-6 py-4">
-                                                <span class="px-3 py-1 bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 text-xs rounded-full">
-                                                    Expense
-                                                </span>
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <button onclick="UIController.viewReceipt()" class="text-blue-600 dark:text-blue-400 hover:underline text-sm">
-                                                    View Receipt
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
                         </div>
                     </div>
                 `;
@@ -1914,120 +1084,99 @@
 
             static getAIAssistantView() {
                 return `
-                    <div class="space-y-6 animate-fade-in">
+                    <div class="space-y-6 fade-in">
                         <!-- Header -->
                         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                             <div>
                                 <h1 class="text-2xl font-bold text-gray-900 dark:text-white">AI Assistant</h1>
-                                <p class="text-gray-600 dark:text-gray-400">Get intelligent insights and recommendations</p>
+                                <p class="text-gray-600 dark:text-gray-400">Get intelligent insights and help</p>
                             </div>
-                            <div class="flex items-center gap-3">
-                                <button onclick="UIController.toggleAIVoice()" class="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                                    <i class="fas fa-volume-up mr-2"></i>
-                                    Voice: ON
-                                </button>
-                                <button onclick="UIController.clearAIChat()" class="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                                    <i class="fas fa-trash mr-2"></i>
-                                    Clear Chat
-                                </button>
-                            </div>
+                            <button onclick="UI.askAIQuestion('help')" class="px-4 py-2 gradient-bg text-white rounded-lg font-medium">
+                                <i class="fas fa-question-circle mr-2"></i>Ask AI
+                            </button>
                         </div>
 
                         <!-- AI Features -->
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <div class="bg-gradient-to-br from-blue-500 to-purple-500 text-white p-6 rounded-xl">
-                                <div class="text-3xl font-bold mb-2">Route Optimization</div>
-                                <p class="opacity-90 mb-4">AI-powered route planning for maximum efficiency</p>
-                                <button onclick="UIController.openAIOptimizer()" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg">
+                            <div class="p-6 bg-gradient-to-br from-blue-500 to-purple-500 text-white rounded-xl">
+                                <div class="text-xl font-bold mb-2">Route Optimization</div>
+                                <p class="opacity-90 mb-4">AI-powered route planning</p>
+                                <button onclick="UI.askAIQuestion('optimize route')" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg">
                                     Try Now
                                 </button>
                             </div>
 
-                            <div class="bg-gradient-to-br from-green-500 to-emerald-500 text-white p-6 rounded-xl">
-                                <div class="text-3xl font-bold mb-2">Fuel Analysis</div>
-                                <p class="opacity-90 mb-4">Predict and optimize fuel consumption</p>
-                                <button onclick="UIController.openFuelAnalyzer()" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg">
+                            <div class="p-6 bg-gradient-to-br from-green-500 to-emerald-500 text-white rounded-xl">
+                                <div class="text-xl font-bold mb-2">Fuel Analysis</div>
+                                <p class="opacity-90 mb-4">Optimize fuel consumption</p>
+                                <button onclick="UI.askAIQuestion('fuel cost')" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg">
                                     Analyze
                                 </button>
                             </div>
 
-                            <div class="bg-gradient-to-br from-orange-500 to-red-500 text-white p-6 rounded-xl">
-                                <div class="text-3xl font-bold mb-2">Risk Prediction</div>
-                                <p class="opacity-90 mb-4">Predict potential risks and delays</p>
-                                <button onclick="UIController.openRiskPredictor()" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg">
+                            <div class="p-6 bg-gradient-to-br from-orange-500 to-red-500 text-white rounded-xl">
+                                <div class="text-xl font-bold mb-2">Risk Prediction</div>
+                                <p class="opacity-90 mb-4">Predict potential delays</p>
+                                <button onclick="UI.askAIQuestion('risk prediction')" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg">
                                     Predict
                                 </button>
                             </div>
 
-                            <div class="bg-gradient-to-br from-pink-500 to-rose-500 text-white p-6 rounded-xl">
-                                <div class="text-3xl font-bold mb-2">Chat Assistant</div>
-                                <p class="opacity-90 mb-4">24/7 AI support for all queries</p>
-                                <button onclick="UIController.openAIChat()" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg">
+                            <div class="p-6 bg-gradient-to-br from-pink-500 to-rose-500 text-white rounded-xl">
+                                <div class="text-xl font-bold mb-2">24/7 Support</div>
+                                <p class="opacity-90 mb-4">AI chatbot assistance</p>
+                                <button onclick="UI.openAIChat()" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg">
                                     Chat Now
                                 </button>
                             </div>
                         </div>
 
-                        <!-- Chat Interface -->
-                        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-                            <div class="p-6 border-b border-gray-200 dark:border-gray-700">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
-                                            <i class="fas fa-robot text-white text-xl"></i>
-                                        </div>
-                                        <div>
-                                            <div class="font-bold">SNL AI Assistant</div>
-                                            <div class="text-sm text-gray-500">Powered by GPT-4 • Online</div>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center gap-2">
-                                        <span class="px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs rounded-full">
-                                            Premium
-                                        </span>
-                                    </div>
+                        <!-- AI Chat Interface -->
+                        <div class="card-hover bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                            <div class="flex items-center gap-3 mb-6">
+                                <div class="w-12 h-12 rounded-full gradient-bg flex items-center justify-center">
+                                    <i class="fas fa-robot text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <div class="font-bold">SNL AI Assistant</div>
+                                    <div class="text-sm text-gray-500">How can I help you today?</div>
                                 </div>
                             </div>
 
-                            <div class="h-96 overflow-y-auto p-6" id="aiChatMain">
-                                <div class="space-y-4">
-                                    <!-- AI Welcome Message -->
-                                    <div class="chat-bubble ai">
-                                        <div class="font-bold mb-1">SNL AI Assistant</div>
-                                        <p>Hello! I'm your AI logistics assistant. How can I help you today?</p>
-                                        <div class="text-xs text-gray-500 mt-2">Just now</div>
-                                    </div>
-
-                                    <!-- Quick Questions -->
-                                    <div class="flex flex-wrap gap-2 mt-4">
-                                        <button onclick="UIController.askAIQuestion('optimize route')" class="px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 text-sm">
-                                            Optimize Route
-                                        </button>
-                                        <button onclick="UIController.askAIQuestion('fuel cost')" class="px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 text-sm">
-                                            Fuel Cost Analysis
-                                        </button>
-                                        <button onclick="UIController.askAIQuestion('maintenance')" class="px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 text-sm">
-                                            Maintenance Schedule
-                                        </button>
-                                        <button onclick="UIController.askAIQuestion('revenue')" class="px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 text-sm">
-                                            Revenue Forecast
-                                        </button>
-                                    </div>
+                            <div class="space-y-4">
+                                <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                    <div class="font-bold mb-2">You asked:</div>
+                                    <p>How can I optimize my delivery routes?</p>
+                                </div>
+                                <div class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                                    <div class="font-bold mb-2">AI Assistant replied:</div>
+                                    <p>Based on your current operations, I recommend: 1) Using NH48 for Delhi-Mumbai route (save 2 hours), 2) Schedule deliveries during off-peak hours, 3) Implement real-time traffic monitoring. This could save you ₹15,000/month in fuel costs.</p>
                                 </div>
                             </div>
 
-                            <div class="p-4 border-t border-gray-200 dark:border-gray-700">
-                                <div class="flex gap-3">
+                            <div class="mt-6">
+                                <div class="flex gap-2">
                                     <input type="text" 
-                                           placeholder="Ask me anything about logistics..." 
-                                           id="aiMainInput"
-                                           class="flex-1 px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                    <button onclick="UIController.sendMainAIMessage()" class="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:opacity-90">
+                                           placeholder="Ask me anything..." 
+                                           class="flex-1 px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                           id="aiQuestion">
+                                    <button onclick="UI.askAIChat()" class="px-6 py-2.5 gradient-bg text-white rounded-lg hover:opacity-90">
                                         <i class="fas fa-paper-plane"></i>
                                     </button>
                                 </div>
-                                <div class="mt-2 text-xs text-gray-500">
-                                    AI Assistant can help with route optimization, cost analysis, risk prediction, and more.
+                                <div class="flex flex-wrap gap-2 mt-3">
+                                    <button onclick="UI.askAIQuestion('optimize route')" class="px-3 py-1.5 bg-gray-100 dark:bg-gray-700 rounded-lg text-sm hover:bg-gray-200 dark:hover:bg-gray-600">
+                                        Optimize Route
+                                    </button>
+                                    <button onclick="UI.askAIQuestion('fuel cost')" class="px-3 py-1.5 bg-gray-100 dark:bg-gray-700 rounded-lg text-sm hover:bg-gray-200 dark:hover:bg-gray-600">
+                                        Fuel Cost
+                                    </button>
+                                    <button onclick="UI.askAIQuestion('maintenance')" class="px-3 py-1.5 bg-gray-100 dark:bg-gray-700 rounded-lg text-sm hover:bg-gray-200 dark:hover:bg-gray-600">
+                                        Maintenance
+                                    </button>
+                                    <button onclick="UI.askAIQuestion('revenue')" class="px-3 py-1.5 bg-gray-100 dark:bg-gray-700 rounded-lg text-sm hover:bg-gray-200 dark:hover:bg-gray-600">
+                                        Revenue
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -2035,118 +1184,93 @@
                 `;
             }
 
-            static initDashboardCharts() {
-                // Performance Chart
-                const performanceCtx = document.getElementById('performanceChart');
-                if (performanceCtx) {
-                    this.charts.performance = new Chart(performanceCtx.getContext('2d'), {
-                        type: 'line',
-                        data: {
-                            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                            datasets: [{
-                                label: 'Trips Completed',
-                                data: [12, 19, 15, 25, 22, 30, 28],
-                                borderColor: '#3b82f6',
-                                backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                                tension: 0.4,
-                                fill: true
-                            }, {
-                                label: 'On-time Delivery %',
-                                data: [85, 88, 90, 92, 91, 94, 93],
-                                borderColor: '#10b981',
-                                backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                                tension: 0.4,
-                                fill: true
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    position: 'top',
-                                }
-                            }
-                        }
-                    });
+            // Additional view methods would go here...
+
+            static updateActiveNav() {
+                // Remove active class from all
+                document.querySelectorAll('nav a').forEach(link => {
+                    link.classList.remove('bg-blue-50', 'dark:bg-blue-900/30', 'text-blue-600', 'dark:text-blue-400');
+                });
+                
+                // Add active class to current view
+                // This would be implemented based on current view
+            }
+
+            // Action Methods
+            static quickAction(action) {
+                switch(action) {
+                    case 'newTrip':
+                        this.loadView('trips-new');
+                        Utils.showToast('Creating new trip...', 'info');
+                        break;
                 }
             }
 
-            static initFinanceCharts() {
-                // Revenue Chart
-                const revenueCtx = document.getElementById('revenueChart');
-                if (revenueCtx) {
-                    this.charts.revenue = new Chart(revenueCtx.getContext('2d'), {
-                        type: 'bar',
-                        data: {
-                            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-                            datasets: [{
-                                label: 'Revenue (₹)',
-                                data: [1200000, 1350000, 1250000, 1400000, 1550000, 1650000],
-                                backgroundColor: 'rgba(59, 130, 246, 0.8)',
-                                borderColor: '#3b82f6',
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    display: false
-                                }
-                            },
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    ticks: {
-                                        callback: function(value) {
-                                            return '₹' + (value / 100000).toFixed(1) + 'L';
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    });
-                }
-
-                // Expense Chart
-                const expenseCtx = document.getElementById('expenseChart');
-                if (expenseCtx) {
-                    this.charts.expense = new Chart(expenseCtx.getContext('2d'), {
-                        type: 'doughnut',
-                        data: {
-                            labels: ['Fuel', 'Maintenance', 'Salaries', 'Insurance', 'Other'],
-                            datasets: [{
-                                data: [35, 25, 20, 15, 5],
-                                backgroundColor: [
-                                    '#3b82f6',
-                                    '#10b981',
-                                    '#f59e0b',
-                                    '#ef4444',
-                                    '#8b5cf6'
-                                ]
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    position: 'bottom'
-                                }
-                            }
-                        }
-                    });
+            static buyCourse(courseId) {
+                const course = AppState.courses.find(c => c.id === courseId);
+                if (course) {
+                    this.openPaymentModal('course');
+                    Utils.showToast(`Added ${course.title} to cart`, 'success');
                 }
             }
 
-            static initAnalyticsCharts() {
-                // Additional charts for analytics view
-                // This would be expanded based on requirements
+            static addToCart(productId) {
+                const product = AppState.marketplace.find(p => p.id === productId);
+                if (product) {
+                    Utils.showToast(`Added ${product.title} to cart`, 'success');
+                }
             }
 
-            // UI Actions
+            static openPaymentModal(type = 'general') {
+                document.getElementById('paymentModal').classList.remove('hidden');
+            }
+
+            static askAIQuestion(question) {
+                const input = document.getElementById('aiQuestion');
+                if (input) {
+                    input.value = question;
+                    this.askAIChat();
+                }
+            }
+
+            static askAIChat() {
+                const input = document.getElementById('aiQuestion');
+                const question = input.value.trim();
+                if (!question) return;
+
+                Utils.showToast('AI is thinking...', 'info');
+                
+                // Simulate AI response
+                setTimeout(() => {
+                    const responses = [
+                        "I recommend optimizing your route via NH48. Estimated savings: ₹3,200 and 2 hours.",
+                        "Based on your fuel consumption data, you can save 15% by adjusting driving patterns.",
+                        "Your maintenance schedule suggests servicing vehicle JH01AB1234 next week.",
+                        "Revenue forecast for next quarter: ₹12.5L with current growth trends."
+                    ];
+                    
+                    Utils.showToast(responses[Math.floor(Math.random() * responses.length)], 'success');
+                    input.value = '';
+                }, 1500);
+            }
+
+            static processPayment() {
+                Utils.showToast('Processing payment...', 'info');
+                
+                setTimeout(() => {
+                    document.getElementById('paymentModal').classList.add('hidden');
+                    Utils.showToast('Payment successful! Thank you for your purchase.', 'success');
+                    
+                    // Update credits
+                    AppState.user.credits += 1000;
+                    document.querySelectorAll('.text-blue-600, .dark\\:text-blue-400').forEach(el => {
+                        if (el.textContent.includes('Credits') || el.textContent.includes('credits')) {
+                            el.textContent = `${AppState.user.credits} Credits`;
+                        }
+                    });
+                }, 2000);
+            }
+
             static toggleSidebar() {
                 const sidebar = document.getElementById('sidebar');
                 const overlay = document.getElementById('mobileOverlay');
@@ -2169,376 +1293,152 @@
             static toggleTheme() {
                 AppState.darkMode = !AppState.darkMode;
                 localStorage.setItem('darkMode', AppState.darkMode);
-                this.applyTheme();
-                Utilities.showToast(`Theme changed to ${AppState.darkMode ? 'dark' : 'light'} mode`, 'info');
-            }
-
-            static refreshDashboard() {
-                Utilities.showToast('Dashboard refreshed with latest data', 'success');
-                this.loadView('dashboard');
-            }
-
-            static quickAction(action) {
-                switch(action) {
-                    case 'newTrip':
-                        this.navigateTo('trips');
-                        break;
-                    case 'trackShipment':
-                        Utilities.showToast('Opening shipment tracker...', 'info');
-                        break;
-                    case 'generateReport':
-                        this.navigateTo('reports');
-                        break;
-                    case 'aiAssistant':
-                        this.openAIChat();
-                        break;
+                
+                if (AppState.darkMode) {
+                    document.documentElement.classList.add('dark');
+                    document.getElementById('themeIcon').className = 'fas fa-sun';
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    document.getElementById('themeIcon').className = 'fas fa-moon';
                 }
-            }
-
-            static openPaymentModal() {
-                document.getElementById('paymentModal').classList.remove('hidden');
-            }
-
-            static closePaymentModal() {
-                document.getElementById('paymentModal').classList.add('hidden');
-            }
-
-            static openAIChat() {
-                document.getElementById('aiChat').classList.remove('hidden');
-            }
-
-            static closeAIChat() {
-                document.getElementById('aiChat').classList.add('hidden');
-            }
-
-            static sendAIMessage() {
-                const input = document.getElementById('aiInput');
-                const message = input.value.trim();
-                if (!message) return;
-
-                const messagesDiv = document.getElementById('aiChatMessages');
                 
-                // Add user message
-                const userMsg = document.createElement('div');
-                userMsg.className = 'chat-bubble user';
-                userMsg.innerHTML = `
-                    <div class="font-bold mb-1">You</div>
-                    <p>${message}</p>
-                    <div class="text-xs opacity-75 mt-1">Just now</div>
-                `;
-                messagesDiv.appendChild(userMsg);
-                
-                // Clear input
-                input.value = '';
-                
-                // Scroll to bottom
-                messagesDiv.scrollTop = messagesDiv.scrollHeight;
-                
-                // Simulate AI response
-                setTimeout(() => {
-                    const aiResponses = [
-                        "I'll help you optimize that route. The most efficient path would be via NH48 with estimated time of 8 hours and fuel cost of ₹5,200.",
-                        "Based on your fleet data, I recommend scheduling maintenance for vehicle JH01AB1234 next week to avoid breakdowns.",
-                        "Your fuel consumption is 15% above industry average. Consider driver training programs to improve efficiency.",
-                        "The predicted delivery time for shipment #TRP-2024-0012 is 14:30 today, with 95% confidence."
-                    ];
-                    
-                    const aiMsg = document.createElement('div');
-                    aiMsg.className = 'chat-bubble ai';
-                    aiMsg.innerHTML = `
-                        <div class="font-bold mb-1">SNL AI Assistant</div>
-                        <p>${aiResponses[Math.floor(Math.random() * aiResponses.length)]}</p>
-                        <div class="text-xs text-gray-500 mt-1">Just now</div>
-                    `;
-                    messagesDiv.appendChild(aiMsg);
-                    
-                    // Scroll to bottom
-                    messagesDiv.scrollTop = messagesDiv.scrollHeight;
-                }, 1000);
-            }
-
-            static processPayment() {
-                const terms = document.getElementById('termsAgreement');
-                if (!terms.checked) {
-                    Utilities.showToast('Please agree to the terms and conditions', 'error');
-                    return;
-                }
-
-                Utilities.showToast('Processing payment...', 'info');
-                
-                // Simulate payment processing
-                setTimeout(() => {
-                    Utilities.showToast('Payment successful! Thank you for your purchase.', 'success');
-                    this.closePaymentModal();
-                    
-                    // Update user credits
-                    AppState.user.credits += 1000;
-                    document.querySelector('[id="userInitials"]').nextElementSibling.querySelector('div:last-child').textContent = `${AppState.user.credits} Credits`;
-                }, 2000);
-            }
-
-            static buyCourse(courseId) {
-                const course = AppState.courses.find(c => c.id === courseId);
-                if (course) {
-                    document.getElementById('planName').textContent = course.title;
-                    document.getElementById('planPrice').textContent = Utilities.formatCurrency(course.discountPrice);
-                    document.getElementById('totalAmount').textContent = Utilities.formatCurrency(course.discountPrice);
-                    this.openPaymentModal();
-                }
-            }
-
-            static addToCart(productId) {
-                Utilities.showToast('Product added to cart!', 'success');
-                // Update cart count
-                const cartBadge = document.querySelector('.relative button .absolute');
-                if (cartBadge) {
-                    const current = parseInt(cartBadge.textContent);
-                    cartBadge.textContent = current + 1;
-                }
+                Utils.showToast(`Theme changed to ${AppState.darkMode ? 'dark' : 'light'} mode`, 'info');
             }
 
             static markAllAsRead() {
-                AppState.notifications.forEach(n => n.read = true);
-                Utilities.showToast('All notifications marked as read', 'success');
+                Utils.showToast('All notifications marked as read', 'success');
                 this.toggleNotifications();
             }
 
-            static handleGlobalSearch(query) {
+            static handleSearch(query) {
                 if (query.trim()) {
-                    console.log('Searching for:', query);
-                    // Implement search functionality
+                    console.log('Searching:', query);
+                    // Implement search
                 }
-            }
-
-            static askAIQuestion(question) {
-                const input = document.getElementById('aiMainInput');
-                input.value = question;
-                this.sendMainAIMessage();
-            }
-
-            static sendMainAIMessage() {
-                const input = document.getElementById('aiMainInput');
-                const message = input.value.trim();
-                if (!message) return;
-
-                const messagesDiv = document.getElementById('aiChatMain');
-                
-                // Add user message
-                const userMsg = document.createElement('div');
-                userMsg.className = 'chat-bubble user';
-                userMsg.innerHTML = `
-                    <div class="font-bold mb-1">You</div>
-                    <p>${message}</p>
-                    <div class="text-xs opacity-75 mt-1">Just now</div>
-                `;
-                messagesDiv.appendChild(userMsg);
-                
-                // Clear input
-                input.value = '';
-                
-                // Scroll to bottom
-                messagesDiv.scrollTop = messagesDiv.scrollHeight;
-                
-                // Simulate AI response (more detailed)
-                setTimeout(() => {
-                    let response = '';
-                    if (message.toLowerCase().includes('route') || message.toLowerCase().includes('optimize')) {
-                        response = "Based on current traffic and weather conditions, I recommend taking Route B via NH48. This will save approximately 2 hours and reduce fuel consumption by 15%. Estimated savings: ₹3,200. Alternative routes are available upon request.";
-                    } else if (message.toLowerCase().includes('fuel')) {
-                        response = "Your current fuel efficiency is 8.5 km/l. Industry average is 10 km/l. Recommendations: 1) Regular tire pressure checks (save 3%), 2) Reduce idling time (save 5%), 3) Implement eco-driving training (save 7%). Total potential savings: ₹45,000/month.";
-                    } else if (message.toLowerCase().includes('maintenance')) {
-                        response = "Upcoming maintenance schedule: 1) Vehicle JH01AB1234 - Oil change due in 500 km, 2) Vehicle MH02CD5678 - Brake inspection due next week, 3) All vehicles - Quarterly service due end of month. Preventive maintenance can reduce breakdowns by 60%.";
-                    } else {
-                        response = "I've analyzed your query and here are my insights: 1) Current operations are running at 85% efficiency, 2) There's a 15% opportunity for cost optimization, 3) Consider implementing AI route planning for additional 12% efficiency gain. Would you like detailed recommendations for any specific area?";
-                    }
-                    
-                    const aiMsg = document.createElement('div');
-                    aiMsg.className = 'chat-bubble ai';
-                    aiMsg.innerHTML = `
-                        <div class="font-bold mb-1">SNL AI Assistant</div>
-                        <p>${response}</p>
-                        <div class="mt-2">
-                            <button onclick="UIController.askAIQuestion('more details')" class="text-xs px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded hover:bg-blue-200 dark:hover:bg-blue-800 mr-2">
-                                More Details
-                            </button>
-                            <button onclick="UIController.askAIQuestion('implement suggestions')" class="text-xs px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded hover:bg-green-200 dark:hover:bg-green-800">
-                                Implement Suggestions
-                            </button>
-                        </div>
-                        <div class="text-xs text-gray-500 mt-2">AI Analysis • Just now</div>
-                    `;
-                    messagesDiv.appendChild(aiMsg);
-                    
-                    // Scroll to bottom
-                    messagesDiv.scrollTop = messagesDiv.scrollHeight;
-                }, 1500);
-            }
-
-            static clearAIChat() {
-                const messagesDiv = document.getElementById('aiChatMain');
-                messagesDiv.innerHTML = `
-                    <div class="space-y-4">
-                        <div class="chat-bubble ai">
-                            <div class="font-bold mb-1">SNL AI Assistant</div>
-                            <p>Hello! I'm your AI logistics assistant. How can I help you today?</p>
-                            <div class="text-xs text-gray-500 mt-2">Just now</div>
-                        </div>
-                    </div>
-                `;
-                Utilities.showToast('Chat cleared', 'info');
-            }
-
-            static toggleAIVoice() {
-                Utilities.showToast('Voice feature coming soon!', 'info');
             }
         }
-
-        // ============================================
-        // INITIALIZATION
-        // ============================================
-
-        // Initialize when DOM is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            UIController.init();
-            
-            // Close dropdowns when clicking outside
-            document.addEventListener('click', (event) => {
-                const userMenu = document.getElementById('userMenu');
-                const userButton = event.target.closest('[onclick*="toggleUserMenu"]');
-                if (userMenu && !userMenu.contains(event.target) && !userButton) {
-                    userMenu.classList.add('hidden');
-                }
-
-                const notificationsPanel = document.getElementById('notificationsPanel');
-                const notificationsButton = event.target.closest('[onclick*="toggleNotifications"]');
-                if (notificationsPanel && !notificationsPanel.contains(event.target) && !notificationsButton) {
-                    notificationsPanel.classList.add('hidden');
-                }
-
-                // Close sidebar on mobile when clicking outside
-                if (window.innerWidth < 1024) {
-                    const sidebar = document.getElementById('sidebar');
-                    const sidebarButton = event.target.closest('[onclick*="toggleSidebar"]');
-                    const mobileOverlay = document.getElementById('mobileOverlay');
-                    if (sidebar && !sidebar.contains(event.target) && !sidebarButton && !mobileOverlay.contains(event.target)) {
-                        sidebar.classList.remove('active');
-                        mobileOverlay.classList.add('hidden');
-                    }
-                }
-            });
-
-            // Keyboard shortcuts
-            document.addEventListener('keydown', (e) => {
-                // Ctrl + / to search
-                if (e.ctrlKey && e.key === '/') {
-                    e.preventDefault();
-                    document.getElementById('globalSearch')?.focus();
-                }
-                
-                // Esc to close modals
-                if (e.key === 'Escape') {
-                    document.getElementById('paymentModal').classList.add('hidden');
-                    document.getElementById('aiChat').classList.add('hidden');
-                }
-            });
-        });
 
         // ============================================
         // GLOBAL FUNCTIONS (for onclick attributes)
         // ============================================
 
+        // Initialize
+        window.addEventListener('DOMContentLoaded', () => {
+            UI.init();
+            
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', (e) => {
+                const userMenu = document.getElementById('userMenu');
+                const userBtn = e.target.closest('[onclick*="toggleUserMenu"]');
+                if (userMenu && !userMenu.contains(e.target) && !userBtn) {
+                    userMenu.classList.add('hidden');
+                }
+
+                const notificationsPanel = document.getElementById('notificationsPanel');
+                const notificationsBtn = e.target.closest('[onclick*="toggleNotifications"]');
+                if (notificationsPanel && !notificationsPanel.contains(e.target) && !notificationsBtn) {
+                    notificationsPanel.classList.add('hidden');
+                }
+            });
+        });
+
+        // Navigation
         window.navigateTo = function(view) {
-            UIController.navigateTo(view);
+            UI.loadView(view);
+            
+            // Close sidebar on mobile
+            if (window.innerWidth < 1024) {
+                toggleSidebar();
+            }
         };
 
+        // Toggle functions
         window.toggleSidebar = function() {
-            UIController.toggleSidebar();
+            UI.toggleSidebar();
         };
 
         window.toggleUserMenu = function() {
-            UIController.toggleUserMenu();
+            UI.toggleUserMenu();
         };
 
         window.toggleNotifications = function() {
-            UIController.toggleNotifications();
+            UI.toggleNotifications();
         };
 
         window.toggleTheme = function() {
-            UIController.toggleTheme();
+            UI.toggleTheme();
         };
 
-        window.quickAction = function(action) {
-            UIController.quickAction(action);
-        };
-
-        window.markAllAsRead = function() {
-            UIController.markAllAsRead();
-        };
-
-        window.closeModal = function(modalId) {
-            document.getElementById(modalId).classList.add('hidden');
-        };
-
-        window.selectPaymentMethod = function(method) {
-            document.querySelectorAll('.payment-method').forEach(btn => {
-                btn.classList.remove('border-blue-500', 'bg-blue-50', 'dark:bg-blue-900/20');
-            });
-            event.target.classList.add('border-blue-500', 'bg-blue-50', 'dark:bg-blue-900/20');
-        };
-
-        window.applyCoupon = function() {
-            const code = document.getElementById('couponCode').value;
-            const message = document.getElementById('couponMessage');
-            
-            if (code === 'SNL2024') {
-                message.textContent = 'Coupon applied! 20% discount applied.';
-                message.className = 'text-green-600';
-                document.getElementById('totalAmount').textContent = '₹46,398';
-            } else if (code) {
-                message.textContent = 'Invalid coupon code.';
-                message.className = 'text-red-600';
+        window.togglePassword = function(inputId) {
+            const input = document.getElementById(inputId);
+            const icon = input.nextElementSibling.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fas fa-eye-slash';
             } else {
-                message.textContent = 'Please enter a coupon code.';
-                message.className = 'text-yellow-600';
+                input.type = 'password';
+                icon.className = 'fas fa-eye';
             }
-            message.classList.remove('hidden');
-        };
-
-        window.processPayment = function() {
-            UIController.processPayment();
         };
 
         window.toggleNavGroup = function(group) {
             const submenu = document.getElementById(`${group}Submenu`);
-            const chevron = document.getElementById(`${group}Chevron`);
             if (submenu) {
                 submenu.classList.toggle('hidden');
-                chevron.classList.toggle('rotate-180');
             }
         };
 
-        window.closeAIChat = function() {
-            UIController.closeAIChat();
+        // Modal functions
+        window.closeModal = function(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
         };
 
-        window.toggleAIVoice = function() {
-            UIController.toggleAIVoice();
+        window.showForgotPassword = function() {
+            document.getElementById('forgotPasswordModal').classList.remove('hidden');
         };
 
-        window.sendAIMessage = function() {
-            UIController.sendAIMessage();
+        window.sendResetEmail = function() {
+            const email = document.getElementById('resetEmail').value;
+            const message = document.getElementById('resetMessage');
+            
+            if (email) {
+                message.textContent = 'Reset link sent to your email!';
+                message.className = 'text-green-600';
+                message.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    closeModal('forgotPasswordModal');
+                }, 2000);
+            } else {
+                message.textContent = 'Please enter your email';
+                message.className = 'text-red-600';
+                message.classList.remove('hidden');
+            }
         };
 
-        window.quickAIQuestion = function(question) {
-            const input = document.getElementById('aiInput');
-            input.value = question;
-            UIController.sendAIMessage();
+        // Payment
+        window.processPayment = function() {
+            UI.processPayment();
+        };
+
+        // Logout
+        window.logout = function() {
+            if (confirm('Are you sure you want to logout?')) {
+                Utils.showToast('Logged out successfully', 'success');
+                document.getElementById('appContainer').classList.add('hidden');
+                document.getElementById('authScreen').classList.remove('hidden');
+            }
+        };
+
+        // Quick actions
+        window.markAllAsRead = function() {
+            UI.markAllAsRead();
         };
 
         // Expose for debugging
         window.AppState = AppState;
-        window.UIController = UIController;
-        window.Utilities = Utilities;
+        window.UI = UI;
+        window.Utils = Utils;
     </script>
 </body>
 </html>
