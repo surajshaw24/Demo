@@ -1,16 +1,445 @@
-CREATE TABLE users (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100),
-    mobile VARCHAR(10),
-    wallet_balance DECIMAL(10,2)
-);
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>रिचार्ज वेबसाइट - डेमो</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #27ae60;
+        }
+        body { background: #f5f7fa; }
+        .navbar-brand { font-weight: bold; color: var(--secondary) !important; }
+        .card { border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: none; }
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--secondary), #1abc9c);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            color: white;
+            font-size: 24px;
+        }
+        .wallet-balance {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+        }
+        .btn-recharge { 
+            background: linear-gradient(to right, var(--success), #2ecc71);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+        .transaction-item {
+            border-left: 4px solid var(--success);
+            margin-bottom: 10px;
+            padding: 10px 15px;
+            background: white;
+            border-radius: 8px;
+        }
+        .transaction-item.failed { border-left-color: #e74c3c; }
+        .footer { background: var(--primary); color: white; padding: 20px 0; }
+        .nav-tabs .nav-link.active { 
+            background: var(--secondary) !important; 
+            color: white !important;
+            border-radius: 10px 10px 0 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background: var(--primary);">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-bolt me-2"></i>सुपर रिचार्ज</a>
+            <div class="d-flex align-items-center">
+                <div class="dropdown">
+                    <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-user me-2"></i>राहुल शर्मा
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#profile"><i class="fas fa-user-circle me-2"></i>प्रोफाइल</a></li>
+                        <li><a class="dropdown-item" href="#transactions"><i class="fas fa-history me-2"></i>ट्रांजैक्शन</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="#logout"><i class="fas fa-sign-out-alt me-2"></i>लॉगआउट</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-CREATE TABLE transactions (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT,
-    type VARCHAR(50),
-    amount DECIMAL(10,2),
-    status VARCHAR(20),
-    details TEXT,
-    created_at TIMESTAMP
-);
+    <div class="container mt-4">
+        <!-- Wallet Balance -->
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <div class="wallet-balance">
+                    <h5><i class="fas fa-wallet me-2"></i>आपका वॉलेट बैलेंस</h5>
+                    <h1 class="display-4 fw-bold">₹1,250.50</h1>
+                    <button class="btn btn-light mt-2" data-bs-toggle="modal" data-bs-target="#addMoneyModal">
+                        <i class="fas fa-plus-circle me-2"></i>पैसे जोड़ें
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <div class="service-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h5>आखिरी रिचार्ज</h5>
+                        <p class="text-muted">9998765432</p>
+                        <h4 class="text-success">₹299</h4>
+                        <small class="text-muted">2 घंटे पहले</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Services -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <h4 class="mb-3">सर्विसेज</h4>
+                <div class="row">
+                    <div class="col-md-3 col-6 mb-3">
+                        <div class="card text-center h-100" onclick="showRechargeModal('mobile')">
+                            <div class="card-body">
+                                <div class="service-icon">
+                                    <i class="fas fa-mobile-alt"></i>
+                                </div>
+                                <h6>मोबाइल रिचार्ज</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6 mb-3">
+                        <div class="card text-center h-100" onclick="showRechargeModal('dth')">
+                            <div class="card-body">
+                                <div class="service-icon">
+                                    <i class="fas fa-tv"></i>
+                                </div>
+                                <h6>DTH रिचार्ज</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6 mb-3">
+                        <div class="card text-center h-100" onclick="showRechargeModal('electricity')">
+                            <div class="card-body">
+                                <div class="service-icon">
+                                    <i class="fas fa-bolt"></i>
+                                </div>
+                                <h6>बिजली बिल</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6 mb-3">
+                        <div class="card text-center h-100" onclick="showRechargeModal('gas')">
+                            <div class="card-body">
+                                <div class="service-icon">
+                                    <i class="fas fa-fire"></i>
+                                </div>
+                                <h6>गैस बिल</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs for History/Plans -->
+        <div class="row">
+            <div class="col-12">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="history-tab" data-bs-toggle="tab" data-bs-target="#history">ट्रांजैक्शन हिस्ट्री</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="plans-tab" data-bs-toggle="tab" data-bs-target="#plans">पॉपुलर प्लान</button>
+                    </li>
+                </ul>
+                <div class="tab-content p-3 bg-white border border-top-0" style="border-radius: 0 0 10px 10px;">
+                    <!-- Transaction History -->
+                    <div class="tab-pane fade show active" id="history">
+                        <div class="transaction-item">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h6>मोबाइल रिचार्ज</h6>
+                                    <small class="text-muted">9998765432 | 2 घंटे पहले</small>
+                                </div>
+                                <div class="text-end">
+                                    <h5 class="text-success">-₹299</h5>
+                                    <span class="badge bg-success">सफल</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transaction-item failed">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h6>DTH रिचार्ज</h6>
+                                    <small class="text-muted">Airtel DTH | कल</small>
+                                </div>
+                                <div class="text-end">
+                                    <h5 class="text-danger">-₹499</h5>
+                                    <span class="badge bg-danger">फेल्ड</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transaction-item">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h6>वॉलेट एड मनी</h6>
+                                    <small class="text-muted">UPI के जरिए | कल</small>
+                                </div>
+                                <div class="text-end">
+                                    <h5 class="text-success">+₹1,000</h5>
+                                    <span class="badge bg-success">सफल</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Popular Plans -->
+                    <div class="tab-pane fade" id="plans">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h5 class="text-primary">Jio</h5>
+                                        <h3>₹299</h3>
+                                        <p>1.5GB/दिन, 28 दिन</p>
+                                        <button class="btn btn-recharge btn-sm" onclick="rechargePlan('Jio', 299)">रिचार्ज करें</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h5 class="text-danger">Airtel</h5>
+                                        <h3>₹399</h3>
+                                        <p>2GB/दिन, 28 दिन</p>
+                                        <button class="btn btn-recharge btn-sm" onclick="rechargePlan('Airtel', 399)">रिचार्ज करें</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h5 class="text-success">Vi</h5>
+                                        <h3>₹199</h3>
+                                        <p>1GB/दिन, 28 दिन</p>
+                                        <button class="btn btn-recharge btn-sm" onclick="rechargePlan('Vi', 199)">रिचार्ज करें</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    
+    <!-- Add Money Modal -->
+    <div class="modal fade" id="addMoneyModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">वॉलेट में पैसे जोड़ें</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label>राशि</label>
+                        <input type="number" class="form-control" id="amount" placeholder="₹100 से ₹10,000" min="100" max="10000">
+                    </div>
+                    <div class="mb-3">
+                        <label>पेमेंट मेथड</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="paymentMethod" id="upi" checked>
+                            <label class="form-check-label" for="upi">
+                                <i class="fas fa-qrcode me-2"></i>UPI
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="paymentMethod" id="card">
+                            <label class="form-check-label" for="card">
+                                <i class="fas fa-credit-card me-2"></i>डेबिट/क्रेडिट कार्ड
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="paymentMethod" id="netbanking">
+                            <label class="form-check-label" for="netbanking">
+                                <i class="fas fa-university me-2"></i>नेट बैंकिंग
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">रद्द करें</button>
+                    <button type="button" class="btn btn-success" onclick="addMoney()">पेमेंट करें</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recharge Modal -->
+    <div class="modal fade" id="rechargeModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">मोबाइल रिचार्ज</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label id="numberLabel">मोबाइल नंबर</label>
+                        <input type="tel" class="form-control" id="mobileNumber" placeholder="10 अंकों का नंबर" maxlength="10">
+                    </div>
+                    <div class="mb-3">
+                        <label>ऑपरेटर</label>
+                        <select class="form-control" id="operator">
+                            <option value="">-- चुनें --</option>
+                            <option value="jio">Jio</option>
+                            <option value="airtel">Airtel</option>
+                            <option value="vi">Vi</option>
+                            <option value="bsnl">BSNL</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label>राशि (₹)</label>
+                        <input type="number" class="form-control" id="rechargeAmount" placeholder="₹10 से ₹1000">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">रद्द करें</button>
+                    <button type="button" class="btn btn-recharge" onclick="doRecharge()">रिचार्ज करें</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5><i class="fas fa-bolt me-2"></i>सुपर रिचार्ज</h5>
+                    <p>भारत का विश्वसनीय रिचार्ज प्लेटफॉर्म</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>सम्पर्क</h5>
+                    <p><i class="fas fa-envelope me-2"></i>support@superrecharge.com</p>
+                    <p><i class="fas fa-phone me-2"></i>+91 1800-123-456</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>सुरक्षित भुगतान</h5>
+                    <p>
+                        <i class="fas fa-shield-alt me-2"></i>100% सुरक्षित<br>
+                        <small>Razorpay & SSL सिक्योर</small>
+                    </p>
+                </div>
+            </div>
+            <hr>
+            <p class="text-center mb-0">© 2023 सुपर रिचार्ज. सर्वाधिकार सुरक्षित</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Service Types
+        const services = {
+            mobile: { title: "मोबाइल रिचार्ज", label: "मोबाइल नंबर" },
+            dth: { title: "DTH रिचार्ज", label: "DTH नंबर" },
+            electricity: { title: "बिजली बिल भुगतान", label: "खाता नंबर" },
+            gas: { title: "गैस बिल भुगतान", label: "गैस नंबर" }
+        };
+
+        function showRechargeModal(service) {
+            document.getElementById('modalTitle').textContent = services[service].title;
+            document.getElementById('numberLabel').textContent = services[service].label;
+            document.getElementById('mobileNumber').placeholder = services[service].label + " दर्ज करें";
+            new bootstrap.Modal(document.getElementById('rechargeModal')).show();
+        }
+
+        function doRecharge() {
+            const number = document.getElementById('mobileNumber').value;
+            const amount = document.getElementById('rechargeAmount').value;
+            const operator = document.getElementById('operator').value;
+
+            if (!number || !amount || !operator) {
+                alert("कृपया सभी विवरण भरें!");
+                return;
+            }
+
+            if (confirm(`क्या आप ₹${amount} का रिचार्ज नंबर ${number} पर करना चाहते हैं?`)) {
+                // Demo success message
+                alert(`रिचार्ज सफल! ₹${amount} का रिचार्ज ${number} पर किया गया।`);
+                bootstrap.Modal.getInstance(document.getElementById('rechargeModal')).hide();
+                
+                // In real app, here you would call backend API
+                console.log({
+                    service: 'recharge',
+                    number: number,
+                    amount: amount,
+                    operator: operator,
+                    timestamp: new Date().toISOString()
+                });
+            }
+        }
+
+        function addMoney() {
+            const amount = document.getElementById('amount').value;
+            const method = document.querySelector('input[name="paymentMethod"]:checked').id;
+
+            if (!amount || amount < 100) {
+                alert("कृपया ₹100 से अधिक राशि दर्ज करें!");
+                return;
+            }
+
+            if (confirm(`क्या आप अपने वॉलेट में ₹${amount} जोड़ना चाहते हैं?`)) {
+                // Demo success message
+                alert(`पेमेंट सफल! ₹${amount} आपके वॉलेट में जोड़ दिए गए हैं।`);
+                bootstrap.Modal.getInstance(document.getElementById('addMoneyModal')).hide();
+                
+                // In real app, here you would integrate Razorpay/PayU
+                console.log({
+                    action: 'add_money',
+                    amount: amount,
+                    method: method,
+                    timestamp: new Date().toISOString()
+                });
+            }
+        }
+
+        function rechargePlan(operator, amount) {
+            if (confirm(`क्या आप ${operator} का ₹${amount} वाला प्लान खरीदना चाहते हैं?`)) {
+                alert(`${operator} का ₹${amount} वाला प्लान सफलतापूर्वक खरीदा गया!`);
+                
+                // In real app, here you would call API
+                console.log({
+                    action: 'plan_purchase',
+                    operator: operator,
+                    amount: amount,
+                    timestamp: new Date().toISOString()
+                });
+            }
+        }
+
+        // Demo transaction history update
+        setInterval(() => {
+            const now = new Date();
+            console.log(`[${now.toLocaleTimeString()}] System is running...`);
+        }, 60000);
+    </script>
+</body>
+</html>
