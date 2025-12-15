@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Hand-Controlled Particle System (Single File)</title>
+    <title>Hand-Controlled Particle System with Texture</title>
     <style>
         body { margin: 0; overflow: hidden; background-color: #000000; }
         canvas { display: block; }
@@ -21,37 +21,33 @@
 
         // Uniforms (dữ liệu chung được truyền từ JS)
         uniform float uTime;
-        uniform vec3 uHandPosition; // Vị trí bàn tay (ví dụ: ngón trỏ)
+        uniform vec3 uHandPosition; 
         uniform int uTemplate;     // Mẫu hình: 0-Firework, 1-Heart, 2-Saturn
-        uniform float uGlobalScale;  // Độ lớn chung (từ cử chỉ nhúm tay)
-        uniform float uRepulsionRadius; // Bán kính đẩy
+        uniform float uGlobalScale; 
+        uniform float uRepulsionRadius; 
 
         varying vec3 vColor;
         
-        // Hàm tạo hình trái tim (Conceptual shaping function)
+        // Hàm tạo hình trái tim
         vec3 heartShape(vec3 pos, float scale) {
             float x = pos.x * scale;
             float y = pos.y * scale;
             float z = pos.z * scale;
             
-            // Công thức trái tim 2D (có thể nâng cấp lên 3D)
             float r = sqrt(x*x + y*y);
             float angle = atan(y, x);
-            
             float heart_r = 1.0 + 0.1 * cos(angle * 7.0);
             
-            // Dịch chuyển
             x = r * heart_r * cos(angle);
             y = r * heart_r * sin(angle) * 1.5;
             
             return vec3(x, y - 0.5, z);
         }
         
-        // Hàm tạo hình Saturn (Conceptual shaping function)
+        // Hàm tạo hình Saturn
         vec3 saturnShape(vec3 pos, float scale) {
             float radius = length(pos.xy) * scale;
             float angle = atan(pos.y, pos.x);
-            // Ép Z nhỏ đi để tạo đĩa/vòng
             return vec3(cos(angle) * radius, sin(angle) * radius, pos.z * 0.1);
         }
 
@@ -59,10 +55,10 @@
             vColor = aColor;
             vec3 particlePos = aInitialPosition;
             
-            // 1. Movement (Ví dụ: trọng lực đơn giản cho Firework)
+            // 1. Movement
             if (uTemplate == 0) { // Firework
                 particlePos += aVelocity * uTime;
-                particlePos.y -= 0.5 * uTime * uTime; // Mô phỏng trọng lực
+                particlePos.y -= 0.5 * uTime * uTime; 
             }
             
             // 2. Shaping (Áp dụng template)
@@ -76,7 +72,6 @@
             float distanceToHand = length(particlePos - uHandPosition);
             
             if (distanceToHand < uRepulsionRadius) {
-                // Tính toán vector đẩy ra
                 vec3 repulsionVector = normalize(particlePos - uHandPosition) * (uRepulsionRadius - distanceToHand) * 0.05;
                 particlePos += repulsionVector;
             }
@@ -84,8 +79,12 @@
             // Tính toán vị trí cuối cùng
             vec4 mvPosition = modelViewMatrix * vec4(particlePos, 1.0);
 
-            // Tính toán kích thước điểm: aSize * Tỷ lệ màn hình / Khoảng cách Z
+            // Kích thước điểm
             gl_PointSize = aSize * (500.0 / -mvPosition.z) * uGlobalScale;
+            
+            // Thiết lập kích thước điểm cố định nếu dùng texture có hình dạng phức tạp
+            // gl_PointSize = aSize * uGlobalScale;
+            
             gl_Position = projectionMatrix * mvPosition;
         }
     </script>
@@ -93,17 +92,22 @@
     <script type="x-shader/x-fragment" id="fragmentshader">
         varying vec3 vColor;
         uniform vec3 uColorShift;
+        uniform sampler2D uParticleTexture; // Texture hình ảnh của hạt
         
         void main() {
-            // Tạo hình tròn/quả cầu có độ mờ dần (soft glow)
-            vec2 center = gl_PointCoord - 0.5;
-            float r = dot(center, center);
+            // Lấy màu từ texture tại tọa độ của điểm (gl_PointCoord từ 0.0 đến 1.0)
+            vec4 texel = texture2D(uParticleTexture, gl_PointCoord);
             
-            // Độ mờ dần: 1.0 ở trung tâm, 0.0 ở ngoài rìa
-            float alpha = 1.0 - smoothstep(0.0, 0.5, r);
-
-            // Màu cuối cùng = Màu gốc * Thay đổi màu từ cử chỉ
-            gl_FragColor = vec4(vColor * uColorShift, alpha);
+            // Sử dụng màu của texture (texel.rgb) và độ mờ của texture (texel.a)
+            // Màu cuối cùng = Màu gốc * Thay đổi màu * Màu từ texture
+            vec3 finalColor = vColor * uColorShift * texel.rgb;
+            
+            // Độ mờ cuối cùng: Dùng độ mờ từ texture
+            gl_FragColor = vec4(finalColor, texel.a);
+            
+            // LƯU Ý: Nếu ảnh texture là trắng trên nền trong suốt (hoặc đen),
+            // bạn chỉ cần nhân độ mờ (texel.a) với độ mờ của hệ thống
+            // gl_FragColor = vec4(vColor * uColorShift, texel.a);
         }
     </script>
     
@@ -112,8 +116,6 @@
         let clock = new THREE.Clock();
         const PARTICLE_COUNT = 50000;
         let currentTemplate = 0;
-
-        // Kích thước của thế giới 3D (để tạo vị trí hạt)
         const WORLD_SIZE = 5.0; 
 
         // Hàm khởi tạo Three.js
@@ -126,25 +128,36 @@
             
             camera.position.z = 10;
             
-            initParticles();
+            loadTextureAndInitParticles();
             animate();
 
             window.addEventListener('resize', onWindowResize, false);
-            // DÙNG CÁC SỰ KIỆN CHUỘT LÀM MÔ PHỎNG HAND TRACKING
             document.addEventListener('mousemove', onMouseMove, false);
             document.addEventListener('wheel', onMouseScroll, false);
             document.addEventListener('click', onMouseClick, false);
         }
 
-        // Hàm xử lý thay đổi kích thước cửa sổ
-        function onWindowResize() {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
+        // 1. Tải Texture
+        function loadTextureAndInitParticles() {
+            // Sử dụng đường dẫn ảnh công khai. Thay thế bằng ảnh hoa, tim, hoặc bất kỳ hình dạng nào bạn muốn!
+            // Texture này nên là một hình ảnh màu trắng/xám trên nền trong suốt (PNG).
+            const textureLoader = new THREE.TextureLoader();
+            textureLoader.load(
+                'https://threejs.org/examples/textures/sprites/snowflake1.png', // Ví dụ: Hình bông tuyết
+                (texture) => {
+                    initParticles(texture);
+                },
+                undefined,
+                (error) => {
+                    console.error('Lỗi tải texture:', error);
+                    // Khởi tạo mà không có texture nếu cần
+                    initParticles(null);
+                }
+            );
         }
 
         // --- Logic khởi tạo hạt ---
-        function initParticles() {
+        function initParticles(texture) {
             const geometry = new THREE.BufferGeometry();
             
             const positions = new Float32Array(PARTICLE_COUNT * 3);
@@ -152,31 +165,22 @@
             const customSizes = new Float32Array(PARTICLE_COUNT);
             const customColors = new Float32Array(PARTICLE_COUNT * 3);
             const velocities = new Float32Array(PARTICLE_COUNT * 3);
-            const lifetimes = new Float32Array(PARTICLE_COUNT);
 
             for (let i = 0; i < PARTICLE_COUNT; i++) {
-                // Vị trí/Hình dạng ban đầu (ví dụ: hình cầu)
                 const x = THREE.MathUtils.randFloatSpread(WORLD_SIZE);
                 const y = THREE.MathUtils.randFloatSpread(WORLD_SIZE);
                 const z = THREE.MathUtils.randFloatSpread(WORLD_SIZE);
                 
-                positions[i * 3 + 0] = x;
-                positions[i * 3 + 1] = y;
-                positions[i * 3 + 2] = z;
+                positions[i * 3 + 0] = x; initialPositions[i * 3 + 0] = x;
+                positions[i * 3 + 1] = y; initialPositions[i * 3 + 1] = y;
+                positions[i * 3 + 2] = z; initialPositions[i * 3 + 2] = z;
 
-                initialPositions[i * 3 + 0] = x;
-                initialPositions[i * 3 + 1] = y;
-                initialPositions[i * 3 + 2] = z;
-                
-                // Tốc độ ban đầu
                 velocities[i * 3 + 0] = THREE.MathUtils.randFloatSpread(0.5);
                 velocities[i * 3 + 1] = THREE.MathUtils.randFloat(0.5, 1.5);
                 velocities[i * 3 + 2] = THREE.MathUtils.randFloatSpread(0.5);
 
-                // Kích thước ngẫu nhiên
-                customSizes[i] = THREE.MathUtils.randFloat(0.5, 3.0);
+                customSizes[i] = THREE.MathUtils.randFloat(10.0, 30.0); // Kích thước lớn hơn khi dùng texture
                 
-                // Màu ngẫu nhiên (sáng)
                 customColors[i * 3 + 0] = 1.0; 
                 customColors[i * 3 + 1] = THREE.MathUtils.randFloat(0.2, 1.0);
                 customColors[i * 3 + 2] = THREE.MathUtils.randFloat(0.2, 1.0);
@@ -196,7 +200,9 @@
                     uTemplate: { value: 0 },
                     uGlobalScale: { value: 1.0 },
                     uColorShift: { value: new THREE.Color(1, 1, 1) },
-                    uRepulsionRadius: { value: 2.0 }
+                    uRepulsionRadius: { value: 2.0 },
+                    // 2. Thêm Uniform cho Texture
+                    uParticleTexture: { value: texture } 
                 },
                 vertexShader: document.getElementById('vertexshader').textContent,
                 fragmentShader: document.getElementById('fragmentshader').textContent,
@@ -209,16 +215,16 @@
             scene.add(particles);
         }
         
-        // --- CÁC HÀM MÔ PHỎNG HAND TRACKING BẰNG CHUỘT ---
+        // Các hàm điều khiển tương tác (giống phiên bản trước)
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
 
-        // Chuyển đổi tọa độ màn hình (chuột) sang tọa độ thế giới 3D
         function screenToWorld(clientX, clientY) {
             const vector = new THREE.Vector3();
-            vector.set(
-                (clientX / window.innerWidth) * 2 - 1,
-                -(clientY / window.innerHeight) * 2 + 1,
-                0.5 // Giá trị z cố định tương đối
-            );
+            vector.set((clientX / window.innerWidth) * 2 - 1, -(clientY / window.innerHeight) * 2 + 1, 0.5);
             vector.unproject(camera);
             return vector;
         }
@@ -227,7 +233,6 @@
             const handWorldPosition = screenToWorld(event.clientX, event.clientY);
             particles.material.uniforms.uHandPosition.value.copy(handWorldPosition);
             
-            // Thay đổi màu dựa trên vị trí X của chuột (tương đương X của bàn tay)
             const xNormalized = event.clientX / window.innerWidth;
             const colorR = THREE.MathUtils.lerp(0.5, 1.0, xNormalized);
             const colorG = THREE.MathUtils.lerp(1.0, 0.5, xNormalized);
@@ -235,21 +240,18 @@
         }
 
         function onMouseScroll(event) {
-            // Mô phỏng cử chỉ nhúm tay (pinch) bằng cuộn chuột để thay đổi quy mô (Scale)
             let currentScale = particles.material.uniforms.uGlobalScale.value;
             currentScale -= event.deltaY * 0.001;
-            currentScale = Math.max(0.5, Math.min(2.5, currentScale)); // Giới hạn từ 0.5 đến 2.5
+            currentScale = Math.max(0.5, Math.min(2.5, currentScale)); 
             particles.material.uniforms.uGlobalScale.value = currentScale;
             
-            // Thay đổi bán kính đẩy dựa trên cuộn chuột
             let currentRadius = particles.material.uniforms.uRepulsionRadius.value;
             currentRadius += event.deltaY * 0.001;
             particles.material.uniforms.uRepulsionRadius.value = Math.max(1.0, Math.min(5.0, currentRadius));
         }
 
         function onMouseClick() {
-            // Mô phỏng cử chỉ chuyển đổi template (Template Switching) bằng click
-            currentTemplate = (currentTemplate + 1) % 3; // Cycle: 0 -> 1 -> 2 -> 0
+            currentTemplate = (currentTemplate + 1) % 3; 
             particles.material.uniforms.uTemplate.value = currentTemplate;
             console.log(`Switched to Template: ${currentTemplate}`);
         }
@@ -259,10 +261,10 @@
             requestAnimationFrame(animate);
             
             const delta = clock.getDelta();
-            particles.material.uniforms.uTime.value += delta;
-            
-            // Xoay nhẹ nhàng để dễ dàng thấy 3D
-            particles.rotation.y += 0.005;
+            if (particles) {
+                particles.material.uniforms.uTime.value += delta;
+                particles.rotation.y += 0.005;
+            }
 
             renderer.render(scene, camera);
         }
