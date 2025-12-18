@@ -1,445 +1,1142 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>रिचार्ज वेबसाइट - डेमो</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>HomeVista | Trusted Real Estate Services</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
         :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
+            --primary: #1a5276;
+            --secondary: #e67e22;
+            --accent: #2e86c1;
+            --light: #f8f9fa;
+            --dark: #2c3e50;
+            --gray: #7f8c8d;
             --success: #27ae60;
         }
-        body { background: #f5f7fa; }
-        .navbar-brand { font-weight: bold; color: var(--secondary) !important; }
-        .card { border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: none; }
+        
+        body {
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f7fa;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        .section-padding {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--dark);
+            position: relative;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        
+        .section-title h2:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--secondary);
+        }
+        
+        .section-title p {
+            color: var(--gray);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* Header & Navigation */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-right: 10px;
+        }
+        
+        .logo-text h1 {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+        
+        .logo-text p {
+            font-size: 0.8rem;
+            color: var(--gray);
+            letter-spacing: 1px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: color 0.3s;
+            padding: 5px 0;
+            position: relative;
+        }
+        
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+        
+        nav ul li a.active {
+            color: var(--primary);
+        }
+        
+        nav ul li a.active:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--secondary);
+        }
+        
+        .contact-header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        
+        .contact-header .phone {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+        
+        .contact-header .email {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1473&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 180px 0 100px;
+            text-align: center;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 3.2rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: white;
+            padding: 15px 35px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .cta-button:hover {
+            background-color: #d35400;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Services Section */
+        .services {
+            background-color: white;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .service-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+            padding: 30px 20px;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
         .service-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--secondary), #1abc9c);
+            width: 70px;
+            height: 70px;
+            background-color: rgba(26, 82, 118, 0.1);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 15px;
-            color: white;
-            font-size: 24px;
+            margin: 0 auto 20px;
         }
-        .wallet-balance {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 15px;
-            padding: 20px;
+        
+        .service-icon i {
+            font-size: 1.8rem;
+            color: var(--primary);
         }
-        .btn-recharge { 
-            background: linear-gradient(to right, var(--success), #2ecc71);
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 50px;
-            font-weight: 600;
+        
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--dark);
         }
-        .transaction-item {
-            border-left: 4px solid var(--success);
+        
+        /* About Section */
+        .about {
+            background-color: #f8f9fa;
+        }
+        
+        .about-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            align-items: center;
+        }
+        
+        .about-text h3 {
+            font-size: 2rem;
+            color: var(--dark);
+            margin-bottom: 20px;
+        }
+        
+        .about-text p {
+            margin-bottom: 20px;
+            color: var(--gray);
+        }
+        
+        .why-us-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+        
+        .why-us-list li {
             margin-bottom: 10px;
-            padding: 10px 15px;
-            background: white;
-            border-radius: 8px;
+            display: flex;
+            align-items: center;
         }
-        .transaction-item.failed { border-left-color: #e74c3c; }
-        .footer { background: var(--primary); color: white; padding: 20px 0; }
-        .nav-tabs .nav-link.active { 
-            background: var(--secondary) !important; 
-            color: white !important;
-            border-radius: 10px 10px 0 0;
+        
+        .why-us-list li i {
+            color: var(--success);
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .about-image img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Properties Section */
+        .properties {
+            background-color: white;
+        }
+        
+        .property-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 12px 25px;
+            margin: 0 5px 10px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--dark);
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        
+        .tab-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .tab-btn:hover:not(.active) {
+            background-color: rgba(26, 82, 118, 0.1);
+        }
+        
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+        }
+        
+        .property-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+        
+        .property-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .property-image {
+            height: 220px;
+            overflow: hidden;
+        }
+        
+        .property-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .property-card:hover .property-image img {
+            transform: scale(1.05);
+        }
+        
+        .property-info {
+            padding: 25px;
+        }
+        
+        .property-info h3 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .property-location {
+            color: var(--gray);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .property-location i {
+            margin-right: 8px;
+            color: var(--primary);
+        }
+        
+        .property-features {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .feature {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .feature i {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        
+        .property-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        /* Contact Section */
+        .contact {
+            background-color: #f8f9fa;
+        }
+        
+        .contact-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+        }
+        
+        .contact-info h3 {
+            font-size: 1.8rem;
+            color: var(--dark);
+            margin-bottom: 20px;
+        }
+        
+        .contact-detail {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+        
+        .contact-detail i {
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-right: 15px;
+            margin-top: 5px;
+        }
+        
+        .contact-form {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+        
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo h2 {
+            font-size: 1.8rem;
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        .footer-logo p {
+            color: #bbb;
+            margin-bottom: 20px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--secondary);
+        }
+        
+        .footer-links h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-links h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--secondary);
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links ul li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links ul li a {
+            color: #bbb;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links ul li a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bbb;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2.2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            nav {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                background-color: white;
+                transition: left 0.3s;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+                padding: 20px;
+            }
+            
+            nav.active {
+                left: 0;
+            }
+            
+            nav ul {
+                flex-direction: column;
+            }
+            
+            nav ul li {
+                margin: 0 0 15px 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .contact-header {
+                display: none;
+            }
+            
+            .header-container {
+                padding: 15px 0;
+            }
+            
+            .hero {
+                padding: 150px 0 80px;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .section-padding {
+                padding: 60px 0;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+            
+            .property-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .tab-btn {
+                width: 100%;
+                max-width: 250px;
+                margin-bottom: 10px;
+            }
+            
+            .properties-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background: var(--primary);">
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <i class="fas fa-home"></i>
+                <div class="logo-text">
+                    <h1>HomeVista</h1>
+                    <p>Real Estate Services</p>
+                </div>
+            </div>
+            
+            <div class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </div>
+            
+            <nav>
+                <ul>
+                    <li><a href="#home" class="active">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#properties">Properties</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+            
+            <div class="contact-header">
+                <div class="phone"><i class="fas fa-phone-alt"></i> 8651744312</div>
+                <div class="email">realestate@gmail.com</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container hero-content">
+            <h1>Trusted Real Estate Services for Residential & Commercial Properties</h1>
+            <p>We provide complete real estate solutions for plots, flats, houses, and commercial properties. Whether you want to buy, sell, or rent, we help you find the best property at the right price.</p>
+            <a href="#contact" class="cta-button">Get Free Consultation</a>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services section-padding" id="services">
         <div class="container">
-            <a class="navbar-brand" href="#"><i class="fas fa-bolt me-2"></i>सुपर रिचार्ज</a>
-            <div class="d-flex align-items-center">
-                <div class="dropdown">
-                    <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                        <i class="fas fa-user me-2"></i>राहुल शर्मा
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#profile"><i class="fas fa-user-circle me-2"></i>प्रोफाइल</a></li>
-                        <li><a class="dropdown-item" href="#transactions"><i class="fas fa-history me-2"></i>ट्रांजैक्शन</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item text-danger" href="#logout"><i class="fas fa-sign-out-alt me-2"></i>लॉगआउट</a></li>
+            <div class="section-title">
+                <h2>Our Services</h2>
+                <p>We offer a comprehensive range of real estate services to meet all your property needs.</p>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-house-user"></i>
+                    </div>
+                    <h3>Residential Properties</h3>
+                    <p>Find your perfect home from a wide selection of plots, flats, and independent houses in prime locations.</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h3>Commercial Properties</h3>
+                    <p>Shop, office spaces, showrooms, and warehouses for your business needs with flexible lease options.</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-hard-hat"></i>
+                    </div>
+                    <h3>Builder Projects</h3>
+                    <p>Partner with leading builders and developers for new residential projects and investment opportunities.</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3>Brokerage Services</h3>
+                    <p>Professional real estate agent services for buying, selling, and renting properties with complete transparency.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section class="about section-padding" id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>About HomeVista</h2>
+                <p>Your trusted partner for all real estate needs with a commitment to transparency and customer satisfaction.</p>
+            </div>
+            
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Your Trusted Property Partner</h3>
+                    <p><strong>HomeVista</strong> is a professional real estate service provider offering reliable property solutions for individuals, builders, developers, and businesses.</p>
+                    <p>With our extensive market knowledge and customer-focused service, we make property transactions simple, transparent, and secure.</p>
+                    
+                    <h4 style="margin-top: 30px; color: var(--dark);">Why Choose Us?</h4>
+                    <ul class="why-us-list">
+                        <li><i class="fas fa-check-circle"></i> Verified properties with complete documentation</li>
+                        <li><i class="fas fa-check-circle"></i> Honest pricing with no hidden charges</li>
+                        <li><i class="fas fa-check-circle"></i> Local market expertise and legal support</li>
+                        <li><i class="fas fa-check-circle"></i> Quick response and dedicated customer support</li>
+                        <li><i class="fas fa-check-circle"></i> End-to-end assistance in property transactions</li>
                     </ul>
                 </div>
-            </div>
-        </div>
-    </nav>
-
-    <div class="container mt-4">
-        <!-- Wallet Balance -->
-        <div class="row mb-4">
-            <div class="col-md-8">
-                <div class="wallet-balance">
-                    <h5><i class="fas fa-wallet me-2"></i>आपका वॉलेट बैलेंस</h5>
-                    <h1 class="display-4 fw-bold">₹1,250.50</h1>
-                    <button class="btn btn-light mt-2" data-bs-toggle="modal" data-bs-target="#addMoneyModal">
-                        <i class="fas fa-plus-circle me-2"></i>पैसे जोड़ें
-                    </button>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card h-100">
-                    <div class="card-body text-center">
-                        <div class="service-icon">
-                            <i class="fas fa-mobile-alt"></i>
-                        </div>
-                        <h5>आखिरी रिचार्ज</h5>
-                        <p class="text-muted">9998765432</p>
-                        <h4 class="text-success">₹299</h4>
-                        <small class="text-muted">2 घंटे पहले</small>
-                    </div>
+                
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1473&q=80" alt="HomeVista Real Estate">
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- Services -->
-        <div class="row mb-4">
-            <div class="col-12">
-                <h4 class="mb-3">सर्विसेज</h4>
-                <div class="row">
-                    <div class="col-md-3 col-6 mb-3">
-                        <div class="card text-center h-100" onclick="showRechargeModal('mobile')">
-                            <div class="card-body">
-                                <div class="service-icon">
-                                    <i class="fas fa-mobile-alt"></i>
-                                </div>
-                                <h6>मोबाइल रिचार्ज</h6>
-                            </div>
-                        </div>
+    <!-- Properties Section -->
+    <section class="properties section-padding" id="properties">
+        <div class="container">
+            <div class="section-title">
+                <h2>Featured Properties</h2>
+                <p>Explore our handpicked selection of premium residential and commercial properties.</p>
+            </div>
+            
+            <div class="property-tabs">
+                <button class="tab-btn active" data-filter="all">All Properties</button>
+                <button class="tab-btn" data-filter="residential">Residential</button>
+                <button class="tab-btn" data-filter="commercial">Commercial</button>
+                <button class="tab-btn" data-filter="plot">Plots/Land</button>
+            </div>
+            
+            <div class="properties-grid">
+                <!-- Property 1 -->
+                <div class="property-card" data-category="residential">
+                    <div class="property-image">
+                        <img src="https://images.unsplash.com/photo-1518780664697-55e3ad937233?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=765&q=80" alt="Modern Apartment">
                     </div>
-                    <div class="col-md-3 col-6 mb-3">
-                        <div class="card text-center h-100" onclick="showRechargeModal('dth')">
-                            <div class="card-body">
-                                <div class="service-icon">
-                                    <i class="fas fa-tv"></i>
-                                </div>
-                                <h6>DTH रिचार्ज</h6>
+                    <div class="property-info">
+                        <h3>Modern 3BHK Apartment</h3>
+                        <div class="property-location">
+                            <i class="fas fa-map-marker-alt"></i> Prime City Center, South Delhi
+                        </div>
+                        <div class="property-features">
+                            <div class="feature">
+                                <i class="fas fa-bed"></i>
+                                <span>3 Beds</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-bath"></i>
+                                <span>2 Baths</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-vector-square"></i>
+                                <span>1750 sqft</span>
                             </div>
                         </div>
+                        <div class="property-price">₹ 85,00,000</div>
+                        <button class="cta-button" style="width: 100%; padding: 12px;">View Details</button>
                     </div>
-                    <div class="col-md-3 col-6 mb-3">
-                        <div class="card text-center h-100" onclick="showRechargeModal('electricity')">
-                            <div class="card-body">
-                                <div class="service-icon">
-                                    <i class="fas fa-bolt"></i>
-                                </div>
-                                <h6>बिजली बिल</h6>
-                            </div>
-                        </div>
+                </div>
+                
+                <!-- Property 2 -->
+                <div class="property-card" data-category="commercial">
+                    <div class="property-image">
+                        <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1469&q=80" alt="Commercial Office Space">
                     </div>
-                    <div class="col-md-3 col-6 mb-3">
-                        <div class="card text-center h-100" onclick="showRechargeModal('gas')">
-                            <div class="card-body">
-                                <div class="service-icon">
-                                    <i class="fas fa-fire"></i>
-                                </div>
-                                <h6>गैस बिल</h6>
+                    <div class="property-info">
+                        <h3>Premium Office Space</h3>
+                        <div class="property-location">
+                            <i class="fas fa-map-marker-alt"></i> Business District, Gurgaon
+                        </div>
+                        <div class="property-features">
+                            <div class="feature">
+                                <i class="fas fa-door-open"></i>
+                                <span>6 Cabins</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-users"></i>
+                                <span>Conference Room</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-vector-square"></i>
+                                <span>2200 sqft</span>
                             </div>
                         </div>
+                        <div class="property-price">₹ 1,20,000/month</div>
+                        <button class="cta-button" style="width: 100%; padding: 12px;">View Details</button>
+                    </div>
+                </div>
+                
+                <!-- Property 3 -->
+                <div class="property-card" data-category="plot">
+                    <div class="property-image">
+                        <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1332&q=80" alt="Residential Plot">
+                    </div>
+                    <div class="property-info">
+                        <h3>Residential Plot</h3>
+                        <div class="property-location">
+                            <i class="fas fa-map-marker-alt"></i> Developing Suburb, Noida
+                        </div>
+                        <div class="property-features">
+                            <div class="feature">
+                                <i class="fas fa-expand-alt"></i>
+                                <span>500 sq yd</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-tint"></i>
+                                <span>Water Available</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-road"></i>
+                                <span>30ft Road</span>
+                            </div>
+                        </div>
+                        <div class="property-price">₹ 50,00,000</div>
+                        <button class="cta-button" style="width: 100%; padding: 12px;">View Details</button>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- Tabs for History/Plans -->
-        <div class="row">
-            <div class="col-12">
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="history-tab" data-bs-toggle="tab" data-bs-target="#history">ट्रांजैक्शन हिस्ट्री</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="plans-tab" data-bs-toggle="tab" data-bs-target="#plans">पॉपुलर प्लान</button>
-                    </li>
-                </ul>
-                <div class="tab-content p-3 bg-white border border-top-0" style="border-radius: 0 0 10px 10px;">
-                    <!-- Transaction History -->
-                    <div class="tab-pane fade show active" id="history">
-                        <div class="transaction-item">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <h6>मोबाइल रिचार्ज</h6>
-                                    <small class="text-muted">9998765432 | 2 घंटे पहले</small>
-                                </div>
-                                <div class="text-end">
-                                    <h5 class="text-success">-₹299</h5>
-                                    <span class="badge bg-success">सफल</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="transaction-item failed">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <h6>DTH रिचार्ज</h6>
-                                    <small class="text-muted">Airtel DTH | कल</small>
-                                </div>
-                                <div class="text-end">
-                                    <h5 class="text-danger">-₹499</h5>
-                                    <span class="badge bg-danger">फेल्ड</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="transaction-item">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <h6>वॉलेट एड मनी</h6>
-                                    <small class="text-muted">UPI के जरिए | कल</small>
-                                </div>
-                                <div class="text-end">
-                                    <h5 class="text-success">+₹1,000</h5>
-                                    <span class="badge bg-success">सफल</span>
-                                </div>
-                            </div>
+    <!-- Contact Section -->
+    <section class="contact section-padding" id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Contact Us</h2>
+                <p>Get in touch with our real estate experts for personalized property solutions.</p>
+            </div>
+            
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h3>Get in Touch</h3>
+                    <p>Reach out to us for any property requirements or queries. Our team is available to assist you.</p>
+                    
+                    <div class="contact-detail">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Office Address</h4>
+                            <p>123 Property Plaza, Real Estate Avenue<br>New Delhi, India - 110001</p>
                         </div>
                     </div>
                     
-                    <!-- Popular Plans -->
-                    <div class="tab-pane fade" id="plans">
-                        <div class="row">
-                            <div class="col-md-4 mb-3">
-                                <div class="card">
-                                    <div class="card-body text-center">
-                                        <h5 class="text-primary">Jio</h5>
-                                        <h3>₹299</h3>
-                                        <p>1.5GB/दिन, 28 दिन</p>
-                                        <button class="btn btn-recharge btn-sm" onclick="rechargePlan('Jio', 299)">रिचार्ज करें</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <div class="card">
-                                    <div class="card-body text-center">
-                                        <h5 class="text-danger">Airtel</h5>
-                                        <h3>₹399</h3>
-                                        <p>2GB/दिन, 28 दिन</p>
-                                        <button class="btn btn-recharge btn-sm" onclick="rechargePlan('Airtel', 399)">रिचार्ज करें</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <div class="card">
-                                    <div class="card-body text-center">
-                                        <h5 class="text-success">Vi</h5>
-                                        <h3>₹199</h3>
-                                        <p>1GB/दिन, 28 दिन</p>
-                                        <button class="btn btn-recharge btn-sm" onclick="rechargePlan('Vi', 199)">रिचार्ज करें</button>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="contact-detail">
+                        <i class="fas fa-phone-alt"></i>
+                        <div>
+                            <h4>Phone Number</h4>
+                            <p>8651744312</p>
                         </div>
                     </div>
+                    
+                    <div class="contact-detail">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email Address</h4>
+                            <p>realestate@gmail.com<br>HomeVista@gmail.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-detail">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h4>Working Hours</h4>
+                            <p>Monday - Saturday: 9:00 AM - 8:00 PM<br>Sunday: 10:00 AM - 6:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <h3>Send Enquiry</h3>
+                    <form id="enquiryForm">
+                        <div class="form-group">
+                            <label for="name">Full Name *</label>
+                            <input type="text" id="name" class="form-control" placeholder="Enter your name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Mobile Number *</label>
+                            <input type="tel" id="phone" class="form-control" placeholder="Enter your mobile number" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" class="form-control" placeholder="Enter your email">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="requirement">Property Requirement *</label>
+                            <select id="requirement" class="form-control" required>
+                                <option value="">Select requirement</option>
+                                <option value="buy">Buy Property</option>
+                                <option value="sell">Sell Property</option>
+                                <option value="rent">Rent Property</option>
+                                <option value="commercial">Commercial Lease</option>
+                                <option value="plot">Buy Plot/Land</option>
+                                <option value="valuation">Property Valuation</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" class="form-control" placeholder="Tell us about your specific requirements..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="cta-button" style="width: 100%;">Submit Enquiry</button>
+                    </form>
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- Modals -->
-    
-    <!-- Add Money Modal -->
-    <div class="modal fade" id="addMoneyModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">वॉलेट में पैसे जोड़ें</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label>राशि</label>
-                        <input type="number" class="form-control" id="amount" placeholder="₹100 से ₹10,000" min="100" max="10000">
-                    </div>
-                    <div class="mb-3">
-                        <label>पेमेंट मेथड</label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="paymentMethod" id="upi" checked>
-                            <label class="form-check-label" for="upi">
-                                <i class="fas fa-qrcode me-2"></i>UPI
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="paymentMethod" id="card">
-                            <label class="form-check-label" for="card">
-                                <i class="fas fa-credit-card me-2"></i>डेबिट/क्रेडिट कार्ड
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="paymentMethod" id="netbanking">
-                            <label class="form-check-label" for="netbanking">
-                                <i class="fas fa-university me-2"></i>नेट बैंकिंग
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">रद्द करें</button>
-                    <button type="button" class="btn btn-success" onclick="addMoney()">पेमेंट करें</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Recharge Modal -->
-    <div class="modal fade" id="rechargeModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalTitle">मोबाइल रिचार्ज</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label id="numberLabel">मोबाइल नंबर</label>
-                        <input type="tel" class="form-control" id="mobileNumber" placeholder="10 अंकों का नंबर" maxlength="10">
-                    </div>
-                    <div class="mb-3">
-                        <label>ऑपरेटर</label>
-                        <select class="form-control" id="operator">
-                            <option value="">-- चुनें --</option>
-                            <option value="jio">Jio</option>
-                            <option value="airtel">Airtel</option>
-                            <option value="vi">Vi</option>
-                            <option value="bsnl">BSNL</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label>राशि (₹)</label>
-                        <input type="number" class="form-control" id="rechargeAmount" placeholder="₹10 से ₹1000">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">रद्द करें</button>
-                    <button type="button" class="btn btn-recharge" onclick="doRecharge()">रिचार्ज करें</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    </section>
 
     <!-- Footer -->
-    <footer class="footer mt-5">
+    <footer>
         <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <h5><i class="fas fa-bolt me-2"></i>सुपर रिचार्ज</h5>
-                    <p>भारत का विश्वसनीय रिचार्ज प्लेटफॉर्म</p>
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>HomeVista</h2>
+                    <p>Your trusted partner for all real estate needs. We provide complete solutions for buying, selling, and renting residential and commercial properties.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    <h5>सम्पर्क</h5>
-                    <p><i class="fas fa-envelope me-2"></i>support@superrecharge.com</p>
-                    <p><i class="fas fa-phone me-2"></i>+91 1800-123-456</p>
+                
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#services">Our Services</a></li>
+                        <li><a href="#properties">Properties</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
+                    </ul>
                 </div>
-                <div class="col-md-4">
-                    <h5>सुरक्षित भुगतान</h5>
-                    <p>
-                        <i class="fas fa-shield-alt me-2"></i>100% सुरक्षित<br>
-                        <small>Razorpay & SSL सिक्योर</small>
-                    </p>
+                
+                <div class="footer-links">
+                    <h3>Our Services</h3>
+                    <ul>
+                        <li><a href="#">Buy Property</a></li>
+                        <li><a href="#">Sell Property</a></li>
+                        <li><a href="#">Rent/Lease Property</a></li>
+                        <li><a href="#">Property Valuation</a></li>
+                        <li><a href="#">Investment Consultation</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Contact Info</h3>
+                    <ul>
+                        <li><i class="fas fa-phone-alt"></i> 8651744312</li>
+                        <li><i class="fas fa-envelope"></i> realestate@gmail.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Property Plaza, New Delhi</li>
+                        <li><i class="fas fa-clock"></i> Mon-Sat: 9AM-8PM</li>
+                    </ul>
                 </div>
             </div>
-            <hr>
-            <p class="text-center mb-0">© 2023 सुपर रिचार्ज. सर्वाधिकार सुरक्षित</p>
+            
+            <div class="copyright">
+                <p>© 2025 HomeVista | All Rights Reserved | Designed for Real Estate Buy • Sell • Rent Services</p>
+            </div>
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        // Service Types
-        const services = {
-            mobile: { title: "मोबाइल रिचार्ज", label: "मोबाइल नंबर" },
-            dth: { title: "DTH रिचार्ज", label: "DTH नंबर" },
-            electricity: { title: "बिजली बिल भुगतान", label: "खाता नंबर" },
-            gas: { title: "गैस बिल भुगतान", label: "गैस नंबर" }
-        };
-
-        function showRechargeModal(service) {
-            document.getElementById('modalTitle').textContent = services[service].title;
-            document.getElementById('numberLabel').textContent = services[service].label;
-            document.getElementById('mobileNumber').placeholder = services[service].label + " दर्ज करें";
-            new bootstrap.Modal(document.getElementById('rechargeModal')).show();
-        }
-
-        function doRecharge() {
-            const number = document.getElementById('mobileNumber').value;
-            const amount = document.getElementById('rechargeAmount').value;
-            const operator = document.getElementById('operator').value;
-
-            if (!number || !amount || !operator) {
-                alert("कृपया सभी विवरण भरें!");
-                return;
-            }
-
-            if (confirm(`क्या आप ₹${amount} का रिचार्ज नंबर ${number} पर करना चाहते हैं?`)) {
-                // Demo success message
-                alert(`रिचार्ज सफल! ₹${amount} का रिचार्ज ${number} पर किया गया।`);
-                bootstrap.Modal.getInstance(document.getElementById('rechargeModal')).hide();
-                
-                // In real app, here you would call backend API
-                console.log({
-                    service: 'recharge',
-                    number: number,
-                    amount: amount,
-                    operator: operator,
-                    timestamp: new Date().toISOString()
+        // Mobile Menu Toggle
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.querySelector('nav').classList.toggle('active');
+        });
+        
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function() {
+                document.querySelector('nav').classList.remove('active');
+            });
+        });
+        
+        // Property Filtering
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('active');
                 });
-            }
-        }
-
-        function addMoney() {
-            const amount = document.getElementById('amount').value;
-            const method = document.querySelector('input[name="paymentMethod"]:checked').id;
-
-            if (!amount || amount < 100) {
-                alert("कृपया ₹100 से अधिक राशि दर्ज करें!");
-                return;
-            }
-
-            if (confirm(`क्या आप अपने वॉलेट में ₹${amount} जोड़ना चाहते हैं?`)) {
-                // Demo success message
-                alert(`पेमेंट सफल! ₹${amount} आपके वॉलेट में जोड़ दिए गए हैं।`);
-                bootstrap.Modal.getInstance(document.getElementById('addMoneyModal')).hide();
                 
-                // In real app, here you would integrate Razorpay/PayU
-                console.log({
-                    action: 'add_money',
-                    amount: amount,
-                    method: method,
-                    timestamp: new Date().toISOString()
-                });
-            }
-        }
-
-        function rechargePlan(operator, amount) {
-            if (confirm(`क्या आप ${operator} का ₹${amount} वाला प्लान खरीदना चाहते हैं?`)) {
-                alert(`${operator} का ₹${amount} वाला प्लान सफलतापूर्वक खरीदा गया!`);
+                // Add active class to clicked button
+                this.classList.add('active');
                 
-                // In real app, here you would call API
-                console.log({
-                    action: 'plan_purchase',
-                    operator: operator,
-                    amount: amount,
-                    timestamp: new Date().toISOString()
+                const filter = this.getAttribute('data-filter');
+                const propertyCards = document.querySelectorAll('.property-card');
+                
+                propertyCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
                 });
+            });
+        });
+        
+        // Form Submission
+        document.getElementById('enquiryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const requirement = document.getElementById('requirement').value;
+            
+            // Simple validation
+            if (name && phone && requirement) {
+                // In a real application, you would send this data to a server
+                alert(`Thank you ${name}! Your enquiry has been submitted. We will contact you at ${phone} shortly.`);
+                document.getElementById('enquiryForm').reset();
+            } else {
+                alert('Please fill in all required fields (Name, Phone, and Property Requirement).');
             }
-        }
-
-        // Demo transaction history update
-        setInterval(() => {
-            const now = new Date();
-            console.log(`[${now.toLocaleTimeString()}] System is running...`);
-        }, 60000);
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Highlight active nav link on scroll
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('nav a');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
     </script>
 </body>
 </html>
