@@ -1,984 +1,665 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Complete Business Tools Suite | All-in-One Business Solution</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* Reset and Base Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BusinessTools Pro | Advanced Suite</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    :root {
+      --bg: #f8f9fa;
+      --card-bg: #ffffff;
+      --text: #212529;
+      --primary: #3498db;
+      --secondary: #2c3e50;
+      --accent: #e74c3c;
+      --success: #27ae60;
+      --warning: #f39c12;
+      --border: #e0e0e0;
+      --shadow: 0 4px 12px rgba(0,0,0,0.08);
+      --radius: 12px;
+      --transition: all 0.3s ease;
+    }
 
-        :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
-            --accent: #e74c3c;
-            --light: #ecf0f1;
-            --dark: #2c3e50;
-            --success: #27ae60;
-            --warning: #f39c12;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --radius: 8px;
-        }
+    [data-theme="dark"] {
+      --bg: #121826;
+      --card-bg: #1e293b;
+      --text: #f1f5f9;
+      --border: #334155;
+      --shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
 
-        body {
-            background-color: #f5f7fa;
-            color: #333;
-            line-height: 1.6;
-        }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: var(--transition);
+    }
 
-        /* Header Styles */
-        header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 20px 0;
-            box-shadow: var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
+    header {
+      background: linear-gradient(120deg, var(--secondary), var(--primary));
+      color: white;
+      padding: 1.2rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow);
+    }
 
-        .logo i {
-            margin-right: 10px;
-            color: var(--accent);
-        }
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
 
-        .tagline {
-            font-size: 14px;
-            opacity: 0.9;
-            margin-bottom: 20px;
-        }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-        nav ul {
-            display: flex;
-            list-style: none;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 20px;
+    }
 
-        nav a {
-            color: white;
-            text-decoration: none;
-            padding: 8px 15px;
-            border-radius: var(--radius);
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 8px;
+      transition: var(--transition);
+    }
 
-        nav a:hover, nav a.active {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
+    nav a:hover, nav a.active {
+      background: rgba(255,255,255,0.2);
+    }
 
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(rgba(44, 62, 80, 0.9), rgba(52, 152, 219, 0.9)), url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            text-align: center;
-            padding: 60px 20px;
-            border-radius: var(--radius);
-            margin: 30px 0;
-        }
+    .hero {
+      text-align: center;
+      padding: 3rem 1.5rem;
+      margin: 2rem 0;
+      background: linear-gradient(135deg, rgba(52,152,219,0.1), rgba(44,62,80,0.1));
+      border-radius: var(--radius);
+    }
 
-        .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
+    .hero h1 {
+      font-size: 2.4rem;
+      margin-bottom: 1rem;
+      color: var(--secondary);
+    }
 
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 800px;
-            margin: 0 auto 30px;
-        }
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+      margin: 2rem 0;
+    }
 
-        .cta-button {
-            display: inline-block;
-            background-color: var(--accent);
-            color: white;
-            padding: 15px 30px;
-            border-radius: var(--radius);
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-        }
+    .tool-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      border-top: 4px solid var(--primary);
+    }
 
-        .cta-button:hover {
-            background-color: #c0392b;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        }
+    .tool-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
 
-        /* Tools Section */
-        .section-title {
-            text-align: center;
-            margin: 40px 0 30px;
-            color: var(--primary);
-            font-size: 2rem;
-            position: relative;
-        }
+    .tool-icon {
+      font-size: 2.2rem;
+      margin-bottom: 16px;
+      color: var(--primary);
+    }
 
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background-color: var(--secondary);
-            border-radius: 2px;
-        }
+    .tool-card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 12px;
+      color: var(--secondary);
+    }
 
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-            margin-bottom: 50px;
-        }
+    .tool-button {
+      width: 100%;
+      padding: 10px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
 
-        .tool-card {
-            background-color: white;
-            border-radius: var(--radius);
-            padding: 25px;
-            box-shadow: var(--shadow);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border-top: 5px solid var(--secondary);
-        }
+    .tool-button:hover {
+      background: var(--secondary);
+    }
 
-        .tool-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
+    .tool-container {
+      display: none;
+      background: var(--card-bg);
+      padding: 28px;
+      border-radius: var(--radius);
+      margin: 2rem 0;
+      box-shadow: var(--shadow);
+    }
 
-        .tool-icon {
-            font-size: 2.5rem;
-            color: var(--secondary);
-            margin-bottom: 15px;
-        }
+    .tool-container.active {
+      display: block;
+      animation: fadeIn 0.4s ease;
+    }
 
-        .tool-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: var(--primary);
-        }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-        .tool-card p {
-            margin-bottom: 20px;
-            color: #666;
-        }
+    .tool-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
 
-        .tool-button {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: var(--radius);
-            cursor: pointer;
-            font-weight: 500;
-            transition: background-color 0.3s ease;
-            width: 100%;
-        }
+    .close-tool {
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      color: var(--text);
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: var(--transition);
+    }
 
-        .tool-button:hover {
-            background-color: var(--secondary);
-        }
+    .close-tool:hover {
+      background: var(--accent);
+      color: white;
+    }
 
-        /* Tool Containers */
-        .tool-container {
-            background-color: white;
-            border-radius: var(--radius);
-            padding: 30px;
-            box-shadow: var(--shadow);
-            margin-bottom: 30px;
-            display: none;
-        }
+    .form-group {
+      margin-bottom: 20px;
+    }
 
-        .tool-container.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--card-bg);
+      color: var(--text);
+      font-size: 1rem;
+    }
 
-        .tool-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
-        }
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
 
-        .tool-header h2 {
-            color: var(--primary);
-            font-size: 1.8rem;
-        }
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
 
-        .close-tool {
-            background-color: #eee;
-            border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.2rem;
-            color: #666;
-            transition: all 0.3s ease;
-        }
+    .btn-primary:hover {
+      background: var(--secondary);
+    }
 
-        .close-tool:hover {
-            background-color: var(--accent);
-            color: white;
-        }
+    .result-box {
+      background: rgba(52, 152, 219, 0.08);
+      border-left: 4px solid var(--primary);
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 20px;
+      display: none;
+    }
 
-        .input-group {
-            margin-bottom: 20px;
-        }
+    .result-box.active {
+      display: block;
+    }
 
-        .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--primary);
-        }
+    .theme-toggle {
+      background: var(--card-bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      width: 50px;
+      height: 28px;
+      border-radius: 14px;
+      position: relative;
+      cursor: pointer;
+    }
 
-        .input-group input, .input-group select, .input-group textarea {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: var(--radius);
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
+    .theme-toggle::after {
+      content: '';
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--primary);
+      top: 2px;
+      left: 2px;
+      transition: var(--transition);
+    }
 
-        .input-group input:focus, .input-group select:focus, .input-group textarea:focus {
-            outline: none;
-            border-color: var(--secondary);
-        }
+    [data-theme="dark"] .theme-toggle::after {
+      transform: translateX(22px);
+      background: var(--warning);
+    }
 
-        .result-box {
-            background-color: #f9f9f9;
-            padding: 20px;
-            border-radius: var(--radius);
-            margin-top: 25px;
-            border-left: 4px solid var(--secondary);
-            display: none;
-        }
+    footer {
+      text-align: center;
+      margin-top: 4rem;
+      padding: 1.5rem;
+      color: var(--text);
+      opacity: 0.8;
+      border-top: 1px solid var(--border);
+    }
 
-        .result-box.active {
-            display: block;
-        }
-
-        .result-box h3 {
-            margin-bottom: 10px;
-            color: var(--primary);
-        }
-
-        /* Customization Section */
-        .customization-section {
-            background-color: white;
-            border-radius: var(--radius);
-            padding: 30px;
-            box-shadow: var(--shadow);
-            margin: 40px 0;
-        }
-
-        .color-options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .color-option {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 3px solid transparent;
-            transition: transform 0.3s ease;
-        }
-
-        .color-option:hover {
-            transform: scale(1.1);
-        }
-
-        .color-option.active {
-            border-color: #333;
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--primary);
-            color: white;
-            padding: 40px 0 20px;
-            margin-top: 50px;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-
-        .footer-column h3 {
-            font-size: 1.3rem;
-            margin-bottom: 20px;
-            color: var(--light);
-        }
-
-        .footer-column ul {
-            list-style: none;
-        }
-
-        .footer-column ul li {
-            margin-bottom: 10px;
-        }
-
-        .footer-column ul li a {
-            color: #ddd;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer-column ul li a:hover {
-            color: var(--accent);
-        }
-
-        .copyright {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #aaa;
-            font-size: 0.9rem;
-        }
-
-        /* Responsive Styles */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            .tools-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            nav ul {
-                justify-content: center;
-            }
-        }
-    </style>
+    @media (max-width: 768px) {
+      nav ul {
+        flex-direction: column;
+        gap: 8px;
+      }
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- Header Section -->
-    <header>
-        <div class="container">
-            <div class="logo">
-                <i class="fas fa-business-time"></i>
-                BusinessTools Pro
-            </div>
-            <div class="tagline">Complete Business Solution in One Place</div>
-            <nav>
-                <ul>
-                    <li><a href="#home" class="active">Home</a></li>
-                    <li><a href="#tools">Tools</a></li>
-                    <li><a href="#customize">Customize</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
 
-    <!-- Main Content -->
-    <div class="container">
-        <!-- Hero Section -->
-        <section class="hero" id="home">
-            <h1>All-In-One Business Tools Suite</h1>
-            <p>Access a complete collection of business tools for finance, marketing, operations, and more. Everything you need to run your business efficiently in one place.</p>
-            <button class="cta-button" id="exploreTools">Explore All Tools</button>
-        </section>
-
-        <!-- Tools Grid -->
-        <h2 class="section-title" id="tools">Business Tools</h2>
-        <div class="tools-grid">
-            <!-- Tool 1: Profit Calculator -->
-            <div class="tool-card">
-                <div class="tool-icon">
-                    <i class="fas fa-calculator"></i>
-                </div>
-                <h3>Profit Calculator</h3>
-                <p>Calculate your profit margin, markup, and breakeven point with this easy-to-use tool.</p>
-                <button class="tool-button" data-tool="profit-calculator">Open Tool</button>
-            </div>
-
-            <!-- Tool 2: Invoice Generator -->
-            <div class="tool-card">
-                <div class="tool-icon">
-                    <i class="fas fa-file-invoice-dollar"></i>
-                </div>
-                <h3>Invoice Generator</h3>
-                <p>Create professional invoices in minutes. Customize and download for your business.</p>
-                <button class="tool-button" data-tool="invoice-generator">Open Tool</button>
-            </div>
-
-            <!-- Tool 3: Salary Calculator -->
-            <div class="tool-card">
-                <div class="tool-icon">
-                    <i class="fas fa-money-check-alt"></i>
-                </div>
-                <h3>Salary Calculator</h3>
-                <p>Calculate employee salaries, taxes, and net pay with accurate computations.</p>
-                <button class="tool-button" data-tool="salary-calculator">Open Tool</button>
-            </div>
-
-            <!-- Tool 4: Marketing ROI -->
-            <div class="tool-card">
-                <div class="tool-icon">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <h3>Marketing ROI Calculator</h3>
-                <p>Measure the return on investment for your marketing campaigns and strategies.</p>
-                <button class="tool-button" data-tool="marketing-roi">Open Tool</button>
-            </div>
-
-            <!-- Tool 5: Loan Calculator -->
-            <div class="tool-card">
-                <div class="tool-icon">
-                    <i class="fas fa-hand-holding-usd"></i>
-                </div>
-                <h3>Loan Calculator</h3>
-                <p>Calculate loan payments, interest rates, and total cost for business loans.</p>
-                <button class="tool-button" data-tool="loan-calculator">Open Tool</button>
-            </div>
-
-            <!-- Tool 6: Project Timeline -->
-            <div class="tool-card">
-                <div class="tool-icon">
-                    <i class="fas fa-project-diagram"></i>
-                </div>
-                <h3>Project Timeline</h3>
-                <p>Plan and visualize your project milestones, deadlines, and progress.</p>
-                <button class="tool-button" data-tool="project-timeline">Open Tool</button>
-            </div>
-        </div>
-
-        <!-- Tool Containers (Hidden by default) -->
-        <!-- Profit Calculator Tool -->
-        <div class="tool-container" id="profit-calculator">
-            <div class="tool-header">
-                <h2><i class="fas fa-calculator"></i> Profit Calculator</h2>
-                <button class="close-tool">&times;</button>
-            </div>
-            <div class="input-group">
-                <label for="revenue">Total Revenue ($)</label>
-                <input type="number" id="revenue" placeholder="Enter total revenue">
-            </div>
-            <div class="input-group">
-                <label for="cost">Total Cost ($)</label>
-                <input type="number" id="cost" placeholder="Enter total cost">
-            </div>
-            <div class="input-group">
-                <label for="expenses">Operating Expenses ($)</label>
-                <input type="number" id="expenses" placeholder="Enter operating expenses">
-            </div>
-            <button class="cta-button" id="calculate-profit">Calculate Profit</button>
-            <div class="result-box" id="profit-result">
-                <h3>Profit Analysis</h3>
-                <p id="profit-output"></p>
-                <p id="margin-output"></p>
-                <p id="markup-output"></p>
-            </div>
-        </div>
-
-        <!-- Invoice Generator Tool -->
-        <div class="tool-container" id="invoice-generator">
-            <div class="tool-header">
-                <h2><i class="fas fa-file-invoice-dollar"></i> Invoice Generator</h2>
-                <button class="close-tool">&times;</button>
-            </div>
-            <div class="input-group">
-                <label for="customer-name">Customer Name</label>
-                <input type="text" id="customer-name" placeholder="Enter customer name">
-            </div>
-            <div class="input-group">
-                <label for="invoice-date">Invoice Date</label>
-                <input type="date" id="invoice-date">
-            </div>
-            <div class="input-group">
-                <label for="invoice-items">Items (Format: Item,Quantity,Price)</label>
-                <textarea id="invoice-items" rows="4" placeholder="E.g., Product A,2,50.00"></textarea>
-                <small>Enter each item on a new line or separate with commas</small>
-            </div>
-            <div class="input-group">
-                <label for="tax-rate">Tax Rate (%)</label>
-                <input type="number" id="tax-rate" value="10" min="0" max="100">
-            </div>
-            <button class="cta-button" id="generate-invoice">Generate Invoice</button>
-            <div class="result-box" id="invoice-result">
-                <h3>Invoice Preview</h3>
-                <div id="invoice-output"></div>
-                <button class="cta-button" id="download-invoice" style="margin-top: 15px;">Download as PDF</button>
-            </div>
-        </div>
-
-        <!-- Salary Calculator Tool -->
-        <div class="tool-container" id="salary-calculator">
-            <div class="tool-header">
-                <h2><i class="fas fa-money-check-alt"></i> Salary Calculator</h2>
-                <button class="close-tool">&times;</button>
-            </div>
-            <div class="input-group">
-                <label for="gross-salary">Gross Salary ($)</label>
-                <input type="number" id="gross-salary" placeholder="Enter gross salary">
-            </div>
-            <div class="input-group">
-                <label for="tax-percentage">Tax Percentage (%)</label>
-                <input type="number" id="tax-percentage" value="20" min="0" max="100">
-            </div>
-            <div class="input-group">
-                <label for="other-deductions">Other Deductions ($)</label>
-                <input type="number" id="other-deductions" placeholder="Enter other deductions" value="0">
-            </div>
-            <button class="cta-button" id="calculate-salary">Calculate Net Salary</button>
-            <div class="result-box" id="salary-result">
-                <h3>Salary Breakdown</h3>
-                <p id="salary-output"></p>
-                <p id="tax-output"></p>
-                <p id="net-salary-output"></p>
-            </div>
-        </div>
-
-        <!-- Customization Section -->
-        <h2 class="section-title" id="customize">Customize Your Experience</h2>
-        <div class="customization-section">
-            <h3>Theme Color</h3>
-            <p>Choose a color theme for your business tools dashboard:</p>
-            <div class="color-options">
-                <div class="color-option active" style="background-color: #2c3e50;" data-color="default"></div>
-                <div class="color-option" style="background-color: #27ae60;" data-color="green"></div>
-                <div class="color-option" style="background-color: #8e44ad;" data-color="purple"></div>
-                <div class="color-option" style="background-color: #d35400;" data-color="orange"></div>
-                <div class="color-option" style="background-color: #16a085;" data-color="teal"></div>
-                <div class="color-option" style="background-color: #c0392b;" data-color="red"></div>
-            </div>
-            
-            <h3 style="margin-top: 30px;">Tool Preferences</h3>
-            <div class="input-group">
-                <label for="default-currency">Default Currency</label>
-                <select id="default-currency">
-                    <option value="$">US Dollar ($)</option>
-                    <option value="€">Euro (€)</option>
-                    <option value="£">British Pound (£)</option>
-                    <option value="₹">Indian Rupee (₹)</option>
-                    <option value="¥">Japanese Yen (¥)</option>
-                </select>
-            </div>
-            
-            <button class="cta-button" id="save-preferences">Save Preferences</button>
-            <div id="preferences-saved" style="margin-top: 15px; color: var(--success); display: none;">
-                <i class="fas fa-check-circle"></i> Preferences saved successfully!
-            </div>
-        </div>
+  <header>
+    <div class="container header-content">
+      <div class="logo">
+        <i class="fas fa-chart-line"></i> BusinessTools Pro
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#" class="active">Home</a></li>
+          <li><a href="#tools">Tools</a></li>
+          <li><a href="#settings">Settings</a></li>
+        </ul>
+      </nav>
+      <div class="theme-toggle" id="themeToggle"></div>
     </div>
+  </header>
 
-    <!-- Footer -->
-    <footer id="contact">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>BusinessTools Pro</h3>
-                    <p>Your complete business solution. All tools in one place for efficient business management.</p>
-                    <p><i class="fas fa-envelope"></i> support@businesstools.com</p>
-                    <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
-                </div>
-                <div class="footer-column">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#tools">All Tools</a></li>
-                        <li><a href="#customize">Customization</a></li>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Popular Tools</h3>
-                    <ul>
-                        <li><a href="#" class="tool-link" data-tool="profit-calculator">Profit Calculator</a></li>
-                        <li><a href="#" class="tool-link" data-tool="invoice-generator">Invoice Generator</a></li>
-                        <li><a href="#" class="tool-link" data-tool="salary-calculator">Salary Calculator</a></li>
-                        <li><a href="#" class="tool-link" data-tool="loan-calculator">Loan Calculator</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Legal</h3>
-                    <ul>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Cookie Policy</a></li>
-                        <li><a href="#">Disclaimer</a></li>
-                    </ul>
-                </div>
+  <div class="container">
+    <section class="hero">
+      <h1>Advanced All-in-One Business Toolkit</h1>
+      <p>Finance, HR, Operations & Marketing — all in one offline-ready, single-file solution.</p>
+    </section>
+
+    <h2 id="tools" style="text-align:center; margin:2rem 0 1.5rem; color:var(--secondary);">Business Tools</h2>
+    <div class="tools-grid" id="toolsGrid"></div>
+
+    <!-- Tool Containers will be injected by JS -->
+  </div>
+
+  <footer>
+    &copy; 2025 BusinessTools Pro — Single HTML File Solution
+  </footer>
+
+  <script>
+    // ======================
+    // DATA & CONFIG
+    // ======================
+    const TOOLS = [
+      {
+        id: 'profit-calculator',
+        name: 'Profit Calculator',
+        icon: 'fas fa-calculator',
+        description: 'Calculate margins, markup & breakeven',
+        fields: [
+          { id: 'revenue', label: 'Total Revenue ($)', type: 'number' },
+          { id: 'cost', label: 'Cost of Goods ($)', type: 'number' },
+          { id: 'expenses', label: 'Operating Expenses ($)', type: 'number' }
+        ],
+        compute: (data) => {
+          const r = parseFloat(data.revenue) || 0;
+          const c = parseFloat(data.cost) || 0;
+          const e = parseFloat(data.expenses) || 0;
+          const totalCost = c + e;
+          const profit = r - totalCost;
+          const margin = r ? ((profit / r) * 100).toFixed(2) : 0;
+          const markup = c ? (((r - c) / c) * 100).toFixed(2) : 0;
+          return `
+            <p><strong>Profit:</strong> $${profit.toFixed(2)}</p>
+            <p><strong>Profit Margin:</strong> ${margin}%</p>
+            <p><strong>Markup:</strong> ${markup}%</p>
+          `;
+        }
+      },
+      {
+        id: 'invoice-generator',
+        name: 'Invoice Generator',
+        icon: 'fas fa-file-invoice-dollar',
+        description: 'Create & export professional invoices',
+        fields: [
+          { id: 'client', label: 'Client Name', type: 'text' },
+          { id: 'items', label: 'Items (one per line: name,qty,price)', type: 'textarea' },
+          { id: 'tax', label: 'Tax Rate (%)', type: 'number', value: '10' }
+        ],
+        compute: (data) => {
+          const items = (data.items || '').split('\n').map(line => {
+            const [name, qty, price] = line.split(',').map(s => s.trim());
+            return { name, qty: parseInt(qty) || 1, price: parseFloat(price) || 0 };
+          }).filter(i => i.name && i.price);
+          let subtotal = 0;
+          items.forEach(i => subtotal += i.qty * i.price);
+          const taxRate = parseFloat(data.tax) || 0;
+          const tax = subtotal * (taxRate / 100);
+          const total = subtotal + tax;
+
+          let html = `<div id="invoice-preview" style="font-family:sans-serif;max-width:600px;background:white;padding:20px;border-radius:8px;">
+            <h2>Invoice</h2>
+            <p><strong>Client:</strong> ${data.client || 'N/A'}</p>
+            <table style="width:100%;border-collapse:collapse;margin:15px 0;">
+              <tr><th style="text-align:left;padding:8px;">Item</th><th>Qty</th><th>Price</th><th>Total</th></tr>
+          `;
+          items.forEach(i => {
+            html += `<tr><td>${i.name}</td><td>${i.qty}</td><td>$${i.price.toFixed(2)}</td><td>$${(i.qty * i.price).toFixed(2)}</td></tr>`;
+          });
+          html += `</table>
+            <div style="text-align:right;">
+              <p>Subtotal: $${subtotal.toFixed(2)}</p>
+              <p>Tax (${taxRate}%): $${tax.toFixed(2)}</p>
+              <h3>Total: $${total.toFixed(2)}</h3>
             </div>
-            <div class="copyright">
-                &copy; 2023 BusinessTools Pro. All rights reserved. | Designed for business success.
-            </div>
+          </div>`;
+
+          // Store for PDF
+          window.invoiceHTML = html;
+
+          return html + `<br><button class="btn-primary" onclick="generatePDF()">📥 Download PDF</button>`;
+        }
+      },
+      {
+        id: 'salary-calculator',
+        name: 'Salary Calculator',
+        icon: 'fas fa-money-check-alt',
+        description: 'Net salary, tax & deductions',
+        fields: [
+          { id: 'gross', label: 'Gross Salary ($)', type: 'number' },
+          { id: 'taxRate', label: 'Tax Rate (%)', type: 'number', value: '20' },
+          { id: 'deductions', label: 'Other Deductions ($)', type: 'number', value: '0' }
+        ],
+        compute: (data) => {
+          const gross = parseFloat(data.gross) || 0;
+          const taxRate = parseFloat(data.taxRate) || 0;
+          const deductions = parseFloat(data.deductions) || 0;
+          const tax = gross * (taxRate / 100);
+          const net = gross - tax - deductions;
+          return `
+            <p><strong>Gross Salary:</strong> $${gross.toFixed(2)}</p>
+            <p><strong>Tax (${taxRate}%):</strong> $${tax.toFixed(2)}</p>
+            <p><strong>Other Deductions:</strong> $${deductions.toFixed(2)}</p>
+            <p><strong>Net Salary:</strong> $${net.toFixed(2)}</p>
+          `;
+        }
+      },
+      {
+        id: 'loan-calculator',
+        name: 'Loan Calculator',
+        icon: 'fas fa-hand-holding-usd',
+        description: 'Monthly payment & total interest',
+        fields: [
+          { id: 'principal', label: 'Loan Amount ($)', type: 'number' },
+          { id: 'rate', label: 'Annual Interest Rate (%)', type: 'number', value: '5' },
+          { id: 'months', label: 'Loan Term (Months)', type: 'number', value: '12' }
+        ],
+        compute: (data) => {
+          const P = parseFloat(data.principal) || 0;
+          const r = (parseFloat(data.rate) || 0) / 100 / 12;
+          const n = parseInt(data.months) || 1;
+          if (!P || !n) return '<p>Error: Invalid input</p>';
+          const M = r ? P * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1) : P / n;
+          const total = M * n;
+          const interest = total - P;
+          return `
+            <p><strong>Monthly Payment:</strong> $${M.toFixed(2)}</p>
+            <p><strong>Total Interest:</strong> $${interest.toFixed(2)}</p>
+            <p><strong>Total Repayment:</strong> $${total.toFixed(2)}</p>
+          `;
+        }
+      },
+      {
+        id: 'roi-calculator',
+        name: 'Marketing ROI',
+        icon: 'fas fa-chart-line',
+        description: 'Measure campaign effectiveness',
+        fields: [
+          { id: 'revenue', label: 'Revenue Generated ($)', type: 'number' },
+          { id: 'cost', label: 'Marketing Cost ($)', type: 'number' }
+        ],
+        compute: (data) => {
+          const rev = parseFloat(data.revenue) || 0;
+          const cost = parseFloat(data.cost) || 0;
+          const profit = rev - cost;
+          const roi = cost ? ((profit / cost) * 100).toFixed(2) : 0;
+          return `
+            <p><strong>Profit:</strong> $${profit.toFixed(2)}</p>
+            <p><strong>ROI:</strong> ${roi}%</p>
+          `;
+        }
+      },
+      {
+        id: 'breakeven-calculator',
+        name: 'Breakeven Calculator',
+        icon: 'fas fa-balance-scale',
+        description: 'Units needed to cover costs',
+        fields: [
+          { id: 'fixed', label: 'Fixed Costs ($)', type: 'number' },
+          { id: 'price', label: 'Selling Price per Unit ($)', type: 'number' },
+          { id: 'variable', label: 'Variable Cost per Unit ($)', type: 'number' }
+        ],
+        compute: (data) => {
+          const F = parseFloat(data.fixed) || 0;
+          const P = parseFloat(data.price) || 0;
+          const V = parseFloat(data.variable) || 0;
+          const margin = P - V;
+          const units = margin ? Math.ceil(F / margin) : 0;
+          return `
+            <p><strong>Breakeven Point:</strong> ${units} units</p>
+            <p><strong>Contribution Margin:</strong> $${margin.toFixed(2)} per unit</p>
+          `;
+        }
+      }
+    ];
+
+    // ======================
+    // DOM FUNCTIONS
+    // ======================
+    function renderToolsGrid() {
+      const grid = document.getElementById('toolsGrid');
+      grid.innerHTML = TOOLS.map(tool => `
+        <div class="tool-card">
+          <div class="tool-icon"><i class="${tool.icon}"></i></div>
+          <h3>${tool.name}</h3>
+          <p>${tool.description}</p>
+          <button class="tool-button" data-tool="${tool.id}">Open Tool</button>
         </div>
-    </footer>
+      `).join('');
+    }
 
-    <script>
-        // DOM Elements
-        const toolButtons = document.querySelectorAll('.tool-button');
-        const toolContainers = document.querySelectorAll('.tool-container');
-        const closeToolButtons = document.querySelectorAll('.close-tool');
-        const exploreToolsButton = document.getElementById('exploreTools');
-        const colorOptions = document.querySelectorAll('.color-option');
-        const savePreferencesButton = document.getElementById('save-preferences');
-        const toolLinks = document.querySelectorAll('.tool-link');
-        
-        // Tool Functions
-        // Profit Calculator
-        const calculateProfitButton = document.getElementById('calculate-profit');
-        if (calculateProfitButton) {
-            calculateProfitButton.addEventListener('click', function() {
-                const revenue = parseFloat(document.getElementById('revenue').value) || 0;
-                const cost = parseFloat(document.getElementById('cost').value) || 0;
-                const expenses = parseFloat(document.getElementById('expenses').value) || 0;
-                
-                const totalCost = cost + expenses;
-                const profit = revenue - totalCost;
-                const profitMargin = (profit / revenue) * 100;
-                const markup = ((revenue - cost) / cost) * 100;
-                
-                const profitResult = document.getElementById('profit-result');
-                const profitOutput = document.getElementById('profit-output');
-                const marginOutput = document.getElementById('margin-output');
-                const markupOutput = document.getElementById('markup-output');
-                
-                const currency = document.getElementById('default-currency') ? document.getElementById('default-currency').value : '$';
-                
-                profitOutput.textContent = `Total Profit: ${currency}${profit.toFixed(2)}`;
-                marginOutput.textContent = `Profit Margin: ${profitMargin.toFixed(2)}%`;
-                markupOutput.textContent = `Markup: ${markup.toFixed(2)}%`;
-                
-                profitResult.classList.add('active');
-            });
+    function renderToolContainer(tool) {
+      let fieldsHTML = tool.fields.map(f => `
+        <div class="form-group">
+          <label for="${f.id}">${f.label}</label>
+          <${f.type === 'textarea' ? 'textarea' : 'input'} 
+            id="${f.id}" 
+            class="tool-input"
+            ${f.type !== 'textarea' ? `type="${f.type}"` : ''}
+            ${f.value ? `value="${f.value}"` : ''}
+            placeholder="${f.label}"
+          >${f.type === 'textarea' ? '' : ''}</${f.type === 'textarea' ? 'textarea' : 'input'}>
+        </div>
+      `).join('');
+
+      const container = document.createElement('div');
+      container.className = 'tool-container';
+      container.id = tool.id;
+      container.innerHTML = `
+        <div class="tool-header">
+          <h2><i class="${tool.icon}"></i> ${tool.name}</h2>
+          <button class="close-tool">&times;</button>
+        </div>
+        <div class="tool-form">${fieldsHTML}</div>
+        <button class="btn-primary tool-calculate" data-tool="${tool.id}">Calculate</button>
+        <div class="result-box" id="result-${tool.id}"></div>
+      `;
+      document.querySelector('.container').appendChild(container);
+    }
+
+    function openTool(toolId) {
+      document.querySelectorAll('.tool-container').forEach(c => c.classList.remove('active'));
+      const toolEl = document.getElementById(toolId);
+      if (!toolEl) {
+        const tool = TOOLS.find(t => t.id === toolId);
+        if (tool) {
+          renderToolContainer(tool);
+          setTimeout(() => openTool(toolId), 10);
         }
-        
-        // Invoice Generator
-        const generateInvoiceButton = document.getElementById('generate-invoice');
-        if (generateInvoiceButton) {
-            generateInvoiceButton.addEventListener('click', function() {
-                const customerName = document.getElementById('customer-name').value || "Customer";
-                const invoiceDate = document.getElementById('invoice-date').value || new Date().toISOString().split('T')[0];
-                const itemsText = document.getElementById('invoice-items').value;
-                const taxRate = parseFloat(document.getElementById('tax-rate').value) || 0;
-                
-                const currency = document.getElementById('default-currency') ? document.getElementById('default-currency').value : '$';
-                
-                // Parse items
-                let items = [];
-                let subtotal = 0;
-                
-                if (itemsText.trim()) {
-                    const lines = itemsText.split('\n');
-                    lines.forEach(line => {
-                        if (line.trim()) {
-                            const parts = line.split(',');
-                            if (parts.length >= 3) {
-                                const itemName = parts[0].trim();
-                                const quantity = parseInt(parts[1].trim()) || 1;
-                                const price = parseFloat(parts[2].trim()) || 0;
-                                const total = quantity * price;
-                                
-                                items.push({
-                                    name: itemName,
-                                    quantity: quantity,
-                                    price: price,
-                                    total: total
-                                });
-                                
-                                subtotal += total;
-                            }
-                        }
-                    });
-                }
-                
-                const taxAmount = subtotal * (taxRate / 100);
-                const totalAmount = subtotal + taxAmount;
-                
-                // Generate invoice HTML
-                let invoiceHTML = `
-                    <div style="border: 1px solid #ddd; padding: 20px; border-radius: 8px; background-color: white;">
-                        <h3 style="color: var(--primary); margin-bottom: 10px;">Invoice</h3>
-                        <p><strong>Customer:</strong> ${customerName}</p>
-                        <p><strong>Date:</strong> ${invoiceDate}</p>
-                        <p><strong>Invoice #:</strong> INV-${Math.floor(1000 + Math.random() * 9000)}</p>
-                        
-                        <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
-                            <thead>
-                                <tr style="background-color: #f2f2f2;">
-                                    <th style="text-align: left; padding: 10px; border: 1px solid #ddd;">Item</th>
-                                    <th style="text-align: center; padding: 10px; border: 1px solid #ddd;">Quantity</th>
-                                    <th style="text-align: right; padding: 10px; border: 1px solid #ddd;">Price</th>
-                                    <th style="text-align: right; padding: 10px; border: 1px solid #ddd;">Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                `;
-                
-                items.forEach(item => {
-                    invoiceHTML += `
-                        <tr>
-                            <td style="padding: 10px; border: 1px solid #ddd;">${item.name}</td>
-                            <td style="text-align: center; padding: 10px; border: 1px solid #ddd;">${item.quantity}</td>
-                            <td style="text-align: right; padding: 10px; border: 1px solid #ddd;">${currency}${item.price.toFixed(2)}</td>
-                            <td style="text-align: right; padding: 10px; border: 1px solid #ddd;">${currency}${item.total.toFixed(2)}</td>
-                        </tr>
-                    `;
-                });
-                
-                invoiceHTML += `
-                            </tbody>
-                        </table>
-                        
-                        <div style="text-align: right;">
-                            <p><strong>Subtotal:</strong> ${currency}${subtotal.toFixed(2)}</p>
-                            <p><strong>Tax (${taxRate}%):</strong> ${currency}${taxAmount.toFixed(2)}</p>
-                            <h3 style="color: var(--primary);">Total: ${currency}${totalAmount.toFixed(2)}</h3>
-                        </div>
-                    </div>
-                `;
-                
-                document.getElementById('invoice-output').innerHTML = invoiceHTML;
-                document.getElementById('invoice-result').classList.add('active');
-            });
+        return;
+      }
+      toolEl.classList.add('active');
+      toolEl.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function closeTool(e) {
+      e.target.closest('.tool-container').classList.remove('active');
+    }
+
+    function calculateTool(toolId) {
+      const tool = TOOLS.find(t => t.id === toolId);
+      const data = {};
+      tool.fields.forEach(f => {
+        const el = document.getElementById(f.id);
+        data[f.id] = el.value;
+      });
+      try {
+        const resultHTML = tool.compute(data);
+        const resultBox = document.getElementById(`result-${toolId}`);
+        resultBox.innerHTML = resultHTML;
+        resultBox.classList.add('active');
+      } catch (err) {
+        alert('Error in calculation: ' + err.message);
+      }
+    }
+
+    // ======================
+    // THEME & INIT
+    // ======================
+    function initTheme() {
+      const saved = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', saved);
+      document.getElementById('themeToggle').addEventListener('click', () => {
+        const current = document.documentElement.getAttribute('data-theme');
+        const newTheme = current === 'light' ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+      });
+    }
+
+    function initEventListeners() {
+      document.addEventListener('click', (e) => {
+        if (e.target.matches('.tool-button')) {
+          openTool(e.target.dataset.tool);
+        } else if (e.target.matches('.close-tool')) {
+          closeTool(e);
+        } else if (e.target.matches('.tool-calculate')) {
+          calculateTool(e.target.dataset.tool);
         }
-        
-        // Salary Calculator
-        const calculateSalaryButton = document.getElementById('calculate-salary');
-        if (calculateSalaryButton) {
-            calculateSalaryButton.addEventListener('click', function() {
-                const grossSalary = parseFloat(document.getElementById('gross-salary').value) || 0;
-                const taxPercentage = parseFloat(document.getElementById('tax-percentage').value) || 0;
-                const otherDeductions = parseFloat(document.getElementById('other-deductions').value) || 0;
-                
-                const taxAmount = grossSalary * (taxPercentage / 100);
-                const netSalary = grossSalary - taxAmount - otherDeductions;
-                
-                const salaryResult = document.getElementById('salary-result');
-                const salaryOutput = document.getElementById('salary-output');
-                const taxOutput = document.getElementById('tax-output');
-                const netSalaryOutput = document.getElementById('net-salary-output');
-                
-                const currency = document.getElementById('default-currency') ? document.getElementById('default-currency').value : '$';
-                
-                salaryOutput.textContent = `Gross Salary: ${currency}${grossSalary.toFixed(2)}`;
-                taxOutput.textContent = `Tax Deduction (${taxPercentage}%): ${currency}${taxAmount.toFixed(2)}`;
-                netSalaryOutput.textContent = `Net Salary: ${currency}${netSalary.toFixed(2)}`;
-                
-                salaryResult.classList.add('active');
-            });
-        }
-        
-        // Show Tool Function
-        function showTool(toolId) {
-            // Hide all tool containers
-            toolContainers.forEach(container => {
-                container.classList.remove('active');
-            });
-            
-            // Show the selected tool
-            const selectedTool = document.getElementById(toolId);
-            if (selectedTool) {
-                selectedTool.classList.add('active');
-                // Scroll to the tool
-                selectedTool.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-        
-        // Event Listeners for Tool Buttons
-        toolButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const toolId = this.getAttribute('data-tool');
-                showTool(toolId);
-            });
-        });
-        
-        // Event Listeners for Close Tool Buttons
-        closeToolButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const toolContainer = this.closest('.tool-container');
-                toolContainer.classList.remove('active');
-            });
-        });
-        
-        // Explore Tools Button
-        if (exploreToolsButton) {
-            exploreToolsButton.addEventListener('click', function() {
-                document.getElementById('tools').scrollIntoView({ behavior: 'smooth' });
-            });
-        }
-        
-        // Color Theme Customization
-        colorOptions.forEach(option => {
-            option.addEventListener('click', function() {
-                // Remove active class from all options
-                colorOptions.forEach(opt => {
-                    opt.classList.remove('active');
-                });
-                
-                // Add active class to clicked option
-                this.classList.add('active');
-                
-                // Get selected color
-                const color = this.getAttribute('data-color');
-                
-                // Update CSS variables based on selected color
-                const root = document.documentElement;
-                
-                switch(color) {
-                    case 'green':
-                        root.style.setProperty('--primary', '#27ae60');
-                        root.style.setProperty('--secondary', '#2ecc71');
-                        break;
-                    case 'purple':
-                        root.style.setProperty('--primary', '#8e44ad');
-                        root.style.setProperty('--secondary', '#9b59b6');
-                        break;
-                    case 'orange':
-                        root.style.setProperty('--primary', '#d35400');
-                        root.style.setProperty('--secondary', '#e67e22');
-                        break;
-                    case 'teal':
-                        root.style.setProperty('--primary', '#16a085');
-                        root.style.setProperty('--secondary', '#1abc9c');
-                        break;
-                    case 'red':
-                        root.style.setProperty('--primary', '#c0392b');
-                        root.style.setProperty('--secondary', '#e74c3c');
-                        break;
-                    default:
-                        root.style.setProperty('--primary', '#2c3e50');
-                        root.style.setProperty('--secondary', '#3498db');
-                }
-            });
-        });
-        
-        // Save Preferences
-        if (savePreferencesButton) {
-            savePreferencesButton.addEventListener('click', function() {
-                const preferencesSaved = document.getElementById('preferences-saved');
-                preferencesSaved.style.display = 'block';
-                
-                // Hide the message after 3 seconds
-                setTimeout(() => {
-                    preferencesSaved.style.display = 'none';
-                }, 3000);
-                
-                // In a real application, you would save preferences to localStorage or a database
-                const currency = document.getElementById('default-currency').value;
-                const activeColorOption = document.querySelector('.color-option.active');
-                const color = activeColorOption ? activeColorOption.getAttribute('data-color') : 'default';
-                
-                localStorage.setItem('businessTools_currency', currency);
-                localStorage.setItem('businessTools_color', color);
-            });
-        }
-        
-        // Load saved preferences on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            // Load currency preference
-            const savedCurrency = localStorage.getItem('businessTools_currency');
-            if (savedCurrency && document.getElementById('default-currency')) {
-                document.getElementById('default-currency').value = savedCurrency;
-            }
-            
-            // Load color preference
-            const savedColor = localStorage.getItem('businessTools_color');
-            if (savedColor) {
-                const colorOption = document.querySelector(`.color-option[data-color="${savedColor}"]`);
-                if (colorOption) {
-                    colorOption.click();
-                }
-            }
-            
-            // Tool links in footer
-            toolLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const toolId = this.getAttribute('data-tool');
-                    showTool(toolId);
-                });
-            });
-            
-            // Set current date for invoice generator
-            const today = new Date().toISOString().split('T')[0];
-            const invoiceDateInput = document.getElementById('invoice-date');
-            if (invoiceDateInput) {
-                invoiceDateInput.value = today;
-            }
-        });
-        
-        // Navigation smooth scrolling
-        document.querySelectorAll('nav a, .footer-column a').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                // Skip if it's a tool link (handled separately)
-                if (this.classList.contains('tool-link')) return;
-                
-                const href = this.getAttribute('href');
-                
-                // Only process internal links
-                if (href.startsWith('#')) {
-                    e.preventDefault();
-                    
-                    const targetId = href.substring(1);
-                    const targetElement = document.getElementById(targetId);
-                    
-                    if (targetElement) {
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                        
-                        // Update active nav link
-                        if (href !== '#') {
-                            document.querySelectorAll('nav a').forEach(link => {
-                                link.classList.remove('active');
-                            });
-                            this.classList.add('active');
-                        }
-                    }
-                }
-            });
-        });
-    </script>
+      });
+    }
+
+    // ======================
+    // PDF GENERATION (BUILT-IN)
+    // ======================
+    function generatePDF() {
+      if (!window.invoiceHTML) return alert('No invoice to download!');
+      const { jsPDF } = window.jspdf || {};
+      if (!jsPDF) {
+        // Fallback: open in new tab
+        const win = window.open('', '_blank');
+        win.document.write(`
+          <html><head><title>Invoice</title></head>
+          <body style="margin:0;padding:20px;background:#f5f7fa;">
+            ${window.invoiceHTML}
+            <script>
+              window.print();
+            </script>
+          </body></html>
+        `);
+        return;
+      }
+      const doc = new jsPDF();
+      doc.html(document.getElementById('invoice-preview'), {
+        callback: function (doc) {
+          doc.save('invoice.pdf');
+        },
+        x: 10,
+        y: 10
+      });
+    }
+
+    // ======================
+    // INIT
+    // ======================
+    document.addEventListener('DOMContentLoaded', () => {
+      renderToolsGrid();
+      initTheme();
+      initEventListeners();
+
+      // Load jsPDF dynamically (optional)
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+      script.onload = () => {
+        window.html2canvas = { skipAsync: true }; // dummy to avoid error
+      };
+      document.head.appendChild(script);
+    });
+  </script>
 </body>
 </html>
