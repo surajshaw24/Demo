@@ -1,1 +1,2204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destination Wedding Photography | Clicker Wallah | Global Wedding Coverage</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;600;700&family=Great+Vibes&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --saffron: #FF9933;
+            --maroon: #800020;
+            --gold: #D4AF37;
+            --cream: #FFF8E7;
+            --dark: #2C1810;
+            --light: #FAF3E0;
+            --teal: #008080;
+            --rose: #E6B8B8;
+            --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.15);
+            --border-radius: 16px;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .section-padding {
+            padding: 120px 0;
+        }
+
+        .text-center { text-align: center; }
+        .text-gold { color: var(--gold); }
+        .text-maroon { color: var(--maroon); }
+        .bg-cream { background-color: var(--cream); }
+        .bg-dark { background-color: var(--dark); color: white; }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            padding: 20px 0;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--gold), var(--saffron));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+        }
+
+        .logo-text {
+            font-family: 'Great Vibes', cursive;
+            font-size: 42px;
+            background: linear-gradient(45deg, var(--maroon), var(--gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 50px;
+            list-style: none;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 16px;
+            position: relative;
+            padding: 10px 0;
+            transition: var(--transition);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--gold), var(--maroon));
+            transition: width 0.4s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--maroon);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            background: linear-gradient(135deg, var(--maroon), #600018);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-cta:hover {
+            background: transparent;
+            color: var(--maroon);
+            border-color: var(--maroon);
+            transform: translateY(-3px);
+        }
+
+        .mobile-toggle {
+            display: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: var(--dark);
+        }
+
+        /* Hero Section - Destination */
+        .destination-hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(rgba(44, 24, 16, 0.85), rgba(44, 24, 16, 0.9)), 
+                        url('https://images.unsplash.com/photo-1520854221256-17463ccb8b9d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80') center/cover no-repeat fixed;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--gold);
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-title {
+            font-size: 5rem;
+            margin-bottom: 25px;
+            line-height: 1.1;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-title span {
+            background: linear-gradient(45deg, var(--gold), var(--saffron));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: block;
+            font-family: 'Great Vibes', cursive;
+            font-size: 5.5rem;
+            margin-top: -15px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.8rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 40px;
+            font-weight: 300;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--gold);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            letter-spacing: 2px;
+            opacity: 0.9;
+        }
+
+        /* Why Choose Us */
+        .why-choose-section {
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3.8rem;
+            margin-bottom: 25px;
+            color: var(--maroon);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold), var(--maroon));
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.3rem;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto 60px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-15px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--cream), white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: var(--maroon);
+            margin: 0 auto 25px;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover .feature-icon {
+            background: linear-gradient(135deg, var(--gold), var(--saffron));
+            color: white;
+            transform: scale(1.1) rotate(10deg);
+        }
+
+        /* Destinations Map */
+        .destinations-map {
+            background: linear-gradient(135deg, var(--cream), white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .map-container {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 600px;
+            background: #f0f0f0;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        .map-point {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: var(--gold);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .map-point:hover {
+            transform: scale(1.5);
+            background: var(--maroon);
+            z-index: 10;
+        }
+
+        .map-tooltip {
+            position: absolute;
+            background: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            width: 300px;
+            display: none;
+            z-index: 100;
+        }
+
+        .map-tooltip.active {
+            display: block;
+        }
+
+        /* Destination Grid */
+        .destination-grid-section {
+            position: relative;
+        }
+
+        .destination-categories {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 12px 30px;
+            background: white;
+            border: 2px solid var(--gold);
+            border-radius: 50px;
+            color: var(--dark);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .category-btn.active,
+        .category-btn:hover {
+            background: var(--gold);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .destination-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .destination-card {
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .destination-card:hover {
+            transform: translateY(-15px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .destination-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--maroon);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            z-index: 2;
+        }
+
+        .destination-image {
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .destination-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+
+        .destination-card:hover .destination-image img {
+            transform: scale(1.15);
+        }
+
+        .destination-content {
+            padding: 30px;
+            position: relative;
+        }
+
+        .destination-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--cream), white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: var(--maroon);
+            position: absolute;
+            top: -30px;
+            left: 30px;
+            box-shadow: var(--shadow-sm);
+            border: 3px solid white;
+        }
+
+        .destination-content h3 {
+            margin-top: 15px;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        .destination-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .destination-feature {
+            background: var(--cream);
+            color: var(--maroon);
+            padding: 6px 15px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Services Section */
+        .services-section {
+            background: var(--cream);
+        }
+
+        .services-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .service-tab {
+            padding: 15px 30px;
+            background: white;
+            border: none;
+            border-radius: 50px;
+            color: var(--dark);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .service-tab.active,
+        .service-tab:hover {
+            background: linear-gradient(135deg, var(--gold), var(--saffron));
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .services-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .service-content {
+            display: none;
+        }
+
+        .service-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .service-details {
+            background: white;
+            padding: 40px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+        }
+
+        .service-details h3 {
+            color: var(--maroon);
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .service-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .service-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .service-item i {
+            color: var(--gold);
+            font-size: 1.2rem;
+            margin-top: 5px;
+        }
+
+        /* Packages Section */
+        .packages-section {
+            position: relative;
+        }
+
+        .packages-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .package-tab {
+            padding: 15px 30px;
+            background: white;
+            border: 2px solid var(--gold);
+            border-radius: 50px;
+            color: var(--dark);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .package-tab.active,
+        .package-tab:hover {
+            background: var(--maroon);
+            color: white;
+            border-color: var(--maroon);
+            transform: translateY(-3px);
+        }
+
+        .packages-content {
+            display: none;
+        }
+
+        .packages-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .package-comparison {
+            overflow-x: auto;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            min-width: 800px;
+        }
+
+        .comparison-table th {
+            background: linear-gradient(135deg, var(--maroon), #600018);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        .comparison-table td {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comparison-table .feature-name {
+            text-align: left;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .comparison-table .check {
+            color: var(--gold);
+            font-size: 1.5rem;
+        }
+
+        .comparison-table .cross {
+            color: #ccc;
+            font-size: 1.5rem;
+        }
+
+        .package-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--gold);
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: var(--transition);
+        }
+
+        .package-btn:hover {
+            background: var(--maroon);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* Process Timeline */
+        .process-section {
+            background: linear-gradient(135deg, var(--cream), white);
+        }
+
+        .process-timeline {
+            max-width: 1000px;
+            margin: 60px auto 0;
+            position: relative;
+        }
+
+        .process-timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--gold), var(--maroon));
+            transform: translateX(-50%);
+        }
+
+        .process-step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .process-step:nth-child(odd) {
+            flex-direction: row-reverse;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border: 4px solid var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--maroon);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+
+        .step-content {
+            width: 45%;
+            padding: 30px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .step-icon {
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        /* Testimonials */
+        .testimonials-section {
+            position: relative;
+        }
+
+        .testimonials-slider {
+            max-width: 800px;
+            margin: 60px auto 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonials-track {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .testimonial-card {
+            min-width: 100%;
+            background: white;
+            padding: 40px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+        }
+
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .testimonial-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .testimonial-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .testimonial-rating {
+            color: var(--gold);
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .slider-nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .slider-btn {
+            width: 50px;
+            height: 50px;
+            background: var(--gold);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .slider-btn:hover {
+            background: var(--maroon);
+            transform: scale(1.1);
+        }
+
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            background: #ddd;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .slider-dot.active {
+            background: var(--gold);
+            transform: scale(1.2);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--maroon), #600018);
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1520854221256-17463ccb8b9d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80') center/cover;
+            opacity: 0.1;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-title {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+        }
+
+        .cta-subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            padding: 18px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .cta-btn.primary {
+            background: var(--gold);
+            color: var(--dark);
+            border: 2px solid var(--gold);
+        }
+
+        .cta-btn.secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .cta-btn.primary:hover {
+            background: transparent;
+            color: var(--gold);
+        }
+
+        .cta-btn.secondary:hover {
+            background: white;
+            color: var(--maroon);
+        }
+
+        /* WhatsApp Float */
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 25px;
+            right: 25px;
+            background-color: #25D366;
+            color: white;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-float:hover {
+            background-color: #075E54;
+            transform: scale(1.1);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 80px 0 40px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 60px;
+            margin-bottom: 60px;
+        }
+
+        .footer-logo {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.5rem;
+            background: linear-gradient(45deg, var(--gold), var(--saffron));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .footer-heading {
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            color: var(--gold);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-link {
+            color: #ccc;
+            text-decoration: none;
+            margin-bottom: 15px;
+            display: block;
+            transition: var(--transition);
+        }
+
+        .footer-link:hover {
+            color: var(--gold);
+            transform: translateX(10px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .social-link:hover {
+            background: var(--gold);
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .container { padding: 0 30px; }
+            .hero-title { font-size: 4rem; }
+            .hero-title span { font-size: 4.5rem; }
+        }
+
+        @media (max-width: 992px) {
+            .hero-title { font-size: 3.5rem; }
+            .hero-title span { font-size: 4rem; }
+            .process-timeline::before { left: 30px; }
+            .process-step { flex-direction: row !important; }
+            .step-number { left: 30px; }
+            .step-content { width: calc(100% - 90px); margin-left: 90px; }
+            .map-container { height: 400px; }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-toggle { display: block; }
+            .nav-menu {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                align-items: center;
+                padding: 40px 0;
+                transition: left 0.5s ease;
+                box-shadow: var(--shadow-lg);
+                gap: 30px;
+            }
+            .nav-menu.active { left: 0; }
+            .hero-title { font-size: 2.8rem; }
+            .hero-title span { font-size: 3.2rem; }
+            .section-title { font-size: 2.5rem; }
+            .section-padding { padding: 80px 0; }
+            .destination-grid { grid-template-columns: 1fr; }
+            .features-grid { grid-template-columns: 1fr; }
+            .service-list { grid-template-columns: 1fr; }
+            .hero-stats { gap: 30px; }
+            .stat-number { font-size: 2.5rem; }
+        }
+
+        @media (max-width: 576px) {
+            .container { padding: 0 20px; }
+            .hero-title { font-size: 2.5rem; }
+            .hero-title span { font-size: 3rem; }
+            .destination-categories { flex-direction: column; align-items: center; }
+            .services-tabs { flex-direction: column; }
+            .packages-tabs { flex-direction: column; }
+            .cta-buttons { flex-direction: column; }
+            .step-content { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo-wrapper">
+                <div class="logo-icon">
+                    <i class="fas fa-camera"></i>
+                </div>
+                <div class="logo-text">Clicker Wallah</div>
+            </a>
+            
+            <div class="mobile-toggle" id="mobileToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#" class="nav-link">Home</a></li>
+                <li><a href="#why-choose" class="nav-link">Why Choose Us</a></li>
+                <li><a href="#destinations" class="nav-link">Destinations</a></li>
+                <li><a href="#services" class="nav-link">Services</a></li>
+                <li><a href="#packages" class="nav-link">Packages</a></li>
+                <li><a href="#process" class="nav-link">Process</a></li>
+                <li><a href="#testimonials" class="nav-link">Testimonials</a></li>
+                <li><a href="#contact" class="nav-cta">Get Quote</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="destination-hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-globe"></i> GLOBAL DESTINATION WEDDINGS
+                </div>
+                <h1 class="hero-title">Destination Weddings<br><span>Across The Globe</span></h1>
+                <p class="hero-subtitle">From the palaces of Rajasthan to the beaches of Bali, we capture your love story wherever your heart desires. We travel, so you don't have to worry about memories.</p>
+                
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">25+</div>
+                        <div class="stat-label">COUNTRIES</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">300+</div>
+                        <div class="stat-label">DESTINATION WEDDINGS</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">48hr</div>
+                        <div class="stat-label">TEASER DELIVERY</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">SUPPORT</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="section-padding why-choose-section" id="why-choose">
+        <div class="container">
+            <h2 class="section-title">Why Choose Clicker Wallah?</h2>
+            <p class="section-subtitle">We're not just photographers; we're your travel companions who happen to be excellent at capturing memories</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-passport"></i>
+                    </div>
+                    <h3>Travel Experts</h3>
+                    <p>We handle all travel logistics - flights, accommodation, local permits. You focus on celebrations, we handle the rest.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <h3>Local Expertise</h3>
+                    <p>Local guides, translators, and cultural experts ensure we capture authentic moments while respecting traditions.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-suitcase-rolling"></i>
+                    </div>
+                    <h3>Equipment Ready</h3>
+                    <p>Dual camera systems, drone coverage, lighting equipment - all travel-proofed and insured for international travel.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>Flexible Scheduling</h3>
+                    <p>Multi-day coverage, pre-wedding events, and extended hours to capture every moment of your destination celebration.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-tree"></i>
+                    </div>
+                    <h3>Sustainable Practices</h3>
+                    <p>Carbon offset for travel, support local communities, and eco-friendly packaging for your albums.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3>Dedicated Coordinator</h3>
+                    <p>24/7 dedicated coordinator for international clients across all time zones for seamless communication.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Destinations Map -->
+    <section class="section-padding destinations-map" id="destinations">
+        <div class="container">
+            <h2 class="section-title">Our Global Footprint</h2>
+            <p class="section-subtitle">We've captured love stories in 25+ countries across 6 continents</p>
+            
+            <div class="map-container" id="worldMap">
+                <!-- Interactive map will be created with JavaScript -->
+                <div class="map-point" style="top: 30%; left: 25%;" data-destination="goa">
+                    <span>GOA</span>
+                </div>
+                <div class="map-point" style="top: 35%; left: 32%;" data-destination="udaipur">
+                    <span>UDAIPUR</span>
+                </div>
+                <div class="map-point" style="top: 28%; left: 38%;" data-destination="dubai">
+                    <span>DUBAI</span>
+                </div>
+                <div class="map-point" style="top: 25%; left: 50%;" data-destination="bali">
+                    <span>BALI</span>
+                </div>
+                <div class="map-point" style="top: 40%; left: 48%;" data-destination="mauritius">
+                    <span>MAURITIUS</span>
+                </div>
+                <div class="map-point" style="top: 35%; left: 60%;" data-destination="thailand">
+                    <span>THAILAND</span>
+                </div>
+                <div class="map-point" style="top: 45%; left: 55%;" data-destination="maldives">
+                    <span>MALDIVES</span>
+                </div>
+                <div class="map-point" style="top: 30%; left: 70%;" data-destination="italy">
+                    <span>ITALY</span>
+                </div>
+                <div class="map-point" style="top: 40%; left: 75%;" data-destination="greece">
+                    <span>GREECE</span>
+                </div>
+                
+                <div class="map-tooltip" id="mapTooltip">
+                    <!-- Tooltip content will be loaded dynamically -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Destination Grid -->
+    <section class="section-padding destination-grid-section">
+        <div class="container">
+            <h2 class="section-title">Featured Destinations</h2>
+            <p class="section-subtitle">From royal palaces to tropical beaches, choose your dream wedding backdrop</p>
+            
+            <div class="destination-categories">
+                <button class="category-btn active" data-category="all">All Destinations</button>
+                <button class="category-btn" data-category="india">India</button>
+                <button class="category-btn" data-category="asia">Asia</button>
+                <button class="category-btn" data-category="europe">Europe</button>
+                <button class="category-btn" data-category="tropical">Tropical</button>
+                <button class="category-btn" data-category="mountain">Mountain</button>
+            </div>
+            
+            <div class="destination-grid" id="destinationGrid">
+                <!-- Destination cards will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="section-padding services-section" id="services">
+        <div class="container">
+            <h2 class="section-title">Complete Destination Services</h2>
+            <p class="section-subtitle">End-to-end destination wedding photography services for stress-free celebrations</p>
+            
+            <div class="services-tabs">
+                <button class="service-tab active" data-service="photography">Photography</button>
+                <button class="service-tab" data-service="videography">Cinematography</button>
+                <button class="service-tab" data-service="planning">Travel Planning</button>
+                <button class="service-tab" data-service="album">Album Design</button>
+            </div>
+            
+            <div class="services-content">
+                <div class="service-content active" id="photography">
+                    <div class="service-details">
+                        <h3>Destination Wedding Photography</h3>
+                        <p>Comprehensive photography coverage that captures not just your wedding, but the entire destination experience - from pre-wedding adventures to post-wedding relaxation.</p>
+                        
+                        <div class="service-list">
+                            <div class="service-item">
+                                <i class="fas fa-check"></i>
+                                <div>
+                                    <h4>Multi-Day Coverage</h4>
+                                    <p>Welcome parties, mehndi, sangeet, wedding, and reception coverage</p>
+                                </div>
+                            </div>
+                            <div class="service-item">
+                                <i class="fas fa-check"></i>
+                                <div>
+                                    <h4>Pre-Wedding Adventures</h4>
+                                    <p>Location-specific pre-wedding shoots at iconic local spots</p>
+                                </div>
+                            </div>
+                            <div class="service-item">
+                                <i class="fas fa-check"></i>
+                                <div>
+                                    <h4>Drone Photography</h4>
+                                    <p>Aerial shots of your venue and destination landscapes</p>
+                                </div>
+                            </div>
+                            <div class="service-item">
+                                <i class="fas fa-check"></i>
+                                <div>
+                                    <h4>Cultural Documentation</h4>
+                                    <p>Authentic capture of local traditions and customs</p>
+                                </div>
+                            </div>
+                            <div class="service-item">
+                                <i class="fas fa-check"></i>
+                                <div>
+                                    <h4>Guest Candid Coverage</h4>
+                                    <p>Natural moments of your guests enjoying the destination</p>
+                                </div>
+                            </div>
+                            <div class="service-item">
+                                <i class="fas fa-check"></i>
+                                <div>
+                                    <h4>48-Hour Teaser</h4>
+                                    <p>Quick turnaround for social media sharing</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="service-content" id="videography">
+                    <div class="service-details">
+                        <h3>Destination Wedding Cinematography</h3>
+                        <p>Cinematic storytelling that transports viewers to your wedding destination through film.</p>
+                        <!-- Similar structure for other services -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Packages Section -->
+    <section class="section-padding packages-section" id="packages">
+        <div class="container">
+            <h2 class="section-title">Destination Wedding Packages</h2>
+            <p class="section-subtitle">Customizable packages for every destination and budget</p>
+            
+            <div class="packages-tabs">
+                <button class="package-tab active" data-region="asia">Asia Packages</button>
+                <button class="package-tab" data-region="europe">Europe Packages</button>
+                <button class="package-tab" data-region="tropical">Tropical Packages</button>
+                <button class="package-tab" data-region="custom">Custom Quote</button>
+            </div>
+            
+            <div class="packages-content active" id="asia">
+                <div class="package-comparison">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Essentials Asia</th>
+                                <th>Premium Asia</th>
+                                <th>Luxury Asia</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="feature-name">Coverage Days</td>
+                                <td>2 Days</td>
+                                <td>3 Days</td>
+                                <td>4+ Days</td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name">Photographers</td>
+                                <td>1 Photographer</td>
+                                <td>2 Photographers</td>
+                                <td>2 Photographers + Assistant</td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name">Cinematography</td>
+                                <td><i class="fas fa-times cross"></i></td>
+                                <td><i class="fas fa-check check"></i> 1 Videographer</td>
+                                <td><i class="fas fa-check check"></i> 2 Videographers</td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name">Drone Coverage</td>
+                                <td><i class="fas fa-times cross"></i></td>
+                                <td><i class="fas fa-check check"></i></td>
+                                <td><i class="fas fa-check check"></i> Extended</td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name">Pre-Wedding Shoot</td>
+                                <td><i class="fas fa-times cross"></i></td>
+                                <td><i class="fas fa-check check"></i> 1 Location</td>
+                                <td><i class="fas fa-check check"></i> 2 Locations</td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name">Travel Included</td>
+                                <td><i class="fas fa-check check"></i> Domestic</td>
+                                <td><i class="fas fa-check check"></i> International</td>
+                                <td><i class="fas fa-check check"></i> International +</td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name">Starting Price</td>
+                                <td><strong>₹2,50,000</strong></td>
+                                <td><strong>₹4,50,000</strong></td>
+                                <td><strong>₹7,50,000</strong></td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name"></td>
+                                <td><a href="#" class="package-btn">Get Quote</a></td>
+                                <td><a href="#" class="package-btn">Get Quote</a></td>
+                                <td><a href="#" class="package-btn">Get Quote</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="packages-content" id="europe">
+                <!-- Europe packages content -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="section-padding process-section" id="process">
+        <div class="container">
+            <h2 class="section-title">Our Destination Wedding Process</h2>
+            <p class="section-subtitle">A seamless journey from inquiry to album delivery, no matter where in the world</p>
+            
+            <div class="process-timeline">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <h3>Virtual Consultation</h3>
+                        <p>We connect via video call to understand your vision, destination choice, and wedding timeline.</p>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-icon">
+                            <i class="fas fa-file-contract"></i>
+                        </div>
+                        <h3>Custom Proposal</h3>
+                        <p>We create a detailed proposal with package options, travel logistics, and pricing.</p>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-icon">
+                            <i class="fas fa-plane"></i>
+                        </div>
+                        <h3>Travel Planning</h3>
+                        <p>We handle all travel arrangements - flights, visas, accommodation, and local transport.</p>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <div class="step-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <h3>Destination Scouting</h3>
+                        <p>We arrive 2-3 days early to scout locations, check lighting, and finalize shot lists.</p>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <div class="step-icon">
+                            <i class="fas fa-magic"></i>
+                        </div>
+                        <h3>Capture & Create</h3>
+                        <p>We capture your celebration and begin editing while traveling back.</p>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">6</div>
+                    <div class="step-content">
+                        <div class="step-icon">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <h3>Album Delivery</h3>
+                        <p>Receive your stunning albums and digital gallery within the promised timeframe.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section-padding testimonials-section" id="testimonials">
+        <div class="container">
+            <h2 class="section-title">Destination Wedding Stories</h2>
+            <p class="section-subtitle">Hear from couples who celebrated their weddings across the globe with us</p>
+            
+            <div class="testimonials-slider">
+                <div class="testimonials-track" id="testimonialsTrack">
+                    <!-- Testimonials will be loaded dynamically -->
+                </div>
+                
+                <div class="slider-nav">
+                    <button class="slider-btn" id="prevBtn">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="slider-btn" id="nextBtn">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                
+                <div class="slider-dots" id="sliderDots">
+                    <!-- Dots will be created dynamically -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section-padding cta-section" id="contact">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">Plan Your Destination Wedding</h2>
+                <p class="cta-subtitle">Let's discuss your dream destination wedding. Get a custom quote within 24 hours.</p>
+                
+                <div class="cta-buttons">
+                    <a href="https://wa.me/918448553361?text=Hi%20Clicker%20Wallah!%20I'd%20like%20a%20quote%20for%20destination%20wedding%20photography." class="cta-btn primary">
+                        <i class="fab fa-whatsapp"></i> Get Instant Quote
+                    </a>
+                    <a href="#packages" class="cta-btn secondary">
+                        <i class="fas fa-rupee-sign"></i> View Packages
+                    </a>
+                </div>
+                
+                <div style="margin-top: 40px; font-size: 0.9rem; opacity: 0.8;">
+                    <p><i class="fas fa-check"></i> Free destination consultation</p>
+                    <p><i class="fas fa-check"></i> Travel cost transparency</p>
+                    <p><i class="fas fa-check"></i> No hidden charges</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/918448553361?text=Hi%20Clicker%20Wallah!%20I'm%20interested%20in%20destination%20wedding%20photography." class="whatsapp-float">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <div class="footer-logo">Clicker Wallah</div>
+                    <p>Global destination wedding photography with Indian soul. We travel the world to capture your love story.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-pinterest-p"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="footer-heading">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home" class="footer-link">Home</a></li>
+                        <li><a href="#why-choose" class="footer-link">Why Choose Us</a></li>
+                        <li><a href="#destinations" class="footer-link">Destinations</a></li>
+                        <li><a href="#services" class="footer-link">Services</a></li>
+                        <li><a href="#packages" class="footer-link">Packages</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="footer-heading">Top Destinations</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" class="footer-link">Goa, India</a></li>
+                        <li><a href="#" class="footer-link">Udaipur, India</a></li>
+                        <li><a href="#" class="footer-link">Bali, Indonesia</a></li>
+                        <li><a href="#" class="footer-link">Maldives</a></li>
+                        <li><a href="#" class="footer-link">Thailand</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="footer-heading">Contact Us</h4>
+                    <ul class="footer-links">
+                        <li><a href="tel:+918448553361" class="footer-link"><i class="fas fa-phone"></i> +91 84485 53361</a></li>
+                        <li><a href="mailto:destinations@clickerwallah.com" class="footer-link"><i class="fas fa-envelope"></i> destinations@clickerwallah.com</a></li>
+                        <li><a href="#" class="footer-link"><i class="fas fa-map-marker-alt"></i> Travel Worldwide</a></li>
+                        <li><a href="#" class="footer-link"><i class="fas fa-clock"></i> 24/7 Support</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>© 2024 Clicker Wallah. All rights reserved. | Passport-ready since 2012</p>
+                <p style="margin-top: 10px; font-size: 0.8rem;">
+                    <i class="fas fa-plane"></i> Currently available for bookings in: India • Bali • Thailand • Maldives • Dubai • Europe
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Navigation
+        const mobileToggle = document.getElementById('mobileToggle');
+        const navMenu = document.getElementById('navMenu');
+        
+        mobileToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            mobileToggle.innerHTML = navMenu.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+        
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.style.padding = '15px 0';
+                navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+            } else {
+                navbar.style.padding = '20px 0';
+                navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+            }
+        });
+        
+        // Interactive Map
+        const mapPoints = document.querySelectorAll('.map-point');
+        const mapTooltip = document.getElementById('mapTooltip');
+        
+        // Destination data
+        const destinations = {
+            goa: {
+                name: 'Goa, India',
+                image: 'https://images.unsplash.com/photo-1548013146-72479768bada?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                description: 'Tropical beaches, Portuguese architecture, and vibrant nightlife. Perfect for beach weddings.',
+                weddings: '125+ Weddings',
+                season: 'Nov-Mar',
+                category: 'india tropical'
+            },
+            udaipur: {
+                name: 'Udaipur, India',
+                image: 'https://images.unsplash.com/photo-1524307875964-4c93d5c57288?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                description: 'The Venice of the East with majestic palaces and serene lakes.',
+                weddings: '95+ Weddings',
+                season: 'Oct-Mar',
+                category: 'india heritage'
+            },
+            dubai: {
+                name: 'Dubai, UAE',
+                image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                description: 'Modern luxury meets desert landscapes. Iconic skyscrapers and desert safaris.',
+                weddings: '80+ Weddings',
+                season: 'Year-round',
+                category: 'asia luxury'
+            },
+            bali: {
+                name: 'Bali, Indonesia',
+                image: 'https://images.unsplash.com/photo-1537953773345-d172ccf13cf1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                description: 'Tropical paradise with ancient temples and lush rice terraces.',
+                weddings: '150+ Weddings',
+                season: 'Apr-Oct',
+                category: 'asia tropical'
+            },
+            mauritius: {
+                name: 'Mauritius',
+                image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                description: 'Crystal clear waters, white sand beaches, and multicultural heritage.',
+                weddings: '60+ Weddings',
+                season: 'May-Dec',
+                category: 'tropical beach'
+            },
+            thailand: {
+                name: 'Thailand',
+                image: 'https://images.unsplash.com/photo-1528181304800-259b08848526?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                description: 'Exotic beaches, ancient temples, and vibrant culture.',
+                weddings: '110+ Weddings',
+                season: 'Nov-Apr',
+                category: 'asia tropical'
+            },
+            maldives: {
+                name: 'Maldives',
+                image: 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                description: 'Overwater villas, turquoise lagoons, and pristine coral reefs.',
+                weddings: '75+ Weddings',
+                season: 'Nov-Apr',
+                category: 'tropical luxury'
+            },
+            italy: {
+                name: 'Italy',
+                image: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                description: 'Historic architecture, rolling vineyards, and Mediterranean charm.',
+                weddings: '45+ Weddings',
+                season: 'May-Oct',
+                category: 'europe heritage'
+            },
+            greece: {
+                name: 'Greece',
+                image: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                description: 'Whitewashed buildings, azure seas, and ancient ruins.',
+                weddings: '55+ Weddings',
+                season: 'Apr-Oct',
+                category: 'europe beach'
+            }
+        };
+        
+        // Map point interactions
+        mapPoints.forEach(point => {
+            point.addEventListener('mouseenter', (e) => {
+                const destination = e.target.dataset.destination;
+                const data = destinations[destination];
+                
+                if (data) {
+                    const rect = e.target.getBoundingClientRect();
+                    const mapRect = document.getElementById('worldMap').getBoundingClientRect();
+                    
+                    mapTooltip.innerHTML = `
+                        <div style="display: flex; gap: 15px; align-items: center;">
+                            <div style="width: 80px; height: 80px; border-radius: 8px; overflow: hidden;">
+                                <img src="${data.image}" alt="${data.name}" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <div>
+                                <h4 style="margin: 0 0 5px 0; color: var(--maroon);">${data.name}</h4>
+                                <p style="font-size: 14px; color: #666; margin-bottom: 10px;">${data.description}</p>
+                                <div style="display: flex; gap: 15px; font-size: 12px;">
+                                    <span style="color: var(--gold);"><i class="fas fa-heart"></i> ${data.weddings}</span>
+                                    <span style="color: var(--teal);"><i class="fas fa-calendar"></i> ${data.season}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Position tooltip
+                    const tooltipWidth = 350;
+                    const tooltipHeight = 120;
+                    let left = rect.left - mapRect.left + (rect.width / 2) - (tooltipWidth / 2);
+                    let top = rect.top - mapRect.top - tooltipHeight - 10;
+                    
+                    // Adjust if tooltip goes outside map
+                    if (left < 10) left = 10;
+                    if (left + tooltipWidth > mapRect.width) left = mapRect.width - tooltipWidth - 10;
+                    if (top < 10) top = rect.bottom - mapRect.top + 10;
+                    
+                    mapTooltip.style.left = left + 'px';
+                    mapTooltip.style.top = top + 'px';
+                    mapTooltip.classList.add('active');
+                }
+            });
+            
+            point.addEventListener('mouseleave', () => {
+                mapTooltip.classList.remove('active');
+            });
+        });
+        
+        // Destination Grid Filtering
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const destinationGrid = document.getElementById('destinationGrid');
+        
+        // Destination cards data
+        const destinationCards = [
+            {
+                image: 'https://images.unsplash.com/photo-1548013146-72479768bada?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                name: 'Goa, India',
+                description: 'Tropical beaches and Portuguese heritage for vibrant beach weddings.',
+                category: 'india tropical',
+                features: ['Beach', 'Heritage', 'Vibrant'],
+                badge: 'MOST POPULAR'
+            },
+            {
+                image: 'https://images.unsplash.com/photo-1524307875964-4c93d5c57288?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                name: 'Udaipur, India',
+                description: 'Royal palaces and serene lakes create magical regal backdrops.',
+                category: 'india heritage',
+                features: ['Palace', 'Lake', 'Royal'],
+                badge: 'HERITAGE'
+            },
+            {
+                image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                name: 'Dubai, UAE',
+                description: 'Modern luxury meets desert landscapes and iconic architecture.',
+                category: 'asia luxury',
+                features: ['Luxury', 'Desert', 'Modern'],
+                badge: 'LUXURY'
+            },
+            {
+                image: 'https://images.unsplash.com/photo-1537953773345-d172ccf13cf1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                name: 'Bali, Indonesia',
+                description: 'Ancient temples, lush rice terraces, and tropical beaches.',
+                category: 'asia tropical',
+                features: ['Temple', 'Rice Terraces', 'Beach'],
+                badge: 'TRENDING'
+            },
+            {
+                image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                name: 'Mauritius',
+                description: 'Crystal clear waters and multicultural island paradise.',
+                category: 'tropical beach',
+                features: ['Island', 'Beach', 'Multicultural'],
+                badge: 'EXOTIC'
+            },
+            {
+                image: 'https://images.unsplash.com/photo-1528181304800-259b08848526?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                name: 'Phuket, Thailand',
+                description: 'Exotic beaches, vibrant culture, and luxurious resorts.',
+                category: 'asia tropical',
+                features: ['Beach', 'Luxury', 'Culture'],
+                badge: null
+            },
+            {
+                image: 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                name: 'Maldives',
+                description: 'Overwater villas and pristine coral reefs for intimate weddings.',
+                category: 'tropical luxury',
+                features: ['Overwater', 'Luxury', 'Private'],
+                badge: 'ROMANTIC'
+            },
+            {
+                image: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                name: 'Tuscany, Italy',
+                description: 'Rolling vineyards and historic villas in the Italian countryside.',
+                category: 'europe heritage',
+                features: ['Vineyard', 'Historic', 'Countryside'],
+                badge: null
+            },
+            {
+                image: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                name: 'Santorini, Greece',
+                description: 'Whitewashed buildings against azure seas and stunning sunsets.',
+                category: 'europe beach',
+                features: ['Cliffside', 'Beach', 'Sunset'],
+                badge: 'ICONIC'
+            },
+            {
+                image: 'https://images.unsplash.com/photo-1520854221256-17463ccb8b9d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                name: 'Swiss Alps',
+                description: 'Majestic mountains and alpine meadows for fairy-tale weddings.',
+                category: 'mountain europe',
+                features: ['Mountains', 'Alpine', 'Fairytale'],
+                badge: 'MOUNTAIN'
+            },
+            {
+                image: 'https://images.unsplash.com/photo-1548013146-72479768bada?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                name: 'Kerala, India',
+                description: 'Backwaters, ayurvedic traditions, and lush green landscapes.',
+                category: 'india tropical',
+                features: ['Backwaters', 'Ayurvedic', 'Green'],
+                badge: 'CULTURAL'
+            },
+            {
+                image: 'https://images.unsplash.com/photo-1516496636080-14fb876e029d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                name: 'Jaipur, India',
+                description: 'The Pink City with majestic forts and vibrant bazaars.',
+                category: 'india heritage',
+                features: ['Forts', 'Royal', 'Colorful'],
+                badge: 'ROYAL'
+            }
+        ];
+        
+        // Load destination cards
+        function loadDestinationCards(category = 'all') {
+            destinationGrid.innerHTML = '';
+            
+            const filteredCards = category === 'all' 
+                ? destinationCards 
+                : destinationCards.filter(card => card.category.includes(category));
+            
+            filteredCards.forEach(card => {
+                const destinationCard = document.createElement('div');
+                destinationCard.className = 'destination-card';
+                destinationCard.innerHTML = `
+                    ${card.badge ? `<div class="destination-badge">${card.badge}</div>` : ''}
+                    <div class="destination-image">
+                        <img src="${card.image}" alt="${card.name}">
+                    </div>
+                    <div class="destination-content">
+                        <div class="destination-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3>${card.name}</h3>
+                        <p>${card.description}</p>
+                        <div class="destination-features">
+                            ${card.features.map(feature => `<span class="destination-feature">${feature}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                destinationGrid.appendChild(destinationCard);
+            });
+        }
+        
+        // Initialize destination grid
+        loadDestinationCards();
+        
+        // Filter button clicks
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Update active button
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                // Filter destinations
+                const category = button.dataset.category;
+                loadDestinationCards(category);
+            });
+        });
+        
+        // Services Tabs
+        const serviceTabs = document.querySelectorAll('.service-tab');
+        const serviceContents = document.querySelectorAll('.service-content');
+        
+        serviceTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Update active tab
+                serviceTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Show corresponding content
+                const service = tab.dataset.service;
+                serviceContents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.id === service) {
+                        content.classList.add('active');
+                    }
+                });
+            });
+        });
+        
+        // Packages Tabs
+        const packageTabs = document.querySelectorAll('.package-tab');
+        const packagesContents = document.querySelectorAll('.packages-content');
+        
+        packageTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Update active tab
+                packageTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Show corresponding content
+                const region = tab.dataset.region;
+                packagesContents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.id === region) {
+                        content.classList.add('active');
+                    }
+                });
+            });
+        });
+        
+        // Testimonials Slider
+        const testimonialsTrack = document.getElementById('testimonialsTrack');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const sliderDots = document.getElementById('sliderDots');
+        
+        const testimonials = [
+            {
+                name: 'Priya & Raj',
+                location: 'Bali, Indonesia',
+                avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80',
+                text: 'Clicker Wallah made our Bali wedding magical! They understood the local culture and captured moments we didn\'t even notice. The 48-hour teaser had all our guests in tears.',
+                rating: 5
+            },
+            {
+                name: 'Ananya & Vivek',
+                location: 'Udaipur, India',
+                avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80',
+                text: 'Our royal wedding in Udaipur was perfectly documented. The team handled everything - from palace permits to drone shots over Lake Pichola. Simply spectacular!',
+                rating: 5
+            },
+            {
+                name: 'Neha & Arjun',
+                location: 'Maldives',
+                avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80',
+                text: 'Intimate wedding in the Maldives made perfect by Clicker Wallah. They captured the turquoise waters and our private moments beautifully. Worth every penny!',
+                rating: 5
+            },
+            {
+                name: 'Riya & Karan',
+                location: 'Goa, India',
+                avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80',
+                text: 'Beach wedding in Goa was chaotic but Clicker Wallah kept everything smooth. Their energy matched the party vibe and they captured every dance move perfectly!',
+                rating: 5
+            }
+        ];
+        
+        let currentSlide = 0;
+        
+        // Load testimonials
+        function loadTestimonials() {
+            testimonialsTrack.innerHTML = '';
+            sliderDots.innerHTML = '';
+            
+            testimonials.forEach((testimonial, index) => {
+                // Create testimonial card
+                const testimonialCard = document.createElement('div');
+                testimonialCard.className = 'testimonial-card';
+                testimonialCard.innerHTML = `
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">
+                            <img src="${testimonial.avatar}" alt="${testimonial.name}">
+                        </div>
+                        <div>
+                            <h3 style="margin: 0;">${testimonial.name}</h3>
+                            <p style="margin: 5px 0; color: var(--gold);"><i class="fas fa-map-marker-alt"></i> ${testimonial.location}</p>
+                            <div class="testimonial-rating">
+                                ${'★'.repeat(testimonial.rating)}${'☆'.repeat(5 - testimonial.rating)}
+                            </div>
+                        </div>
+                    </div>
+                    <p>"${testimonial.text}"</p>
+                `;
+                testimonialsTrack.appendChild(testimonialCard);
+                
+                // Create dot
+                const dot = document.createElement('div');
+                dot.className = `slider-dot ${index === 0 ? 'active' : ''}`;
+                dot.addEventListener('click', () => goToSlide(index));
+                sliderDots.appendChild(dot);
+            });
+            
+            updateSlider();
+        }
+        
+        function updateSlider() {
+            const trackWidth = testimonialsTrack.clientWidth;
+            testimonialsTrack.style.transform = `translateX(-${currentSlide * trackWidth}px)`;
+            
+            // Update dots
+            document.querySelectorAll('.slider-dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+        
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlider();
+        }
+        
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % testimonials.length;
+            updateSlider();
+        }
+        
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + testimonials.length) % testimonials.length;
+            updateSlider();
+        }
+        
+        // Initialize testimonials
+        loadTestimonials();
+        
+        // Slider controls
+        prevBtn.addEventListener('click', prevSlide);
+        nextBtn.addEventListener('click', nextSlide);
+        
+        // Auto-advance slider
+        setInterval(nextSlide, 5000);
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Update WhatsApp links with page context
+        function updateWhatsAppLinks() {
+            const pageTitle = document.title;
+            const pageUrl = window.location.href;
+            const message = `Hi Clicker Wallah! I'm interested in destination wedding photography. I was looking at: ${pageUrl}`;
+            const encodedMessage = encodeURIComponent(message);
+            
+            document.querySelectorAll('a[href*="whatsapp"]').forEach(link => {
+                const baseUrl = link.getAttribute('href').split('?text=')[0];
+                link.setAttribute('href', `${baseUrl}?text=${encodedMessage}`);
+            });
+        }
+        
+        updateWhatsAppLinks();
+        
+        // Package quote buttons
+        document.querySelectorAll('.package-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const packageName = this.closest('td').previousElementSibling.textContent;
+                const packagePrice = this.closest('tr').querySelector('strong').textContent;
+                
+                const message = `Hi Clicker Wallah! I'm interested in the ${packageName} destination wedding package (${packagePrice}). Can we schedule a consultation?`;
+                const encodedMessage = encodeURIComponent(message);
+                
+                window.open(`https://wa.me/918448553361?text=${encodedMessage}`, '_blank');
+            });
+        });
+        
+        // Add animations on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        // Observe elements to animate
+        document.querySelectorAll('.feature-card, .destination-card, .service-details').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+        
+        // FAQ Accordion (if added later)
+        const faqItems = document.querySelectorAll('.faq-item');
+        if (faqItems.length > 0) {
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                const toggle = item.querySelector('.faq-toggle');
+                
+                question.addEventListener('click', () => {
+                    // Close other items
+                    faqItems.forEach(otherItem => {
+                        if (otherItem !== item && otherItem.classList.contains('active')) {
+                            otherItem.classList.remove('active');
+                            otherItem.querySelector('.faq-toggle').textContent = '+';
+                        }
+                    });
+                    
+                    // Toggle current item
+                    item.classList.toggle('active');
+                    toggle.textContent = item.classList.contains('active') ? '−' : '+';
+                });
+            });
+        }
+    </script>
+</body>
+</html>
