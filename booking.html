@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clicker Wallah | Book Your Wedding Photography</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;600;700&family=Great+Vibes&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --saffron: #FF9933;
+            --maroon: #800020;
+            --gold: #D4AF37;
+            --cream: #FFF8E7;
+            --dark: #2C1810;
+            --light: #FAF3E0;
+            --teal: #008080;
+            --rose: #E6B8B8;
+            --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.15);
+            --border-radius: 16px;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.8;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Navigation and existing styles remain the same as previous code */
+        /* [Previous CSS code for navigation, hero, sections, etc. remains identical] */
+        /* Adding only new booking-related styles below */
+
+        /* Booking Section */
+        .booking-section {
+            background: linear-gradient(135deg, var(--cream), white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .booking-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .booking-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .booking-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--gold), var(--saffron));
+            color: white;
+            padding: 10px 30px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .booking-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            color: var(--maroon);
+            margin-bottom: 20px;
+        }
+
+        .booking-subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .booking-platforms {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .platform-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 40px 30px;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            border: 2px solid transparent;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .platform-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--gold);
+        }
+
+        .platform-card.featured {
+            border-color: var(--gold);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.2);
+        }
+
+        .platform-card.featured::before {
+            content: 'RECOMMENDED';
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background: var(--maroon);
+            color: white;
+            padding: 8px 40px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            transform: rotate(45deg);
+        }
+
+        .platform-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+        }
+
+        .icon-calendly {
+            background: linear-gradient(135deg, #006BFF, #00D4FF);
+        }
+
+        .icon-timetap {
+            background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+        }
+
+        .icon-acuity {
+            background: linear-gradient(135deg, #00B894, #00CEC9);
+        }
+
+        .icon-setmore {
+            background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+        }
+
+        .platform-card h3 {
+            font-size: 1.8rem;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+
+        .platform-features {
+            list-style: none;
+            margin: 25px 0;
+            text-align: left;
+        }
+
+        .platform-features li {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .platform-features i {
+            color: var(--gold);
+            font-size: 14px;
+        }
+
+        .platform-btn {
+            display: inline-block;
+            width: 100%;
+            padding: 16px 30px;
+            background: linear-gradient(135deg, var(--maroon), #600018);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .platform-btn:hover {
+            background: transparent;
+            color: var(--maroon);
+            border-color: var(--maroon);
+            transform: translateY(-3px);
+        }
+
+        .platform-btn i {
+            transition: transform 0.3s ease;
+        }
+
+        .platform-btn:hover i {
+            transform: translateX(5px);
+        }
+
+        .booking-note {
+            text-align: center;
+            padding: 30px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            margin-top: 40px;
+            border-left: 5px solid var(--gold);
+        }
+
+        .booking-note p {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .whatsapp-booking {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+            padding: 25px 40px;
+            border-radius: var(--border-radius);
+            margin-top: 40px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .whatsapp-icon {
+            font-size: 3.5rem;
+        }
+
+        .whatsapp-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .whatsapp-btn {
+            display: inline-block;
+            background: white;
+            color: #25D366;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            margin-top: 15px;
+            transition: var(--transition);
+        }
+
+        .whatsapp-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Calendar Embed Styles */
+        .calendar-embed {
+            margin-top: 60px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            background: white;
+            padding: 30px;
+        }
+
+        .calendar-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .calendar-header h3 {
+            font-size: 2rem;
+            color: var(--maroon);
+            margin-bottom: 10px;
+        }
+
+        .calendar-iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Package Comparison */
+        .package-comparison {
+            margin-top: 80px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        .comparison-table th {
+            background: linear-gradient(135deg, var(--maroon), #600018);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        .comparison-table td {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comparison-table .feature-name {
+            text-align: left;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .comparison-table .check {
+            color: var(--gold);
+            font-size: 1.5rem;
+        }
+
+        .comparison-table .cross {
+            color: #ccc;
+            font-size: 1.5rem;
+        }
+
+        .package-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--gold);
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: var(--transition);
+        }
+
+        .package-btn:hover {
+            background: var(--maroon);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* Quick Booking Widget */
+        .quick-booking-widget {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+
+        .booking-toggle {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--maroon), var(--gold));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+            animation: pulse 2s infinite;
+        }
+
+        .booking-toggle:hover {
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        .booking-widget-content {
+            position: absolute;
+            bottom: 90px;
+            right: 0;
+            width: 350px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            padding: 30px;
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .booking-widget-content.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .widget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .widget-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #999;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .widget-close:hover {
+            color: var(--maroon);
+        }
+
+        .widget-option {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: var(--cream);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .widget-option:hover {
+            background: var(--gold);
+            color: white;
+        }
+
+        .widget-option i {
+            font-size: 1.5rem;
+        }
+
+        /* Responsive Design for Booking Section */
+        @media (max-width: 768px) {
+            .booking-title {
+                font-size: 2.5rem;
+            }
+            
+            .platform-card.featured::before {
+                font-size: 10px;
+                padding: 6px 30px;
+                right: -35px;
+            }
+            
+            .whatsapp-booking {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .calendar-iframe {
+                height: 500px;
+            }
+            
+            .booking-widget-content {
+                width: 300px;
+                right: -50px;
+            }
+            
+            .comparison-table {
+                font-size: 14px;
+            }
+            
+            .comparison-table th,
+            .comparison-table td {
+                padding: 15px 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .booking-container {
+                padding: 60px 20px;
+            }
+            
+            .booking-title {
+                font-size: 2rem;
+            }
+            
+            .platform-card {
+                padding: 30px 20px;
+            }
+            
+            .calendar-iframe {
+                height: 400px;
+            }
+            
+            .booking-widget-content {
+                width: 280px;
+                right: -70px;
+            }
+        }
+
+        /* Booking Modal */
+        .booking-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .booking-modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--border-radius);
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--maroon), #600018);
+            color: white;
+            padding: 30px;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .modal-option {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-option:hover {
+            border-color: var(--gold);
+            transform: translateX(10px);
+        }
+
+        .modal-option i {
+            font-size: 2rem;
+            color: var(--maroon);
+        }
+
+        .modal-footer {
+            padding: 20px 30px;
+            border-top: 1px solid #eee;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- [Previous HTML code for navigation, hero, sections remains identical] -->
+    <!-- Adding only the booking section and related elements -->
+
+    <!-- Booking Section -->
+    <section class="section-padding booking-section" id="booking">
+        <div class="booking-container">
+            <div class="booking-header">
+                <div class="booking-badge">BOOK YOUR DATE</div>
+                <h2 class="booking-title">Secure Your Clicker Wallah</h2>
+                <p class="booking-subtitle">Choose your preferred booking platform. All systems sync with our calendar in real-time.</p>
+            </div>
+
+            <div class="booking-platforms">
+                <!-- Calendly Integration -->
+                <div class="platform-card featured">
+                    <div class="platform-icon icon-calendly">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h3>Calendly Booking</h3>
+                    <p>Most popular option for quick scheduling</p>
+                    <ul class="platform-features">
+                        <li><i class="fas fa-check"></i> Instant confirmation</li>
+                        <li><i class="fas fa-check"></i> Zoom meeting integration</li>
+                        <li><i class="fas fa-check"></i> Automatic reminders</li>
+                        <li><i class="fas fa-check"></i> Timezone detection</li>
+                    </ul>
+                    <a href="https://calendly.com/clickerwallah/consultation" target="_blank" class="platform-btn">
+                        Book on Calendly <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- TimeTap Integration -->
+                <div class="platform-card">
+                    <div class="platform-icon icon-timetap">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>TimeTap</h3>
+                    <p>Advanced scheduling with packages</p>
+                    <ul class="platform-features">
+                        <li><i class="fas fa-check"></i> Package selection</li>
+                        <li><i class="fas fa-check"></i> Payment integration</li>
+                        <li><i class="fas fa-check"></i> Contract signing</li>
+                        <li><i class="fas fa-check"></i> Questionnaire</li>
+                    </ul>
+                    <a href="https://www.timetap.com/clickerwallah" target="_blank" class="platform-btn">
+                        Book on TimeTap <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Acuity Scheduling -->
+                <div class="platform-card">
+                    <div class="platform-icon icon-acuity">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h3>Acuity Scheduling</h3>
+                    <p>Professional client management</p>
+                    <ul class="platform-features">
+                        <li><i class="fas fa-check"></i> Intake forms</li>
+                        <li><i class="fas fa-check"></i> Video conferencing</li>
+                        <li><i class="fas fa-check"></i> Client portal</li>
+                        <li><i class="fas fa-check"></i> File sharing</li>
+                    </ul>
+                    <a href="https://app.acuityscheduling.com/schedule.php?owner=clickerwallah" target="_blank" class="platform-btn">
+                        Book on Acuity <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Embedded Calendar -->
+            <div class="calendar-embed">
+                <div class="calendar-header">
+                    <h3>Live Availability Calendar</h3>
+                    <p>Check our real-time availability and book directly</p>
+                </div>
+                <!-- Calendly Embed Widget -->
+                <div class="calendly-inline-widget" data-url="https://calendly.com/clickerwallah/consultation" style="min-width:320px;height:700px;"></div>
+                <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+            </div>
+
+            <!-- Package Comparison -->
+            <div class="package-comparison">
+                <h3 style="text-align: center; font-size: 2.5rem; margin-bottom: 40px; color: var(--maroon);">Package Comparison</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Essentials</th>
+                            <th>Premium</th>
+                            <th>Royal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="feature-name">Pre-Wedding Shoot</td>
+                            <td><i class="fas fa-check check"></i></td>
+                            <td><i class="fas fa-check check"></i></td>
+                            <td><i class="fas fa-check check"></i></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Full Day Coverage</td>
+                            <td><i class="fas fa-times cross"></i></td>
+                            <td><i class="fas fa-check check"></i></td>
+                            <td><i class="fas fa-check check"></i></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Cinematic Film</td>
+                            <td><i class="fas fa-times cross"></i></td>
+                            <td><i class="fas fa-check check"></i></td>
+                            <td><i class="fas fa-check check"></i></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Drone Coverage</td>
+                            <td><i class="fas fa-times cross"></i></td>
+                            <td><i class="fas fa-times cross"></i></td>
+                            <td><i class="fas fa-check check"></i></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Second Photographer</td>
+                            <td><i class="fas fa-times cross"></i></td>
+                            <td><i class="fas fa-check check"></i></td>
+                            <td><i class="fas fa-check check"></i></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Online Gallery</td>
+                            <td><i class="fas fa-check check"></i></td>
+                            <td><i class="fas fa-check check"></i></td>
+                            <td><i class="fas fa-check check"></i></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">48-Hour Teaser</td>
+                            <td><i class="fas fa-times cross"></i></td>
+                            <td><i class="fas fa-check check"></i></td>
+                            <td><i class="fas fa-check check"></i></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Album Design</td>
+                            <td><i class="fas fa-check check"></i></td>
+                            <td><i class="fas fa-check check"></i></td>
+                            <td><i class="fas fa-check check"></i></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name">Price</td>
+                            <td><strong>₹85,000</strong></td>
+                            <td><strong>₹1,50,000</strong></td>
+                            <td><strong>₹2,75,000</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="feature-name"></td>
+                            <td><a href="https://calendly.com/clickerwallah/essentials" target="_blank" class="package-btn">Book Now</a></td>
+                            <td><a href="https://calendly.com/clickerwallah/premium" target="_blank" class="package-btn">Book Now</a></td>
+                            <td><a href="https://calendly.com/clickerwallah/royal" target="_blank" class="package-btn">Book Now</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- WhatsApp Booking -->
+            <div class="whatsapp-booking">
+                <div class="whatsapp-icon">
+                    <i class="fab fa-whatsapp"></i>
+                </div>
+                <div class="whatsapp-content">
+                    <h3>Prefer WhatsApp Booking?</h3>
+                    <p>Message us directly for instant responses and personalized service</p>
+                    <a href="https://wa.me/918448553361?text=Hi%20Clicker%20Wallah!%20I'm%20interested%20in%20booking%20a%20wedding%20photography%20session." target="_blank" class="whatsapp-btn">
+                        <i class="fab fa-whatsapp"></i> Book on WhatsApp
+                    </a>
+                </div>
+            </div>
+
+            <!-- Booking Note -->
+            <div class="booking-note">
+                <p><strong>Note:</strong> All bookings require a 30% deposit to secure your date. The remaining balance is due 14 days before your wedding.</p>
+                <p><strong>Cancellation Policy:</strong> Deposits are non-refundable but transferable to another date within 12 months.</p>
+                <p><strong>Travel:</strong> Destination weddings may include additional travel costs. Contact us for a custom quote.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Booking Widget -->
+    <div class="quick-booking-widget">
+        <div class="booking-toggle" id="bookingToggle">
+            <i class="fas fa-calendar-check"></i>
+        </div>
+        <div class="booking-widget-content" id="bookingWidget">
+            <div class="widget-header">
+                <h4>Quick Book</h4>
+                <button class="widget-close" id="widgetClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="widget-option" data-platform="calendly">
+                <i class="fas fa-calendar-alt"></i>
+                <div>
+                    <strong>Calendly</strong>
+                    <small>Quick & Easy</small>
+                </div>
+            </div>
+            <div class="widget-option" data-platform="whatsapp">
+                <i class="fab fa-whatsapp"></i>
+                <div>
+                    <strong>WhatsApp</strong>
+                    <small>Instant Response</small>
+                </div>
+            </div>
+            <div class="widget-option" data-platform="call">
+                <i class="fas fa-phone"></i>
+                <div>
+                    <strong>Call Us</strong>
+                    <small>+91 84485 53361</small>
+                </div>
+            </div>
+            <div class="widget-option" data-platform="packages">
+                <i class="fas fa-box"></i>
+                <div>
+                    <strong>View Packages</strong>
+                    <small>Compare options</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div class="booking-modal" id="bookingModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 style="margin: 0;">Choose Booking Method</h3>
+                <button class="modal-close" id="modalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-option" data-action="calendly">
+                    <i class="fas fa-calendar-alt"></i>
+                    <div>
+                        <h4>Online Calendar</h4>
+                        <p>Book instantly with our online scheduler</p>
+                    </div>
+                </div>
+                <div class="modal-option" data-action="whatsapp">
+                    <i class="fab fa-whatsapp"></i>
+                    <div>
+                        <h4>WhatsApp Booking</h4>
+                        <p>Message us directly for personalized service</p>
+                    </div>
+                </div>
+                <div class="modal-option" data-action="call">
+                    <i class="fas fa-phone"></i>
+                    <div>
+                        <h4>Phone Booking</h4>
+                        <p>Call us to discuss your requirements</p>
+                    </div>
+                </div>
+                <div class="modal-option" data-action="email">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <h4>Email Inquiry</h4>
+                        <p>Send us details for a custom quote</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <p style="color: #666; font-size: 14px;">We typically respond within 2 hours during business days</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- [Previous HTML code for footer remains identical] -->
+
+    <script>
+        // Quick Booking Widget
+        const bookingToggle = document.getElementById('bookingToggle');
+        const bookingWidget = document.getElementById('bookingWidget');
+        const widgetClose = document.getElementById('widgetClose');
+        const bookingModal = document.getElementById('bookingModal');
+        const modalClose = document.getElementById('modalClose');
+
+        // Toggle booking widget
+        bookingToggle.addEventListener('click', () => {
+            bookingWidget.classList.toggle('show');
+        });
+
+        widgetClose.addEventListener('click', () => {
+            bookingWidget.classList.remove('show');
+        });
+
+        // Close widget when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!bookingWidget.contains(e.target) && !bookingToggle.contains(e.target)) {
+                bookingWidget.classList.remove('show');
+            }
+        });
+
+        // Widget option clicks
+        document.querySelectorAll('.widget-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const platform = this.dataset.platform;
+                handleBookingSelection(platform);
+            });
+        });
+
+        // Modal option clicks
+        document.querySelectorAll('.modal-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const action = this.dataset.action;
+                handleBookingAction(action);
+            });
+        });
+
+        // Function to handle booking selection
+        function handleBookingSelection(platform) {
+            bookingWidget.classList.remove('show');
+            
+            switch(platform) {
+                case 'calendly':
+                    window.open('https://calendly.com/clickerwallah/consultation', '_blank');
+                    break;
+                case 'whatsapp':
+                    window.open('https://wa.me/918448553361?text=Hi%20Clicker%20Wallah!%20I%27d%20like%20to%20book%20a%20consultation.', '_blank');
+                    break;
+                case 'call':
+                    window.location.href = 'tel:+918448553361';
+                    break;
+                case 'packages':
+                    document.getElementById('booking').scrollIntoView({ behavior: 'smooth' });
+                    break;
+            }
+        }
+
+        // Function to handle booking action from modal
+        function handleBookingAction(action) {
+            bookingModal.classList.remove('show');
+            
+            switch(action) {
+                case 'calendly':
+                    window.open('https://calendly.com/clickerwallah/consultation', '_blank');
+                    break;
+                case 'whatsapp':
+                    window.open('https://wa.me/918448553361?text=Hi%20Clicker%20Wallah!%20I%27d%20like%20to%20book%20a%20consultation.', '_blank');
+                    break;
+                case 'call':
+                    window.location.href = 'tel:+918448553361';
+                    break;
+                case 'email':
+                    window.location.href = 'mailto:bookings@clickerwallah.com?subject=Wedding%20Photography%20Inquiry&body=Hello%20Clicker%20Wallah%20team%2C%0A%0AI%20am%20interested%20in%20booking%20your%20services%20for%20my%20wedding.%0A%0AWedding%20Date%3A%0ALocation%3A%0APackage%20Interest%3A%0A%0AThank%20you!';
+                    break;
+            }
+        }
+
+        // Show booking modal when clicking any "Book Now" button
+        document.querySelectorAll('.nav-cta, .hero-cta').forEach(button => {
+            button.addEventListener('click', (e) => {
+                if (button.getAttribute('href') === '#booking') {
+                    e.preventDefault();
+                    bookingModal.classList.add('show');
+                }
+            });
+        });
+
+        // Close modal
+        modalClose.addEventListener('click', () => {
+            bookingModal.classList.remove('show');
+        });
+
+        // Close modal when clicking outside
+        bookingModal.addEventListener('click', (e) => {
+            if (e.target === bookingModal) {
+                bookingModal.classList.remove('show');
+            }
+        });
+
+        // Package booking buttons
+        document.querySelectorAll('.package-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const url = button.getAttribute('href');
+                window.open(url, '_blank');
+                
+                // Track booking attempt
+                trackBooking('package_booking', button.textContent.trim());
+            });
+        });
+
+        // Platform booking buttons
+        document.querySelectorAll('.platform-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const url = button.getAttribute('href');
+                window.open(url, '_blank');
+                
+                // Track booking attempt
+                const platform = button.closest('.platform-card').querySelector('h3').textContent;
+                trackBooking('platform_booking', platform);
+            });
+        });
+
+        // WhatsApp booking button
+        document.querySelector('.whatsapp-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            const url = e.target.closest('a').getAttribute('href');
+            window.open(url, '_blank');
+            
+            trackBooking('whatsapp_booking', 'whatsapp');
+        });
+
+        // Function to track booking attempts (for analytics)
+        function trackBooking(action, label) {
+            // In a real implementation, you would send this to Google Analytics
+            console.log(`Booking tracked: ${action} - ${label}`);
+            
+            // Example GA implementation (uncomment and add your GA ID):
+            /*
+            if (typeof gtag !== 'undefined') {
+                gtag('event', action, {
+                    'event_category': 'booking',
+                    'event_label': label
+                });
+            }
+            */
+        }
+
+        // Auto-populate WhatsApp message with page information
+        function updateWhatsAppLinks() {
+            const pageTitle = document.title;
+            const pageUrl = window.location.href;
+            
+            const whatsappMessage = `Hi Clicker Wallah! I'm interested in booking wedding photography. I was looking at your website: ${pageUrl}`;
+            const encodedMessage = encodeURIComponent(whatsappMessage);
+            
+            // Update all WhatsApp links
+            document.querySelectorAll('a[href*="whatsapp.com"]').forEach(link => {
+                const baseUrl = link.getAttribute('href').split('?text=')[0];
+                link.setAttribute('href', `${baseUrl}?text=${encodedMessage}`);
+            });
+        }
+
+        // Call on page load
+        updateWhatsAppLinks();
+
+        // Add scroll animation to booking section
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        // Observe booking section elements
+        document.querySelectorAll('.platform-card, .whatsapp-booking, .booking-note').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Date availability check
+        function checkDateAvailability(date) {
+            // This would typically call an API
+            // For demo, we'll simulate availability
+            const bookedDates = [
+                '2024-06-15',
+                '2024-06-22',
+                '2024-07-05',
+                '2024-07-12'
+            ];
+            
+            return !bookedDates.includes(date);
+        }
+
+        // Booking form handling (if you want to add a custom form)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add current year to copyright
+            document.querySelectorAll('.current-year').forEach(el => {
+                el.textContent = new Date().getFullYear();
+            });
+        });
+    </script>
+</body>
+</html>
